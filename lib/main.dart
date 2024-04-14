@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
     return FlutterSizer(
       builder: (BuildContext, Orientation, ScreenType) {
         return MaterialApp(
-          home: SelectTransportScreen(),
+          home: LoginRegisterScreen(),
           debugShowCheckedModeBanner: false,
         );
       },

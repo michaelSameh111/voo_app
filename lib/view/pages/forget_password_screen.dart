@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-
+import 'package:voo_app/view/pages/get_your_code_screen.dart';
+import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class ForgetPasswordScreen extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,21 +51,13 @@ class ForgetPasswordScreen extends StatelessWidget {
                             hintText: 'Email'),
                       ),
                     ),
-                    SizedBox(height: 4.h,),
                     SizedBox(
-                      width: 80.w,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xff0038A7)),
-                          onPressed: () {},
-                          child: Container(
-                            child: Text(
-                              'Continue',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          )),
+                      height: 4.h,
                     ),
-
+                    MainElevatedButton(
+                        nextScreen: GetYourCodeScreen(),
+                        text: 'Continue',
+                        backgroundColor: Color(0xff0038A7)),
                   ],
                 )
               ],

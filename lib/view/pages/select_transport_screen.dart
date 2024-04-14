@@ -2,6 +2,8 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:voo_app/view/pages/login_screen.dart';
+import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class SelectTransportScreen extends StatefulWidget {
   const SelectTransportScreen({Key? key}) : super(key: key);
@@ -564,19 +566,11 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                   height: 5.h,
                 ),
                 Center(
-                  child: SizedBox(
-                    width: 80.w,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xff0038A7)),
-                        onPressed: () {},
-                        child: Container(
-                          child: Text(
-                            'Next',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        )),
-                  ),
+                  child: MainElevatedButton(
+                      nextScreen:
+                      LoginScreen(), //mo2akatan 3amelha LoginScreen next page
+                      text: 'Next',
+                      backgroundColor: Color(0xff0038A7)),
                 ),
                 SizedBox(
                   height: 5.h,

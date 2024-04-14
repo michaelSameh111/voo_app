@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:voo_app/view/pages/login_screen.dart';
+import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class LocationScreen extends StatelessWidget {
   @override
@@ -147,19 +149,11 @@ class LocationScreen extends StatelessWidget {
                   ),
                  // Spacer(),
                   SizedBox(height: 10.h,),
-                  SizedBox(
-                    width: 80.w,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xff0038A7)),
-                        onPressed: () {},
-                        child: Container(
-                          child: Text(
-                            'Next',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        )),
-                  ),
+                  MainElevatedButton(
+                      nextScreen:
+                      LoginScreen(), //mo2akatan 3amelha LoginScreen next page
+                      text: 'Next',
+                      backgroundColor: Color(0xff0038A7)),
                   SizedBox(height: 4.h,),
                 ],
               ),

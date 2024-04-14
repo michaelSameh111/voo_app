@@ -1,6 +1,8 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:voo_app/view/pages/login_screen.dart';
+import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class DriverLicenseScreen extends StatelessWidget {
   @override
@@ -39,9 +41,10 @@ class DriverLicenseScreen extends StatelessWidget {
                   height: 4.h,
                 ),
                 DottedBorder(
-                  dashPattern: [8 , 4],
+                  dashPattern: [8, 4],
                   color: Color(0xff808080),
-                  child: Container(padding: EdgeInsets.all(20),
+                  child: Container(
+                    padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: Color(0xffF5F4F4),
                     ),
@@ -58,21 +61,14 @@ class DriverLicenseScreen extends StatelessWidget {
                             style: TextStyle(color: Colors.black),
                           ),
                         ),
-                        SizedBox(height: 2.h,),
                         SizedBox(
-                          width: 80.w,
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color(0xff0038A7)),
-                              onPressed: () {},
-                              child: Container(
-                                child: Text(
-                                  'Upload',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              )),
+                          height: 2.h,
                         ),
-
+                        MainElevatedButton(
+                            nextScreen:
+                                LoginScreen(), //mo2akatan 3amelha LoginScreen next page
+                            text: 'Upload',
+                            backgroundColor: Color(0xff0038A7)),
                       ],
                     ),
                   ),
@@ -81,9 +77,10 @@ class DriverLicenseScreen extends StatelessWidget {
                   height: 4.h,
                 ),
                 DottedBorder(
-                  dashPattern: [8 , 4],
+                  dashPattern: [8, 4],
                   color: Color(0xff808080),
-                  child: Container(padding: EdgeInsets.all(20),
+                  child: Container(
+                    padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: Color(0xffF5F4F4),
                     ),
@@ -100,21 +97,14 @@ class DriverLicenseScreen extends StatelessWidget {
                             style: TextStyle(color: Colors.black),
                           ),
                         ),
-                        SizedBox(height: 2.h,),
                         SizedBox(
-                          width: 80.w,
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color(0xff0038A7)),
-                              onPressed: () {},
-                              child: Container(
-                                child: Text(
-                                  'Upload',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              )),
+                          height: 2.h,
                         ),
-
+                        MainElevatedButton(
+                            nextScreen:
+                            LoginScreen(), //mo2akatan 3amelha LoginScreen next page
+                            text: 'Upload',
+                            backgroundColor: Color(0xff0038A7)),
                       ],
                     ),
                   ),
@@ -125,7 +115,7 @@ class DriverLicenseScreen extends StatelessWidget {
                 Text(
                   'Driver License Number',
                   style:
-                  TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                 ),
                 SizedBox(
                   height: 2.h,
@@ -148,7 +138,7 @@ class DriverLicenseScreen extends StatelessWidget {
                 Text(
                   'Expiration Date',
                   style:
-                  TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                 ),
                 SizedBox(
                   height: 2.h,

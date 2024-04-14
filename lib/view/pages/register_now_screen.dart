@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/view/pages/login_screen.dart';
 import 'package:voo_app/view/pages/add_your_photo_screen.dart';
-
+import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class RegisterNowScreen extends StatefulWidget {
   @override
@@ -404,22 +404,13 @@ class _RegisterNowScreenState extends State<RegisterNowScreen> {
                   SizedBox(
                     height: 5.h,
                   ),
-                  SizedBox(
-                    width: 80.w,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xff0038A7)),
-                        onPressed: () {},
-                        child: Container(
-                          child: Text(
-                            'Register',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        )),
-                  ),
+                  MainElevatedButton(
+                      nextScreen: LoginScreen(),
+                      text: 'Register',
+                      backgroundColor: Color(0xff0038A7)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                      children: [
                       Text(
                         'Already a user ?',
                         style: TextStyle(

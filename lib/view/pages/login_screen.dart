@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/view/pages/forget_password_screen.dart';
 import 'package:voo_app/view/pages/register_now_screen.dart';
+import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -120,19 +121,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(
                         height: 3.h,
                       ),
-                      SizedBox(
-                        width: 80.w,
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xff0038A7)),
-                            onPressed: () {},
-                            child: Container(
-                              child: Text(
-                                'Login',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            )),
-                      ),
+                      MainElevatedButton(
+                          nextScreen: LoginScreen(),
+                          text: 'Login',
+                          backgroundColor: Color(0xff0038A7)),
                       Row(
                         children: [
                           Text('Don\'t have an account ?'),
@@ -141,7 +133,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => RegisterNowScreen()));
+                                        builder: (context) =>
+                                            RegisterNowScreen()));
                               },
                               child: Text(
                                 'Register now',

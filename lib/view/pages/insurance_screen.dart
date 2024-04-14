@@ -1,6 +1,8 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:voo_app/view/pages/login_screen.dart';
+import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class InsuranceScreen extends StatelessWidget {
 
@@ -101,19 +103,11 @@ class InsuranceScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 19.h,),
-                    SizedBox(
-                      width: 80.w,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xff0038A7)),
-                          onPressed: () {},
-                          child: Container(
-                            child: Text(
-                              'Next',
-                              style: TextStyle(color: Colors.white,fontSize: 17.dp),
-                            ),
-                          )),
-                    ),
+                    MainElevatedButton(
+                        nextScreen:
+                        LoginScreen(), //mo2akatan 3amelha LoginScreen next page
+                        text: 'Next',
+                        backgroundColor: Color(0xff0038A7)),
                   ],
                 )
               ],

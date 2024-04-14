@@ -18,6 +18,8 @@ import 'package:voo_app/view/pages/get_your_code_screen.dart';
 import 'package:voo_app/view/pages/splash_screen.dart';
 import 'package:voo_app/view/pages/splash_screen.dart';
 
+import 'view/pages/your_safety_come_first_screen.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -31,7 +33,7 @@ class MyApp extends StatelessWidget {
     return FlutterSizer(
       builder: (BuildContext, Orientation, ScreenType) {
         return MaterialApp(
-          home: LoginRegisterScreen(),
+          home: YourSafetyComeFirstScreen(),
           debugShowCheckedModeBanner: false,
         );
       },

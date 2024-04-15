@@ -21,7 +21,7 @@ class _YourSafetyComeFirstScreenState extends State<YourSafetyComeFirstScreen> {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 23),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Center(
                     child: Text(

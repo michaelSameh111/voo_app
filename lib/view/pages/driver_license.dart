@@ -2,6 +2,8 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/view/pages/login_screen.dart';
+import 'package:voo_app/view/pages/select_transport_screen.dart';
+import 'package:voo_app/view/widgets/circled_next_button.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class DriverLicenseScreen extends StatelessWidget {
@@ -156,7 +158,11 @@ class DriverLicenseScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 5.h,
+                  height: 9.h,
+                ),
+                Center(child: CircledNextButton(nextScreen: SelectTransportScreen())),
+                SizedBox(
+                  height: 3.h,
                 ),
               ],
             ),

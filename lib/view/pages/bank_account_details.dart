@@ -120,7 +120,7 @@ class BankAccountDetailsScreen extends StatelessWidget {
                   SizedBox(height: 10.h,),
                   MainElevatedButton(
                       nextScreen:
-                      LoginScreen(), //mo2akatan 3amelha LoginScreen next page
+                      LoginScreen(),
                       text: 'Next',
                       backgroundColor: Color(0xff0038A7)),
                   SizedBox(height: 4.h,),

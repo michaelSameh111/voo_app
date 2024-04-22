@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/view/pages/login_screen.dart';
+import 'package:voo_app/view/pages/vehicle_registration_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class SelectTransportScreen extends StatefulWidget {
@@ -568,7 +569,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                 Center(
                   child: MainElevatedButton(
                       nextScreen:
-                      LoginScreen(), //mo2akatan 3amelha LoginScreen next page
+                      VehicleRegistrationScreen(),
                       text: 'Next',
                       backgroundColor: Color(0xff0038A7)),
                 ),

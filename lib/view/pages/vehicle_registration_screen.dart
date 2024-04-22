@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:voo_app/view/pages/insurance_screen.dart';
 import 'package:voo_app/view/pages/login_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
@@ -105,7 +106,7 @@ class VehicleRegistrationScreen extends StatelessWidget {
                     SizedBox(height: 19.h,),
                     MainElevatedButton(
                         nextScreen:
-                        LoginScreen(), //mo2akatan 3amelha LoginScreen next page
+                        InsuranceScreen(), //mo2akatan 3amelha LoginScreen next page
                         text: 'Next',
                         backgroundColor: Color(0xff0038A7)),
 

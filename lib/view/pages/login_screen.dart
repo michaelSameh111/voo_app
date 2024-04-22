@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:voo_app/view/pages/enable_location_access_screen.dart';
 import 'package:voo_app/view/pages/forget_password_screen.dart';
 import 'package:voo_app/view/pages/register_now_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
@@ -122,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 3.h,
                       ),
                       MainElevatedButton(
-                          nextScreen: LoginScreen(),
+                          nextScreen: EnableLocationAccessScreen(),
                           text: 'Login',
                           backgroundColor: Color(0xff0038A7)),
                       Row(

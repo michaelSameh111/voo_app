@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:voo_app/view/pages/check_info_screen.dart';
+import 'package:voo_app/view/widgets/circled_next_button.dart';
 
 class AddYourPhotoScreen extends StatelessWidget {
   const AddYourPhotoScreen({Key? key}) : super(key: key);
@@ -27,13 +29,16 @@ class AddYourPhotoScreen extends StatelessWidget {
                 SizedBox(
                   height: 5.h,
                 ),
-                CircleAvatar(
-                  radius: 75.0,
-                  backgroundColor: Color(0xffA2A2A2),
-                  child: Icon(
-                    Icons.person,
-                    size: 90.0,
-                    color: Colors.white,
+                InkWell(
+                  onTap: () {}, //open gallery
+                  child: CircleAvatar(
+                    radius: 75.0,
+                    backgroundColor: Color(0xffA2A2A2),
+                    child: Icon(
+                      Icons.person,
+                      size: 90.0,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -55,7 +60,13 @@ class AddYourPhotoScreen extends StatelessWidget {
                               fontWeight: FontWeight.bold),
                         ),
                       )),
-                )
+                ),
+                SizedBox(
+                  height: 27.h,
+                ),
+                CircledNextButton(
+                    nextScreen:
+                        CheckInfoScreen()), // el mafrood go to screen reset password // mo2akatan will go back to login screen
               ],
             ),
           ),

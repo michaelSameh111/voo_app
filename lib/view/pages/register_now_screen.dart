@@ -52,13 +52,22 @@ class _RegisterNowScreenState extends State<RegisterNowScreen> {
                   SizedBox(
                     height: 5.h,
                   ),
-                  CircleAvatar(
-                    radius: 50.0,
-                    backgroundColor: Color(0xffA2A2A2),
-                    child: Icon(
-                      Icons.person,
-                      size: 70.0,
-                      color: Colors.white,
+                  InkWell(
+                    onTap: (){
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddYourPhotoScreen(),
+                          ));
+                    },
+                    child: CircleAvatar(
+                      radius: 50.0,
+                      backgroundColor: Color(0xffA2A2A2),
+                      child: Icon(
+                        Icons.person,
+                        size: 70.0,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                   TextButton(
@@ -405,7 +414,7 @@ class _RegisterNowScreenState extends State<RegisterNowScreen> {
                     height: 5.h,
                   ),
                   MainElevatedButton(
-                      nextScreen: LoginScreen(),
+                      nextScreen: AddYourPhotoScreen(),
                       text: 'Register',
                       backgroundColor: Color(0xff0038A7)),
                   Row(

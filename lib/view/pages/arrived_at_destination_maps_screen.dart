@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:voo_app/view/pages/collect_cash_screen.dart';
+import 'package:voo_app/view/pages/destination_maps_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class ArrivedAtDestinationMapsScreen extends StatelessWidget {
@@ -18,7 +20,6 @@ class ArrivedAtDestinationMapsScreen extends StatelessWidget {
                   style:
                   TextStyle(fontWeight: FontWeight.bold, fontSize: 16.dp),
                 ),
-
               ),
               ElevatedButton(
                   onPressed: (){
@@ -44,7 +45,7 @@ void arrivedAtDestinationShowModalSheet(BuildContext context) {
     ),
     context: context,
     builder: (context) => SizedBox(
-      height: 50.h,
+      height: 72.h,
       width: double.infinity,
       child: Column(
         children: [
@@ -59,9 +60,15 @@ void arrivedAtDestinationShowModalSheet(BuildContext context) {
           style: TextStyle(color: Color(0xff1D1B1B),fontSize: 15.dp),),
           SizedBox(height: 4.h,),
           MainElevatedButton(
-              nextScreen: ArrivedAtDestinationMapsScreen(),
+              nextScreen: DestinationMapsScreen(),
               text: 'Done',
               backgroundColor: Color(0xff0038A7)),
+          SizedBox(height: 1.h,),
+          MainElevatedButton( // el button da kan mawgood f screen tanya makan el done button eli fo2eeh
+              nextScreen: CollectCashScreen(),
+              text: 'End trip',
+              backgroundColor: Color(0xff0038A7)),
+
           TextButton(
               onPressed: () {},
               child: Text(

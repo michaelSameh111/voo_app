@@ -447,7 +447,7 @@ void acceptDeclineShowModalSheet(BuildContext context) {
                     ],
                   )
                 ],
-              ),
+              ), // same Row as in collect cash screen
               SizedBox(height: 8.h,),
               Row(
                 children: [

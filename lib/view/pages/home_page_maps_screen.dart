@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:voo_app/view/pages/customer_location_maps_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class HomePageMapsScreen extends StatefulWidget {
@@ -192,7 +193,7 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
               ElevatedButton(
                 child: Text('Open Modal Sheet'),
                 onPressed: () {
-                  _showModalSheet(context);
+                  acceptDeclineShowModalSheet(context);
                 },
               ),
               SizedBox(
@@ -315,7 +316,7 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
   }
 }
 
-void _showModalSheet(BuildContext context) {
+void acceptDeclineShowModalSheet(BuildContext context) {
   showModalBottomSheet(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
@@ -399,17 +400,8 @@ void _showModalSheet(BuildContext context) {
                       ),
                       Stack(
                         children: [
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            padding: EdgeInsets.only(left: 50.w),
-                            width: 80.w,
-                            height: 0.2.h,
-                            decoration: BoxDecoration(
-                                color: Colors.black
-                              //0xffE2E2E2
-                            ),),
                           Positioned(
-                            left: 50,
+                            right: -50,
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -428,7 +420,16 @@ void _showModalSheet(BuildContext context) {
                                     ,style: TextStyle(color: Color(0xff808080)),
                               ),
                             ),
-                          ))
+                          )),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.only(left: 50.w),
+                            width: 80.w,
+                            height: 0.2.h,
+                            decoration: BoxDecoration(
+                                color: Colors.black
+                              //0xffE2E2E2
+                            ),),
                         ],
                       ),
                       SizedBox(
@@ -476,7 +477,12 @@ void _showModalSheet(BuildContext context) {
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xff0038A7)),
-                        onPressed: (){},
+                        onPressed: (){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CustomerLocationMapsScreen()));
+                        },
                         child: Text('Accept', style: TextStyle(color: Colors.white),)),
                   )
                 ],

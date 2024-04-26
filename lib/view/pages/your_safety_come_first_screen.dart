@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:voo_app/view/pages/background_location_screen.dart';
 import 'package:voo_app/view/pages/login_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
@@ -105,7 +106,7 @@ class _YourSafetyComeFirstScreenState extends State<YourSafetyComeFirstScreen> {
                   ),
                   Center(
                     child: MainElevatedButton(
-                        nextScreen: LoginScreen(), //Background location screen
+                        nextScreen: BackgroundLocationScreen(), //Background location screen
                         text: 'Next',
                         backgroundColor: Color(0xff0038A7)),
                   )

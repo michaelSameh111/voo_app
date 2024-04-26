@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/view/pages/background_location_screen.dart';
+import 'package:voo_app/view/pages/home_page_maps_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class EnableLocationAccessScreen extends StatelessWidget {
@@ -31,7 +32,7 @@ class EnableLocationAccessScreen extends StatelessWidget {
                         'To ensure a seamless and efficient experience,\n '
                             '              allow us access to your location.'),
                   SizedBox(height: 21.h,),
-                  MainElevatedButton(nextScreen: BackgroundLocationScreen(),
+                  MainElevatedButton(nextScreen: HomePageMapsScreen(),
                       text: 'Allow Location Access',
                       backgroundColor: Color(0xff0038A7)),
                   TextButton(onPressed: (){},

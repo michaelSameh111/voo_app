@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/view/pages/arrived_at_destination_maps_screen.dart';
+import 'package:voo_app/view/widgets/cancel_trip_show_modal_sheet.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class CustomerLocationMapsScreen extends StatelessWidget {
@@ -111,7 +112,9 @@ class CustomerLocationMapsScreen extends StatelessWidget {
                           )),
                     ),
                     TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          cancelTripShowModalSheet(context);
+                        },
                         child: Text(
                           'Cancel trip',
                           style: TextStyle(
@@ -223,7 +226,9 @@ void arrivedToPickupShowModalSheet(BuildContext context) {
                     text: 'Start trip',
                     backgroundColor: Color(0xff0038A7)),
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      cancelTripShowModalSheet(context);
+                    },
                     child: Text(
                       'Cancel trip',
                       style: TextStyle(
@@ -237,3 +242,63 @@ void arrivedToPickupShowModalSheet(BuildContext context) {
     ),
   );
 }
+
+
+void cancelTripShowModalSheet(BuildContext context) {
+  showModalBottomSheet(
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(23), topRight: Radius.circular((23))),
+    ),
+    context: context,
+    builder: (context) => SizedBox(
+      height: 27.h,
+      width: double.infinity,
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: 2.h),
+            child: Column(
+              children: [
+                Text('Are you sure you want to cancel ?',
+                style: TextStyle(
+                  fontSize: 15.dp,
+                  fontWeight: FontWeight.bold
+                ),),
+                SizedBox(height: 1.5.h,),
+                Divider(),
+                SizedBox(height: 1.5.h,),
+                MainElevatedButton(
+                    nextScreen: CustomerLocationMapsScreen(),
+                    text: 'Yes, Cancel',
+                    backgroundColor: Colors.red),
+                SizedBox(height: 1.5.h,),
+                SizedBox(
+                  width: 80.w,
+                  height: 5.5.h,
+                  child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                          side: BorderSide(color: Color(0xff646363))),
+                      onPressed: () {
+                        Navigator.pop(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CustomerLocationMapsScreen()));
+                      },
+                      child: Container(
+                        child: Text(
+                          'No, Keep ride',
+                          style: TextStyle(color: Color(0xff646363)),
+                        ),
+                      )),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    ),
+  );
+}
+
+

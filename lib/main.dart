@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/view/pages/add_your_photo_screen.dart';
+import 'package:voo_app/view/pages/arrived_at_destination_maps_screen.dart';
 import 'package:voo_app/view/pages/bank_account_details.dart';
 import 'package:voo_app/view/pages/choose_your_language_screen.dart';
+import 'package:voo_app/view/pages/customer_location_maps_screen.dart';
 import 'package:voo_app/view/pages/driver_license.dart';
 import 'package:voo_app/view/pages/insurance_screen.dart';
 import 'package:voo_app/view/pages/location_screen.dart';
 import 'package:voo_app/view/pages/login_register_screen.dart';
 import 'package:voo_app/view/pages/login_screen.dart';
+import 'package:voo_app/view/pages/rate_rider_screen.dart';
 import 'package:voo_app/view/pages/register_now_screen.dart';
 import 'package:voo_app/view/pages/select_transport_screen.dart';
 import 'package:voo_app/view/pages/social_security_screen.dart';
@@ -35,7 +38,7 @@ class MyApp extends StatelessWidget {
       builder: (BuildContext, Orientation, ScreenType) {
         return MaterialApp(
           //theme: ThemeData(useMaterial3: true),
-          home: LoginRegisterScreen(),
+          home: HomePageMapsScreen(),
           debugShowCheckedModeBanner: false,
         );
       },

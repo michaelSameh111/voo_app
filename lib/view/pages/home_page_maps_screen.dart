@@ -310,6 +310,7 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
           ),
           BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Find jobs'),
         ],
       ),
     );

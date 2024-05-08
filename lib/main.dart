@@ -7,6 +7,7 @@ import 'package:voo_app/view/pages/choose_your_language_screen.dart';
 import 'package:voo_app/view/pages/customer_location_maps_screen.dart';
 import 'package:voo_app/view/pages/driver_license.dart';
 import 'package:voo_app/view/pages/edit_my_profile_screen_directory/basic_info.dart';
+import 'package:voo_app/view/pages/enable_location_access_screen.dart';
 // import 'package:voo_app/view/pages/edit_my_profile_screen/basic_info.dart';
 import 'package:voo_app/view/pages/insurance_screen.dart';
 import 'package:voo_app/view/pages/location_screen.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
       builder: (BuildContext, Orientation, ScreenType) {
         return MaterialApp(
           //theme: ThemeData(useMaterial3: true),
-          home: BasicInfoScreen(),
+          home: EnableLocationAccessScreen(),
           debugShowCheckedModeBanner: false,
         );
       },

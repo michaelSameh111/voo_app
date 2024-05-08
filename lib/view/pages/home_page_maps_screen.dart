@@ -2,6 +2,9 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/view/pages/customer_location_maps_screen.dart';
+import 'package:voo_app/view/pages/history_screen.dart';
+import 'package:voo_app/view/pages/main_bottom_navigation_bar.dart';
+import 'package:voo_app/view/pages/main_profile_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class HomePageMapsScreen extends StatefulWidget {
@@ -12,6 +15,13 @@ class HomePageMapsScreen extends StatefulWidget {
 class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
   int currentIndex = 0;
   bool light = true;
+  bool showDialogBool = false;
+
+  // List <Widget> screens = [
+  //   HomePageMapsScreen(),
+  //   MainProfileScreen(),
+  //   HistoryScreen(),
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -191,9 +201,87 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
               ),
               Spacer(),
               ElevatedButton(
-                child: Text('Open Modal Sheet'),
+                child: Text('Change location state (for UI)'),
                 onPressed: () {
-                  acceptDeclineShowModalSheet(context);
+                  showDialog(
+                      context: context,
+                      builder: (context) => StatefulBuilder(
+                    builder: (context, setState) {
+                      return Theme(
+                        data: ThemeData(
+                            dialogBackgroundColor: Colors.white),
+                        child: Dialog(
+                          elevation: 0,
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            alignment: Alignment.topCenter,
+                            children: [
+                              Container(
+                                height: 28.h,
+                                width: double.infinity,
+                                child: Column(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'You\'re offline',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18.dp,
+                                          color: Color(0xff646363)),
+                                    ),
+                                    SizedBox(
+                                      height: 1.h,
+                                    ),
+                                    Text(
+                                      'Go online to accept jobs.',
+                                      style: TextStyle(
+                                          fontSize: 15.dp,
+                                          color: Color(0xff646363)),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(
+                                      height: 1.5.h,
+                                    ),
+                                    Divider(),
+                                    SizedBox(
+                                      height: 1.5.h,
+                                    ),
+                                    Switch(
+                                        trackOutlineColor:
+                                        MaterialStateProperty.all(
+                                            Colors.transparent),
+                                        activeTrackColor:
+                                        const Color(0xff0038A7),
+                                        inactiveTrackColor:
+                                        Color(0xffD1D1D6),
+                                        inactiveThumbColor: Colors.white,
+                                        value: light,
+                                        onChanged: (bool value) {
+                                          setState(() {
+                                            light = value;
+                                          });
+                                        }),
+                                  ],
+                                ),
+                              ),
+                              Positioned(
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  radius: 40,
+                                  child: Image.asset(
+                                    'assets/images/notification_offline.png',
+                                    width: 12.w,
+                                  ),
+                                ),
+                                top: -50,
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ));
                 },
               ),
               SizedBox(
@@ -202,86 +290,100 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xff0038A7)),
                     onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => StatefulBuilder(
-                          builder: (context, setState) {
-                            return Theme(
-                              data: ThemeData(
-                                  dialogBackgroundColor: Colors.white),
-                              child: Dialog(
-                                elevation: 0,
-                                child: Stack(
-                                  clipBehavior: Clip.none,
-                                  alignment: Alignment.topCenter,
-                                  children: [
-                                    Container(
-                                      height: 28.h,
-                                      width: double.infinity,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'You\'re offline',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18.dp,
-                                                color: Color(0xff646363)),
-                                          ),
-                                          SizedBox(
-                                            height: 1.h,
-                                          ),
-                                          Text(
-                                            'Go online to accept jobs.',
-                                            style: TextStyle(
-                                                fontSize: 15.dp,
-                                                color: Color(0xff646363)),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                          SizedBox(
-                                            height: 1.5.h,
-                                          ),
-                                          Divider(),
-                                          SizedBox(
-                                            height: 1.5.h,
-                                          ),
-                                          Switch(
-                                              trackOutlineColor:
-                                                  MaterialStateProperty.all(
-                                                      Colors.transparent),
-                                              activeTrackColor:
-                                                  const Color(0xff0038A7),
-                                              inactiveTrackColor:
-                                                  Color(0xffD1D1D6),
-                                              inactiveThumbColor: Colors.white,
-                                              value: light,
-                                              onChanged: (bool value) {
-                                                setState(() {
-                                                  light = value;
-                                                });
-                                              })
-                                        ],
-                                      ),
-                                    ),
-                                    Positioned(
-                                      child: CircleAvatar(
-                                        backgroundColor: Colors.white,
-                                        radius: 40,
-                                        child: Image.asset(
-                                          'assets/images/notification_offline.png',
-                                          width: 12.w,
+                      if (light == true){
+                        acceptDeclineShowModalSheet(context);
+                        //&& showDialog closed
+                      }
+                      else{
+                        showDialog(
+                          context: context,
+                          builder: (context) => StatefulBuilder(
+                            builder: (context, setState) {
+                              return Theme(
+                                data: ThemeData(
+                                    dialogBackgroundColor: Colors.white),
+                                child: Dialog(
+                                  elevation: 0,
+                                  child: Stack(
+                                    clipBehavior: Clip.none,
+                                    alignment: Alignment.topCenter,
+                                    children: [
+                                      Container(
+                                        height: 28.h,
+                                        width: double.infinity,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'You\'re offline',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18.dp,
+                                                  color: Color(0xff646363)),
+                                            ),
+                                            SizedBox(
+                                              height: 1.h,
+                                            ),
+                                            Text(
+                                              'Go online to accept jobs.',
+                                              style: TextStyle(
+                                                  fontSize: 15.dp,
+                                                  color: Color(0xff646363)),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            SizedBox(
+                                              height: 1.5.h,
+                                            ),
+                                            Divider(),
+                                            SizedBox(
+                                              height: 1.5.h,
+                                            ),
+                                            Switch(
+                                                trackOutlineColor:
+                                                MaterialStateProperty.all(
+                                                    Colors.transparent),
+                                                activeTrackColor:
+                                                const Color(0xff0038A7),
+                                                inactiveTrackColor:
+                                                Color(0xffD1D1D6),
+                                                inactiveThumbColor: Colors.white,
+                                                value: light,
+                                                onChanged: (bool value) {
+                                                  setState(() {
+                                                    light = value;
+                                                    showDialogBool = value;
+
+                                                    if(showDialogBool == true){
+                                                      Navigator.of(context).pop();
+                                                    }
+
+                                                    acceptDeclineShowModalSheet(context);
+                                                  });
+                                                }),
+                                          ],
                                         ),
                                       ),
-                                      top: -50,
-                                    )
-                                  ],
+                                      Positioned(
+                                        child: CircleAvatar(
+                                          backgroundColor: Colors.white,
+                                          radius: 40,
+                                          child: Image.asset(
+                                            'assets/images/notification_offline.png',
+                                            width: 12.w,
+                                          ),
+                                        ),
+                                        top: -50,
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                        ),
-                      );
+                              );
+                            },
+                          ),
+                        );
+                      }
+
                     },
                     child: Container(
                       child: Text(
@@ -294,6 +396,7 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
           ),
         ),
       ),
+
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: const Color(0xff0038A7),
         unselectedItemColor: const Color(0xffA2A2A2),
@@ -310,7 +413,6 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
           ),
           BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Find jobs'),
         ],
       ),
     );
@@ -384,7 +486,9 @@ void acceptDeclineShowModalSheet(BuildContext context) {
               ),
               Row(
                 children: [
-                  Image.asset('assets/images/from_to_image.png',),
+                  Image.asset(
+                    'assets/images/from_to_image.png',
+                  ),
                   SizedBox(
                     width: 2.w,
                   ),
@@ -402,35 +506,35 @@ void acceptDeclineShowModalSheet(BuildContext context) {
                       Stack(
                         children: [
                           Positioned(
-                            right: -50,
+                              right: -50,
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10.dp),
-                                  boxShadow: [BoxShadow(
-                                    color: Colors.grey.withOpacity(0.4),
-                                    spreadRadius: 10,
-                                    blurRadius: 10,
-                                    offset: Offset(0,7)
-                                  )]
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10.dp),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.grey.withOpacity(0.4),
+                                          spreadRadius: 10,
+                                          blurRadius: 10,
+                                          offset: Offset(0, 7))
+                                    ]),
+                                child: Padding(
+                                  padding: EdgeInsets.all(6.dp),
+                                  child: Text(
+                                    '10 mins trip',
+                                    style: TextStyle(color: Color(0xff808080)),
+                                  ),
                                 ),
-                            child: Padding(
-                              padding: EdgeInsets.all(6.dp),
-                              child: Text(
-                                '10 mins trip'
-                                    ,style: TextStyle(color: Color(0xff808080)),
-                              ),
-                            ),
-                          )),
+                              )),
                           Container(
                             alignment: Alignment.centerLeft,
                             padding: EdgeInsets.only(left: 50.w),
                             width: 80.w,
                             height: 0.2.h,
-                            decoration: BoxDecoration(
-                                color: Colors.black
-                              //0xffE2E2E2
-                            ),),
+                            decoration: BoxDecoration(color: Colors.black
+                                //0xffE2E2E2
+                                ),
+                          ),
                         ],
                       ),
                       SizedBox(
@@ -449,7 +553,9 @@ void acceptDeclineShowModalSheet(BuildContext context) {
                   )
                 ],
               ), // same Row as in collect cash screen
-              SizedBox(height: 8.h,),
+              SizedBox(
+                height: 8.h,
+              ),
               Row(
                 children: [
                   SizedBox(
@@ -471,24 +577,29 @@ void acceptDeclineShowModalSheet(BuildContext context) {
                           ),
                         )),
                   ),
-                  SizedBox(width: 7.w,),
+                  SizedBox(
+                    width: 7.w,
+                  ),
                   SizedBox(
                     width: 40.w,
                     height: 5.5.h,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Color(0xff0038A7)),
-                        onPressed: (){
+                        onPressed: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => CustomerLocationMapsScreen()));
+                                  builder: (context) =>
+                                      CustomerLocationMapsScreen()));
                         },
-                        child: Text('Accept', style: TextStyle(color: Colors.white),)),
+                        child: Text(
+                          'Accept',
+                          style: TextStyle(color: Colors.white),
+                        )),
                   )
                 ],
               )
-
             ],
           ),
         )

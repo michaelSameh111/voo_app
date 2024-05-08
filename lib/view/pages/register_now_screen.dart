@@ -166,7 +166,7 @@ class _RegisterNowScreenState extends State<RegisterNowScreen> {
                     decoration: BoxDecoration(
                         color: Color(0xffF5F4F4),
                         borderRadius: BorderRadius.circular(10)),
-                    child: TextField(
+                    child: const TextField(
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                           border: InputBorder.none,
@@ -190,7 +190,7 @@ class _RegisterNowScreenState extends State<RegisterNowScreen> {
                         color: Color(0xffF5F4F4),
                         borderRadius: BorderRadius.circular(10)),
                     child: TextField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           border: InputBorder.none,
                           contentPadding: EdgeInsets.all(15),
                           hintText: 'Choose your date of birth',

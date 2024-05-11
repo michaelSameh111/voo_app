@@ -599,12 +599,10 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
         child: Column(
           children: [
             SizedBox(height: 6.h,),
-            CircleAvatar(
-              child: Icon(
-                  Icons.cancel_rounded,
-                  size: 55.dp,
-                  color: Colors.red),
-            ),
+            Icon(
+                Icons.cancel_rounded,
+                size: 55.dp,
+                color: Colors.red),
             SizedBox(height: 4.h,),
             Text('Booking Canceled Successfully',
               style:

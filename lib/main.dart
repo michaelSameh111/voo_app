@@ -14,7 +14,7 @@ import 'package:voo_app/view/pages/location_screen.dart';
 import 'package:voo_app/view/pages/login_register_screen.dart';
 import 'package:voo_app/view/pages/login_screen.dart';
 import 'package:voo_app/view/pages/main_bottom_navigation_bar.dart';
-import 'package:voo_app/view/pages/main_profile_screen.dart';
+import 'package:voo_app/view/pages/edit_my_profile_screen_directory/main_profile_screen.dart';
 import 'package:voo_app/view/pages/rate_rider_screen.dart';
 import 'package:voo_app/view/pages/register_now_screen.dart';
 import 'package:voo_app/view/pages/select_transport_screen.dart';
@@ -26,10 +26,8 @@ import 'package:voo_app/view/pages/get_your_code_screen.dart';
 import 'package:voo_app/view/pages/splash_screen.dart';
 import 'package:voo_app/view/pages/splash_screen.dart';
 import 'view/pages/background_location_screen.dart';
-// import 'view/pages/edit_my_profile_screen/edit_my_profile_screen.dart';
 import 'view/pages/edit_my_profile_screen_directory/edit_my_profile_screen.dart';
 import 'view/pages/home_page_maps_screen.dart';
-// import 'view/pages/profile_screens/edit_my_profile_screen_directory.dart';
 import 'view/pages/your_safety_come_first_screen.dart';
 
 
@@ -46,7 +44,7 @@ class MyApp extends StatelessWidget {
       builder: (BuildContext, Orientation, ScreenType) {
         return MaterialApp(
           //theme: ThemeData(useMaterial3: true),
-          home: EnableLocationAccessScreen(),
+          home: EditMyProfileScreen(),
           debugShowCheckedModeBanner: false,
         );
       },

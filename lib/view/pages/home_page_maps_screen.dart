@@ -4,7 +4,7 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/view/pages/customer_location_maps_screen.dart';
 import 'package:voo_app/view/pages/history_screen.dart';
 import 'package:voo_app/view/pages/main_bottom_navigation_bar.dart';
-import 'package:voo_app/view/pages/main_profile_screen.dart';
+import 'package:voo_app/view/pages/edit_my_profile_screen_directory/main_profile_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class HomePageMapsScreen extends StatefulWidget {
@@ -492,64 +492,69 @@ void acceptDeclineShowModalSheet(BuildContext context) {
                   SizedBox(
                     width: 2.w,
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        '481 Eighth Avenue, Hell\'s Kitchen,\nNew York, NY 10001 , United States',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 13.dp),
-                      ),
-                      SizedBox(
-                        height: 1.h,
-                      ),
-                      Stack(
-                        children: [
-                          Positioned(
-                              right: -50,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10.dp),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.grey.withOpacity(0.4),
-                                          spreadRadius: 10,
-                                          blurRadius: 10,
-                                          offset: Offset(0, 7))
-                                    ]),
-                                child: Padding(
-                                  padding: EdgeInsets.all(6.dp),
-                                  child: Text(
-                                    '10 mins trip',
-                                    style: TextStyle(color: Color(0xff808080)),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '481 Eighth Avenue, Hell\'s Kitchen,\nNew York, NY 10001 , United Statessssssssssssssssssssss',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 13.dp),
+                        ),
+                        SizedBox(
+                          height: 1.h,
+                        ),
+                        Stack(
+                          children: [
+                            Positioned(
+                                right: -50,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10.dp),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: Colors.grey.withOpacity(0.4),
+                                            spreadRadius: 10,
+                                            blurRadius: 10,
+                                            offset: Offset(0, 7))
+                                      ]),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(6.dp),
+                                    child: Text(
+                                      '10 mins trip',
+                                      style: TextStyle(color: Color(0xff808080)),
+                                    ),
                                   ),
-                                ),
-                              )),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            padding: EdgeInsets.only(left: 50.w),
-                            width: 80.w,
-                            height: 0.2.h,
-                            decoration: BoxDecoration(color: Colors.black
-                                //0xffE2E2E2
-                                ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 1.h,
-                      ),
-                      // Divider(
-                      //   height: 5.h,
-                      //   color: Color(0xffE2E2E2),
-                      // ),
-                      Text(
-                        'The New Yorker, A Wyndham Hotel',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 13.dp),
-                      )
-                    ],
+                                )),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              padding: EdgeInsets.only(left: 50.w),
+                              width: 80.w,
+                              height: 0.2.h,
+                              decoration: BoxDecoration(color: Colors.black
+                                  //0xffE2E2E2
+                                  ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 1.h,
+                        ),
+                        // Divider(
+                        //   height: 5.h,
+                        //   color: Color(0xffE2E2E2),
+                        // ),
+                        Text(
+                          'The New Yorker, A Wyndham Hotel',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 13.dp),
+                        )
+                      ],
+                    ),
                   )
                 ],
               ), // same Row as in collect cash screen

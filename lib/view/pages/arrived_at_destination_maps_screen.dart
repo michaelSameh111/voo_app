@@ -83,10 +83,21 @@ class _ArrivedAtDestinationMapsScreenState
             SizedBox(
               height: 4.h,
             ),
-            MainElevatedButton(
-                nextScreen: DestinationMapsScreen(),
-                text: 'Done',
-                backgroundColor: Color(0xff0038A7)),
+            SizedBox(
+              width: 80.w,
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xff0038A7)),
+                  onPressed: () {
+                    arrivedAtDestinationShowModalSheet(context);
+                  },
+                  child: Container(
+                    child: Text(
+                      'Arrived to pickup location',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  )),
+            ),
             SizedBox(
               height: 1.h,
             ),
@@ -399,12 +410,10 @@ class _ArrivedAtDestinationMapsScreenState
         child: Column(
           children: [
             SizedBox(height: 6.h,),
-            CircleAvatar(
-              child: Icon(
-                Icons.cancel_rounded,
-                 size: 55.dp,
-              color: Colors.red),
-            ),
+            Icon(
+              Icons.cancel_rounded,
+               size: 55.dp,
+            color: Colors.red),
             SizedBox(height: 4.h,),
             Text('Booking Canceled Successfully',
               style:

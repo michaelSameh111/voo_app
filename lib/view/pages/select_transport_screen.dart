@@ -13,6 +13,13 @@ class SelectTransportScreen extends StatefulWidget {
   State<SelectTransportScreen> createState() => _SelectTransportScreenState();
 }
 
+List<String> rideSettings = ['Ride', 'Packages / Bulk packages'];
+List<String> selectCarType = ['VX', 'Vcomfy'];
+List<String> wheelChairAccess = ['Yes', 'No'];
+List<String> childCarSeat = ['Yes', 'No'];
+
+
+
 class _SelectTransportScreenState extends State<SelectTransportScreen> {
   bool? isChecked1 = false;
   bool? isChecked2 = false;
@@ -23,6 +30,11 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
   bool? isChecked7 = false;
   bool? isChecked8 = false;
   bool isChecked = false;
+
+  String currentRideSettings = rideSettings[0];
+  String currentSelectCarType = selectCarType[0];
+  String currentWheelChairAccess = wheelChairAccess[0];
+  String currentChildCarSeat = childCarSeat[0];
 
   void showBottomSheet() {
     showModalBottomSheet(
@@ -256,55 +268,37 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                 ),
-                Row(
-                  children: [
-                    Transform.scale(
-                      scale: 1.3,
-                      child: Checkbox(
-                          activeColor: Color(0xff0038A7),
-                          shape: CircleBorder(),
-                          value: isChecked1,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              isChecked1 = value;
-                            });
-                            if (isChecked2 == true) {
-                              setState(() {
-                                isChecked1 == false;
-                              });
-                            }
-                          }),
+                ListTile(
+                  title: const Text('Ride people'),
+                  leading: Transform.scale(
+                    scale: 1.2,
+                    child: Radio(
+                      activeColor: const Color(0xff0038A7),
+                      value: rideSettings[0],
+                      groupValue: currentRideSettings,
+                      onChanged: (value){
+                        setState(() {
+                          currentRideSettings = value.toString();
+                        });
+                      },
                     ),
-                    Text(
-                      'Ride people',
-                      style: TextStyle(fontSize: 16.dp),
-                    ),
-                  ],
+                  ),
                 ),
-                Row(
-                  children: [
-                    Transform.scale(
-                      scale: 1.3,
-                      child: Checkbox(
-                          activeColor: Color(0xff0038A7),
-                          shape: CircleBorder(),
-                          value: isChecked2,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              isChecked2 = value;
-                            });
-                            if (isChecked1 == true) {
-                              setState(() {
-                                isChecked2 == false;
-                              });
-                            }
-                          }),
+                ListTile(
+                  title: const Text('Packages / Bulk packages'),
+                  leading: Transform.scale(
+                    scale: 1.2,
+                    child: Radio(
+                      activeColor: Color(0xff0038A7),
+                        value: rideSettings[1],
+                        groupValue: currentRideSettings,
+                        onChanged: (value){
+                          setState(() {
+                            currentRideSettings = value.toString();
+                          });
+                        },
                     ),
-                    Text(
-                      'Packages / Bulk packages',
-                      style: TextStyle(fontSize: 16.dp),
-                    ),
-                  ],
+                  ),
                 ),
                 SizedBox(
                   height: 5.h,
@@ -314,45 +308,37 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                 ),
-                Row(
-                  children: [
-                    Transform.scale(
-                      scale: 1.3,
-                      child: Checkbox(
-                          activeColor: Color(0xff0038A7),
-                          shape: CircleBorder(),
-                          value: isChecked3,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              isChecked3 = value;
-                            });
-                          }),
+                ListTile(
+                  title: const Text('VX'),
+                  leading: Transform.scale(
+                    scale: 1.2,
+                    child: Radio(
+                      activeColor: Color(0xff0038A7),
+                      value: selectCarType[0],
+                      groupValue: currentSelectCarType,
+                      onChanged: (value){
+                        setState(() {
+                          currentSelectCarType = value.toString();
+                        });
+                      },
                     ),
-                    Text(
-                      'VX',
-                      style: TextStyle(fontSize: 16.dp),
-                    ),
-                  ],
+                  ),
                 ),
-                Row(
-                  children: [
-                    Transform.scale(
-                      scale: 1.3,
-                      child: Checkbox(
-                          activeColor: Color(0xff0038A7),
-                          shape: CircleBorder(),
-                          value: isChecked4,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              isChecked4 = value;
-                            });
-                          }),
+                ListTile(
+                  title: const Text('Vcomfy'),
+                  leading: Transform.scale(
+                    scale: 1.2,
+                    child: Radio(
+                      activeColor: Color(0xff0038A7),
+                      value: selectCarType[1],
+                      groupValue: currentSelectCarType,
+                      onChanged: (value){
+                        setState(() {
+                          currentSelectCarType = value.toString();
+                        });
+                      },
                     ),
-                    Text(
-                      'Vcomfy',
-                      style: TextStyle(fontSize: 16.dp),
-                    ),
-                  ],
+                  ),
                 ),
                 SizedBox(
                   height: 5.h,
@@ -364,40 +350,41 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                 ),
                 Row(
                   children: [
-                    Transform.scale(
-                      scale: 1.3,
-                      child: Checkbox(
-                          activeColor: Color(0xff0038A7),
-                          shape: CircleBorder(),
-                          value: isChecked5,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              isChecked5 = value;
-                            });
-                          }),
+                    Expanded(
+                      child: ListTile(
+                        title: const Text('Yes'),
+                        leading: Transform.scale(
+                          scale: 1.2,
+                          child: Radio(
+                            activeColor: Color(0xff0038A7),
+                            value: wheelChairAccess[0],
+                            groupValue: currentWheelChairAccess,
+                            onChanged: (value){
+                              setState(() {
+                                currentWheelChairAccess = value.toString();
+                              });
+                            },
+                          ),
+                        ),
+                      ),
                     ),
-                    Text(
-                      'Yes',
-                      style: TextStyle(fontSize: 16.dp),
-                    ),
-                    SizedBox(
-                      width: 20.w,
-                    ),
-                    Transform.scale(
-                      scale: 1.3,
-                      child: Checkbox(
-                          activeColor: Color(0xff0038A7),
-                          shape: CircleBorder(),
-                          value: isChecked6,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              isChecked6 = value;
-                            });
-                          }),
-                    ),
-                    Text(
-                      'No',
-                      style: TextStyle(fontSize: 16.dp),
+                    Expanded(
+                      child: ListTile(
+                        title: const Text('No'),
+                        leading: Transform.scale(
+                          scale: 1.2,
+                          child: Radio(
+                            activeColor: Color(0xff0038A7),
+                            value: wheelChairAccess[1],
+                            groupValue: currentWheelChairAccess,
+                            onChanged: (value){
+                              setState(() {
+                                currentWheelChairAccess = value.toString();
+                              });
+                            },
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -411,40 +398,41 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                 ),
                 Row(
                   children: [
-                    Transform.scale(
-                      scale: 1.3,
-                      child: Checkbox(
-                          activeColor: Color(0xff0038A7),
-                          shape: CircleBorder(),
-                          value: isChecked7,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              isChecked7 = value;
-                            });
-                          }),
+                    Expanded(
+                      child: ListTile(
+                        title: const Text('Yes'),
+                        leading: Transform.scale(
+                          scale: 1.2,
+                          child: Radio(
+                            activeColor: Color(0xff0038A7),
+                            value: childCarSeat[0],
+                            groupValue: currentChildCarSeat,
+                            onChanged: (value){
+                              setState(() {
+                                currentChildCarSeat = value.toString();
+                              });
+                            },
+                          ),
+                        ),
+                      ),
                     ),
-                    Text(
-                      'Yes',
-                      style: TextStyle(fontSize: 16.dp),
-                    ),
-                    SizedBox(
-                      width: 20.w,
-                    ),
-                    Transform.scale(
-                      scale: 1.3,
-                      child: Checkbox(
-                          activeColor: Color(0xff0038A7),
-                          shape: CircleBorder(),
-                          value: isChecked8,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              isChecked8 = value;
-                            });
-                          }),
-                    ),
-                    Text(
-                      'No',
-                      style: TextStyle(fontSize: 16.dp),
+                    Expanded(
+                      child: ListTile(
+                        title: const Text('No'),
+                        leading: Transform.scale(
+                          scale: 1.2,
+                          child: Radio(
+                            activeColor: Color(0xff0038A7),
+                            value: childCarSeat[1],
+                            groupValue: currentChildCarSeat,
+                            onChanged: (value){
+                              setState(() {
+                                currentChildCarSeat = value.toString();
+                              });
+                            },
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),

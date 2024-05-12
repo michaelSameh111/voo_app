@@ -1,4 +1,5 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
@@ -7,6 +8,7 @@ import 'package:voo_app/view/pages/edit_my_profile_screen_directory/DriverLicens
 import 'package:voo_app/view/pages/edit_my_profile_screen_directory/InsuranceScreenInEditMyProfile.dart';
 import 'package:voo_app/view/pages/edit_my_profile_screen_directory/basic_info.dart';
 import 'package:voo_app/view/pages/insurance_screen.dart';
+import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 import '../../widgets/icon_and_text_field_basic_info_screen.dart';
 //import 'package:voo_app/lib/view/pages/edit_my_profile_screen_directory/';
@@ -28,6 +30,8 @@ final selectedGender = TextEditingController();
 String genderSelected = '';
 
 class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
+
+  DateTime dateTime = DateTime (3000, 2, 1);
 
   @override
   Widget build(BuildContext context) {
@@ -146,15 +150,7 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                         hintText: 'Date of Birth',
                       ),
                       onTap: (){
-                        ScrollDatePicker(
-                          selectedDate: _selectedDate,
-                          locale: Locale('en'),
-                          onDateTimeChanged: (DateTime value) {
-                            setState(() {
-                              _selectedDate = value;
-                            });
-                          },
-                        );
+                        acceptDeclineShowModalSheet(context);
                       },
                     ),
                   ),
@@ -162,44 +158,6 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                 Container(color: Colors.yellow,
                   child: Text(
                     "$_selectedDate",
-                  ),
-                  // TextField(
-                  //   decoration: const InputDecoration(
-                  //       border: InputBorder.none,
-                  //       contentPadding: EdgeInsets.all(15),
-                  //       hintText: 'Choose your date of birth',
-                  //       prefixIcon: Icon(Icons.calendar_today)),
-                  //   onTap: () {
-                  //     selectDate();
-                  //   },
-                  //   controller: dateController,
-                  // ),
-                ),
-                // Container(
-                //   alignment: Alignment.centerRight,
-                //   padding: const EdgeInsets.only(right: 48),
-                //   child: TextButton(
-                //     onPressed: () {
-                //       setState(() {
-                //         _selectedDate = DateTime.now();
-                //       });
-                //     },
-                //     child: Text(
-                //       "TODAY",
-                //       style: TextStyle(color: Colors.red),
-                //     ),
-                //   ),
-                // ),
-                SizedBox(
-                  height: 250,
-                  child: ScrollDatePicker(
-                    selectedDate: _selectedDate,
-                    locale: Locale('en'),
-                    onDateTimeChanged: (DateTime value) {
-                      setState(() {
-                        _selectedDate = value;
-                      });
-                    },
                   ),
                 ),
 
@@ -223,10 +181,6 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                               Expanded(
                                 child: Text(
                                   'Select Gender',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               )
@@ -254,10 +208,136 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                     )
                   ),
                 ),
+                SizedBox(height: 1.h,),
+                Divider(
+                  thickness: 1.h,
+                  color: Color(0xffECECEC),
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.lock,
+                          color: Color(0xff808080),
+                        ),
+                        SizedBox(
+                          width: 3.w,
+                        ),
+                        Text(
+                          'Change Password',
+                          style: TextStyle(fontSize: 15.dp),
+                        ),
+                        Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: Color(0xffA2A2A2),
+                          size: 17.dp,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                const Divider(
+                  color: Color(0xffF5F4F4),
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.language,
+                          color: Color(0xff808080),
+                        ),
+                        SizedBox(
+                          width: 3.w,
+                        ),
+                        Text(
+                          'Change Language',
+                          style: TextStyle(fontSize: 15.dp),
+                        ),
+                        Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: Color(0xffA2A2A2),
+                          size: 17.dp,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                const Divider(
+                  color: Color(0xffF5F4F4),
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.location_on,
+                          color: Color(0xff808080),
+                        ),
+                        SizedBox(
+                          width: 3.w,
+                        ),
+                        Text(
+                          'Edit Location',
+                          style: TextStyle(fontSize: 15.dp),
+                        ),
+                        Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: Color(0xffA2A2A2),
+                          size: 17.dp,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                const Divider(
+                  color: Color(0xffF5F4F4),
+                ),
+                MainElevatedButton(
+                    nextScreen: BasicInfoScreen(),
+                    text: 'Update',
+                    backgroundColor: Color(0xff0038A7))
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+  void acceptDeclineShowModalSheet(BuildContext context) {
+    showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(23), topRight: Radius.circular((23))),
+      ),
+      context: context,
+      builder: (context) => Column(
+        children: [
+          SizedBox(
+            height: 250,
+            child: ScrollDatePicker(
+              maximumDate: DateTime.now(),
+              minimumDate: DateTime(1970),
+              selectedDate: _selectedDate,
+              locale: Locale('en'),
+              onDateTimeChanged: (DateTime value) {
+                setState(() {
+                  _selectedDate = value;
+                });
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -7,11 +7,12 @@ import 'package:voo_app/view/pages/driver_license.dart';
 import 'package:voo_app/view/pages/edit_my_profile_screen_directory/DriverLicenseScreenInEditMyProfile.dart';
 import 'package:voo_app/view/pages/edit_my_profile_screen_directory/InsuranceScreenInEditMyProfile.dart';
 import 'package:voo_app/view/pages/edit_my_profile_screen_directory/basic_info.dart';
+import 'package:voo_app/view/pages/edit_my_profile_screen_directory/change_password_in_edit_my_profile_screen.dart';
 import 'package:voo_app/view/pages/insurance_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
-
 import '../../widgets/icon_and_text_field_basic_info_screen.dart';
 //import 'package:voo_app/lib/view/pages/edit_my_profile_screen_directory/';
+import 'package:intl/intl.dart';
 
 class EditMyProfileScreen extends StatefulWidget {
   @override
@@ -81,7 +82,7 @@ class BasicInfoScreen extends StatefulWidget {
 }
 
 class _BasicInfoScreenState extends State<BasicInfoScreen> {
-  TextEditingController dateController = TextEditingController();
+  TextEditingController dateOfBirthController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
 
 
@@ -144,6 +145,7 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                     ),
                     child: TextField(
                       readOnly: true,
+                      controller: dateOfBirthController,
                       //keyboardType: keyboardType,
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -151,13 +153,9 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                       ),
                       onTap: (){
                         acceptDeclineShowModalSheet(context);
+                        // print(dateOfBirthController.text);
                       },
                     ),
-                  ),
-                ),
-                Container(color: Colors.yellow,
-                  child: Text(
-                    "$_selectedDate",
                   ),
                 ),
 
@@ -214,7 +212,13 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                   color: Color(0xffECECEC),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ChangePasswordInEditMyProfileScreen()));
+                  },
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                     child: Row(
@@ -226,9 +230,11 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                         SizedBox(
                           width: 3.w,
                         ),
-                        Text(
-                          'Change Password',
-                          style: TextStyle(fontSize: 15.dp),
+                        Expanded(
+                          child: Text(
+                            'Change Password',
+                            style: TextStyle(fontSize: 15.dp),
+                          ),
                         ),
                         Spacer(),
                         Icon(
@@ -256,9 +262,11 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                         SizedBox(
                           width: 3.w,
                         ),
-                        Text(
-                          'Change Language',
-                          style: TextStyle(fontSize: 15.dp),
+                        Expanded(
+                          child: Text(
+                            'Change Language',
+                            style: TextStyle(fontSize: 15.dp),
+                          ),
                         ),
                         Spacer(),
                         Icon(
@@ -286,9 +294,11 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                         SizedBox(
                           width: 3.w,
                         ),
-                        Text(
-                          'Edit Location',
-                          style: TextStyle(fontSize: 15.dp),
+                        Expanded(
+                          child: Text(
+                            'Edit Location',
+                            style: TextStyle(fontSize: 15.dp),
+                          ),
                         ),
                         Spacer(),
                         Icon(
@@ -306,7 +316,8 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                 MainElevatedButton(
                     nextScreen: BasicInfoScreen(),
                     text: 'Update',
-                    backgroundColor: Color(0xff0038A7))
+                    backgroundColor: Color(0xff0038A7)),
+                SizedBox(height: 2.h,)
               ],
             ),
           ),
@@ -332,7 +343,16 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
               locale: Locale('en'),
               onDateTimeChanged: (DateTime value) {
                 setState(() {
-                  _selectedDate = value;
+                  String formatDateTime(String dateTimeString) {
+                    DateTime dateTime = DateTime.parse(dateTimeString);
+                    DateFormat formatter = DateFormat('dd/MM/yyyy');
+                    String formattedDateTime = formatter.format(dateTime);
+                    dateOfBirthController.text = formattedDateTime;
+                    return dateOfBirthController.toString();
+                  }
+                //  _selectedDate = value;
+                  dateOfBirthController.text = value.toString();
+
                 });
               },
             ),
@@ -341,17 +361,4 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
       ),
     );
   }
-
-  // Future<void> selectDate() async {
-  //   DateTime? picked = await showDatePicker(
-  //       context: context,
-  //       initialDate: DateTime.now(),
-  //       firstDate: DateTime(1950),
-  //       lastDate: DateTime(2100));
-  //   if (picked != null) {
-  //     setState(() {
-  //       dateController.text = picked.toString().split(" ")[0];
-  //     });
-  //   }
-  // }
 }

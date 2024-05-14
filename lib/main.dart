@@ -29,6 +29,8 @@ import 'view/pages/background_location_screen.dart';
 import 'view/pages/edit_my_profile_screen_directory/edit_my_profile_screen.dart';
 import 'view/pages/home_page_maps_screen.dart';
 import 'view/pages/your_safety_come_first_screen.dart';
+import 'view/pages/edit_my_profile_screen_directory/change_password_in_edit_my_profile_screen.dart';
+
 
 
 void main() {
@@ -44,7 +46,7 @@ class MyApp extends StatelessWidget {
       builder: (BuildContext, Orientation, ScreenType) {
         return MaterialApp(
           //theme: ThemeData(useMaterial3: true),
-          home: EditMyProfileScreen(),
+          home: ChangePasswordInEditMyProfileScreen(),
           debugShowCheckedModeBanner: false,
         );
       },

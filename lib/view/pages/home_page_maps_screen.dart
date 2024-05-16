@@ -4,7 +4,7 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/view/pages/customer_location_maps_screen.dart';
 import 'package:voo_app/view/pages/history_screen.dart';
 import 'package:voo_app/view/pages/main_bottom_navigation_bar.dart';
-import 'package:voo_app/view/pages/edit_my_profile_screen_directory/main_profile_screen.dart';
+import 'package:voo_app/view/pages/main_profile_screen/main_profile_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class HomePageMapsScreen extends StatefulWidget {

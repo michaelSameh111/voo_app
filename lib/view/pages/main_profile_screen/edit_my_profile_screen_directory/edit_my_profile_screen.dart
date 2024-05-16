@@ -1,17 +1,19 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:voo_app/view/pages/driver_license.dart';
-import 'package:voo_app/view/pages/edit_my_profile_screen_directory/DriverLicenseScreenInEditMyProfile.dart';
-import 'package:voo_app/view/pages/edit_my_profile_screen_directory/InsuranceScreenInEditMyProfile.dart';
-import 'package:voo_app/view/pages/edit_my_profile_screen_directory/basic_info.dart';
-import 'package:voo_app/view/pages/edit_my_profile_screen_directory/change_password_in_edit_my_profile_screen.dart';
+// import 'package:voo_app/view/pages/edit_my_profile_screen_directory/basic_info_screen_contents/change_password_basic_info_screen.dart';
 import 'package:voo_app/view/pages/insurance_screen.dart';
+import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen_directory/basic_info_screen_contents/change_language_basic_info_screen.dart';
+import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen_directory/basic_info_screen_contents/change_password_basic_info_screen.dart';
+import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen_directory/basic_info_screen_contents/edit_location_basic_info_screen.dart';
+import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen_directory/basic_info_screen_contents/edit_your_photo_basic_info_screen.dart';
+import 'package:voo_app/view/widgets/icon_and_text_field_basic_info_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
-import '../../widgets/icon_and_text_field_basic_info_screen.dart';
-//import 'package:voo_app/lib/view/pages/edit_my_profile_screen_directory/';
+// import '../../widgets/icon_and_text_field_basic_info_screen.dart';
 import 'package:intl/intl.dart';
 
 class EditMyProfileScreen extends StatefulWidget {
@@ -80,7 +82,6 @@ class BasicInfoScreen extends StatefulWidget {
   @override
   State<BasicInfoScreen> createState() => _BasicInfoScreenState();
 }
-
 class _BasicInfoScreenState extends State<BasicInfoScreen> {
   TextEditingController dateOfBirthController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
@@ -98,7 +99,13 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                   height: 3.h,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                EditYourPhotoBasicInfoScreen()));
+                  },
                   child: CircleAvatar(
                     radius: 10.w,
                     backgroundColor: Color(0xffA2A2A2),
@@ -113,7 +120,13 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                   height: 1.h,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                EditYourPhotoBasicInfoScreen()));
+                  },
                   child: Text(
                     'Edit your photo',
                     style:
@@ -213,11 +226,11 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.pop(
+                    Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                ChangePasswordInEditMyProfileScreen()));
+                                ChangePasswordBasicInfoScreen()));
                   },
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
@@ -250,7 +263,13 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                   color: Color(0xffF5F4F4),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ChangeLanguageBasicInfoScreen()));
+                  },
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                     child: Row(
@@ -282,7 +301,12 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                   color: Color(0xffF5F4F4),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EditLocationBasicInfoScreen()));
+                  },
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                     child: Row(
@@ -358,6 +382,279 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+
+class DriverLicenseScreenInEditMyProfile extends StatelessWidget {
+  const DriverLicenseScreenInEditMyProfile({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 3.0.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 3.h,),
+                Text('Driver License Number',
+                  style: TextStyle(
+                      fontSize: 15.dp,
+                      fontWeight: FontWeight.bold
+                  ),),
+                SizedBox(height: 1.h,),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 3.w,
+                  ),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                    color: Color(0xffF5F4F4),
+                  ),
+                  child: TextField(
+                    readOnly: true,
+                    //keyboardType: keyboardType,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: '1245 2356',
+                    ),
+                  ),
+                ),
+                SizedBox(height: 4.h,),
+                DottedBorder(
+                  dashPattern: [8, 4],
+                  color: Color(0xff808080),
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Color(0xffF5F4F4),
+                    ),
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.camera_alt_rounded,
+                          size: 45.dp,
+                        ),
+                        TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            'Click here to upload a clear pictue of\n              front of driver\'s license',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 2.h,
+                        ),
+                        MainElevatedButton(
+                            nextScreen:
+                            DriverLicenseScreenInEditMyProfile(), //mo2akatan 3amelha LoginScreen next page
+                            text: 'Upload',
+                            backgroundColor: Color(0xff0038A7)),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 4.h,),
+                Center(
+                  child: SizedBox(
+                    width: 40.w,
+                    child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                            side: BorderSide(color: Color(0xff0038A7))),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DriverLicenseScreenInEditMyProfile()));
+                        },
+                        child: Container(
+                          child: Text(
+                            'Edit photo',
+                            style: TextStyle(color: Color(0xff0038A7)),
+                          ),
+                        )),
+                  ),
+                ),
+                SizedBox(height: 4.h,),
+                DottedBorder(
+                  dashPattern: [8, 4],
+                  color: Color(0xff808080),
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Color(0xffF5F4F4),
+                    ),
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.camera_alt_rounded,
+                          size: 45.dp,
+                        ),
+                        TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            'Click here to upload a clear pictue of\n              front of driver\'s license',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 2.h,
+                        ),
+                        MainElevatedButton(
+                            nextScreen:
+                            DriverLicenseScreenInEditMyProfile(), //mo2akatan 3amelha LoginScreen next page
+                            text: 'Upload',
+                            backgroundColor: Color(0xff0038A7)),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 4.h,),
+                Center(
+                  child: SizedBox(
+                    width: 40.w,
+                    child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                            side: BorderSide(color: Color(0xff0038A7))),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DriverLicenseScreenInEditMyProfile()));
+                        },
+                        child: Container(
+                          child: Text(
+                            'Edit photo',
+                            style: TextStyle(color: Color(0xff0038A7)),
+                          ),
+                        )),
+                  ),
+                ),
+                SizedBox(height: 4.h,),
+                Text(
+                  'Expiration Date',
+                  style:
+                  TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                ),
+                SizedBox(
+                  height: 2.h,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      color: Color(0xffF5F4F4),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: TextField(
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.all(15),
+                        hintText: 'MM / YY'),
+                    keyboardType: TextInputType.datetime,
+                  ),
+                ),
+                SizedBox(
+                  height: 2.h,
+                ),
+                Center(
+                  child: MainElevatedButton(
+                      nextScreen:
+                      DriverLicenseScreenInEditMyProfile(), //mo2akatan 3amelha LoginScreen next page
+                      text: 'Update',
+                      backgroundColor: Color(0xff0038A7)),
+                ),
+                SizedBox(
+                  height: 2.h,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+class InsuranceScreenInEditMyProfile extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 3.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 3.h,),
+                Text(
+                  'Insurance Expiration Date',
+                  style:
+                  TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                ),
+                SizedBox(
+                  height: 1.h,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      color: Color(0xffF5F4F4),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: const TextField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.all(15),
+                        hintText: '3/12/2026'),
+                    keyboardType: TextInputType.datetime,
+                  ),
+                ),
+                SizedBox(height: 3.h,),
+                Container(
+                  width: double.infinity,
+                  height: 33.h,
+                  color: Colors.grey,
+                ),
+                SizedBox(height: 1.5.h,),
+                Center(
+                  child: SizedBox(
+                    width: 40.w,
+                    child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                            side: BorderSide(color: Color(0xff0038A7))),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => InsuranceScreenInEditMyProfile()));
+                        },
+                        child: Container(
+                          child: Text(
+                            'Edit photo',
+                            style: TextStyle(color: Color(0xff0038A7)),
+                          ),
+                        )),
+                  ),
+                ),
+                SizedBox(
+                  height: 2.h,
+                ),
+                Center(
+                  child: MainElevatedButton(
+                      nextScreen:
+                      InsuranceScreenInEditMyProfile(), //mo2akatan 3amelha LoginScreen next page
+                      text: 'Update',
+                      backgroundColor: Color(0xff0038A7)),
+                ),
+
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

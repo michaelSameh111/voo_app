@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen_directory/edit_my_profile_screen.dart';
+import 'package:voo_app/view/pages/main_profile_screen/notifications_screen/notifications_screen.dart';
 
 class MainProfileScreen extends StatelessWidget {
   @override
@@ -38,7 +40,12 @@ class MainProfileScreen extends StatelessWidget {
               color: const Color(0xffECECEC),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EditMyProfileScreen()));
+              },
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                 child: Row(
@@ -98,7 +105,13 @@ class MainProfileScreen extends StatelessWidget {
               color: Color(0xffF5F4F4),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            NotificationsScreen()));
+              },
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                 child: Row(

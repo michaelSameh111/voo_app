@@ -1,37 +1,30 @@
+import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-import 'package:voo_app/view/pages/add_your_photo_screen.dart';
-import 'package:voo_app/view/pages/arrived_at_destination_maps_screen.dart';
-import 'package:voo_app/view/pages/bank_account_details.dart';
-import 'package:voo_app/view/pages/choose_your_language_screen.dart';
-import 'package:voo_app/view/pages/customer_location_maps_screen.dart';
-import 'package:voo_app/view/pages/driver_license.dart';
-import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen_directory/basic_info_screen_contents/change_language_basic_info_screen.dart';
-import 'package:voo_app/view/pages/enable_location_access_screen.dart';
-// import 'package:voo_app/view/pages/edit_my_profile_screen/basic_info.dart';
-import 'package:voo_app/view/pages/insurance_screen.dart';
-import 'package:voo_app/view/pages/location_screen.dart';
-import 'package:voo_app/view/pages/login_register_screen.dart';
-import 'package:voo_app/view/pages/login_screen.dart';
-import 'package:voo_app/view/pages/main_bottom_navigation_bar.dart';
-import 'package:voo_app/view/pages/main_profile_screen/main_profile_screen.dart';
-import 'package:voo_app/view/pages/rate_rider_screen.dart';
-import 'package:voo_app/view/pages/register_now_screen.dart';
-import 'package:voo_app/view/pages/select_transport_screen.dart';
-import 'package:voo_app/view/pages/social_security_screen.dart';
-import 'package:voo_app/view/pages/vehicle_registration_screen.dart';
-import 'package:voo_app/view/pages/we_will_review_screen.dart';
-import 'package:voo_app/view/pages/check_info_screen.dart';
-import 'package:voo_app/view/pages/get_your_code_screen.dart';
 import 'package:voo_app/view/pages/splash_screen.dart';
-import 'package:voo_app/view/pages/splash_screen.dart';
-import 'view/pages/background_location_screen.dart';
-import 'view/pages/home_page_maps_screen.dart';
-import 'view/pages/your_safety_come_first_screen.dart';
+
+import 'Controller/Login/login_cubit.dart';
+import 'Controller/dio-helper.dart';
+import 'Controller/shared-prefrences.dart';
 
 
 
-void main() {
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  DioHelper.init();
+  CacheHelper.init();
+  await CacheHelper.init();
+  ErrorWidget.builder = (FlutterErrorDetails details) => Material(
+    child: Center(
+      child: Container(
+        child: Text('There is an Error'),
+      ),
+    ),
+
+  );
+  Bloc.observer =MyBlocObserver();
   runApp(const MyApp());
 }
 
@@ -40,14 +33,46 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlutterSizer(
-      builder: (BuildContext, Orientation, ScreenType) {
-        return MaterialApp(
-          //theme: ThemeData(useMaterial3: true),
-          home: MainProfileScreen(),
-          debugShowCheckedModeBanner: false,
-        );
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context)=> LoginCubit()),
+        // BlocProvider(create: (context)=> DataCubit()),
+      ],
+      child: FlutterSizer(
+        builder: (BuildContext, Orientation, ScreenType) {
+          return MaterialApp(
+            //theme: ThemeData(useMaterial3: true),
+            home: SplashScreen(),
+            debugShowCheckedModeBanner: false,
+          );
+        },
+      ),
     );
+  }
+}
+
+class MyBlocObserver extends BlocObserver {
+  @override
+  void onCreate(BlocBase bloc) {
+    super.onCreate(bloc);
+    print('onCreate -- ${bloc.runtimeType}');
+  }
+
+  @override
+  void onChange(BlocBase bloc, Change change) {
+    super.onChange(bloc, change);
+    print('onChange -- ${bloc.runtimeType}, $change');
+  }
+
+  @override
+  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
+    print('onError -- ${bloc.runtimeType}, $error');
+    super.onError(bloc, error, stackTrace);
+  }
+
+  @override
+  void onClose(BlocBase bloc) {
+    super.onClose(bloc);
+    print('onClose -- ${bloc.runtimeType}');
   }
 }

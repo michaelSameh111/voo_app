@@ -8,3 +8,4 @@ bool rememberMe = false;
 TextEditingController loginEmailController = TextEditingController();
 TextEditingController loginPasswordController = TextEditingController();
 LoginDataModel loginData = LoginDataModel();
+

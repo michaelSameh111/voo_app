@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:voo_app/Controller/Constants.dart';
 import 'package:voo_app/view/pages/forget_password_screen.dart';
 import 'package:voo_app/view/pages/register_now_screen.dart';
@@ -16,11 +17,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool isChecked = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  @override
-  void initState() {
-     LoginCubit.get(context).getCitiesData();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,23 +34,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Column(
                       children: [
                         SizedBox(height: 10.h),
-                        InkWell(
-                          onTap: ()async
-                          {
-                            await LoginCubit.get(context).getCitiesData();
-                          },
-                          child: Text(
-                            'Login',
-                            style: TextStyle(
-                                fontSize: 25.dp,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xffF70415)),
-                          ),
+                        Text(
+                          'Login',
+                          style: GoogleFonts.roboto(
+                              fontSize: 25.dp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
                         ),
                         Text(
                           'Enter your details to proceed further',
-                          style: TextStyle(
-                              fontSize: 14.dp, color: Color(0xff808080)),
+                          style: GoogleFonts.roboto(
+                              fontSize: 16.dp, color: Color(0xff808080),fontWeight: FontWeight.w500),
                         ),
                         SizedBox(
                           height: 6.h,
@@ -64,48 +54,68 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             Text(
                               'Email *',
-                              style: TextStyle(
+                              style: GoogleFonts.roboto(
                                   fontWeight: FontWeight.bold, fontSize: 15.dp),
+                            ),
+                            TextFormField(
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Email cannot be empty';
+                                }
+                                return null;
+                              },
+                              controller: loginEmailController,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                  filled: true,
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide:
+                                      const BorderSide(color: Colors.transparent)),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide:
+                                      const BorderSide(color: Colors.transparent)),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide:
+                                      const BorderSide(color: Colors.transparent)),
+                                  contentPadding: EdgeInsets.all(15),
+                                  hintText: 'Email'),
                             ),
                             SizedBox(
                               height: 2.h,
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Color(0xffF5F4F4),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: TextFormField(
-                                controller: loginEmailController,
-                                keyboardType: TextInputType.emailAddress,
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    contentPadding: EdgeInsets.all(15),
-                                    hintText: 'Email'),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 5.h,
                             ),
                             Text(
                               'Password *',
-                              style: TextStyle(
+                              style: GoogleFonts.roboto(
                                   fontWeight: FontWeight.bold, fontSize: 15.dp),
                             ),
-                            SizedBox(
-                              height: 2.h,
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Color(0xffF5F4F4),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: TextFormField(
-                                controller: loginPasswordController,
-                                obscureText: true,
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    contentPadding: EdgeInsets.all(15),
-                                    hintText: 'Password'),
-                              ),
+                            TextFormField(
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Password cannot be empty';
+                                }
+                                return null;
+                              },
+                              controller: loginPasswordController,
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                  filled: true,
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide:
+                                      const BorderSide(color: Colors.transparent)),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide:
+                                      const BorderSide(color: Colors.transparent)),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide:
+                                      const BorderSide(color: Colors.transparent)),
+                                  contentPadding: EdgeInsets.all(15),
+                                  hintText: 'Password'),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
@@ -120,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     },
                                     child: Text(
                                       'Forgot Password ?',
-                                      style: TextStyle(color: Colors.black),
+                                      style: GoogleFonts.roboto(color: Colors.black),
                                     )),
                               ],
                             ),
@@ -138,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 Text(
                                   'Remember me',
-                                  style: TextStyle(fontSize: 14.dp),
+                                  style: GoogleFonts.roboto(fontSize: 14.dp),
                                 )
                               ],
                             ),
@@ -169,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     },
                                     child: Text(
                                       'Register now',
-                                      style: TextStyle(
+                                      style: GoogleFonts.roboto(
                                           color: Color(0xffF70415)),
                                     ))
                               ],

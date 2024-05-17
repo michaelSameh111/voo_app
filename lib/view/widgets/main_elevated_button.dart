@@ -29,7 +29,7 @@ class MainElevatedButton extends StatelessWidget {
           child: Container(
             child: Text(
               text,
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
           )),
     )
@@ -40,11 +40,13 @@ class MainElevatedButtonTwo extends StatelessWidget {
   final VoidCallback? onPressed;
   String text;
   Color backgroundColor;
+  bool? condition;
 
   MainElevatedButtonTwo({
     required this.onPressed,
     required this.text,
-    required this.backgroundColor
+    required this.backgroundColor,
+    this.condition
 });
 
   @override
@@ -56,9 +58,9 @@ class MainElevatedButtonTwo extends StatelessWidget {
               backgroundColor: backgroundColor),
           onPressed: onPressed,
           child: Container(
-            child: Text(
+            child:condition == true ? const Center(child: CircularProgressIndicator()) : Text(
               text,
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
           )),
     )

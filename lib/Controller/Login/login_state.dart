@@ -31,4 +31,5 @@ class ChangePasswordErrorState extends LoginState {
   final String error;
   ChangePasswordErrorState(this.error);
 }
+class EditAccountImagePickerState extends LoginState {}
 

@@ -1,9 +1,12 @@
+import 'dart:io';
 
-
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:voo_app/view/pages/enable_location_access_screen.dart';
 import 'package:voo_app/view/pages/login_screen.dart';
 
@@ -17,6 +20,7 @@ part 'login_state.dart';
 class LoginCubit extends Cubit<LoginState> {
   LoginCubit() : super(LoginInitial());
   static LoginCubit get(context) => BlocProvider.of(context);
+  static File? registerImage;
   void userLogin(
       {required String email,
       required String password,
@@ -25,7 +29,7 @@ class LoginCubit extends Cubit<LoginState> {
     DioHelper.postData(url: 'http://10.0.2.2:8000/api/auth/login', data: {
       'email': email,
       'password': password,
-    }).then((value)async {
+    }).then((value) async {
       loginData = LoginDataModel.fromJson(value.data);
       token = loginData.accessToken;
       loggedInEmail = email;
@@ -33,7 +37,8 @@ class LoginCubit extends Cubit<LoginState> {
       emit(LoginSuccessState());
       if (state is LoginSuccessState) {
         Navigator.pushAndRemoveUntil(
-          context,MaterialPageRoute(builder: (context)=>EnableLocationAccessScreen()),
+          context,
+          MaterialPageRoute(builder: (context) => EnableLocationAccessScreen()),
           (route) => false,
         );
         if (rememberMe == true) {
@@ -64,70 +69,98 @@ class LoginCubit extends Cubit<LoginState> {
             ),
           );
         } else {
-          Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>EnableLocationAccessScreen()));
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => EnableLocationAccessScreen()));
         }
       }
     });
   }
 
-  Future<void> getCitiesData() {
-    emit(LoginLoadingState());
-    return DioHelper.getData(url: 'auth/my-account/cities', token: token).then((value) {
-      emit(LoginSuccessState());
-    }).catchError((error,stackTrace) {
-      print(error.toString());
-      print(stackTrace);
-      emit(LoginErrorState(error));
-    });
+  Future pickImage() async {
+    final myFile = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (myFile != null) {
+      LoginCubit.registerImage = File(myFile.path);
+    }
   }
 
-  void registerUser({
-      required String firstName,
+  static File? editAccountFile;
+  Future getImage() async {
+    final myFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (myFile != null) {
+      editAccountFile = File(myFile.path);
+      emit(EditAccountImagePickerState());
+    }
+  }
+
+  void registerUser(
+      {required String firstName,
       required String lastName,
       required String email,
       required String phone,
+      required String gender,
+      required String birthDate,
       required String password,
       required String passwordConfirmation,
-      required BuildContext context}) {
+      File? file,
+      String fileName = '',
+      required BuildContext context}) async {
     emit(RegisterLoadingState());
-    DioHelper.postData(url: 'https://chehabeg-store.com/api/auth/register',
-        data: {
-      'first_name' : firstName,
-      'last_name' : lastName,
-      'email': email,
-      'password': password,
-      'password_confirmation': passwordConfirmation,
-      'phone' : phone
-    }
-    ).then((value)async {
+    DioHelper.postData(
+      url: 'auth/register',
+      data: FormData.fromMap({
+        'first_name': firstName,
+        'last_name': lastName,
+        'email': email,
+        'password': password,
+        'role': 'Driver',
+        'gender': gender,
+        'date_of_birth': birthDate,
+        'phone': phone,
+        if (LoginCubit.registerImage != null)
+          'image': await MultipartFile.fromFile(
+            LoginCubit.registerImage!.path,
+            filename: LoginCubit.registerImage!.path.split('/').last,
+            contentType: MediaType("image", "jpeg"),
+          ),
+      }),
+    ).then((value) async {
       emit(RegisterSuccessState());
       if (state is RegisterSuccessState) {
         userLogin(email: email, password: password, context: context);
       }
-    }).catchError((error) {
+    }).catchError((error, stacktrace) {
       print(error);
+      print(stacktrace);
+      print(file);
       emit(RegisterErrorState(error.toString()));
     });
   }
 
-  void editUser({
-      required String firstName,
+  void editUser(
+      {required String firstName,
       required String lastName,
       required String email,
       required String phone,
-
       required BuildContext context}) {
     emit(EditUserLoadingState());
-    DioHelper.postData(url: 'https://chehabeg-store.com/api/auth/my-account/edit-user',
-        data: {
-      'first_name' : firstName,
-      'last_name' : lastName,
-      'email': email,
-      'phone' : phone
-    },token: token).then((value)async {
+    DioHelper.postData(
+            url: 'https://chehabeg-store.com/api/auth/my-account/edit-user',
+            data: {
+              'first_name': firstName,
+              'last_name': lastName,
+              'email': email,
+              'phone': phone
+            },
+            token: token)
+        .then((value) async {
       emit(EditUserSuccessState());
       if (state is EditUserSuccessState) {
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>LoginScreen()), (route) => false);
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => LoginScreen()),
+            (route) => false);
       }
     }).catchError((error) {
       print(error);
@@ -135,21 +168,28 @@ class LoginCubit extends Cubit<LoginState> {
     });
   }
 
-  void changePassword({
-      required String oldPassword,
+  void changePassword(
+      {required String oldPassword,
       required String newPassword,
       required BuildContext context}) {
     emit(ChangePasswordLoadingState());
-    DioHelper.postData(url: 'https://chehabeg-store.com/api/auth/my-account/change-password',
-        data: {
-      'old_password' : oldPassword,
-      'new_password' : newPassword,
-    },token: token).then((value)async {
+    DioHelper.postData(
+            url:
+                'https://chehabeg-store.com/api/auth/my-account/change-password',
+            data: {
+              'old_password': oldPassword,
+              'new_password': newPassword,
+            },
+            token: token)
+        .then((value) async {
       emit(ChangePasswordSuccessState());
       if (state is ChangePasswordSuccessState) {
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>LoginScreen()), (route) => false);
-      loggedInEmail = null;
-      loggedInPassword = null;
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => LoginScreen()),
+            (route) => false);
+        loggedInEmail = null;
+        loggedInPassword = null;
       }
     }).catchError((error) {
       print(error);
@@ -164,5 +204,4 @@ class LoginCubit extends Cubit<LoginState> {
       emit(ChangePasswordErrorState(error.toString()));
     });
   }
-
 }

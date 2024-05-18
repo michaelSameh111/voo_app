@@ -77,7 +77,7 @@ class _RegisterNowScreenState extends State<RegisterNowScreen> {
                     ),
                     InkWell(
                       onTap: () async {
-                        await LoginCubit.get(context).pickImage();
+                        await LoginCubit.get(context).pickImage(image: LoginCubit.registerImage);
                         setState(() {});
                       },
                       child: CircleAvatar(
@@ -104,7 +104,7 @@ class _RegisterNowScreenState extends State<RegisterNowScreen> {
                     ),
                     TextButton(
                         onPressed: () async {
-                          await LoginCubit.get(context).pickImage();
+                          await LoginCubit.get(context).pickImage(image: LoginCubit.registerImage);
                           setState(() {});
                         },
                         child: Text(

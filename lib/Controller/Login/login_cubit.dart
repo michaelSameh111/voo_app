@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:voo_app/view/pages/enable_location_access_screen.dart';
+import 'package:voo_app/view/pages/home_page_maps_screen.dart';
 import 'package:voo_app/view/pages/login_screen.dart';
 
 import '../../Model/LoginDataModel.dart';
@@ -21,6 +22,8 @@ class LoginCubit extends Cubit<LoginState> {
   LoginCubit() : super(LoginInitial());
   static LoginCubit get(context) => BlocProvider.of(context);
   static File? registerImage;
+  static File? frontLicenseImage;
+  static File? backLicenseImage;
   void userLogin(
       {required String email,
       required String password,
@@ -38,7 +41,7 @@ class LoginCubit extends Cubit<LoginState> {
       if (state is LoginSuccessState) {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => EnableLocationAccessScreen()),
+          MaterialPageRoute(builder: (context) => HomePageMapsScreen()),
           (route) => false,
         );
         if (rememberMe == true) {
@@ -78,11 +81,12 @@ class LoginCubit extends Cubit<LoginState> {
     });
   }
 
-  Future pickImage() async {
+  Future pickImage({required File? image}) async {
     final myFile = await ImagePicker().pickImage(source: ImageSource.camera);
     if (myFile != null) {
-      LoginCubit.registerImage = File(myFile.path);
+      image = File(myFile.path);
     }
+    return image;
   }
 
   static File? editAccountFile;

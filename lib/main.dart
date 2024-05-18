@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:voo_app/view/pages/driver_license.dart';
 import 'package:voo_app/view/pages/splash_screen.dart';
 import 'Controller/Login/login_cubit.dart';
 import 'Controller/dio-helper.dart';
@@ -44,8 +45,10 @@ class MyApp extends StatelessWidget {
       child: FlutterSizer(
         builder: (BuildContext, Orientation, ScreenType) {
           return MaterialApp(
-            home: SplashScreen(),
+
+            home: DriverLicenseScreen(),
             debugShowCheckedModeBanner: false,
+            theme: ThemeData(useMaterial3: false),
           );
         },
       ),

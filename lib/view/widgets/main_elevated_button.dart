@@ -58,7 +58,7 @@ class MainElevatedButtonTwo extends StatelessWidget {
               backgroundColor: backgroundColor),
           onPressed: onPressed,
           child: Container(
-            child:condition == true ? const Center(child: CircularProgressIndicator()) : Text(
+            child:condition == true ? const Center(child: CircularProgressIndicator(color: Colors.white,)) : Text(
               text,
               style: const TextStyle(color: Colors.white),
             ),

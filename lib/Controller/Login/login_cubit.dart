@@ -24,6 +24,7 @@ class LoginCubit extends Cubit<LoginState> {
   static File? registerImage;
   static File? frontLicenseImage;
   static File? backLicenseImage;
+  static File? insuranceLicense;
   void userLogin(
       {required String email,
       required String password,
@@ -206,6 +207,70 @@ class LoginCubit extends Cubit<LoginState> {
         fontSize: 18.dp,
       );
       emit(ChangePasswordErrorState(error.toString()));
+    });
+  }
+
+  Future<void> addDriverLicense(
+      {required String driverLicense,
+        required String expiryDate,
+        required File? frontImage,
+        required File? backImage,
+        required BuildContext context})async {
+    emit(AddDriverLicenseLoadingState());
+    DioHelper.postData(
+        url: 'driver-license/add',
+        data: FormData.fromMap({
+          'license_number' : driverLicense,
+          'license_expiry' : expiryDate,
+          if (LoginCubit.frontLicenseImage != null)
+            'license_front_image': await MultipartFile.fromFile(
+            LoginCubit.frontLicenseImage!.path,
+            filename: LoginCubit.frontLicenseImage!.path.split('/').last,
+            contentType: MediaType("image", "jpeg"),
+          ),
+          if (LoginCubit.backLicenseImage != null)
+            'license_back_image': await MultipartFile.fromFile(
+            LoginCubit.backLicenseImage!.path,
+            filename: LoginCubit.backLicenseImage!.path.split('/').last,
+            contentType: MediaType("image", "jpeg"),
+          ),
+        }),
+        token: token)
+        .then((value) async {
+      emit(AddDriverLicenseSuccessState());
+    }).catchError((error,stacktrace) {
+      // print(error);
+      // print(stacktrace);
+      emit(AddDriverLicenseErrorState(error.toString()));
+    });
+  }
+
+
+  Future<void> addInsuranceLicense(
+      {required String insuranceLicense,
+        required String insuranceExpiry,
+        required File? frontImage,
+        required BuildContext context})async {
+    emit(AddInsuranceLicenseLoadingState());
+    DioHelper.postData(
+        url: 'driver-insurance/add',
+        data: FormData.fromMap({
+          'insurance_number' : insuranceLicense,
+          'insurance_expiry' : insuranceExpiry,
+          if (LoginCubit.insuranceLicense != null)
+            'insurance_front_image': await MultipartFile.fromFile(
+            LoginCubit.insuranceLicense!.path,
+            filename: LoginCubit.insuranceLicense!.path.split('/').last,
+            contentType: MediaType("image", "jpeg"),
+          ),
+        }),
+        token: token)
+        .then((value) async {
+      emit(AddInsuranceLicenseSuccessState());
+    }).catchError((error,stacktrace) {
+      // print(error);
+      // print(stacktrace);
+      emit(AddInsuranceLicenseErrorState(error.toString()));
     });
   }
 }

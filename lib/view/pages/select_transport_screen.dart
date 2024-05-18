@@ -1,8 +1,7 @@
-import 'dart:ffi';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-import 'package:voo_app/view/pages/login_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:voo_app/view/pages/vehicle_registration_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
@@ -18,19 +17,16 @@ List<String> selectCarType = ['VX', 'Vcomfy'];
 List<String> wheelChairAccess = ['Yes', 'No'];
 List<String> childCarSeat = ['Yes', 'No'];
 
-
-
 class _SelectTransportScreenState extends State<SelectTransportScreen> {
-  bool? isChecked1 = false;
-  bool? isChecked2 = false;
-  bool? isChecked3 = false;
-  bool? isChecked4 = false;
-  bool? isChecked5 = false;
-  bool? isChecked6 = false;
-  bool? isChecked7 = false;
-  bool? isChecked8 = false;
+  TextEditingController yearController = TextEditingController();
+  final List<String> model = [
+    'Choose Model',
+    'BMW',
+    'Mercedes',
+  ];
+  String dropDownValue = 'Choose Model';
   bool isChecked = false;
-
+  DateTime? _selectedDate;
   String currentRideSettings = rideSettings[0];
   String currentSelectCarType = selectCarType[0];
   String currentWheelChairAccess = wheelChairAccess[0];
@@ -40,9 +36,11 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
-          return Container(padding: EdgeInsets.all(20.dp),
+          return Container(
+            padding: EdgeInsets.all(20.dp),
             child: SingleChildScrollView(
-              child: Column(mainAxisSize: MainAxisSize.min,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Center(
                     child: Text(
@@ -55,7 +53,10 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                   ),
                   Row(
                     children: [
-                      Text('2004',style: TextStyle(fontSize: 15.dp),),
+                      Text(
+                        '2004',
+                        style: TextStyle(fontSize: 15.dp),
+                      ),
                       Spacer(),
                       Checkbox(
                         value: isChecked,
@@ -69,10 +70,15 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 2.h,),
+                  SizedBox(
+                    height: 2.h,
+                  ),
                   Row(
                     children: [
-                      Text('2005',style: TextStyle(fontSize: 15.dp),),
+                      Text(
+                        '2005',
+                        style: TextStyle(fontSize: 15.dp),
+                      ),
                       Spacer(),
                       Checkbox(
                         value: isChecked,
@@ -86,10 +92,15 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 2.h,),
+                  SizedBox(
+                    height: 2.h,
+                  ),
                   Row(
                     children: [
-                      Text('2006',style: TextStyle(fontSize: 15.dp),),
+                      Text(
+                        '2006',
+                        style: TextStyle(fontSize: 15.dp),
+                      ),
                       Spacer(),
                       Checkbox(
                         value: isChecked,
@@ -103,10 +114,15 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 2.h,),
+                  SizedBox(
+                    height: 2.h,
+                  ),
                   Row(
                     children: [
-                      Text('2007',style: TextStyle(fontSize: 15.dp),),
+                      Text(
+                        '2007',
+                        style: TextStyle(fontSize: 15.dp),
+                      ),
                       Spacer(),
                       Checkbox(
                         value: isChecked,
@@ -120,10 +136,15 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 2.h,),
+                  SizedBox(
+                    height: 2.h,
+                  ),
                   Row(
                     children: [
-                      Text('2008',style: TextStyle(fontSize: 15.dp),),
+                      Text(
+                        '2008',
+                        style: TextStyle(fontSize: 15.dp),
+                      ),
                       Spacer(),
                       Checkbox(
                         value: isChecked,
@@ -137,7 +158,9 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 2.h,),
+                  SizedBox(
+                    height: 2.h,
+                  ),
                 ],
               ),
             ),
@@ -168,21 +191,18 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 5.h,
+                  height: 2.h,
                 ),
                 Text(
                   'Car Brand *',
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                 ),
-                SizedBox(
-                  height: 2.h,
-                ),
                 Container(
                   decoration: BoxDecoration(
                       color: Color(0xffF5F4F4),
                       borderRadius: BorderRadius.circular(10)),
-                  child: TextField(
+                  child: TextFormField(
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.all(15),
@@ -190,45 +210,67 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                     keyboardType: TextInputType.text,
                   ),
                 ),
-                SizedBox(
-                  height: 5.h,
-                ),
                 Text(
                   'Model',
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                 ),
+                DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Color(0xffF5F4F4),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide:
+                            const BorderSide(color: Colors.transparent)),
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide:
+                            const BorderSide(color: Colors.transparent)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide:
+                            const BorderSide(color: Colors.transparent)),
+                  ),
+                  validator: (value) {
+                    if (value == 'Choose gender') {
+                      return 'Please choose gender';
+                    }
+                    return null;
+                  },
+                  items: model
+                      .map((String item) => DropdownMenuItem<String>(
+                            value: item,
+                            child: Text(
+                              item,
+                              style: GoogleFonts.roboto(
+                                fontSize: 14.dp,
+                                color: Colors.black,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ))
+                      .toList(),
+                  value: dropDownValue,
+                  onChanged: (String? value) {
+                    setState(() {
+                      dropDownValue = value!;
+                    });
+                  },
+                ),
                 SizedBox(
                   height: 2.h,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      color: Color(0xffF5F4F4),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: TextField(
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.all(15),
-                        hintText: 'Select Model'),
-                    keyboardType: TextInputType.datetime,
-                  ),
-                ),
-                SizedBox(
-                  height: 5.h,
                 ),
                 Text(
                   'Plate number *',
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                 ),
-                SizedBox(
-                  height: 2.h,
-                ),
                 Container(
                   decoration: BoxDecoration(
                       color: Color(0xffF5F4F4),
                       borderRadius: BorderRadius.circular(10)),
-                  child: TextField(
+                  child: TextFormField(
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.all(15),
@@ -237,22 +279,48 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 5.h,
+                  height: 2.h,
                 ),
                 Text(
                   'Year',
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                 ),
-                SizedBox(
-                  height: 2.h,
-                ),
                 Container(
                   decoration: BoxDecoration(
                       color: Color(0xffF5F4F4),
                       borderRadius: BorderRadius.circular(10)),
-                  child: TextField(
-                    onTap: showBottomSheet,
+                  child: TextFormField(
+                    // onTap: showBottomSheet,
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Select Year"),
+                            content: Container(
+                              // Need to use container to add size constraint.
+                              width: 300,
+                              height: 300,
+                              child: YearPicker(
+                                firstDate: DateTime(1980),
+                                lastDate:
+                                    DateTime(DateTime.now().year + 100, 1),
+                                selectedDate: _selectedDate,
+                                onChanged: (DateTime dateTime) {
+                                  _selectedDate = dateTime;
+                                  yearController.text =
+                                      dateTime.year.toString();
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    controller: yearController,
+                    readOnly: true,
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.all(15),
@@ -261,7 +329,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 5.h,
+                  height: 2.h,
                 ),
                 Text(
                   'Ride Settings',
@@ -269,6 +337,8 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                 ),
                 ListTile(
+                  minTileHeight: 5.h,
+                  contentPadding: EdgeInsets.zero,
                   title: const Text('Ride people'),
                   leading: Transform.scale(
                     scale: 1.2,
@@ -276,7 +346,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                       activeColor: const Color(0xff0038A7),
                       value: rideSettings[0],
                       groupValue: currentRideSettings,
-                      onChanged: (value){
+                      onChanged: (value) {
                         setState(() {
                           currentRideSettings = value.toString();
                         });
@@ -285,30 +355,33 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                   ),
                 ),
                 ListTile(
+                  minTileHeight: 5.h,
+                  contentPadding: EdgeInsets.zero,
                   title: const Text('Packages / Bulk packages'),
                   leading: Transform.scale(
                     scale: 1.2,
                     child: Radio(
                       activeColor: Color(0xff0038A7),
-                        value: rideSettings[1],
-                        groupValue: currentRideSettings,
-                        onChanged: (value){
-                          setState(() {
-                            currentRideSettings = value.toString();
-                          });
-                        },
+                      value: rideSettings[1],
+                      groupValue: currentRideSettings,
+                      onChanged: (value) {
+                        setState(() {
+                          currentRideSettings = value.toString();
+                        });
+                      },
                     ),
                   ),
                 ),
                 SizedBox(
-                  height: 5.h,
+                  height: 2.h,
                 ),
                 Text(
                   'Select car type',
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                 ),
-                ListTile(
+                ListTile( minTileHeight: 5.h,
+                  contentPadding: EdgeInsets.zero,
                   title: const Text('VX'),
                   leading: Transform.scale(
                     scale: 1.2,
@@ -316,7 +389,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                       activeColor: Color(0xff0038A7),
                       value: selectCarType[0],
                       groupValue: currentSelectCarType,
-                      onChanged: (value){
+                      onChanged: (value) {
                         setState(() {
                           currentSelectCarType = value.toString();
                         });
@@ -324,7 +397,8 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                     ),
                   ),
                 ),
-                ListTile(
+                ListTile( minTileHeight: 5.h,
+                  contentPadding: EdgeInsets.zero,
                   title: const Text('Vcomfy'),
                   leading: Transform.scale(
                     scale: 1.2,
@@ -332,7 +406,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                       activeColor: Color(0xff0038A7),
                       value: selectCarType[1],
                       groupValue: currentSelectCarType,
-                      onChanged: (value){
+                      onChanged: (value) {
                         setState(() {
                           currentSelectCarType = value.toString();
                         });
@@ -341,7 +415,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 5.h,
+                  height: 2.h,
                 ),
                 Text(
                   'Wheelchair access',
@@ -352,6 +426,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                   children: [
                     Expanded(
                       child: ListTile(
+                        contentPadding: EdgeInsets.zero,
                         title: const Text('Yes'),
                         leading: Transform.scale(
                           scale: 1.2,
@@ -359,7 +434,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                             activeColor: Color(0xff0038A7),
                             value: wheelChairAccess[0],
                             groupValue: currentWheelChairAccess,
-                            onChanged: (value){
+                            onChanged: (value) {
                               setState(() {
                                 currentWheelChairAccess = value.toString();
                               });
@@ -377,7 +452,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                             activeColor: Color(0xff0038A7),
                             value: wheelChairAccess[1],
                             groupValue: currentWheelChairAccess,
-                            onChanged: (value){
+                            onChanged: (value) {
                               setState(() {
                                 currentWheelChairAccess = value.toString();
                               });
@@ -389,7 +464,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                   ],
                 ),
                 SizedBox(
-                  height: 5.h,
+                  height: 2.h,
                 ),
                 Text(
                   'Child car seat',
@@ -400,6 +475,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                   children: [
                     Expanded(
                       child: ListTile(
+                        contentPadding: EdgeInsets.zero,
                         title: const Text('Yes'),
                         leading: Transform.scale(
                           scale: 1.2,
@@ -407,7 +483,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                             activeColor: Color(0xff0038A7),
                             value: childCarSeat[0],
                             groupValue: currentChildCarSeat,
-                            onChanged: (value){
+                            onChanged: (value) {
                               setState(() {
                                 currentChildCarSeat = value.toString();
                               });
@@ -425,7 +501,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                             activeColor: Color(0xff0038A7),
                             value: childCarSeat[1],
                             groupValue: currentChildCarSeat,
-                            onChanged: (value){
+                            onChanged: (value) {
                               setState(() {
                                 currentChildCarSeat = value.toString();
                               });
@@ -436,22 +512,16 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 2.h,
-                ),
                 Text(
                   'No of seats *',
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                 ),
-                SizedBox(
-                  height: 2.h,
-                ),
                 Container(
                   decoration: BoxDecoration(
                       color: Color(0xffF5F4F4),
                       borderRadius: BorderRadius.circular(10)),
-                  child: TextField(
+                  child: TextFormField(
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.all(15),
@@ -467,14 +537,11 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                 ),
-                SizedBox(
-                  height: 2.h,
-                ),
                 Container(
                   decoration: BoxDecoration(
                       color: Color(0xffF5F4F4),
                       borderRadius: BorderRadius.circular(10)),
-                  child: TextField(
+                  child: TextFormField(
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.all(15),
@@ -483,21 +550,18 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 5.h,
+                  height: 2.h,
                 ),
                 Text(
                   'Car fuel type',
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                 ),
-                SizedBox(
-                  height: 2.h,
-                ),
                 Container(
                   decoration: BoxDecoration(
                       color: Color(0xffF5F4F4),
                       borderRadius: BorderRadius.circular(10)),
-                  child: TextField(
+                  child: TextFormField(
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.all(15),
@@ -506,21 +570,18 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 5.h,
+                  height: 2.h,
                 ),
                 Text(
                   'Car documents',
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                 ),
-                SizedBox(
-                  height: 2.h,
-                ),
                 Container(
                   decoration: BoxDecoration(
                       color: Color(0xffF5F4F4),
                       borderRadius: BorderRadius.circular(10)),
-                  child: TextField(
+                  child: TextFormField(
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.all(15),
@@ -529,21 +590,18 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 5.h,
+                  height: 2.h,
                 ),
                 Text(
                   'Car images',
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                 ),
-                SizedBox(
-                  height: 2.h,
-                ),
                 Container(
                   decoration: BoxDecoration(
                       color: Color(0xffF5F4F4),
                       borderRadius: BorderRadius.circular(10)),
-                  child: TextField(
+                  child: TextFormField(
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.all(15),
@@ -551,18 +609,14 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                     keyboardType: TextInputType.number,
                   ),
                 ),
-                SizedBox(
-                  height: 5.h,
-                ),
                 Center(
                   child: MainElevatedButton(
-                      nextScreen:
-                      VehicleRegistrationScreen(),
+                      nextScreen: VehicleRegistrationScreen(),
                       text: 'Next',
                       backgroundColor: Color(0xff0038A7)),
                 ),
                 SizedBox(
-                  height: 5.h,
+                  height: 2.h,
                 ),
               ],
             ),

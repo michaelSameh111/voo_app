@@ -25,6 +25,21 @@ class EditUserErrorState extends LoginState {
   EditUserErrorState(this.error);
 }
 
+
+class AddDriverLicenseLoadingState extends LoginState {}
+class AddDriverLicenseSuccessState extends LoginState {}
+class AddDriverLicenseErrorState extends LoginState {
+  final String error;
+  AddDriverLicenseErrorState(this.error);
+}
+
+class AddInsuranceLicenseLoadingState extends LoginState {}
+class AddInsuranceLicenseSuccessState extends LoginState {}
+class AddInsuranceLicenseErrorState extends LoginState {
+  final String error;
+  AddInsuranceLicenseErrorState(this.error);
+}
+
 class ChangePasswordLoadingState extends LoginState {}
 class ChangePasswordSuccessState extends LoginState {}
 class ChangePasswordErrorState extends LoginState {

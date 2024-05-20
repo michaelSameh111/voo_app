@@ -40,6 +40,14 @@ class AddInsuranceLicenseErrorState extends LoginState {
   AddInsuranceLicenseErrorState(this.error);
 }
 
+
+class AddDriverDataLoadingState extends LoginState {}
+class AddDriverDataSuccessState extends LoginState {}
+class AddDriverDataErrorState extends LoginState {
+  final String error;
+  AddDriverDataErrorState(this.error);
+}
+
 class ChangePasswordLoadingState extends LoginState {}
 class ChangePasswordSuccessState extends LoginState {}
 class ChangePasswordErrorState extends LoginState {

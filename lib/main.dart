@@ -2,7 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-import 'package:voo_app/view/pages/insurance_screen.dart';
+import 'package:voo_app/Controller/Data/data_cubit.dart';
+import 'package:voo_app/view/pages/social_security_screen.dart';
 import 'Controller/Login/login_cubit.dart';
 import 'Controller/dio-helper.dart';
 import 'Controller/shared-prefrences.dart';
@@ -39,13 +40,13 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context)=> LoginCubit()),
-        // BlocProvider(create: (context)=> DataCubit()),
+        BlocProvider(create: (context)=> DataCubit()),
       ],
       child: FlutterSizer(
         builder: (BuildContext, Orientation, ScreenType) {
           return MaterialApp(
 
-            home: InsuranceScreen(),
+            home: SocialSecurityScreen(),
             debugShowCheckedModeBanner: false,
             theme: ThemeData(useMaterial3: false),
           );

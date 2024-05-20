@@ -7,6 +7,7 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:voo_app/Controller/Data/data_cubit.dart';
 import 'package:voo_app/view/pages/enable_location_access_screen.dart';
 import 'package:voo_app/view/pages/home_page_maps_screen.dart';
 import 'package:voo_app/view/pages/login_screen.dart';
@@ -40,6 +41,7 @@ class LoginCubit extends Cubit<LoginState> {
       loggedInPassword = password;
       emit(LoginSuccessState());
       if (state is LoginSuccessState) {
+        DataCubit.get(context).getVehicleTypes();
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => HomePageMapsScreen()),
@@ -271,6 +273,38 @@ class LoginCubit extends Cubit<LoginState> {
       // print(error);
       // print(stacktrace);
       emit(AddInsuranceLicenseErrorState(error.toString()));
+    });
+  }
+
+  Future<void> addDriverData(
+      {required String socialSecurity,
+        required String country,
+        required String city,
+        required String state,
+        required String address,
+        required String postalCode,
+        required String language,
+        required BuildContext context})async {
+    emit(AddDriverDataLoadingState());
+    DioHelper.postData(
+        url: 'http://10.0.2.2:8000/api/driver-data/add',
+        data: FormData.fromMap({
+          'security_code' : socialSecurity,
+          'social_security_number' : socialSecurity,
+          'country' : country,
+          'city' : city,
+          'state' : state,
+          'address' : address,
+          'postal_code' : postalCode,
+          'language' : language
+        }),
+        token: token)
+        .then((value) async {
+      emit(AddDriverDataSuccessState());
+    }).catchError((error,stacktrace) {
+      print(error);
+      print(stacktrace);
+      emit(AddDriverDataErrorState(error.toString()));
     });
   }
 }

@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:voo_app/Controller/Constants.dart';
+import 'package:voo_app/Model/VehicleTypeModel.dart';
 import 'package:voo_app/view/pages/vehicle_registration_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
+
+import '../../Controller/Data/data_cubit.dart';
 
 class SelectTransportScreen extends StatefulWidget {
   const SelectTransportScreen({Key? key}) : super(key: key);
@@ -16,22 +20,31 @@ List<String> rideSettings = ['Ride', 'Packages / Bulk packages'];
 List<String> selectCarType = ['VX', 'Vcomfy'];
 List<String> wheelChairAccess = ['Yes', 'No'];
 List<String> childCarSeat = ['Yes', 'No'];
-
 class _SelectTransportScreenState extends State<SelectTransportScreen> {
+
   TextEditingController yearController = TextEditingController();
   final List<String> model = [
     'Choose Model',
     'BMW',
     'Mercedes',
   ];
-  String dropDownValue = 'Choose Model';
+  int vehicleTypeDropDown = 0;
+  void onTypeChanged(int? value) {
+    setState(() {
+      vehicleTypeDropDown = value!;
+    });
+  }
   bool isChecked = false;
   DateTime? _selectedDate;
   String currentRideSettings = rideSettings[0];
   String currentSelectCarType = selectCarType[0];
   String currentWheelChairAccess = wheelChairAccess[0];
   String currentChildCarSeat = childCarSeat[0];
-
+@override
+  void initState() {
+   DataCubit.get(context).getVehicleTypes();
+    super.initState();
+  }
   void showBottomSheet() {
     showModalBottomSheet(
         context: context,
@@ -170,6 +183,9 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return BlocConsumer<DataCubit, DataState>(
+  listener: (context, state) {},
+  builder: (context, state) {
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -210,54 +226,31 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                     keyboardType: TextInputType.text,
                   ),
                 ),
+                SizedBox(height: 2.h,),
+                Text(
+                  'Car Model *',
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      color: Color(0xffF5F4F4),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.all(15),
+                        hintText: 'Ex. 316'),
+                    keyboardType: TextInputType.text,
+                  ),
+                ),
+                SizedBox(height: 2.h,),
                 Text(
                   'Model',
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                 ),
-                DropdownButtonFormField<String>(
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Color(0xffF5F4F4),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                            const BorderSide(color: Colors.transparent)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                            const BorderSide(color: Colors.transparent)),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                            const BorderSide(color: Colors.transparent)),
-                  ),
-                  validator: (value) {
-                    if (value == 'Choose gender') {
-                      return 'Please choose gender';
-                    }
-                    return null;
-                  },
-                  items: model
-                      .map((String item) => DropdownMenuItem<String>(
-                            value: item,
-                            child: Text(
-                              item,
-                              style: GoogleFonts.roboto(
-                                fontSize: 14.dp,
-                                color: Colors.black,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ))
-                      .toList(),
-                  value: dropDownValue,
-                  onChanged: (String? value) {
-                    setState(() {
-                      dropDownValue = value!;
-                    });
-                  },
-                ),
+                VehicleTypesDropDown(vehicleDropDown: vehicleTypeDropDown, onTypeChanged: onTypeChanged),
                 SizedBox(
                   height: 2.h,
                 ),
@@ -623,6 +616,70 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
           ),
         ),
       ),
+    );
+  },
+);
+  }
+}
+//ignore_for_file: must_be_immutable
+class VehicleTypesDropDown extends StatelessWidget {
+  int? vehicleDropDown;
+  final ValueChanged<int?> onTypeChanged;
+  VehicleTypesDropDown({super.key,required this.vehicleDropDown,required this.onTypeChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    List<VehicleTypes> vehicleTypes = vehicleTypesModel.vehicleTypes!; // Assuming 'allCities' is the list of cities
+
+    List<DropdownMenuItem<int>> dropdownItems = [
+      DropdownMenuItem(
+        value: 0,
+        child: Text('Select type',),
+      )
+    ];
+
+    for (VehicleTypes vehicleTypes in vehicleTypes) {
+      DropdownMenuItem<int> dropdownItem = DropdownMenuItem<int>(
+        value: vehicleTypes.id,
+        child: SizedBox(
+          child: Text(
+            '${vehicleTypes.title}',
+
+          ),
+        ),
+      );
+      dropdownItems.add(dropdownItem);
+    }
+    return  DropdownButtonFormField<int>(
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Color(0xffF5F4F4),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide:
+            const BorderSide(color: Colors.transparent)),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide:
+            const BorderSide(color: Colors.transparent)),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide:
+            const BorderSide(color: Colors.transparent)),
+      ),
+      validator: (value) {
+        if (value == 0) {
+          return 'Please choose type';
+        }
+        return null;
+      },
+      value: vehicleDropDown,
+      items: dropdownItems,
+      onChanged: (val) {
+        onTypeChanged(val);
+        vehicleDropDown = val;
+
+      },
     );
   }
 }

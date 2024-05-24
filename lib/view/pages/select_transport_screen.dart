@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/Controller/Constants.dart';
 import 'package:voo_app/Model/VehicleTypeModel.dart';
+import 'package:voo_app/view/pages/CarDocumentsScreen.dart';
 import 'package:voo_app/view/pages/vehicle_registration_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
@@ -23,11 +25,6 @@ List<String> childCarSeat = ['Yes', 'No'];
 class _SelectTransportScreenState extends State<SelectTransportScreen> {
 
   TextEditingController yearController = TextEditingController();
-  final List<String> model = [
-    'Choose Model',
-    'BMW',
-    'Mercedes',
-  ];
   int vehicleTypeDropDown = 0;
   void onTypeChanged(int? value) {
     setState(() {
@@ -36,8 +33,13 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
   }
   bool isChecked = false;
   DateTime? _selectedDate;
-  String currentRideSettings = rideSettings[0];
-  String currentSelectCarType = selectCarType[0];
+  // String currentRideSettings = rideSettings[0];
+  // String currentSelectCarType = selectCarType[0];
+  TextEditingController brandController = TextEditingController();
+  TextEditingController plateInfoController = TextEditingController();
+  TextEditingController modelController = TextEditingController();
+  TextEditingController seatsController = TextEditingController();
+  TextEditingController doorsController = TextEditingController();
   String currentWheelChairAccess = wheelChairAccess[0];
   String currentChildCarSeat = childCarSeat[0];
 @override
@@ -195,7 +197,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 8.h,
+                  height: 2.h,
                 ),
                 Center(
                   child: Text(
@@ -203,7 +205,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                     style: TextStyle(
                         fontSize: 25.dp,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xffF70415)),
+                        color: Colors.black),
                   ),
                 ),
                 SizedBox(
@@ -246,7 +248,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                 ),
                 SizedBox(height: 2.h,),
                 Text(
-                  'Model',
+                  'Type',
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                 ),
@@ -324,92 +326,95 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                 SizedBox(
                   height: 2.h,
                 ),
-                Text(
-                  'Ride Settings',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
-                ),
-                ListTile(
-                  minTileHeight: 5.h,
-                  contentPadding: EdgeInsets.zero,
-                  title: const Text('Ride people'),
-                  leading: Transform.scale(
-                    scale: 1.2,
-                    child: Radio(
-                      activeColor: const Color(0xff0038A7),
-                      value: rideSettings[0],
-                      groupValue: currentRideSettings,
-                      onChanged: (value) {
-                        setState(() {
-                          currentRideSettings = value.toString();
-                        });
-                      },
-                    ),
-                  ),
-                ),
-                ListTile(
-                  minTileHeight: 5.h,
-                  contentPadding: EdgeInsets.zero,
-                  title: const Text('Packages / Bulk packages'),
-                  leading: Transform.scale(
-                    scale: 1.2,
-                    child: Radio(
-                      activeColor: Color(0xff0038A7),
-                      value: rideSettings[1],
-                      groupValue: currentRideSettings,
-                      onChanged: (value) {
-                        setState(() {
-                          currentRideSettings = value.toString();
-                        });
-                      },
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 2.h,
-                ),
-                Text(
-                  'Select car type',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
-                ),
-                ListTile( minTileHeight: 5.h,
-                  contentPadding: EdgeInsets.zero,
-                  title: const Text('VX'),
-                  leading: Transform.scale(
-                    scale: 1.2,
-                    child: Radio(
-                      activeColor: Color(0xff0038A7),
-                      value: selectCarType[0],
-                      groupValue: currentSelectCarType,
-                      onChanged: (value) {
-                        setState(() {
-                          currentSelectCarType = value.toString();
-                        });
-                      },
-                    ),
-                  ),
-                ),
-                ListTile( minTileHeight: 5.h,
-                  contentPadding: EdgeInsets.zero,
-                  title: const Text('Vcomfy'),
-                  leading: Transform.scale(
-                    scale: 1.2,
-                    child: Radio(
-                      activeColor: Color(0xff0038A7),
-                      value: selectCarType[1],
-                      groupValue: currentSelectCarType,
-                      onChanged: (value) {
-                        setState(() {
-                          currentSelectCarType = value.toString();
-                        });
-                      },
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 2.h,
-                ),
+                //No Need In Design
+                // Column(crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [   Text(
+                //     'Ride Settings',
+                //     style:
+                //     TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                //   ),
+                //     ListTile(
+                //       minTileHeight: 5.h,
+                //       contentPadding: EdgeInsets.zero,
+                //       title: const Text('Ride people'),
+                //       leading: Transform.scale(
+                //         scale: 1.2,
+                //         child: Radio(
+                //           activeColor: const Color(0xff0038A7),
+                //           value: rideSettings[0],
+                //           groupValue: currentRideSettings,
+                //           onChanged: (value) {
+                //             setState(() {
+                //               currentRideSettings = value.toString();
+                //             });
+                //           },
+                //         ),
+                //       ),
+                //     ),
+                //     ListTile(
+                //       minTileHeight: 5.h,
+                //       contentPadding: EdgeInsets.zero,
+                //       title: const Text('Packages / Bulk packages'),
+                //       leading: Transform.scale(
+                //         scale: 1.2,
+                //         child: Radio(
+                //           activeColor: Color(0xff0038A7),
+                //           value: rideSettings[1],
+                //           groupValue: currentRideSettings,
+                //           onChanged: (value) {
+                //             setState(() {
+                //               currentRideSettings = value.toString();
+                //             });
+                //           },
+                //         ),
+                //       ),
+                //     ),
+                //     SizedBox(
+                //       height: 2.h,
+                //     ),
+                //     Text(
+                //       'Select car type',
+                //       style:
+                //       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                //     ),
+                //     ListTile( minTileHeight: 5.h,
+                //       contentPadding: EdgeInsets.zero,
+                //       title: const Text('VX'),
+                //       leading: Transform.scale(
+                //         scale: 1.2,
+                //         child: Radio(
+                //           activeColor: Color(0xff0038A7),
+                //           value: selectCarType[0],
+                //           groupValue: currentSelectCarType,
+                //           onChanged: (value) {
+                //             setState(() {
+                //               currentSelectCarType = value.toString();
+                //             });
+                //           },
+                //         ),
+                //       ),
+                //     ),
+                //     ListTile( minTileHeight: 5.h,
+                //       contentPadding: EdgeInsets.zero,
+                //       title: const Text('Vcomfy'),
+                //       leading: Transform.scale(
+                //         scale: 1.2,
+                //         child: Radio(
+                //           activeColor: Color(0xff0038A7),
+                //           value: selectCarType[1],
+                //           groupValue: currentSelectCarType,
+                //           onChanged: (value) {
+                //             setState(() {
+                //               currentSelectCarType = value.toString();
+                //             });
+                //           },
+                //         ),
+                //       ),
+                //     ),
+                //     SizedBox(
+                //       height: 2.h,
+                //     ),],
+                // ),
                 Text(
                   'Wheelchair access',
                   style:
@@ -518,7 +523,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.all(15),
-                        hintText: 'Select type'),
+                        hintText: 'Number of Seats'),
                     keyboardType: TextInputType.text,
                   ),
                 ),
@@ -545,26 +550,26 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                 SizedBox(
                   height: 2.h,
                 ),
-                Text(
-                  'Car fuel type',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      color: Color(0xffF5F4F4),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.all(15),
-                        hintText: 'Select fuel type'),
-                    keyboardType: TextInputType.number,
-                  ),
-                ),
-                SizedBox(
-                  height: 2.h,
-                ),
+                // Text(
+                //   'Car fuel type',
+                //   style:
+                //       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                // ),
+                // Container(
+                //   decoration: BoxDecoration(
+                //       color: Color(0xffF5F4F4),
+                //       borderRadius: BorderRadius.circular(10)),
+                //   child: TextFormField(
+                //     decoration: InputDecoration(
+                //         border: InputBorder.none,
+                //         contentPadding: EdgeInsets.all(15),
+                //         hintText: 'Select fuel type'),
+                //     keyboardType: TextInputType.number,
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: 2.h,
+                // ),
                 Text(
                   'Car documents',
                   style:
@@ -575,10 +580,14 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                       color: Color(0xffF5F4F4),
                       borderRadius: BorderRadius.circular(10)),
                   child: TextFormField(
+                    readOnly: true,
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>CarDocumentsScreen()));
+                    },
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.all(15),
-                        hintText: 'Add document details'),
+                        hintText: 'Add Car Documents'),
                     keyboardType: TextInputType.number,
                   ),
                 ),
@@ -595,18 +604,23 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                       color: Color(0xffF5F4F4),
                       borderRadius: BorderRadius.circular(10)),
                   child: TextFormField(
+                    readOnly: true,
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>CarImagesScreen()));
+                    },
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.all(15),
-                        hintText: 'Add car details'),
+                        hintText: 'Add Car Images'),
                     keyboardType: TextInputType.number,
                   ),
                 ),
+                SizedBox(height: 2.h,),
                 Center(
                   child: MainElevatedButton(
                       nextScreen: VehicleRegistrationScreen(),
                       text: 'Next',
-                      backgroundColor: Color(0xff0038A7)),
+                      backgroundColor: Color(0xffFF6A03)),
                 ),
                 SizedBox(
                   height: 2.h,

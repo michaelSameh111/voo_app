@@ -1,29 +1,41 @@
 class LicenseDataModel {
-  License? license;
   int? status;
   String? message;
+  DriverLicense? driverLicense;
+  String? licenseFrontImage;
+  String? licenseBackImage;
 
-  LicenseDataModel({this.license, this.status, this.message});
+  LicenseDataModel(
+      {this.status,
+        this.message,
+        this.driverLicense,
+        this.licenseFrontImage,
+        this.licenseBackImage});
 
   LicenseDataModel.fromJson(Map<String, dynamic> json) {
-    license =
-    json['license'] != null ? new License.fromJson(json['license']) : null;
     status = json['status'];
     message = json['message'];
+    driverLicense = json['Driver license'] != null
+        ? new DriverLicense.fromJson(json['Driver license'])
+        : null;
+    licenseFrontImage = json['License front image'];
+    licenseBackImage = json['License back image'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.license != null) {
-      data['license'] = this.license!.toJson();
-    }
     data['status'] = this.status;
     data['message'] = this.message;
+    if (this.driverLicense != null) {
+      data['Driver license'] = this.driverLicense!.toJson();
+    }
+    data['License front image'] = this.licenseFrontImage;
+    data['License back image'] = this.licenseBackImage;
     return data;
   }
 }
 
-class License {
+class DriverLicense {
   int? id;
   int? driver;
   String? licenseNumber;
@@ -33,7 +45,7 @@ class License {
   String? createdAt;
   String? updatedAt;
 
-  License(
+  DriverLicense(
       {this.id,
         this.driver,
         this.licenseNumber,
@@ -43,7 +55,7 @@ class License {
         this.createdAt,
         this.updatedAt});
 
-  License.fromJson(Map<String, dynamic> json) {
+  DriverLicense.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     driver = json['driver'];
     licenseNumber = json['license_number'];

@@ -26,6 +26,11 @@ class LoginCubit extends Cubit<LoginState> {
   static File? frontLicenseImage;
   static File? backLicenseImage;
   static File? insuranceLicense;
+  static File? vehicleBackImage;
+  static File? vehicleFrontImage;
+  static File? vehicleRightImage;
+  static File? vehicleLeftImage;
+  static File? vehicleRCImage;
   void userLogin(
       {required String email,
       required String password,
@@ -178,14 +183,16 @@ class LoginCubit extends Cubit<LoginState> {
   void changePassword(
       {required String oldPassword,
       required String newPassword,
+      required String confirmNewPassword,
       required BuildContext context}) {
     emit(ChangePasswordLoadingState());
     DioHelper.postData(
             url:
-                'https://chehabeg-store.com/api/auth/my-account/change-password',
+                'my-account/change-password',
             data: {
               'old_password': oldPassword,
               'new_password': newPassword,
+              'confirm_new_password': confirmNewPassword,
             },
             token: token)
         .then((value) async {
@@ -247,6 +254,41 @@ class LoginCubit extends Cubit<LoginState> {
     });
   }
 
+  Future<void> editDriverLicense(
+      {required String driverLicense,
+        required String expiryDate,
+        required File? frontImage,
+        required File? backImage,
+        required BuildContext context})async {
+    emit(EditDriverLicenseLoadingState());
+    DioHelper.postData(
+        url: 'driver-license/add',
+        data: FormData.fromMap({
+          'license_number' : driverLicense,
+          'license_expiry' : expiryDate,
+          if (LoginCubit.frontLicenseImage != null)
+            'license_front_image': await MultipartFile.fromFile(
+            LoginCubit.frontLicenseImage!.path,
+            filename: LoginCubit.frontLicenseImage!.path.split('/').last,
+            contentType: MediaType("image", "jpeg"),
+          ),
+          if (LoginCubit.backLicenseImage != null)
+            'license_back_image': await MultipartFile.fromFile(
+            LoginCubit.backLicenseImage!.path,
+            filename: LoginCubit.backLicenseImage!.path.split('/').last,
+            contentType: MediaType("image", "jpeg"),
+          ),
+        }),
+        token: token)
+        .then((value) async {
+      emit(EditDriverLicenseSuccessState());
+    }).catchError((error,stacktrace) {
+      // print(error);
+      // print(stacktrace);
+      emit(EditDriverLicenseErrorState(error.toString()));
+    });
+  }
+
 
   Future<void> addInsuranceLicense(
       {required String insuranceLicense,
@@ -270,9 +312,38 @@ class LoginCubit extends Cubit<LoginState> {
         .then((value) async {
       emit(AddInsuranceLicenseSuccessState());
     }).catchError((error,stacktrace) {
-      // print(error);
-      // print(stacktrace);
+      print(error);
+      print(stacktrace);
       emit(AddInsuranceLicenseErrorState(error.toString()));
+    });
+  }
+
+
+  Future<void> editInsuranceLicense(
+      {required String insuranceLicense,
+        required String insuranceExpiry,
+        required File? frontImage,
+        required BuildContext context})async {
+    emit(EditInsuranceLicenseLoadingState());
+    DioHelper.postData(
+        url: 'driver-insurance/edit',
+        data: FormData.fromMap({
+          'insurance_number' : insuranceLicense,
+          'insurance_expiry' : insuranceExpiry,
+          if (LoginCubit.insuranceLicense != null)
+            'insurance_front_image': await MultipartFile.fromFile(
+            LoginCubit.insuranceLicense!.path,
+            filename: LoginCubit.insuranceLicense!.path.split('/').last,
+            contentType: MediaType("image", "jpeg"),
+          ),
+        }),
+        token: token)
+        .then((value) async {
+      emit(EditInsuranceLicenseSuccessState());
+    }).catchError((error,stacktrace) {
+      print(error);
+      print(stacktrace);
+      emit(EditInsuranceLicenseErrorState(error.toString()));
     });
   }
 
@@ -305,6 +376,132 @@ class LoginCubit extends Cubit<LoginState> {
       print(error);
       print(stacktrace);
       emit(AddDriverDataErrorState(error.toString()));
+    });
+  }
+
+
+  Future<void> editDriverData(
+      {required String socialSecurity,
+        required String country,
+        required String city,
+        required String state,
+        required String address,
+        required String postalCode,
+        required String language,
+        required BuildContext context})async {
+    emit(EditDriverDataLoadingState());
+    DioHelper.postData(
+        url: 'http://10.0.2.2:8000/api/driver-data/edit',
+        data: FormData.fromMap({
+          'security_code' : socialSecurity,
+          'social_security_number' : socialSecurity,
+          'country' : country,
+          'city' : city,
+          'state' : state,
+          'address' : address,
+          'postal_code' : postalCode,
+          'language' : language
+        }),
+        token: token)
+        .then((value) async {
+      emit(EditDriverDataSuccessState());
+    }).catchError((error,stacktrace) {
+      print(error);
+      print(stacktrace);
+      emit(EditDriverDataErrorState(error.toString()));
+    });
+  }
+
+  Future<void> addVehicle(
+      {required int type,
+        required String plateInfo,
+        required String brand,
+        required String model,
+        required String year,
+        required String seats,
+        required String doors,
+        required String wheelChair,
+        required String kidsSeat,
+        required String color,
+        required String rcExpiry,
+        required File? rcImage,
+        required File? frontImage,
+        required File? backImage,
+        required File? rightImage,
+        required File? leftImage,
+        required BuildContext context})async {
+    emit(AddDriverVehicleLoadingState());
+    DioHelper.postData(
+        url: 'driver-vehicles/add',
+        data: FormData.fromMap({
+          'vehicle_type' : type,
+          'plate_info' : plateInfo,
+          'make' : brand,
+          'model' : model,
+          'year' : seats,
+          'doors' : doors,
+          'wheelchair_access' : wheelChair,
+          'kids_seat' : kidsSeat,
+          'color' : color,
+          'rc_expiry' : rcExpiry,
+          if (LoginCubit.vehicleRCImage != null)
+            'rc_image': await MultipartFile.fromFile(
+              LoginCubit.vehicleRCImage!.path,
+              filename: LoginCubit.vehicleRCImage!.path.split('/').last,
+              contentType: MediaType("image", "jpeg"),
+            ),
+          if (LoginCubit.vehicleFrontImage != null)
+            'front_image': await MultipartFile.fromFile(
+              LoginCubit.vehicleFrontImage!.path,
+              filename: LoginCubit.vehicleFrontImage!.path.split('/').last,
+              contentType: MediaType("image", "jpeg"),
+            ),
+          if (LoginCubit.vehicleBackImage != null)
+            'back_image': await MultipartFile.fromFile(
+              LoginCubit.vehicleBackImage!.path,
+              filename: LoginCubit.vehicleBackImage!.path.split('/').last,
+              contentType: MediaType("image", "jpeg"),
+            ),
+          if (LoginCubit.vehicleRightImage != null)
+            'right_image': await MultipartFile.fromFile(
+              LoginCubit.vehicleRightImage!.path,
+              filename: LoginCubit.vehicleRightImage!.path.split('/').last,
+              contentType: MediaType("image", "jpeg"),
+            ),
+          if (LoginCubit.vehicleLeftImage != null)
+            'left_image': await MultipartFile.fromFile(
+              LoginCubit.vehicleLeftImage!.path,
+              filename: LoginCubit.vehicleLeftImage!.path.split('/').last,
+              contentType: MediaType("image", "jpeg"),
+            ),
+        }),
+        token: token)
+        .then((value) async {
+      emit(AddDriverVehicleSuccessState());
+    }).catchError((error,stacktrace) {
+      print(error);
+      print(stacktrace);
+      emit(AddDriverVehicleErrorState(error.toString()));
+    });
+  }
+
+
+  Future<void> changeDriverStatus(
+      {required String status,
+        required BuildContext context})async {
+    emit(ChangeDriverStatusLoadingState());
+    DioHelper.postData(
+        url:
+        'driver-status/update',
+        data: {
+          'accepting_rides': status,
+        },
+        token: token)
+        .then((value) async {
+      emit(ChangeDriverStatusSuccessState());
+    }).catchError((error) {
+      print(error);
+      emit(ChangeDriverStatusErrorState(error.toString()));
     });
   }
 }

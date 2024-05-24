@@ -1,9 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/Controller/Data/data_cubit.dart';
+import 'package:voo_app/view/pages/select_transport_screen.dart';
 import 'package:voo_app/view/pages/social_security_screen.dart';
+import 'package:voo_app/view/pages/splash_screen.dart';
 import 'Controller/Login/login_cubit.dart';
 import 'Controller/dio-helper.dart';
 import 'Controller/shared-prefrences.dart';
@@ -28,6 +31,10 @@ void main() async{
 
   );
   // deh lama ykon fe error mesh hytl3 el shasha el 7amra .. hayetla3 shasha maktob feha Error we 5las
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark));
+  // dh 3ashan el 7etta elly fo2 5ales fel app tb2a wa5da nafs el loon .. we loon el icons zy el wifi we kda
   Bloc.observer =MyBlocObserver();
   runApp(const MyApp());
 }
@@ -46,7 +53,7 @@ class MyApp extends StatelessWidget {
         builder: (BuildContext, Orientation, ScreenType) {
           return MaterialApp(
 
-            home: SocialSecurityScreen(),
+            home: SelectTransportScreen(),
             debugShowCheckedModeBanner: false,
             theme: ThemeData(useMaterial3: false),
           );

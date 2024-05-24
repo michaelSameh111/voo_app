@@ -33,11 +33,39 @@ class AddDriverLicenseErrorState extends LoginState {
   AddDriverLicenseErrorState(this.error);
 }
 
+class EditDriverLicenseLoadingState extends LoginState {}
+class EditDriverLicenseSuccessState extends LoginState {}
+class EditDriverLicenseErrorState extends LoginState {
+  final String error;
+  EditDriverLicenseErrorState(this.error);
+}
+
+class AddDriverVehicleLoadingState extends LoginState {}
+class AddDriverVehicleSuccessState extends LoginState {}
+class AddDriverVehicleErrorState extends LoginState {
+  final String error;
+  AddDriverVehicleErrorState(this.error);
+}
+
+class EditDriverVehicleLoadingState extends LoginState {}
+class EditDriverVehicleSuccessState extends LoginState {}
+class EditDriverVehicleErrorState extends LoginState {
+  final String error;
+  EditDriverVehicleErrorState(this.error);
+}
+
 class AddInsuranceLicenseLoadingState extends LoginState {}
 class AddInsuranceLicenseSuccessState extends LoginState {}
 class AddInsuranceLicenseErrorState extends LoginState {
   final String error;
   AddInsuranceLicenseErrorState(this.error);
+}
+
+class EditInsuranceLicenseLoadingState extends LoginState {}
+class EditInsuranceLicenseSuccessState extends LoginState {}
+class EditInsuranceLicenseErrorState extends LoginState {
+  final String error;
+  EditInsuranceLicenseErrorState(this.error);
 }
 
 
@@ -48,11 +76,29 @@ class AddDriverDataErrorState extends LoginState {
   AddDriverDataErrorState(this.error);
 }
 
+class EditDriverDataLoadingState extends LoginState {}
+class EditDriverDataSuccessState extends LoginState {}
+class EditDriverDataErrorState extends LoginState {
+  final String error;
+  EditDriverDataErrorState(this.error);
+}
+
 class ChangePasswordLoadingState extends LoginState {}
 class ChangePasswordSuccessState extends LoginState {}
 class ChangePasswordErrorState extends LoginState {
   final String error;
   ChangePasswordErrorState(this.error);
 }
+
+
+class ChangeDriverStatusLoadingState extends LoginState {}
+class ChangeDriverStatusSuccessState extends LoginState {}
+class ChangeDriverStatusErrorState extends LoginState {
+  final String error;
+  ChangeDriverStatusErrorState(this.error);
+}
+
+
+
 class EditAccountImagePickerState extends LoginState {}
 

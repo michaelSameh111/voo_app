@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-
+//ignore_for_file: must_be_immutable
 class MainElevatedButton extends StatelessWidget {
 
   Widget nextScreen;
@@ -11,7 +11,7 @@ class MainElevatedButton extends StatelessWidget {
     required this.nextScreen,
     required this.text,
     required this.backgroundColor
-});
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,38 @@ class MainElevatedButton extends StatelessWidget {
           child: Container(
             child: Text(
               text,
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
+            ),
+          )),
+    )
+    ;
+  }
+}
+class MainElevatedButtonTwo extends StatelessWidget {
+  final VoidCallback? onPressed;
+  String text;
+  Color backgroundColor;
+  bool? condition;
+
+  MainElevatedButtonTwo({
+    required this.onPressed,
+    required this.text,
+    required this.backgroundColor,
+    this.condition
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 80.w,
+      child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              backgroundColor: backgroundColor),
+          onPressed: onPressed,
+          child: Container(
+            child:condition == true ? const Center(child: CircularProgressIndicator(color: Colors.white,)) : Text(
+              text,
+              style: const TextStyle(color: Colors.white),
             ),
           )),
     )

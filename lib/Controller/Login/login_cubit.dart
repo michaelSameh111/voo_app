@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:voo_app/Controller/Data/data_cubit.dart';
@@ -282,6 +283,8 @@ class LoginCubit extends Cubit<LoginState> {
         token: token)
         .then((value) async {
       emit(EditDriverLicenseSuccessState());
+      sourcePosition = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
     }).catchError((error,stacktrace) {
       // print(error);
       // print(stacktrace);

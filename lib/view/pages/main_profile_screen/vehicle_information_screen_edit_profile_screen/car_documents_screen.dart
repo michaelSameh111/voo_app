@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/view/widgets/raise_documents_container_widget.dart';
 
-class CarDocumentsScreen extends StatelessWidget {
-  const CarDocumentsScreen({super.key});
+class CarDocumentScreen extends StatelessWidget {
+  const CarDocumentScreen({super.key});
 
 
 

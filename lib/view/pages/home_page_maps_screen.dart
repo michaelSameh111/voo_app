@@ -1,6 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_places_autocomplete_text_field/model/prediction.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:voo_app/view/pages/customer_location_maps_screen.dart';
+
+import '../../Controller/Constants.dart';
+import 'history _screen/history_screen.dart';
+import 'main_profile_screen/main_profile_screen.dart';
 
 class HomePageMapsScreen extends StatefulWidget {
   const HomePageMapsScreen({super.key});
@@ -14,384 +25,18 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
   bool light = true;
   bool showDialogBool = false;
 
-  // List <Widget> screens = [
-  //   HomePageMapsScreen(),
-  //   MainProfileScreen(),
-  //   HistoryScreen(),
-  // ];
+  List <Widget> screens = [
+    HomePage(),
+    HistoryScreen(),
+    MainProfileScreen(),
+
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade300,
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
-          child: Column(
-            children: [
-              Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(3.w)),
-                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
-                  child: Row(
-                    children: [
-                      const CircleAvatar(
-                        radius: 22.0,
-                        backgroundColor: Color(0xffA2A2A2),
-                        child: Icon(
-                          Icons.person,
-                          size: 30.0,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const Spacer(),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 3.w, vertical: 1.h),
-                        decoration: BoxDecoration(
-                            color: const Color(0xff0038A7),
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Row(
-                          children: [
-                            const Text(
-                              'Online',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            SizedBox(
-                              width: 1.5.w,
-                            ),
-                            CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: 2.5.w,
-                              child: CircleAvatar(
-                                backgroundColor: const Color(0xff637eb7),
-                                radius: 1.8.w,
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  )),
-              SizedBox(
-                height: 4.h,
-              ),
-              Row(
-                children: [
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.5.h),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: const Color(0xff0038A7),
-                          radius: 6.w,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 3.5.w,
-                            child: Icon(
-                              Icons.attach_money,
-                              color: const Color(0xff0038A7),
-                              size: 19.dp,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5.w,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Earnings',
-                              style: TextStyle(color: Color(0xff646363)),
-                            ),
-                            Text(
-                              '\$250',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 15.dp),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  const Spacer(),
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: const Color(0xff0038A7),
-                          radius: 6.w,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 3.5.w,
-                            child: Icon(
-                              Icons.calendar_today,
-                              color: const Color(0xff0038A7),
-                              size: 18.dp,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5.w,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Total trips',
-                              style: TextStyle(color: Color(0xff646363)),
-                            ),
-                            Text(
-                              '10',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 15.dp),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 5.h,
-              ),
-              CircleAvatar(
-                radius: 19.5.w,
-                backgroundColor: Colors.white,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 3.0.h),
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.hourglass_top,
-                        color: const Color(0xff0038A7),
-                        size: 30.dp,
-                      ),
-                      SizedBox(
-                        height: 0.6.h,
-                      ),
-                      Text(
-                        '30',
-                        style: TextStyle(
-                            color: const Color(0xff0038A7), fontSize: 25.dp),
-                      ),
-                      Text(
-                        'Seconds',
-                        style: TextStyle(
-                            color: const Color(0xff808080), fontSize: 16.dp),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              const Spacer(),
-              ElevatedButton(
-                child: const Text('Change location state (for UI)'),
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) => StatefulBuilder(
-                    builder: (context, setState) {
-                      return Theme(
-                        data: ThemeData(
-                            dialogBackgroundColor: Colors.white),
-                        child: Dialog(
-                          elevation: 0,
-                          child: Stack(
-                            clipBehavior: Clip.none,
-                            alignment: Alignment.topCenter,
-                            children: [
-                              SizedBox(
-                                height: 28.h,
-                                width: double.infinity,
-                                child: Column(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'You\'re offline',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18.dp,
-                                          color: const Color(0xff646363)),
-                                    ),
-                                    SizedBox(
-                                      height: 1.h,
-                                    ),
-                                    Text(
-                                      'Go online to accept jobs.',
-                                      style: TextStyle(
-                                          fontSize: 15.dp,
-                                          color: const Color(0xff646363)),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    SizedBox(
-                                      height: 1.5.h,
-                                    ),
-                                    const Divider(),
-                                    SizedBox(
-                                      height: 1.5.h,
-                                    ),
-                                    Switch(
-                                        trackOutlineColor:
-                                        MaterialStateProperty.all(
-                                            Colors.transparent),
-                                        activeTrackColor:
-                                        const Color(0xff0038A7),
-                                        inactiveTrackColor:
-                                        const Color(0xffD1D1D6),
-                                        inactiveThumbColor: Colors.white,
-                                        value: light,
-                                        onChanged: (bool value) {
-                                          setState(() {
-                                            light = value;
-                                          });
-                                        }),
-                                  ],
-                                ),
-                              ),
-                              Positioned(
-                                top: -50,
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  radius: 40,
-                                  child: Image.asset(
-                                    'assets/images/notification_offline.png',
-                                    width: 12.w,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ));
-                },
-              ),
-              SizedBox(
-                width: 80.w,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xff0038A7)),
-                    onPressed: () {
-                      if (light == true){
-                        acceptDeclineShowModalSheet(context);
-                        //&& showDialog closed
-                      }
-                      else{
-                        showDialog(
-                          context: context,
-                          builder: (context) => StatefulBuilder(
-                            builder: (context, setState) {
-                              return Theme(
-                                data: ThemeData(
-                                    dialogBackgroundColor: Colors.white),
-                                child: Dialog(
-                                  elevation: 0,
-                                  child: Stack(
-                                    clipBehavior: Clip.none,
-                                    alignment: Alignment.topCenter,
-                                    children: [
-                                      SizedBox(
-                                        height: 28.h,
-                                        width: double.infinity,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'You\'re offline',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18.dp,
-                                                  color: const Color(0xff646363)),
-                                            ),
-                                            SizedBox(
-                                              height: 1.h,
-                                            ),
-                                            Text(
-                                              'Go online to accept jobs.',
-                                              style: TextStyle(
-                                                  fontSize: 15.dp,
-                                                  color: const Color(0xff646363)),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            SizedBox(
-                                              height: 1.5.h,
-                                            ),
-                                            const Divider(),
-                                            SizedBox(
-                                              height: 1.5.h,
-                                            ),
-                                            Switch(
-                                                trackOutlineColor:
-                                                MaterialStateProperty.all(
-                                                    Colors.transparent),
-                                                activeTrackColor:
-                                                const Color(0xff0038A7),
-                                                inactiveTrackColor:
-                                                const Color(0xffD1D1D6),
-                                                inactiveThumbColor: Colors.white,
-                                                value: light,
-                                                onChanged: (bool value) {
-                                                  setState(() {
-                                                    light = value;
-                                                    showDialogBool = value;
-
-                                                    if(showDialogBool == true){
-                                                      Navigator.of(context).pop();
-                                                    }
-
-                                                    acceptDeclineShowModalSheet(context);
-                                                  });
-                                                }),
-                                          ],
-                                        ),
-                                      ),
-                                      Positioned(
-                                        top: -50,
-                                        child: CircleAvatar(
-                                          backgroundColor: Colors.white,
-                                          radius: 40,
-                                          child: Image.asset(
-                                            'assets/images/notification_offline.png',
-                                            width: 12.w,
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      }
-
-                    },
-                    child: const Text(
-                      'Find Jobs',
-                      style: TextStyle(color: Colors.white),
-                    )),
-              )
-            ],
-          ),
-        ),
-      ),
-
+      body: screens[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: const Color(0xff0038A7),
         unselectedItemColor: const Color(0xffA2A2A2),
@@ -413,6 +58,684 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
     );
   }
 }
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  LatLng? destinationPosition = const LatLng(31.2449, 29.9725);
+  Prediction? pickedLocation ;
+  bool locationEnabled = false;
+  List<LatLng> polyLineCoordinates = [];
+  final Set<Marker> _markers = {
+  };
+  Stream<Position>? locationStream;
+  Completer<GoogleMapController> googleMapController = Completer();
+  StreamSubscription<Position>? _positionStreamSubscription;
+  Position? _previousPosition;
+  GoogleMapController? controller;
+  final TextEditingController textEditingController = TextEditingController();
+
+  BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
+  void addCustomMarker(){
+    BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(15,15)), 'assets/images/car.png').then((icon){
+      setState(() {
+        markerIcon = icon;
+      });
+    });
+  }
+  Future<void> _addMarker(Prediction prediction) async {
+    final marker = Marker(
+      markerId: MarkerId(prediction.placeId!),
+      position: LatLng(double.parse(prediction.lat!),double.parse(prediction.lng!)),
+      infoWindow: InfoWindow(
+        title: prediction.description,
+      ),
+    );
+    setState(() {
+      _markers.add(marker);
+    });
+  }
+  void getPolyPoints(double lat , double lng ) async {
+    PolylinePoints polylinePoints = PolylinePoints();
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+        googleMapApiKey,
+        PointLatLng(sourcePosition!.latitude, sourcePosition!.longitude),
+        PointLatLng(lat, lng));
+    print(result.points);
+    if (result.points.isNotEmpty) {
+      result.points.forEach((PointLatLng point) =>
+          polyLineCoordinates.add(LatLng(point.latitude, point.longitude)));
+      setState(() {});
+    } else {
+      print('Nothing');
+    }
+  }
+  void startListeningToLocationChanges() {
+    _positionStreamSubscription = locationStream!.listen((Position position) {
+      if (_previousPosition != null &&
+          (_previousPosition!.latitude != position.latitude ||
+              _previousPosition!.longitude != position.longitude)) {
+        _previousPosition = position;
+        setState(() {
+          sourcePosition = position;
+        });
+        controller!.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: LatLng(position.latitude, position.longitude),
+              zoom: 20,
+            ),
+          ),
+        );
+      } else {
+        _previousPosition = position;
+      }
+    });
+  }
+  void stopListeningToLocationChanges() {
+    _positionStreamSubscription?.cancel();
+    _positionStreamSubscription = null;
+  }
+  @override
+  void dispose() {
+    stopListeningToLocationChanges();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+
+    // addCustomMarker();
+    //
+    // _markers.add(Marker(
+    //     markerId: const MarkerId('destination'),
+    //     icon: BitmapDescriptor.defaultMarkerWithHue(
+    //         BitmapDescriptor.hueGreen),
+    //     position: destinationPosition!),);
+    checkLocationEnabled().whenComplete(() async {
+      sourcePosition ??= await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      Timer(Duration(seconds: 1),() {
+        _markers.add(Marker(
+            markerId: const MarkerId('Source'),
+            icon: markerIcon,
+            position: LatLng(sourcePosition!.latitude,
+                sourcePosition!.longitude)),);
+      },);
+      print(locationEnabled);
+      if (!locationEnabled) {
+        // print('Noooooooooooooooooooooooooooo');
+        // showDialog(
+        //   context: context,
+        //   builder: (context) => StatefulBuilder(
+        //     builder: (context, setState) {
+        //       return Theme(
+        //         data: ThemeData(dialogBackgroundColor: Colors.white),
+        //         child: Dialog(
+        //           elevation: 0,
+        //           child: Stack(
+        //             clipBehavior: Clip.none,
+        //             alignment: Alignment.topCenter,
+        //             children: [
+        //               SizedBox(
+        //                 width: double.infinity,
+        //                 child: Column(
+        //                   mainAxisAlignment: MainAxisAlignment.center,
+        //                   crossAxisAlignment: CrossAxisAlignment.center,
+        //                   mainAxisSize: MainAxisSize.min,
+        //                   children: [
+        //                     SizedBox(
+        //                       height: 5.h,
+        //                     ),
+        //                     Padding(
+        //                       padding: EdgeInsets.symmetric(horizontal: 5.w),
+        //                       child: Text(
+        //                         'Please provide the location permission from settings',
+        //                         textAlign: TextAlign.center,
+        //                         style: TextStyle(
+        //                             fontWeight: FontWeight.w500,
+        //                             fontSize: 14.dp,
+        //                             color: const Color(0xff646363)),
+        //                       ),
+        //                     ),
+        //                     SizedBox(
+        //                       height: 1.h,
+        //                     ),
+        //                     const Divider(),
+        //                     // SizedBox(
+        //                     //   height: 1.5.h,
+        //                     // ),
+        //                     GestureDetector(
+        //                       onTap: () {
+        //                         toggleLocation();
+        //                       },
+        //                       child: SizedBox(
+        //                         height: 5.h,
+        //                         width: double.infinity,
+        //                         child: Center(
+        //                           child: Text(
+        //                             'Go To Settings',
+        //                             style: TextStyle(
+        //                                 color: const Color(0xfff70415),
+        //                                 fontSize: 20.dp,
+        //                                 fontWeight: FontWeight.bold),
+        //                           ),
+        //                         ),
+        //                       ),
+        //                     )
+        //                   ],
+        //                 ),
+        //               ),
+        //               Positioned(
+        //                 top: -50,
+        //                 child: CircleAvatar(
+        //                   backgroundColor: Colors.white,
+        //                   radius: 5.h,
+        //                   child: Image.asset(
+        //                     'assets/images/notification_offline.png',
+        //                     width: 12.w,
+        //                   ),
+        //                 ),
+        //               )
+        //             ],
+        //           ),
+        //         ),
+        //       );
+        //     },
+        //   ),
+        // );
+      } else {
+        controller = await googleMapController.future;
+        locationStream = Geolocator.getPositionStream(
+            locationSettings: const LocationSettings(
+              accuracy: LocationAccuracy.high,));
+        startListeningToLocationChanges();
+      }
+    });
+
+    super.initState();
+  }
+
+
+
+  Future<void> checkLocationEnabled() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    setState(() {
+      locationEnabled = serviceEnabled;
+    });
+  }
+
+  Future<void> toggleLocation() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (serviceEnabled) {
+      await Geolocator.openLocationSettings();
+    } else {
+      PermissionStatus permissionStatus = await Permission.location.request();
+      if (permissionStatus == PermissionStatus.granted) {
+        await Geolocator.openLocationSettings();
+      }
+    }
+    setState(() {
+      locationEnabled = !locationEnabled;
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    bool light = true;
+    bool showDialogBool = false;
+    return SafeArea(
+      child: Stack(
+        children: [
+          GoogleMap(
+            // myLocationButtonEnabled: true,
+            // myLocationEnabled: true,
+            buildingsEnabled: false,
+            scrollGesturesEnabled: true,
+            zoomGesturesEnabled: true,
+            trafficEnabled: true,
+            initialCameraPosition: CameraPosition(
+              target: sourcePosition == null ? LatLng(31.2447917,
+                  29.9740327) : LatLng(sourcePosition!.latitude,
+                  sourcePosition!.longitude),
+              zoom: 14.5,
+            ),
+            onMapCreated: (mapController) {
+              googleMapController.complete(mapController);
+            },
+            polylines: {
+              Polyline(
+                  polylineId: PolylineId('route'),
+                  color: Colors.blue,
+                  visible: true,
+                  points: polyLineCoordinates,
+                  width: 5)
+            },
+            markers: _markers,
+            // markers:sourcePosition == null ? {
+            //   Marker(
+            //       markerId: const MarkerId('destination'),
+            //       icon: BitmapDescriptor.defaultMarkerWithHue(
+            //           BitmapDescriptor.hueGreen),
+            //       position: destinationPosition!),
+            // } : {
+            //   Marker(
+            //       markerId: const MarkerId('Source'),
+            //       icon: markerIcon,
+            //       position: LatLng(sourcePosition!.latitude,
+            //           sourcePosition!.longitude)),
+            //   Marker(
+            //       markerId: const MarkerId('destination'),
+            //       icon: BitmapDescriptor.defaultMarkerWithHue(
+            //           BitmapDescriptor.hueGreen),
+            //       position: destinationPosition!),
+            // },
+          ),
+          Positioned(bottom: 10,left: 10 ,child: FloatingActionButton(onPressed: (){
+            print(sourcePosition!.longitude);
+            print(sourcePosition!.latitude);
+            controller!.animateCamera(
+                CameraUpdate.newCameraPosition(
+                    CameraPosition(
+                      target: LatLng(sourcePosition!.latitude, sourcePosition!.longitude),
+                      zoom: 18,)));},child: Icon(Icons.my_location),elevation: 0,backgroundColor: Colors.white,)),
+          // GooglePlacesAutoCompleteTextFormField(
+          //     textEditingController: textEditingController,
+          //     googleAPIKey:   googleMapApiKey,
+          //     countries: ["US","us",'EG','eg'], // optional, by default the list is empty (no restrictions)
+          //     isLatLngRequired: true, // if you require the coordinates from the place details
+          //     getPlaceDetailWithLatLng: (prediction) {
+          //       print("Coordinates: (${prediction.lat},${prediction.lng})");
+          //       _addMarker(prediction);
+          //       pickedLocation = prediction;
+          //       controller!.animateCamera(
+          //         CameraUpdate.newCameraPosition(
+          //           CameraPosition(
+          //             target: LatLng(double.parse(prediction.lat!), double.parse(prediction.lng!)),
+          //             zoom: 16,
+          //           ),
+          //         ),
+          //       );
+          //     }, // this callback is called when isLatLngRequired is true
+          //     itmClick: (prediction) {
+          //       textEditingController.text = prediction.description!;
+          //       textEditingController.selection = TextSelection.fromPosition(TextPosition(offset: prediction.description!.length));
+          //     }
+          // ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+            child: Column(
+              children: [
+                Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(3.w)),
+                    padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
+                    child: Row(
+                      children: [
+                        const CircleAvatar(
+                          radius: 22.0,
+                          backgroundColor: Color(0xffA2A2A2),
+                          child: Icon(
+                            Icons.person,
+                            size: 30.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const Spacer(),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 3.w, vertical: 1.h),
+                          decoration: BoxDecoration(
+                              color: const Color(0xff0038A7),
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Row(
+                            children: [
+                              const Text(
+                                'Online',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              SizedBox(
+                                width: 1.5.w,
+                              ),
+                              CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 2.5.w,
+                                child: CircleAvatar(
+                                  backgroundColor: const Color(0xff637eb7),
+                                  radius: 1.8.w,
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    )),
+                SizedBox(
+                  height: 4.h,
+                ),
+                Row(
+                  children: [
+                    Container(
+                      padding:
+                      EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.5.h),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: const Color(0xff0038A7),
+                            radius: 6.w,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 3.5.w,
+                              child: Icon(
+                                Icons.attach_money,
+                                color: const Color(0xff0038A7),
+                                size: 19.dp,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5.w,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Earnings',
+                                style: TextStyle(color: Color(0xff646363)),
+                              ),
+                              Text(
+                                '\$250',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 15.dp),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    const Spacer(),
+                    Container(
+                      padding:
+                      EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: const Color(0xff0038A7),
+                            radius: 6.w,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 3.5.w,
+                              child: Icon(
+                                Icons.calendar_today,
+                                color: const Color(0xff0038A7),
+                                size: 18.dp,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5.w,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Total trips',
+                                style: TextStyle(color: Color(0xff646363)),
+                              ),
+                              Text(
+                                '10',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 15.dp),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                // CircleAvatar(
+                //   radius: 19.5.w,
+                //   backgroundColor: Colors.white,
+                //   child: Padding(
+                //     padding: EdgeInsets.symmetric(vertical: 3.0.h),
+                //     child: Column(
+                //       children: [
+                //         Icon(
+                //           Icons.hourglass_top,
+                //           color: const Color(0xff0038A7),
+                //           size: 30.dp,
+                //         ),
+                //         SizedBox(
+                //           height: 0.6.h,
+                //         ),
+                //         Text(
+                //           '30',
+                //           style: TextStyle(
+                //               color: const Color(0xff0038A7), fontSize: 25.dp),
+                //         ),
+                //         Text(
+                //           'Seconds',
+                //           style: TextStyle(
+                //               color: const Color(0xff808080), fontSize: 16.dp),
+                //         )
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                const Spacer(),
+                // ElevatedButton(
+                //   child: const Text('Change location state (for UI)'),
+                //   onPressed: () {
+                //     showDialog(
+                //         context: context,
+                //         builder: (context) => StatefulBuilder(
+                //           builder: (context, setState) {
+                //             return Theme(
+                //               data: ThemeData(
+                //                   dialogBackgroundColor: Colors.white),
+                //               child: Dialog(
+                //                 elevation: 0,
+                //                 child: Stack(
+                //                   clipBehavior: Clip.none,
+                //                   alignment: Alignment.topCenter,
+                //                   children: [
+                //                     SizedBox(
+                //                       height: 28.h,
+                //                       width: double.infinity,
+                //                       child: Column(
+                //                         mainAxisAlignment:
+                //                         MainAxisAlignment.center,
+                //                         children: [
+                //                           Text(
+                //                             'You\'re offline',
+                //                             style: TextStyle(
+                //                                 fontWeight: FontWeight.bold,
+                //                                 fontSize: 18.dp,
+                //                                 color: const Color(0xff646363)),
+                //                           ),
+                //                           SizedBox(
+                //                             height: 1.h,
+                //                           ),
+                //                           Text(
+                //                             'Go online to accept jobs.',
+                //                             style: TextStyle(
+                //                                 fontSize: 15.dp,
+                //                                 color: const Color(0xff646363)),
+                //                             textAlign: TextAlign.center,
+                //                           ),
+                //                           SizedBox(
+                //                             height: 1.5.h,
+                //                           ),
+                //                           const Divider(),
+                //                           SizedBox(
+                //                             height: 1.5.h,
+                //                           ),
+                //                           Switch(
+                //                               trackOutlineColor:
+                //                               MaterialStateProperty.all(
+                //                                   Colors.transparent),
+                //                               activeTrackColor:
+                //                               const Color(0xff0038A7),
+                //                               inactiveTrackColor:
+                //                               const Color(0xffD1D1D6),
+                //                               inactiveThumbColor: Colors.white,
+                //                               value: light,
+                //                               onChanged: (bool value) {
+                //                                 setState(() {
+                //                                   light = value;
+                //                                 });
+                //                               }),
+                //                         ],
+                //                       ),
+                //                     ),
+                //                     Positioned(
+                //                       top: -50,
+                //                       child: CircleAvatar(
+                //                         backgroundColor: Colors.white,
+                //                         radius: 40,
+                //                         child: Image.asset(
+                //                           'assets/images/notification_offline.png',
+                //                           width: 12.w,
+                //                         ),
+                //                       ),
+                //                     )
+                //                   ],
+                //                 ),
+                //               ),
+                //             );
+                //           },
+                //         ));
+                //   },
+                // ),
+                SizedBox(
+                  width: 80.w,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xff0038A7)),
+                      onPressed: () {
+                        if (light == true){
+                          acceptDeclineShowModalSheet(context);
+                          //&& showDialog closed
+                        }
+                        else{
+                          showDialog(
+                            context: context,
+                            builder: (context) => StatefulBuilder(
+                              builder: (context, setState) {
+                                return Theme(
+                                  data: ThemeData(
+                                      dialogBackgroundColor: Colors.white),
+                                  child: Dialog(
+                                    elevation: 0,
+                                    child: Stack(
+                                      clipBehavior: Clip.none,
+                                      alignment: Alignment.topCenter,
+                                      children: [
+                                        SizedBox(
+                                          height: 28.h,
+                                          width: double.infinity,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'You\'re offline',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 18.dp,
+                                                    color: const Color(0xff646363)),
+                                              ),
+                                              SizedBox(
+                                                height: 1.h,
+                                              ),
+                                              Text(
+                                                'Go online to accept jobs.',
+                                                style: TextStyle(
+                                                    fontSize: 15.dp,
+                                                    color: const Color(0xff646363)),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              SizedBox(
+                                                height: 1.5.h,
+                                              ),
+                                              const Divider(),
+                                              SizedBox(
+                                                height: 1.5.h,
+                                              ),
+                                              Switch(
+                                                  trackOutlineColor:
+                                                  WidgetStateProperty.all(
+                                                      Colors.transparent),
+                                                  activeTrackColor:
+                                                  const Color(0xff0038A7),
+                                                  inactiveTrackColor:
+                                                  const Color(0xffD1D1D6),
+                                                  inactiveThumbColor: Colors.white,
+                                                  value: light,
+                                                  onChanged: (bool value) {
+                                                    setState(() {
+                                                      light = value;
+                                                      showDialogBool = value;
+
+                                                      if(showDialogBool == true){
+                                                        Navigator.of(context).pop();
+                                                      }
+
+                                                      acceptDeclineShowModalSheet(context);
+                                                    });
+                                                  }),
+                                            ],
+                                          ),
+                                        ),
+                                        Positioned(
+                                          top: -50,
+                                          child: CircleAvatar(
+                                            backgroundColor: Colors.white,
+                                            radius: 40,
+                                            child: Image.asset(
+                                              'assets/images/notification_offline.png',
+                                              width: 12.w,
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        }
+
+                      },
+                      child: const Text(
+                        'Find Jobs',
+                        style: TextStyle(color: Colors.white),
+                      )),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 
 void acceptDeclineShowModalSheet(BuildContext context) {
   showModalBottomSheet(

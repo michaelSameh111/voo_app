@@ -16,7 +16,7 @@ class DataCubit extends Cubit<DataState> {
   static DataCubit get(context) => BlocProvider.of(context);
   Future<void> getVehicleTypes() {
     emit(GetVehicleTypesLoadingState());
-    return DioHelper.getData(url: 'vehicle-types', token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MTYxMDIyNjYsImV4cCI6MTcxNjcwNzA2NiwibmJmIjoxNzE2MTAyMjY2LCJqdGkiOiJGUGhNeDF4eEdUS2NoaGJIIiwic3ViIjoiMyIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.eSEB-JWdmjDYKLnLangtT9G1ROtzxfiWXqBGFE_mjs8')
+    return DioHelper.getData(url: 'vehicle-types', token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MTY1NTc5MjcsImV4cCI6MTcxNzE2MjcyNywibmJmIjoxNzE2NTU3OTI3LCJqdGkiOiI0dzQzcWpGdk1CSzM2WWVKIiwic3ViIjoiMyIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.JFl9vyahRtBfB9chV41jHJkfEa2ZLplqVd9IjSfHMlE')
         .then((value) {
       vehicleTypesModel = VehicleTypesModel.fromJson(value.data);
       emit(GetVehicleTypesSuccessState());
@@ -27,7 +27,7 @@ class DataCubit extends Cubit<DataState> {
   }
   Future<LicenseDataModel> getDriverLicenseData(LicenseDataModel licenseDataModel) {
     emit(GetLicenseDataLoadingState());
-    return DioHelper.getData(url: 'driver-license', token: token)
+    return DioHelper.getData(url: 'driver-license', token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MTY1NTc5MjcsImV4cCI6MTcxNzE2MjcyNywibmJmIjoxNzE2NTU3OTI3LCJqdGkiOiI0dzQzcWpGdk1CSzM2WWVKIiwic3ViIjoiMyIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.JFl9vyahRtBfB9chV41jHJkfEa2ZLplqVd9IjSfHMlE')
         .then((value) {
      licenseDataModel  = LicenseDataModel.fromJson(value.data);
      print(licenseDataModel.driverLicense!.licenseNumber);
@@ -40,7 +40,7 @@ class DataCubit extends Cubit<DataState> {
   }
   Future<InsuranceDataModel> getDriverInsuranceData(InsuranceDataModel insuranceDataModel) {
     emit(GetInsuranceDataLoadingState());
-    return DioHelper.getData(url: 'driver-insurance/edit', token: token)
+    return DioHelper.getData(url: 'driver-insurance/edit', token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MTY1NTc5MjcsImV4cCI6MTcxNzE2MjcyNywibmJmIjoxNzE2NTU3OTI3LCJqdGkiOiI0dzQzcWpGdk1CSzM2WWVKIiwic3ViIjoiMyIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.JFl9vyahRtBfB9chV41jHJkfEa2ZLplqVd9IjSfHMlE')
         .then((value) {
      insuranceDataModel  = InsuranceDataModel.fromJson(value.data);
      print(insuranceDataModel.insuranceData!.insuranceNumber);
@@ -53,7 +53,7 @@ class DataCubit extends Cubit<DataState> {
   }
   Future<DriverDataModel> getDriverData(DriverDataModel driverDataModel) {
     emit(GetDriverDataLoadingState());
-    return DioHelper.getData(url: 'driver-data', token: token)
+    return DioHelper.getData(url: 'driver-data', token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MTY1NTc5MjcsImV4cCI6MTcxNzE2MjcyNywibmJmIjoxNzE2NTU3OTI3LCJqdGkiOiI0dzQzcWpGdk1CSzM2WWVKIiwic3ViIjoiMyIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.JFl9vyahRtBfB9chV41jHJkfEa2ZLplqVd9IjSfHMlE')
         .then((value) {
      driverDataModel  = DriverDataModel.fromJson(value.data);
      print(driverDataModel.driverData!.country);

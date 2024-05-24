@@ -71,6 +71,11 @@ class EarningsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton:    MainElevatedButton(
+          nextScreen: const TodayEarnedScreen(),
+          text: 'View today earned',
+          backgroundColor: const Color(0xffFF6A03)),
       appBar: AppBar(
         toolbarHeight: 10.h,
         leading: Padding(
@@ -154,19 +159,16 @@ class EarningsScreen extends StatelessWidget {
                 )
               ],
             ),
-            SizedBox(height: 4.h,),
+            SizedBox(height: 2.h,),
             Expanded(
               child: ListView.separated(
                   itemBuilder: (context, index) => earningItem(),
                   separatorBuilder: (context, index) => const Divider(color: Color(0xffECECEC),),
                   itemCount: 10),
             ),
-            const Spacer(),
-            MainElevatedButton(
-                nextScreen: const TodayEarnedScreen(),
-                text: 'View today earned',
-                backgroundColor: const Color(0xffFF6A03)),
-            SizedBox(height: 3.h,)
+            // const Spacer(),
+
+            SizedBox(height: 8.h,)
           ],
         ),
       ),

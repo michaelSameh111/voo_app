@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:voo_app/Controller/Constants.dart';
 import 'package:voo_app/view/pages/main_profile_screen/app_settings_screen/app_settings_screen.dart';
 import 'package:voo_app/view/pages/main_profile_screen/bank_account_screen_edit_profile_screen/bank_account_screen_edit_profile_screen.dart';
 import 'package:voo_app/view/pages/main_profile_screen/cash_back_screen/cash_back_screen.dart';
@@ -27,17 +28,31 @@ class MainProfileScreen extends StatelessWidget {
                   CircleAvatar(
                     radius: 10.w,
                     backgroundColor: const Color(0xffECECEC),
-                    child: Icon(
-                      Icons.person,
-                      size: 52.dp,
-                      color: const Color(0xffA2A2A2),
+                    child: Image.network(
+                      '${loginData.image}',
+                      fit: BoxFit.fill,
+                      height: 30.h,
+                      width: 30.h,
+                      errorBuilder: (context,object,skipTrace){
+                        return
+                        Icon(
+                              Icons.person,
+                              size: 52.dp,
+                              color: const Color(0xffA2A2A2),
+                            );
+                      },
                     ),
+                    // child: Icon(
+                    //   Icons.person,
+                    //   size: 52.dp,
+                    //   color: const Color(0xffA2A2A2),
+                    // ),
                   ),
                   SizedBox(
                     width: 4.5.w,
                   ),
                   Text(
-                    'Nader Nabil',
+                    '${loginData.firstName} ${loginData.lastName}',
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 20.dp),
                   )
@@ -88,8 +103,7 @@ class MainProfileScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            const AppSettingsScreen()));
+                        builder: (context) => const AppSettingsScreen()));
               },
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
@@ -124,8 +138,7 @@ class MainProfileScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            const NotificationsScreen()));
+                        builder: (context) => const NotificationsScreen()));
               },
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
@@ -160,7 +173,8 @@ class MainProfileScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>const VehicleInformationScreenEditProfileScreen()));
+                        builder: (context) =>
+                            const VehicleInformationScreenEditProfileScreen()));
               },
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
@@ -195,7 +209,8 @@ class MainProfileScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>const BankAccountScreenEditProfileScreen()));
+                        builder: (context) =>
+                            const BankAccountScreenEditProfileScreen()));
               },
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
@@ -230,7 +245,7 @@ class MainProfileScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>const EarningsScreen()));
+                        builder: (context) => const EarningsScreen()));
               },
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
@@ -265,7 +280,7 @@ class MainProfileScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>const ClaimScreen()));
+                        builder: (context) => const ClaimScreen()));
               },
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
@@ -297,10 +312,8 @@ class MainProfileScreen extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CashBackScreen()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CashBackScreen()));
               },
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),

@@ -2,6 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen/basic_info_screen_contents/change_language_basic_info_screen.dart';
 import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen/basic_info_screen_contents/change_password_basic_info_screen.dart';
@@ -9,8 +10,6 @@ import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen/ba
 import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen/basic_info_screen_contents/edit_your_photo_basic_info_screen.dart';
 import 'package:voo_app/view/widgets/icon_and_text_field_basic_info_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
-// ignore: depend_on_referenced_packages
-import 'package:intl/intl.dart';
 
 class EditMyProfileScreen extends StatefulWidget {
   const EditMyProfileScreen({super.key});
@@ -40,29 +39,45 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Nader Nabil'),
+            leadingWidth: 0,
+            backgroundColor: Colors.white,
+            elevation: 0,
+            title: Text('Nader Nabil',style: GoogleFonts.roboto(fontSize: 30.dp,color: Colors.black,fontWeight: FontWeight.bold),),
             bottom: TabBar(
+             indicator: const UnderlineTabIndicator(
+               borderSide: BorderSide(color: Color(0xff0038A7),width: 2),
+             ),
+
               tabs: [
-                Text(
-                  'Basic Info',
-                  style: TextStyle(
-                      color: const Color(0xff0038A7),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14.8.dp),
+                Padding(
+                  padding:  EdgeInsets.symmetric(vertical: 1.h),
+                  child: Text(
+                    'Basic Info',
+                    style: TextStyle(
+                        color: const Color(0xff0038A7),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14.8.dp),
+                  ),
                 ),
-                Text(
-                  'Driver License',
-                  style: TextStyle(
-                      color: const Color(0xff0038A7),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13.dp),
+                Padding(
+                  padding:  EdgeInsets.symmetric(vertical: 1.h),
+                  child: Text(
+                    'Driver License',
+                    style: TextStyle(
+                        color: const Color(0xff0038A7),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13.dp),
+                  ),
                 ),
-                Text(
-                  'Insurance',
-                  style: TextStyle(
-                      color: const Color(0xff0038A7),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14.8.dp),
+                Padding(
+                  padding:  EdgeInsets.symmetric(vertical: 1.h),
+                  child: Text(
+                    'Insurance',
+                    style: TextStyle(
+                        color: const Color(0xff0038A7),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14.8.dp),
+                  ),
                 ),
               ],
             ),
@@ -86,7 +101,6 @@ class BasicInfoScreen extends StatefulWidget {
 class _BasicInfoScreenState extends State<BasicInfoScreen> {
   TextEditingController dateOfBirthController = TextEditingController();
   final DateTime _selectedDate = DateTime.now();
-
 
   @override
   Widget build(BuildContext context) {

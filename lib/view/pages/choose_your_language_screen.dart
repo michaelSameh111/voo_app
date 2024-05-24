@@ -157,7 +157,7 @@ class _ChooseYourLangScreenState extends State<ChooseYourLangScreen> {
                 ),
                 const Spacer(),
                 MainElevatedButton(
-                    nextScreen: const DriverLicenseScreen(),
+                    nextScreen:  DriverLicenseScreen(),
                     text: 'Next',
                     backgroundColor: const Color(0xff0038A7)),
                 SizedBox(

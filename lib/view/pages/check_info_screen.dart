@@ -32,7 +32,7 @@ class CheckInfoScreen extends StatelessWidget {
                 SizedBox(
                   height: 60.h,
                 ),
-                CircledNextButton(nextScreen: const DriverLicenseScreen())
+                CircledNextButton(nextScreen:  DriverLicenseScreen())
               ],
             ),
           ),

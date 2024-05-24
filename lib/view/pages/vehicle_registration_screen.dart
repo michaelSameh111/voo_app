@@ -107,7 +107,7 @@ class VehicleRegistrationScreen extends StatelessWidget {
                     SizedBox(height: 19.h,),
                     MainElevatedButton(
                         nextScreen:
-                        const InsuranceScreen(), //mo2akatan 3amelha LoginScreen next page
+                         InsuranceScreen(), //mo2akatan 3amelha LoginScreen next page
                         text: 'Next',
                         backgroundColor: const Color(0xff0038A7)),
 

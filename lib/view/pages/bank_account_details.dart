@@ -1,11 +1,35 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-import 'package:voo_app/view/pages/login_screen.dart';
 import 'package:voo_app/view/pages/we_will_review_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
-class BankAccountDetailsScreen extends StatelessWidget {
+class BankAccountDetailsScreen extends StatefulWidget {
+  const BankAccountDetailsScreen({super.key});
 
+
+  @override
+  State<BankAccountDetailsScreen> createState() => _BankAccountDetailsScreenState();
+}
+final List<String> banks = [
+  'HSBC',
+  'CIB',
+  'NBK',
+  'ABC'
+];
+
+String? selectedBank;
+
+final List<String> branches = [
+  'Louran',
+  'Gleem',
+  'Fleming',
+  'Sporting'
+];
+
+String? selectedBranch;
+
+class _BankAccountDetailsScreenState extends State<BankAccountDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,17 +37,17 @@ class BankAccountDetailsScreen extends StatelessWidget {
         child: SafeArea(
           child: Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 23),
+              padding: EdgeInsets.symmetric(horizontal: 3.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Center(
                     child: Text(
-                      'Location',
+                      'Bank Account Details',
                       style: TextStyle(
                           fontSize: 25.dp,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xffF70415)),
+                          ),
                     ),
                   ),
                   SizedBox(
@@ -39,9 +63,9 @@ class BankAccountDetailsScreen extends StatelessWidget {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                        color: Color(0xffF5F4F4),
+                        color: const Color(0xffF5F4F4),
                         borderRadius: BorderRadius.circular(10)),
-                    child: TextField(
+                    child: const TextField(
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                           border: InputBorder.none,
@@ -62,9 +86,9 @@ class BankAccountDetailsScreen extends StatelessWidget {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                        color: Color(0xffF5F4F4),
+                        color: const Color(0xffF5F4F4),
                         borderRadius: BorderRadius.circular(10)),
-                    child: TextField(
+                    child: const TextField(
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                           border: InputBorder.none,
@@ -84,16 +108,47 @@ class BankAccountDetailsScreen extends StatelessWidget {
                     height: 2.h,
                   ),
                   Container(
-                    decoration: BoxDecoration(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 3.w,
+                      ),
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
                         color: Color(0xffF5F4F4),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: TextField(
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.all(15),
-                          hintText: 'Select bank'),
-                    ),
+                      ),
+                      child:
+                      DropdownButtonHideUnderline(
+                        child: DropdownButton2<String>(
+                            isExpanded: true,
+                            hint: const Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    'Select Bank',
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                )
+                              ],
+                            ),
+                            items: banks
+                                .map((String item) => DropdownMenuItem<String>(
+                              value: item,
+                              child: Text(
+                                item,
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ))
+                                .toList(),
+                            value: selectedBank,
+                            onChanged: (String? value) {
+                              setState(() {
+                                selectedBank = value;
+                              });
+                            }),
+                      )
                   ),
                   SizedBox(
                     height: 5.h,
@@ -107,23 +162,54 @@ class BankAccountDetailsScreen extends StatelessWidget {
                     height: 2.h,
                   ),
                   Container(
-                    decoration: BoxDecoration(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 3.w,
+                      ),
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
                         color: Color(0xffF5F4F4),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: TextField(
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.all(15),
-                          hintText: 'Select branch'),
-                    ),
+                      ),
+                      child:
+                      DropdownButtonHideUnderline(
+                        child: DropdownButton2<String>(
+                            isExpanded: true,
+                            hint: const Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    'Select Branch',
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                )
+                              ],
+                            ),
+                            items: branches
+                                .map((String item) => DropdownMenuItem<String>(
+                              value: item,
+                              child: Text(
+                                item,
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ))
+                                .toList(),
+                            value: selectedBranch,
+                            onChanged: (String? value) {
+                              setState(() {
+                                selectedBranch = value;
+                              });
+                            }),
+                      )
                   ),
                   SizedBox(height: 10.h,),
                   MainElevatedButton(
                       nextScreen:
-                      WeWillReviewScreen(),
+                      const WeWillReviewScreen(),
                       text: 'Next',
-                      backgroundColor: Color(0xff0038A7)),
+                      backgroundColor: const Color(0xff0038A7)),
                   SizedBox(height: 4.h,),
                 ],
               ),

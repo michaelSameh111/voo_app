@@ -1,13 +1,10 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/view/pages/customer_location_maps_screen.dart';
-import 'package:voo_app/view/pages/history_screen.dart';
-import 'package:voo_app/view/pages/main_bottom_navigation_bar.dart';
-import 'package:voo_app/view/pages/main_profile_screen/main_profile_screen.dart';
-import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class HomePageMapsScreen extends StatefulWidget {
+  const HomePageMapsScreen({super.key});
+
   @override
   State<HomePageMapsScreen> createState() => _HomePageMapsScreenState();
 }
@@ -48,12 +45,12 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                           color: Colors.white,
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Container(
                         padding: EdgeInsets.symmetric(
                             horizontal: 3.w, vertical: 1.h),
                         decoration: BoxDecoration(
-                            color: Color(0xff0038A7),
+                            color: const Color(0xff0038A7),
                             borderRadius: BorderRadius.circular(20)),
                         child: Row(
                           children: [
@@ -68,7 +65,7 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                               backgroundColor: Colors.white,
                               radius: 2.5.w,
                               child: CircleAvatar(
-                                backgroundColor: Color(0xff637eb7),
+                                backgroundColor: const Color(0xff637eb7),
                                 radius: 1.8.w,
                               ),
                             )
@@ -91,14 +88,14 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                     child: Row(
                       children: [
                         CircleAvatar(
-                          backgroundColor: Color(0xff0038A7),
+                          backgroundColor: const Color(0xff0038A7),
                           radius: 6.w,
                           child: CircleAvatar(
                             backgroundColor: Colors.white,
                             radius: 3.5.w,
                             child: Icon(
                               Icons.attach_money,
-                              color: Color(0xff0038A7),
+                              color: const Color(0xff0038A7),
                               size: 19.dp,
                             ),
                           ),
@@ -109,7 +106,7 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               'Earnings',
                               style: TextStyle(color: Color(0xff646363)),
                             ),
@@ -123,7 +120,7 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                       ],
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Container(
                     padding:
                         EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
@@ -133,14 +130,14 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                     child: Row(
                       children: [
                         CircleAvatar(
-                          backgroundColor: Color(0xff0038A7),
+                          backgroundColor: const Color(0xff0038A7),
                           radius: 6.w,
                           child: CircleAvatar(
                             backgroundColor: Colors.white,
                             radius: 3.5.w,
                             child: Icon(
                               Icons.calendar_today,
-                              color: Color(0xff0038A7),
+                              color: const Color(0xff0038A7),
                               size: 18.dp,
                             ),
                           ),
@@ -151,7 +148,7 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               'Total trips',
                               style: TextStyle(color: Color(0xff646363)),
                             ),
@@ -171,7 +168,7 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                 height: 5.h,
               ),
               CircleAvatar(
-                radius: 18.w,
+                radius: 19.5.w,
                 backgroundColor: Colors.white,
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 3.0.h),
@@ -179,7 +176,7 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                     children: [
                       Icon(
                         Icons.hourglass_top,
-                        color: Color(0xff0038A7),
+                        color: const Color(0xff0038A7),
                         size: 30.dp,
                       ),
                       SizedBox(
@@ -188,20 +185,20 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                       Text(
                         '30',
                         style: TextStyle(
-                            color: Color(0xff0038A7), fontSize: 25.dp),
+                            color: const Color(0xff0038A7), fontSize: 25.dp),
                       ),
                       Text(
                         'Seconds',
                         style: TextStyle(
-                            color: Color(0xff808080), fontSize: 16.dp),
+                            color: const Color(0xff808080), fontSize: 16.dp),
                       )
                     ],
                   ),
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               ElevatedButton(
-                child: Text('Change location state (for UI)'),
+                child: const Text('Change location state (for UI)'),
                 onPressed: () {
                   showDialog(
                       context: context,
@@ -216,7 +213,7 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                             clipBehavior: Clip.none,
                             alignment: Alignment.topCenter,
                             children: [
-                              Container(
+                              SizedBox(
                                 height: 28.h,
                                 width: double.infinity,
                                 child: Column(
@@ -228,7 +225,7 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18.dp,
-                                          color: Color(0xff646363)),
+                                          color: const Color(0xff646363)),
                                     ),
                                     SizedBox(
                                       height: 1.h,
@@ -237,13 +234,13 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                                       'Go online to accept jobs.',
                                       style: TextStyle(
                                           fontSize: 15.dp,
-                                          color: Color(0xff646363)),
+                                          color: const Color(0xff646363)),
                                       textAlign: TextAlign.center,
                                     ),
                                     SizedBox(
                                       height: 1.5.h,
                                     ),
-                                    Divider(),
+                                    const Divider(),
                                     SizedBox(
                                       height: 1.5.h,
                                     ),
@@ -254,7 +251,7 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                                         activeTrackColor:
                                         const Color(0xff0038A7),
                                         inactiveTrackColor:
-                                        Color(0xffD1D1D6),
+                                        const Color(0xffD1D1D6),
                                         inactiveThumbColor: Colors.white,
                                         value: light,
                                         onChanged: (bool value) {
@@ -266,6 +263,7 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                                 ),
                               ),
                               Positioned(
+                                top: -50,
                                 child: CircleAvatar(
                                   backgroundColor: Colors.white,
                                   radius: 40,
@@ -274,7 +272,6 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                                     width: 12.w,
                                   ),
                                 ),
-                                top: -50,
                               )
                             ],
                           ),
@@ -288,7 +285,7 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                 width: 80.w,
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xff0038A7)),
+                        backgroundColor: const Color(0xff0038A7)),
                     onPressed: () {
                       if (light == true){
                         acceptDeclineShowModalSheet(context);
@@ -308,7 +305,7 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                                     clipBehavior: Clip.none,
                                     alignment: Alignment.topCenter,
                                     children: [
-                                      Container(
+                                      SizedBox(
                                         height: 28.h,
                                         width: double.infinity,
                                         child: Column(
@@ -320,7 +317,7 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 18.dp,
-                                                  color: Color(0xff646363)),
+                                                  color: const Color(0xff646363)),
                                             ),
                                             SizedBox(
                                               height: 1.h,
@@ -329,13 +326,13 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                                               'Go online to accept jobs.',
                                               style: TextStyle(
                                                   fontSize: 15.dp,
-                                                  color: Color(0xff646363)),
+                                                  color: const Color(0xff646363)),
                                               textAlign: TextAlign.center,
                                             ),
                                             SizedBox(
                                               height: 1.5.h,
                                             ),
-                                            Divider(),
+                                            const Divider(),
                                             SizedBox(
                                               height: 1.5.h,
                                             ),
@@ -346,7 +343,7 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                                                 activeTrackColor:
                                                 const Color(0xff0038A7),
                                                 inactiveTrackColor:
-                                                Color(0xffD1D1D6),
+                                                const Color(0xffD1D1D6),
                                                 inactiveThumbColor: Colors.white,
                                                 value: light,
                                                 onChanged: (bool value) {
@@ -365,6 +362,7 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                                         ),
                                       ),
                                       Positioned(
+                                        top: -50,
                                         child: CircleAvatar(
                                           backgroundColor: Colors.white,
                                           radius: 40,
@@ -373,7 +371,6 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                                             width: 12.w,
                                           ),
                                         ),
-                                        top: -50,
                                       )
                                     ],
                                   ),
@@ -385,11 +382,9 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
                       }
 
                     },
-                    child: Container(
-                      child: Text(
-                        'Find Jobs',
-                        style: TextStyle(color: Colors.white),
-                      ),
+                    child: const Text(
+                      'Find Jobs',
+                      style: TextStyle(color: Colors.white),
                     )),
               )
             ],
@@ -406,7 +401,7 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
             currentIndex = index;
           });
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
@@ -438,15 +433,15 @@ void acceptDeclineShowModalSheet(BuildContext context) {
                   fontSize: 18.dp,
                 ),
               ),
-              Spacer(),
-              Text(
+              const Spacer(),
+              const Text(
                 '5 mins away',
                 style: TextStyle(color: Color(0xff808080)),
               )
             ],
           ),
         ),
-        Divider(),
+        const Divider(),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 5.0.w, vertical: 3.h),
           child: Column(
@@ -455,11 +450,11 @@ void acceptDeclineShowModalSheet(BuildContext context) {
                 children: [
                   CircleAvatar(
                     radius: 7.0.w,
-                    backgroundColor: Color(0xffECECEC),
+                    backgroundColor: const Color(0xffECECEC),
                     child: Icon(
                       Icons.person,
                       size: 11.w,
-                      color: Color(0xffA2A2A2),
+                      color: const Color(0xffA2A2A2),
                     ),
                   ),
                   SizedBox(
@@ -475,7 +470,7 @@ void acceptDeclineShowModalSheet(BuildContext context) {
                       Text(
                         'Cash Payment',
                         style: TextStyle(
-                            color: Color(0xff808080), fontSize: 13.dp),
+                            color: const Color(0xff808080), fontSize: 13.dp),
                       )
                     ],
                   )
@@ -520,11 +515,11 @@ void acceptDeclineShowModalSheet(BuildContext context) {
                                             color: Colors.grey.withOpacity(0.4),
                                             spreadRadius: 10,
                                             blurRadius: 10,
-                                            offset: Offset(0, 7))
+                                            offset: const Offset(0, 7))
                                       ]),
                                   child: Padding(
                                     padding: EdgeInsets.all(6.dp),
-                                    child: Text(
+                                    child: const Text(
                                       '10 mins trip',
                                       style: TextStyle(color: Color(0xff808080)),
                                     ),
@@ -535,7 +530,7 @@ void acceptDeclineShowModalSheet(BuildContext context) {
                               padding: EdgeInsets.only(left: 50.w),
                               width: 80.w,
                               height: 0.2.h,
-                              decoration: BoxDecoration(color: Colors.black
+                              decoration: const BoxDecoration(color: Colors.black
                                   //0xffE2E2E2
                                   ),
                             ),
@@ -568,18 +563,16 @@ void acceptDeclineShowModalSheet(BuildContext context) {
                     height: 5.5.h,
                     child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: Color(0xff0038A7))),
+                            side: const BorderSide(color: Color(0xff0038A7))),
                         onPressed: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => HomePageMapsScreen()));
+                                  builder: (context) => const HomePageMapsScreen()));
                         },
-                        child: Container(
-                          child: Text(
-                            'Decline',
-                            style: TextStyle(color: Color(0xff0038A7)),
-                          ),
+                        child: const Text(
+                          'Decline',
+                          style: TextStyle(color: Color(0xff0038A7)),
                         )),
                   ),
                   SizedBox(
@@ -590,15 +583,15 @@ void acceptDeclineShowModalSheet(BuildContext context) {
                     height: 5.5.h,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xff0038A7)),
+                            backgroundColor: const Color(0xff0038A7)),
                         onPressed: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      CustomerLocationMapsScreen()));
+                                      const CustomerLocationMapsScreen()));
                         },
-                        child: Text(
+                        child: const Text(
                           'Accept',
                           style: TextStyle(color: Colors.white),
                         )),

@@ -3,10 +3,11 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/view/pages/arrived_at_destination_maps_screen.dart';
 import 'package:voo_app/view/pages/collect_cash_screen.dart';
 import 'package:voo_app/view/pages/destination_maps_screen.dart';
-import 'package:voo_app/view/widgets/cancel_trip_show_modal_sheet.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class CustomerLocationMapsScreen extends StatefulWidget {
+  const CustomerLocationMapsScreen({super.key});
+
   @override
   State<CustomerLocationMapsScreen> createState() => _CustomerLocationMapsScreenState();
 }
@@ -34,7 +35,7 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 16.dp),
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -74,7 +75,7 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                     children: [
                       Icon(
                         Icons.location_on,
-                        color: Color(0xff0038A7),
+                        color: const Color(0xff0038A7),
                         size: 28.dp,
                       ),
                       SizedBox(
@@ -96,7 +97,7 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                 padding: EdgeInsets.all(10.dp),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20)),
                   boxShadow: [
@@ -113,15 +114,13 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                       width: 80.w,
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xff0038A7)),
+                              backgroundColor: const Color(0xff0038A7)),
                           onPressed: () {
                             arrivedAtDestinationShowModalSheet(context);
                           },
-                          child: Container(
-                            child: Text(
-                              'Arrived to pickup location',
-                              style: TextStyle(color: Colors.white),
-                            ),
+                          child: const Text(
+                            'Arrived to pickup location',
+                            style: TextStyle(color: Colors.white),
                           )),
                     ),
                     TextButton(
@@ -131,7 +130,7 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                         child: Text(
                           'Cancel trip',
                           style: TextStyle(
-                              color: Color(0xff646363), fontSize: 15.dp),
+                              color: const Color(0xff646363), fontSize: 15.dp),
                         ))
                   ],
                 ),
@@ -165,15 +164,15 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                       fontSize: 18.dp,
                     ),
                   ),
-                  Spacer(),
-                  Text(
+                  const Spacer(),
+                  const Text(
                     '5 mins away',
                     style: TextStyle(color: Color(0xff808080)),
                   )
                 ],
               ),
             ),
-            Divider(),
+            const Divider(),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 5.0.w, vertical: 3.h),
               child: Column(
@@ -182,11 +181,11 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                     children: [
                       CircleAvatar(
                         radius: 7.0.w,
-                        backgroundColor: Color(0xffECECEC),
+                        backgroundColor: const Color(0xffECECEC),
                         child: Icon(
                           Icons.person,
                           size: 11.w,
-                          color: Color(0xffA2A2A2),
+                          color: const Color(0xffA2A2A2),
                         ),
                       ),
                       SizedBox(
@@ -204,7 +203,7 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                               Text(
                                 'Cash Payment',
                                 style: TextStyle(
-                                    color: Color(0xff808080), fontSize: 13.dp),
+                                    color: const Color(0xff808080), fontSize: 13.dp),
                               )
                             ],
                           ),
@@ -213,7 +212,7 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                             onTap: (){},
                             child: Container(padding: EdgeInsets.all(5.dp),
                               decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.dp),
-                                  color: Color(0xffD9D9D9)),
+                                  color: const Color(0xffD9D9D9)),
                               child: Icon(Icons.phone, color: Colors.red,size: 22.dp),
                             ),
                           ),
@@ -222,7 +221,7 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                             onTap: (){},
                             child: Container(padding: EdgeInsets.all(5.dp),
                               decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.dp),
-                                  color: Color(0xffD9D9D9)),
+                                  color: const Color(0xffD9D9D9)),
                               child: Icon(Icons.message, color: Colors.red,size: 22.dp),
                             ),
                           ),
@@ -234,9 +233,9 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                     height: 4.h,
                   ),
                   MainElevatedButton(
-                      nextScreen: ArrivedAtDestinationMapsScreen(),
+                      nextScreen: const ArrivedAtDestinationMapsScreen(),
                       text: 'Start trip',
-                      backgroundColor: Color(0xff0038A7)),
+                      backgroundColor: const Color(0xff0038A7)),
                   TextButton(
                       onPressed: () {
                         cancelTripShowModalSheet(context);
@@ -244,7 +243,7 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                       child: Text(
                         'Cancel trip',
                         style: TextStyle(
-                            color: Color(0xff646363), fontSize: 15.dp),
+                            color: const Color(0xff646363), fontSize: 15.dp),
                       ))
                 ],
               ),
@@ -270,7 +269,7 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
             SizedBox(
               height: 5.h,
             ),
-            Image(
+            const Image(
               image:
               AssetImage('assets/images/enable_location_access_image.png'),
             ),
@@ -278,7 +277,7 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
             Text(
               'Arrived at Customer Location',
               style: TextStyle(
-                  color: Color(0xff0038A7),
+                  color: const Color(0xff0038A7),
                   fontSize: 20.dp,
                   fontWeight: FontWeight.bold),
             ),
@@ -287,30 +286,30 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
             ),
             Text(
               '6358 Elign St. Celina, Delaware....',
-              style: TextStyle(color: Color(0xff1D1B1B), fontSize: 15.dp),
+              style: TextStyle(color: const Color(0xff1D1B1B), fontSize: 15.dp),
             ),
             SizedBox(
               height: 4.h,
             ),
             MainElevatedButton(
-                nextScreen: DestinationMapsScreen(),
+                nextScreen: const DestinationMapsScreen(),
                 text: 'Done',
-                backgroundColor: Color(0xff0038A7)),
+                backgroundColor: const Color(0xff0038A7)),
             SizedBox(
               height: 1.h,
             ),
             MainElevatedButton(
               // el button da kan mawgood f screen tanya makan el done button eli fo2eeh
-                nextScreen: CollectCashScreen(),
+                nextScreen: const CollectCashScreen(),
                 text: 'End trip',
-                backgroundColor: Color(0xff0038A7)),
+                backgroundColor: const Color(0xff0038A7)),
             TextButton(
                 onPressed: () {
                   cancelTripShowModalSheet(context);
                 },
                 child: Text(
                   'Cancel trip',
-                  style: TextStyle(color: Color(0xff646363), fontSize: 15.dp),
+                  style: TextStyle(color: const Color(0xff646363), fontSize: 15.dp),
                 ))
           ],
         ),
@@ -340,7 +339,7 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                         fontWeight: FontWeight.bold
                     ),),
                   SizedBox(height: 1.5.h,),
-                  Divider(),
+                  const Divider(),
                   SizedBox(height: 1.5.h,),
                   SizedBox(
                     width: 80.w,
@@ -350,7 +349,7 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                         onPressed: (){
                           tellUsWhyShowModalSheet(context);
                         },
-                        child: Text('Yes, Cancel',
+                        child: const Text('Yes, Cancel',
                         style: TextStyle(color: Colors.white),)),
                   ),
                   SizedBox(height: 1.5.h,),
@@ -359,18 +358,16 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                     height: 5.5.h,
                     child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: Color(0xff646363))),
+                            side: const BorderSide(color: Color(0xff646363))),
                         onPressed: () {
                           Navigator.pop(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => CustomerLocationMapsScreen()));
+                                  builder: (context) => const CustomerLocationMapsScreen()));
                         },
-                        child: Container(
-                          child: Text(
-                            'No, Keep ride',
-                            style: TextStyle(color: Color(0xff646363)),
-                          ),
+                        child: const Text(
+                          'No, Keep ride',
+                          style: TextStyle(color: Color(0xff646363)),
                         )),
                   ),
                 ],
@@ -407,7 +404,7 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                   SizedBox(
                     height: 1.5.h,
                   ),
-                  Divider(),
+                  const Divider(),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 3.0.w),
                     child: StatefulBuilder(
@@ -423,7 +420,7 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                                   scale: 1.3,
                                   child: Checkbox(
                                       activeColor: Colors.red,
-                                      shape: CircleBorder(),
+                                      shape: const CircleBorder(),
                                       value: isChecked1,
                                       onChanged: (bool? value) {
                                         setState(() {
@@ -446,7 +443,7 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                                   scale: 1.3,
                                   child: Checkbox(
                                       activeColor: Colors.red,
-                                      shape: CircleBorder(),
+                                      shape: const CircleBorder(),
                                       value: isChecked2,
                                       onChanged: (bool? value) {
                                         setState(() {
@@ -469,7 +466,7 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                                   scale: 1.3,
                                   child: Checkbox(
                                       activeColor: Colors.red,
-                                      shape: CircleBorder(),
+                                      shape: const CircleBorder(),
                                       value: isChecked3,
                                       onChanged: (bool? value) {
                                         setState(() {
@@ -492,7 +489,7 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                                   scale: 1.3,
                                   child: Checkbox(
                                       activeColor: Colors.red,
-                                      shape: CircleBorder(),
+                                      shape: const CircleBorder(),
                                       value: isChecked4,
                                       onChanged: (bool? value) {
                                         setState(() {
@@ -515,7 +512,7 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                                   scale: 1.3,
                                   child: Checkbox(
                                       activeColor: Colors.red,
-                                      shape: CircleBorder(),
+                                      shape: const CircleBorder(),
                                       value: isChecked5,
                                       onChanged: (bool? value) {
                                         setState(() {
@@ -544,7 +541,7 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                                           bookingCancelledSuccessfullyModalSheet(
                                               context);
                                         },
-                                        child: Text(
+                                        child: const Text(
                                           'Submit',
                                           style: TextStyle(color: Colors.white),
                                         )),
@@ -556,19 +553,17 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                                     width: 43.w,
                                     child: OutlinedButton(
                                         style: OutlinedButton.styleFrom(
-                                            side: BorderSide(color: Colors.red)),
+                                            side: const BorderSide(color: Colors.red)),
                                         onPressed: () {
                                           Navigator.pop(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      ArrivedAtDestinationMapsScreen()));
+                                                      const ArrivedAtDestinationMapsScreen()));
                                         },
-                                        child: Container(
-                                          child: Text(
-                                            'Keep ride',
-                                            style: TextStyle(color: Colors.red),
-                                          ),
+                                        child: const Text(
+                                          'Keep ride',
+                                          style: TextStyle(color: Colors.red),
                                         )),
                                   ),
                                 ],
@@ -610,14 +605,14 @@ class _CustomerLocationMapsScreenState extends State<CustomerLocationMapsScreen>
                   fontSize: 18.dp),),
             SizedBox(height: 1.h,),
             Text('Your booking with CRN : #854HG23 has',
-              style: TextStyle(color: Color(0xff646363),
+              style: TextStyle(color: const Color(0xff646363),
                   fontSize: 14.dp),),
             Text('been canceled successfully',
-              style: TextStyle(color: Color(0xff646363),
+              style: TextStyle(color: const Color(0xff646363),
                   fontSize: 14.dp),),
             SizedBox(height: 2.h,),
             MainElevatedButton(
-                nextScreen: ArrivedAtDestinationMapsScreen(),
+                nextScreen: const ArrivedAtDestinationMapsScreen(),
                 text: 'Got it',
                 backgroundColor: Colors.red)
 

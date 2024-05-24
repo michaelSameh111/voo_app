@@ -2,15 +2,16 @@ import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
-import 'package:voo_app/view/widgets/star_rating_widget.dart';
 
 class RateRiderScreen extends StatefulWidget {
+  const RateRiderScreen({super.key});
+
   @override
   State<RateRiderScreen> createState() => _RateRiderScreenState();
 }
 
 class _RateRiderScreenState extends State<RateRiderScreen> {
-  //double rating = 3.5;
+  double rating = 3.5;
   double _rating = 2.5;
 
   @override
@@ -34,7 +35,7 @@ class _RateRiderScreenState extends State<RateRiderScreen> {
               ),
               CircleAvatar(
                 radius: 12.w,
-                backgroundColor: Color(0xffA2A2A2),
+                backgroundColor: const Color(0xffA2A2A2),
                 child: Icon(
                   Icons.person,
                   size: 15.w,
@@ -54,7 +55,7 @@ class _RateRiderScreenState extends State<RateRiderScreen> {
                 children: [
                   Text(
                     '\$15.00',
-                    style: TextStyle(fontSize: 15.dp, color: Color(0xff808080)),
+                    style: TextStyle(fontSize: 15.dp, color: const Color(0xff808080)),
                   ),
                   SizedBox(
                     width: 2.w,
@@ -68,7 +69,7 @@ class _RateRiderScreenState extends State<RateRiderScreen> {
                   ),
                   Text(
                     '12 Miles',
-                    style: TextStyle(fontSize: 15.dp, color: Color(0xff808080)),
+                    style: TextStyle(fontSize: 15.dp, color: const Color(0xff808080)),
                   ),
                 ],
               ),
@@ -88,7 +89,7 @@ class _RateRiderScreenState extends State<RateRiderScreen> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 4.w),
-                child: Divider(
+                child: const Divider(
                   color: Color(0xffECECEC),
                 ),
               ),
@@ -100,7 +101,7 @@ class _RateRiderScreenState extends State<RateRiderScreen> {
                 style: TextStyle(
                     fontSize: 16.dp,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xff808080)),
+                    color: const Color(0xff808080)),
               ),
               SizedBox(
                 height: 1.h,
@@ -110,7 +111,7 @@ class _RateRiderScreenState extends State<RateRiderScreen> {
                 onChanged: (rating) {
                   setState(() {
                     _rating = rating;
-                    print('Rating : $rating');
+                    //print('Rating : $rating');
                   });
                 },
                 customFilledIcon: Icons.star,
@@ -130,7 +131,7 @@ class _RateRiderScreenState extends State<RateRiderScreen> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 4.w),
-                child: Divider(
+                child: const Divider(
                   color: Color(0xffECECEC),
                 ),
               ),
@@ -155,7 +156,7 @@ class _RateRiderScreenState extends State<RateRiderScreen> {
                   maxLines: 3,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: Color(0xffC4C4C4),
                           ),
                           borderRadius: BorderRadius.circular(8.dp))),
@@ -163,9 +164,9 @@ class _RateRiderScreenState extends State<RateRiderScreen> {
               ),
               SizedBox(height: 3.h,),
               MainElevatedButton(
-                  nextScreen: RateRiderScreen(),
+                  nextScreen: const RateRiderScreen(),
                   text: ('Submit'),
-                  backgroundColor: Color(0xff0038A7)),
+                  backgroundColor: const Color(0xff0038A7)),
               SizedBox(height: 4.h,),
             ],
           ),

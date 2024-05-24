@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen_directory/edit_my_profile_screen.dart';
+import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen/edit_my_profile_screen.dart';
 
 class EditYourPhotoBasicInfoScreen extends StatelessWidget {
   const EditYourPhotoBasicInfoScreen({Key? key}) : super(key: key);
@@ -14,11 +14,7 @@ class EditYourPhotoBasicInfoScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 2.0.w),
           child: InkWell(
             onTap: (){
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          EditMyProfileScreen()));
+              Navigator.pop(context);
             },
             child: Container(
                 decoration: BoxDecoration(
@@ -29,7 +25,7 @@ class EditYourPhotoBasicInfoScreen extends StatelessWidget {
                   )],
                   shape: BoxShape.circle,
                   color: Colors.white,),
-                child: Icon(Icons.arrow_back)),
+                child: const Icon(Icons.arrow_back)),
           ),
         ),
         title: Text('Edit your photo',
@@ -43,13 +39,13 @@ class EditYourPhotoBasicInfoScreen extends StatelessWidget {
       body: SafeArea(
         child: Center(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 23),
+            padding: const EdgeInsets.symmetric(horizontal: 23),
             child: Column(
               children: [
                 SizedBox(height: 2.h,),
                 InkWell(
                   onTap: () {}, //open gallery
-                  child: CircleAvatar(
+                  child: const CircleAvatar(
                     radius: 75.0,
                     backgroundColor: Color(0xffA2A2A2),
                     child: Icon(
@@ -67,16 +63,14 @@ class EditYourPhotoBasicInfoScreen extends StatelessWidget {
                   height: 5.5.h,
                   child: OutlinedButton(
                       style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: Color(0xff808080))),
+                          side: const BorderSide(color: Color(0xff808080))),
                       onPressed: () {},
-                      child: Container(
-                        child: Text(
-                          'Edit your photo',
-                          style: TextStyle(
-                              color: Color(0xff808080),
-                              fontSize: 15.dp,
-                              fontWeight: FontWeight.bold),
-                        ),
+                      child: Text(
+                        'Edit your photo',
+                        style: TextStyle(
+                            color: const Color(0xff808080),
+                            fontSize: 15.dp,
+                            fontWeight: FontWeight.bold),
                       )),
                 ),
               ],

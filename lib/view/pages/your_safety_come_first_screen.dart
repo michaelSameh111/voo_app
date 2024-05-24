@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/view/pages/background_location_screen.dart';
-import 'package:voo_app/view/pages/login_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class YourSafetyComeFirstScreen extends StatefulWidget {
+  const YourSafetyComeFirstScreen({super.key});
+
   @override
   State<YourSafetyComeFirstScreen> createState() =>
       _YourSafetyComeFirstScreenState();
@@ -20,7 +21,7 @@ class _YourSafetyComeFirstScreenState extends State<YourSafetyComeFirstScreen> {
         child: SafeArea(
           child: Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 23),
+              padding: const EdgeInsets.symmetric(horizontal: 23),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -30,7 +31,7 @@ class _YourSafetyComeFirstScreenState extends State<YourSafetyComeFirstScreen> {
                       style: TextStyle(
                           fontSize: 25.dp,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xff0038A7)),
+                          color: const Color(0xff0038A7)),
                     ),
                   ),
                   SizedBox(
@@ -40,7 +41,7 @@ class _YourSafetyComeFirstScreenState extends State<YourSafetyComeFirstScreen> {
                     child: Text(
                       'Please check the following safety measures in\n                        order for you to start',
                       style:
-                          TextStyle(fontSize: 14.dp, color: Color(0xff808080)),
+                          TextStyle(fontSize: 14.dp, color: const Color(0xff808080)),
                     ),
                   ),
                   SizedBox(
@@ -88,7 +89,7 @@ class _YourSafetyComeFirstScreenState extends State<YourSafetyComeFirstScreen> {
                             isChecked = value!;
                           });
                         },
-                        activeColor: Color(0xff0038A7),
+                        activeColor: const Color(0xff0038A7),
                         checkColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
@@ -106,9 +107,9 @@ class _YourSafetyComeFirstScreenState extends State<YourSafetyComeFirstScreen> {
                   ),
                   Center(
                     child: MainElevatedButton(
-                        nextScreen: BackgroundLocationScreen(), //Background location screen
+                        nextScreen: const BackgroundLocationScreen(), //Background location screen
                         text: 'Next',
-                        backgroundColor: Color(0xff0038A7)),
+                        backgroundColor: const Color(0xff0038A7)),
                   )
                 ],
               ),
@@ -123,13 +124,13 @@ class _YourSafetyComeFirstScreenState extends State<YourSafetyComeFirstScreen> {
 class ArrowAndText extends StatelessWidget {
   String text;
 
-  ArrowAndText({required this.text});
+  ArrowAndText({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(
+        const Icon(
           Icons.keyboard_double_arrow_right_outlined,
           color: Colors.red,
         ),

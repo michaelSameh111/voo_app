@@ -4,6 +4,8 @@ import 'package:voo_app/view/pages/enable_location_access_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class BackgroundLocationScreen extends StatelessWidget {
+  const BackgroundLocationScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,7 +13,7 @@ class BackgroundLocationScreen extends StatelessWidget {
         child: SafeArea(
           child: Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 23),
+              padding: const EdgeInsets.symmetric(horizontal: 23),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -21,7 +23,7 @@ class BackgroundLocationScreen extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 25.dp,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xff0038A7)),
+                          color: const Color(0xff0038A7)),
                     ),
                   ),
                   SizedBox(
@@ -34,12 +36,12 @@ class BackgroundLocationScreen extends StatelessWidget {
                   SizedBox(
                     height: 2.5.h,
                   ),
-                  Text('Please note that VOO application utilizes location '
+                  const Text('Please note that VOO application utilizes location '
                       'services to enhance your experience. '
                       'The app collects background location data for'
                       ' specific features even when the app is not in use,'
                       ' such as during the following scenarios:'),
-                  Center(
+                  const Center(
                       child: Image(
                           image: AssetImage(
                               'assets/images/background_location_image.png'))),
@@ -53,7 +55,7 @@ class BackgroundLocationScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         color: Colors.red),
                   ),
-                  Text('1. Background location is obtained when the driver is'
+                  const Text('1. Background location is obtained when the driver is'
                       ' on route to your location.\n '
                       '2. Background location is accessed when the driver '
                       'initiates the ride.'),
@@ -72,31 +74,31 @@ class BackgroundLocationScreen extends StatelessWidget {
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                   ),
-                  Text('Background location is utilized to guide the driver'
+                  const Text('Background location is utilized to guide the driver'
                       ' to your location seamlessly.'),
                   Text(
                     '2. Ride Start:',
                     style:
                     TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                   ),
-                  Text('Background location is employed when the driver '
+                  const Text('Background location is employed when the driver '
                       'begins the ride for accurate tracking.'),
                   Row(
                     children: [
                       TextButton(onPressed: (){},
-                          child: Text('No, Thanks',
+                          child: const Text('No, Thanks',
                             style: TextStyle(color: Colors.red),)),
-                      Spacer(),
+                      const Spacer(),
                       TextButton(onPressed: (){},
-                          child: Text('Accept',
+                          child: const Text('Accept',
                             style: TextStyle(color: Color(0xff0038A7)),)),
                     ],
                   ),
                   SizedBox(height: 3.h,),
                   Center(
-                    child: MainElevatedButton(nextScreen: EnableLocationAccessScreen(),
+                    child: MainElevatedButton(nextScreen: const EnableLocationAccessScreen(),
                         text: 'Next',
-                        backgroundColor: Color(0xff0038A7)),
+                        backgroundColor: const Color(0xff0038A7)),
                   ),
                   SizedBox(height: 3.h,),
                 ],

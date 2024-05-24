@@ -4,6 +4,8 @@ import 'package:voo_app/view/pages/get_your_code_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class ForgetPasswordScreen extends StatelessWidget {
+  const ForgetPasswordScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,11 +21,11 @@ class ForgetPasswordScreen extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 25.dp,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xffF70415)),
+                      color: const Color(0xffF70415)),
                 ),
                 Text(
                   'We sent you a code to verify your email \n address',
-                  style: TextStyle(fontSize: 14.dp, color: Color(0xff808080)),
+                  style: TextStyle(fontSize: 14.dp, color: const Color(0xff808080)),
                 ),
                 SizedBox(
                   height: 6.h,
@@ -41,9 +43,9 @@ class ForgetPasswordScreen extends StatelessWidget {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                          color: Color(0xffF5F4F4),
+                          color: const Color(0xffF5F4F4),
                           borderRadius: BorderRadius.circular(10)),
-                      child: TextField(
+                      child: const TextField(
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                             border: InputBorder.none,
@@ -55,9 +57,9 @@ class ForgetPasswordScreen extends StatelessWidget {
                       height: 4.h,
                     ),
                     MainElevatedButton(
-                        nextScreen: GetYourCodeScreen(),
+                        nextScreen: const GetYourCodeScreen(),
                         text: 'Continue',
-                        backgroundColor: Color(0xff0038A7)),
+                        backgroundColor: const Color(0xff0038A7)),
                   ],
                 )
               ],

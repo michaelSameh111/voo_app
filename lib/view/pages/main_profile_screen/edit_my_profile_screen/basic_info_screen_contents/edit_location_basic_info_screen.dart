@@ -1,10 +1,10 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen_directory/edit_my_profile_screen.dart';
 
 class EditLocationBasicInfoScreen extends StatefulWidget {
+  const EditLocationBasicInfoScreen({super.key});
+
 
   @override
   State<EditLocationBasicInfoScreen> createState() => _EditLocationBasicInfoScreenState();
@@ -27,8 +27,6 @@ final List<String> cities = [
 
 String? selectedCity;
 
-// final selectedGender = TextEditingController();
-// String genderSelected = '';
 
 
 class _EditLocationBasicInfoScreenState extends State<EditLocationBasicInfoScreen> {
@@ -41,11 +39,7 @@ class _EditLocationBasicInfoScreenState extends State<EditLocationBasicInfoScree
           padding: EdgeInsets.symmetric(horizontal: 2.0.w),
           child: InkWell(
             onTap: (){
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          EditMyProfileScreen()));
+              Navigator.pop(context);
             },
             child: Container(
                 decoration: BoxDecoration(
@@ -191,7 +185,7 @@ class _EditLocationBasicInfoScreenState extends State<EditLocationBasicInfoScree
               SizedBox(height:2.h,),
               Container(
                 decoration: BoxDecoration(
-                    color: Color(0xffF5F4F4),
+                    color: const Color(0xffF5F4F4),
                     borderRadius: BorderRadius.circular(10)),
                 child: const TextField(
                   keyboardType: TextInputType.streetAddress,
@@ -213,7 +207,7 @@ class _EditLocationBasicInfoScreenState extends State<EditLocationBasicInfoScree
               SizedBox(height:2.h,),
               Container(
                 decoration: BoxDecoration(
-                    color: Color(0xffF5F4F4),
+                    color: const Color(0xffF5F4F4),
                     borderRadius: BorderRadius.circular(10)),
                 child: const TextField(
                   keyboardType: TextInputType.number,

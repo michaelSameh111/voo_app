@@ -3,6 +3,8 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/view/pages/chat_screen.dart';
 
 class CollectCashScreen extends StatelessWidget {
+  const CollectCashScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +37,7 @@ class CollectCashScreen extends StatelessWidget {
                       )
                     ],
                   ),
-                  child: Image(
+                  child: const Image(
                       image: AssetImage(
                           'assets/images/collect_cash_wallet_image.png')),
                 ),
@@ -46,7 +48,7 @@ class CollectCashScreen extends StatelessWidget {
                     onPressed: (){},
                     child: Text('Trip Summary',
                       style: TextStyle(
-                        color: Color(0xff0038A7),
+                        color: const Color(0xff0038A7),
                         fontSize: 23.dp
                       ),)),
                 Padding(
@@ -80,12 +82,12 @@ class CollectCashScreen extends StatelessWidget {
                                             color: Colors.grey.withOpacity(0.4),
                                             spreadRadius: 10,
                                             blurRadius: 10,
-                                            offset: Offset(0,7)
+                                            offset: const Offset(0,7)
                                         )]
                                     ),
                                     child: Padding(
                                       padding: EdgeInsets.all(6.dp),
-                                      child: Text(
+                                      child: const Text(
                                         '10 mins trip'
                                         ,style: TextStyle(color: Color(0xff808080)),
                                       ),
@@ -96,7 +98,7 @@ class CollectCashScreen extends StatelessWidget {
                                 padding: EdgeInsets.only(left: 50.w),
                                 width: 80.w,
                                 height: 0.2.h,
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                     color: Colors.black
                                   //0xffE2E2E2
                                 ),),
@@ -121,7 +123,7 @@ class CollectCashScreen extends StatelessWidget {
                 ),
                 Divider(
                 thickness: 1.h,
-                  color: Color(0xffECECEC),
+                  color: const Color(0xffECECEC),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 5.0.w, vertical: 3.h),
@@ -131,11 +133,11 @@ class CollectCashScreen extends StatelessWidget {
                         children: [
                           CircleAvatar(
                             radius: 7.0.w,
-                            backgroundColor: Color(0xffECECEC),
+                            backgroundColor: const Color(0xffECECEC),
                             child: Icon(
                               Icons.person,
                               size: 11.w,
-                              color: Color(0xffA2A2A2),
+                              color: const Color(0xffA2A2A2),
                             ),
                           ),
                           SizedBox(
@@ -151,7 +153,7 @@ class CollectCashScreen extends StatelessWidget {
                               Text(
                                 'Cash Payment',
                                 style: TextStyle(
-                                    color: Color(0xff808080), fontSize: 13.dp),
+                                    color: const Color(0xff808080), fontSize: 13.dp),
                               )
                             ],
                           )
@@ -162,14 +164,14 @@ class CollectCashScreen extends StatelessWidget {
                         padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 5.w),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.dp),
-                            color: Color(0xff0038A7)
+                            color: const Color(0xff0038A7)
                         ),
                         child: Row(
                           children: [
                             Text('Total Amount',
                               style: TextStyle(color: Colors.white,
                                   fontSize: 16.dp),),
-                            Spacer(),
+                            const Spacer(),
                             Text('\$25',
                               style: TextStyle(color: Colors.white,
                                   fontSize: 16.dp),),
@@ -184,7 +186,7 @@ class CollectCashScreen extends StatelessWidget {
                   padding: EdgeInsets.all(10.dp),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20)),
                     boxShadow: [
@@ -201,18 +203,16 @@ class CollectCashScreen extends StatelessWidget {
                         width: 80.w,
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xff0038A7)),
+                                backgroundColor: const Color(0xff0038A7)),
                             onPressed: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ChatScreen()));
+                                      builder: (context) => const ChatScreen()));
                             },
-                            child: Container(
-                              child: Text(
-                                'Cash collected',
-                                style: TextStyle(color: Colors.white),
-                              ),
+                            child: const Text(
+                              'Cash collected',
+                              style: TextStyle(color: Colors.white),
                             )),
                       ),
                     ],

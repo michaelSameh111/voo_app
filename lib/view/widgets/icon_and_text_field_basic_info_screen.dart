@@ -6,7 +6,7 @@ class IconAndTextField extends StatelessWidget {
   String hintText;
   TextInputType keyboardType;
 
-  IconAndTextField ({
+  IconAndTextField ({super.key,
     required this.icon,
     required this.hintText,
     required this.keyboardType,
@@ -16,7 +16,7 @@ class IconAndTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: icon,
-      iconColor: Color(0xff808080),
+      iconColor: const Color(0xff808080),
       title: Container(
         padding: EdgeInsets.symmetric(
           horizontal: 3.w,

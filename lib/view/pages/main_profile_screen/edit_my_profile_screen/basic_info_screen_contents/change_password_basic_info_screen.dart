@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen_directory/edit_my_profile_screen.dart';
-// import 'package:voo_app/view/pages/edit_my_profile_screen_directory/edit_my_profile_screen.dart';
+import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen/edit_my_profile_screen.dart';
+// import 'package:voo_app/view/pages/edit_my_profile_screen/edit_my_profile_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class ChangePasswordBasicInfoScreen extends StatelessWidget {
+  const ChangePasswordBasicInfoScreen({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class ChangePasswordBasicInfoScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            EditMyProfileScreen()));
+                            const EditMyProfileScreen()));
               },
               child: Container(
                   decoration: BoxDecoration(
@@ -31,7 +33,7 @@ class ChangePasswordBasicInfoScreen extends StatelessWidget {
                     )],
                     shape: BoxShape.circle,
                     color: Colors.white,),
-                  child: Icon(Icons.arrow_back)),
+                  child: const Icon(Icons.arrow_back)),
             ),
           ),
           title: Text('Change Password',
@@ -56,9 +58,9 @@ class ChangePasswordBasicInfoScreen extends StatelessWidget {
               ),
               Container(
                 decoration: BoxDecoration(
-                    color: Color(0xffF5F4F4),
+                    color: const Color(0xffF5F4F4),
                     borderRadius: BorderRadius.circular(10)),
-                child: TextField(
+                child: const TextField(
                   obscureText: true,
                   decoration: InputDecoration(
                       border: InputBorder.none,
@@ -96,9 +98,9 @@ class ChangePasswordBasicInfoScreen extends StatelessWidget {
               ),
               Container(
                 decoration: BoxDecoration(
-                    color: Color(0xffF5F4F4),
+                    color: const Color(0xffF5F4F4),
                     borderRadius: BorderRadius.circular(10)),
-                child: TextField(
+                child: const TextField(
                   obscureText: true,
                   decoration: InputDecoration(
                       border: InputBorder.none,
@@ -119,9 +121,9 @@ class ChangePasswordBasicInfoScreen extends StatelessWidget {
               ),
               Container(
                 decoration: BoxDecoration(
-                    color: Color(0xffF5F4F4),
+                    color: const Color(0xffF5F4F4),
                     borderRadius: BorderRadius.circular(10)),
-                child: TextField(
+                child: const TextField(
                   obscureText: true,
                   decoration: InputDecoration(
                       border: InputBorder.none,
@@ -131,9 +133,9 @@ class ChangePasswordBasicInfoScreen extends StatelessWidget {
               ),
               SizedBox(height: 25.h,),
               MainElevatedButton(
-                  nextScreen: ChangePasswordBasicInfoScreen(),
+                  nextScreen: const ChangePasswordBasicInfoScreen(),
                   text: 'Update',
-                  backgroundColor: Color(0xff0038A7)),
+                  backgroundColor: const Color(0xff0038A7)),
             ],
           ),
         ),

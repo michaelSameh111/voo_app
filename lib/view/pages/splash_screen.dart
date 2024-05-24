@@ -4,17 +4,20 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/view/pages/login_register_screen.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  // ignore: must_call_super
   @override
   void initState() {
     Timer(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => LoginRegisterScreen()));
+          MaterialPageRoute(builder: (context) => const LoginRegisterScreen()));
     });
   }
 

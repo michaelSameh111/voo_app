@@ -1,22 +1,20 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
-import 'package:voo_app/view/pages/driver_license.dart';
-// import 'package:voo_app/view/pages/edit_my_profile_screen_directory/basic_info_screen_contents/change_password_basic_info_screen.dart';
-import 'package:voo_app/view/pages/insurance_screen.dart';
-import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen_directory/basic_info_screen_contents/change_language_basic_info_screen.dart';
-import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen_directory/basic_info_screen_contents/change_password_basic_info_screen.dart';
-import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen_directory/basic_info_screen_contents/edit_location_basic_info_screen.dart';
-import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen_directory/basic_info_screen_contents/edit_your_photo_basic_info_screen.dart';
+import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen/basic_info_screen_contents/change_language_basic_info_screen.dart';
+import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen/basic_info_screen_contents/change_password_basic_info_screen.dart';
+import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen/basic_info_screen_contents/edit_location_basic_info_screen.dart';
+import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen/basic_info_screen_contents/edit_your_photo_basic_info_screen.dart';
 import 'package:voo_app/view/widgets/icon_and_text_field_basic_info_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
-// import '../../widgets/icon_and_text_field_basic_info_screen.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 
 class EditMyProfileScreen extends StatefulWidget {
+  const EditMyProfileScreen({super.key});
+
   @override
   State<EditMyProfileScreen> createState() => _EditMyProfileScreenState();
 }
@@ -42,34 +40,35 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
-            title: Text('Nader Nabil'),
+            title: const Text('Nader Nabil'),
             bottom: TabBar(
               tabs: [
                 Text(
                   'Basic Info',
                   style: TextStyle(
-                      color: Color(0xff0038A7),
+                      color: const Color(0xff0038A7),
                       fontWeight: FontWeight.bold,
                       fontSize: 14.8.dp),
                 ),
                 Text(
                   'Driver License',
                   style: TextStyle(
-                      color: Color(0xff0038A7),
+                      color: const Color(0xff0038A7),
                       fontWeight: FontWeight.bold,
-                      fontSize: 14.8.dp),
+                      fontSize: 13.dp),
                 ),
                 Text(
                   'Insurance',
                   style: TextStyle(
-                      color: Color(0xff0038A7),
+                      color: const Color(0xff0038A7),
                       fontWeight: FontWeight.bold,
                       fontSize: 14.8.dp),
                 ),
               ],
             ),
           ),
-          body: TabBarView(children: [
+          body: const TabBarView(
+              children: [
             BasicInfoScreen(),
             DriverLicenseScreenInEditMyProfile(),
             InsuranceScreenInEditMyProfile(),
@@ -79,12 +78,14 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
 }
 
 class BasicInfoScreen extends StatefulWidget {
+  const BasicInfoScreen({super.key});
+
   @override
   State<BasicInfoScreen> createState() => _BasicInfoScreenState();
 }
 class _BasicInfoScreenState extends State<BasicInfoScreen> {
   TextEditingController dateOfBirthController = TextEditingController();
-  DateTime _selectedDate = DateTime.now();
+  final DateTime _selectedDate = DateTime.now();
 
 
   @override
@@ -104,11 +105,11 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                EditYourPhotoBasicInfoScreen()));
+                                const EditYourPhotoBasicInfoScreen()));
                   },
                   child: CircleAvatar(
                     radius: 10.w,
-                    backgroundColor: Color(0xffA2A2A2),
+                    backgroundColor: const Color(0xffA2A2A2),
                     child: Icon(
                       Icons.person,
                       size: 15.w,
@@ -125,7 +126,7 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                EditYourPhotoBasicInfoScreen()));
+                                const EditYourPhotoBasicInfoScreen()));
                   },
                   child: Text(
                     'Edit your photo',
@@ -134,20 +135,20 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                   ),
                 ),
                 IconAndTextField(
-                    icon: Icon(Icons.person),
+                    icon: const Icon(Icons.person),
                     hintText: 'Enter your name',
                     keyboardType: TextInputType.name),
                 IconAndTextField(
-                    icon: Icon(Icons.mail),
+                    icon: const Icon(Icons.mail),
                     keyboardType: TextInputType.emailAddress,
                     hintText: 'Enter your email address'),
                 IconAndTextField(
-                    icon: Icon(Icons.phone_android),
+                    icon: const Icon(Icons.phone_android),
                     keyboardType: TextInputType.phone,
                     hintText: 'Enter your phone number'),
                 ListTile(
-                  leading: Icon(Icons.calendar_today),
-                  iconColor: Color(0xff808080),
+                  leading: const Icon(Icons.calendar_today),
+                  iconColor: const Color(0xff808080),
                   title: Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: 3.w,
@@ -160,7 +161,7 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                       readOnly: true,
                       controller: dateOfBirthController,
                       //keyboardType: keyboardType,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Date of Birth',
                       ),
@@ -173,8 +174,8 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                 ),
 
                 ListTile(
-                  leading: Icon(Icons.transgender_outlined),
-                  iconColor: Color(0xff808080),
+                  leading: const Icon(Icons.transgender_outlined),
+                  iconColor: const Color(0xff808080),
                   title: Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: 3.w,
@@ -222,7 +223,7 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                 SizedBox(height: 1.h,),
                 Divider(
                   thickness: 1.h,
-                  color: Color(0xffECECEC),
+                  color: const Color(0xffECECEC),
                 ),
                 InkWell(
                   onTap: () {
@@ -230,13 +231,13 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                ChangePasswordBasicInfoScreen()));
+                                const ChangePasswordBasicInfoScreen()));
                   },
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                     child: Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.lock,
                           color: Color(0xff808080),
                         ),
@@ -249,10 +250,10 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                             style: TextStyle(fontSize: 15.dp),
                           ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         Icon(
                           Icons.arrow_forward_ios,
-                          color: Color(0xffA2A2A2),
+                          color: const Color(0xffA2A2A2),
                           size: 17.dp,
                         )
                       ],
@@ -268,13 +269,13 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                ChangeLanguageBasicInfoScreen()));
+                                const ChangeLanguageBasicInfoScreen()));
                   },
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                     child: Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.language,
                           color: Color(0xff808080),
                         ),
@@ -287,10 +288,10 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                             style: TextStyle(fontSize: 15.dp),
                           ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         Icon(
                           Icons.arrow_forward_ios,
-                          color: Color(0xffA2A2A2),
+                          color: const Color(0xffA2A2A2),
                           size: 17.dp,
                         )
                       ],
@@ -305,13 +306,13 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => EditLocationBasicInfoScreen()));
+                            builder: (context) => const EditLocationBasicInfoScreen()));
                   },
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                     child: Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.location_on,
                           color: Color(0xff808080),
                         ),
@@ -324,10 +325,10 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                             style: TextStyle(fontSize: 15.dp),
                           ),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         Icon(
                           Icons.arrow_forward_ios,
-                          color: Color(0xffA2A2A2),
+                          color: const Color(0xffA2A2A2),
                           size: 17.dp,
                         )
                       ],
@@ -338,9 +339,9 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                   color: Color(0xffF5F4F4),
                 ),
                 MainElevatedButton(
-                    nextScreen: BasicInfoScreen(),
+                    nextScreen: const BasicInfoScreen(),
                     text: 'Update',
-                    backgroundColor: Color(0xff0038A7)),
+                    backgroundColor: const Color(0xff0038A7)),
                 SizedBox(height: 2.h,)
               ],
             ),
@@ -364,16 +365,9 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
               maximumDate: DateTime.now(),
               minimumDate: DateTime(1970),
               selectedDate: _selectedDate,
-              locale: Locale('en'),
+              locale: const Locale('en'),
               onDateTimeChanged: (DateTime value) {
                 setState(() {
-                  String formatDateTime(String dateTimeString) {
-                    DateTime dateTime = DateTime.parse(dateTimeString);
-                    DateFormat formatter = DateFormat('dd/MM/yyyy');
-                    String formattedDateTime = formatter.format(dateTime);
-                    dateOfBirthController.text = formattedDateTime;
-                    return dateOfBirthController.toString();
-                  }
                 //  _selectedDate = value;
                   dateOfBirthController.text = value.toString();
 
@@ -416,7 +410,7 @@ class DriverLicenseScreenInEditMyProfile extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(6)),
                     color: Color(0xffF5F4F4),
                   ),
-                  child: TextField(
+                  child: const TextField(
                     readOnly: true,
                     //keyboardType: keyboardType,
                     decoration: InputDecoration(
@@ -427,11 +421,11 @@ class DriverLicenseScreenInEditMyProfile extends StatelessWidget {
                 ),
                 SizedBox(height: 4.h,),
                 DottedBorder(
-                  dashPattern: [8, 4],
-                  color: Color(0xff808080),
+                  dashPattern: const [8, 4],
+                  color: const Color(0xff808080),
                   child: Container(
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
+                    padding: const EdgeInsets.all(20),
+                    decoration: const BoxDecoration(
                       color: Color(0xffF5F4F4),
                     ),
                     child: Column(
@@ -442,7 +436,7 @@ class DriverLicenseScreenInEditMyProfile extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {},
-                          child: Text(
+                          child: const Text(
                             'Click here to upload a clear pictue of\n              front of driver\'s license',
                             style: TextStyle(color: Colors.black),
                           ),
@@ -452,9 +446,9 @@ class DriverLicenseScreenInEditMyProfile extends StatelessWidget {
                         ),
                         MainElevatedButton(
                             nextScreen:
-                            DriverLicenseScreenInEditMyProfile(), //mo2akatan 3amelha LoginScreen next page
+                            const DriverLicenseScreenInEditMyProfile(), //mo2akatan 3amelha LoginScreen next page
                             text: 'Upload',
-                            backgroundColor: Color(0xff0038A7)),
+                            backgroundColor: const Color(0xff0038A7)),
                       ],
                     ),
                   ),
@@ -465,28 +459,26 @@ class DriverLicenseScreenInEditMyProfile extends StatelessWidget {
                     width: 40.w,
                     child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: Color(0xff0038A7))),
+                            side: const BorderSide(color: Color(0xff0038A7))),
                         onPressed: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => DriverLicenseScreenInEditMyProfile()));
+                                  builder: (context) => const DriverLicenseScreenInEditMyProfile()));
                         },
-                        child: Container(
-                          child: Text(
-                            'Edit photo',
-                            style: TextStyle(color: Color(0xff0038A7)),
-                          ),
+                        child: const Text(
+                          'Edit photo',
+                          style: TextStyle(color: Color(0xff0038A7)),
                         )),
                   ),
                 ),
                 SizedBox(height: 4.h,),
                 DottedBorder(
-                  dashPattern: [8, 4],
-                  color: Color(0xff808080),
+                  dashPattern: const [8, 4],
+                  color: const Color(0xff808080),
                   child: Container(
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
+                    padding: const EdgeInsets.all(20),
+                    decoration: const BoxDecoration(
                       color: Color(0xffF5F4F4),
                     ),
                     child: Column(
@@ -497,7 +489,7 @@ class DriverLicenseScreenInEditMyProfile extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {},
-                          child: Text(
+                          child: const Text(
                             'Click here to upload a clear pictue of\n              front of driver\'s license',
                             style: TextStyle(color: Colors.black),
                           ),
@@ -507,9 +499,9 @@ class DriverLicenseScreenInEditMyProfile extends StatelessWidget {
                         ),
                         MainElevatedButton(
                             nextScreen:
-                            DriverLicenseScreenInEditMyProfile(), //mo2akatan 3amelha LoginScreen next page
+                            const DriverLicenseScreenInEditMyProfile(), //mo2akatan 3amelha LoginScreen next page
                             text: 'Upload',
-                            backgroundColor: Color(0xff0038A7)),
+                            backgroundColor: const Color(0xff0038A7)),
                       ],
                     ),
                   ),
@@ -520,18 +512,16 @@ class DriverLicenseScreenInEditMyProfile extends StatelessWidget {
                     width: 40.w,
                     child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: Color(0xff0038A7))),
+                            side: const BorderSide(color: Color(0xff0038A7))),
                         onPressed: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => DriverLicenseScreenInEditMyProfile()));
+                                  builder: (context) => const DriverLicenseScreenInEditMyProfile()));
                         },
-                        child: Container(
-                          child: Text(
-                            'Edit photo',
-                            style: TextStyle(color: Color(0xff0038A7)),
-                          ),
+                        child: const Text(
+                          'Edit photo',
+                          style: TextStyle(color: Color(0xff0038A7)),
                         )),
                   ),
                 ),
@@ -546,9 +536,9 @@ class DriverLicenseScreenInEditMyProfile extends StatelessWidget {
                 ),
                 Container(
                   decoration: BoxDecoration(
-                      color: Color(0xffF5F4F4),
+                      color: const Color(0xffF5F4F4),
                       borderRadius: BorderRadius.circular(10)),
-                  child: TextField(
+                  child: const TextField(
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.all(15),
@@ -562,9 +552,9 @@ class DriverLicenseScreenInEditMyProfile extends StatelessWidget {
                 Center(
                   child: MainElevatedButton(
                       nextScreen:
-                      DriverLicenseScreenInEditMyProfile(), //mo2akatan 3amelha LoginScreen next page
+                      const DriverLicenseScreenInEditMyProfile(), //mo2akatan 3amelha LoginScreen next page
                       text: 'Update',
-                      backgroundColor: Color(0xff0038A7)),
+                      backgroundColor: const Color(0xff0038A7)),
                 ),
                 SizedBox(
                   height: 2.h,
@@ -580,6 +570,8 @@ class DriverLicenseScreenInEditMyProfile extends StatelessWidget {
 
 
 class InsuranceScreenInEditMyProfile extends StatelessWidget {
+  const InsuranceScreenInEditMyProfile({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -602,7 +594,7 @@ class InsuranceScreenInEditMyProfile extends StatelessWidget {
                 ),
                 Container(
                   decoration: BoxDecoration(
-                      color: Color(0xffF5F4F4),
+                      color: const Color(0xffF5F4F4),
                       borderRadius: BorderRadius.circular(10)),
                   child: const TextField(
                     readOnly: true,
@@ -625,18 +617,16 @@ class InsuranceScreenInEditMyProfile extends StatelessWidget {
                     width: 40.w,
                     child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: Color(0xff0038A7))),
+                            side: const BorderSide(color: Color(0xff0038A7))),
                         onPressed: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => InsuranceScreenInEditMyProfile()));
+                                  builder: (context) => const InsuranceScreenInEditMyProfile()));
                         },
-                        child: Container(
-                          child: Text(
-                            'Edit photo',
-                            style: TextStyle(color: Color(0xff0038A7)),
-                          ),
+                        child: const Text(
+                          'Edit photo',
+                          style: TextStyle(color: Color(0xff0038A7)),
                         )),
                   ),
                 ),
@@ -646,9 +636,9 @@ class InsuranceScreenInEditMyProfile extends StatelessWidget {
                 Center(
                   child: MainElevatedButton(
                       nextScreen:
-                      InsuranceScreenInEditMyProfile(), //mo2akatan 3amelha LoginScreen next page
+                      const InsuranceScreenInEditMyProfile(), //mo2akatan 3amelha LoginScreen next page
                       text: 'Update',
-                      backgroundColor: Color(0xff0038A7)),
+                      backgroundColor: const Color(0xff0038A7)),
                 ),
 
               ],

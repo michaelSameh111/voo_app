@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 
 class ChatScreen extends StatelessWidget {
+  const ChatScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xff0038A7),
+        backgroundColor: const Color(0xff0038A7),
         leading: IconButton(
           icon: Ink(
             decoration:
-                ShapeDecoration(shape: CircleBorder(), color: Colors.white),
+                const ShapeDecoration(shape: CircleBorder(), color: Colors.white),
             child: Padding(
               padding: EdgeInsets.all(8.dp),
-              child: Icon(
+              child: const Icon(
                 Icons.arrow_back,
                 color: Color(0xff0038A7),
               ),
@@ -21,7 +23,7 @@ class ChatScreen extends StatelessWidget {
           ),
           onPressed: () {},
         ),
-        title: Text(
+        title: const Text(
           'Collect Cash',
           style: TextStyle(color: Colors.white),
         ),
@@ -32,7 +34,7 @@ class ChatScreen extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(vertical: 22.dp, horizontal: 4.w),
             decoration: BoxDecoration(
-                color: Color(0xff0038A7),
+                color: const Color(0xff0038A7),
                 borderRadius: BorderRadius.only(
                     bottomRight: Radius.circular(20.dp),
                     bottomLeft: Radius.circular(20.dp))),
@@ -40,11 +42,11 @@ class ChatScreen extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 7.0.w,
-                  backgroundColor: Color(0xffECECEC),
+                  backgroundColor: const Color(0xffECECEC),
                   child: Icon(
                     Icons.person,
                     size: 11.w,
-                    color: Color(0xffA2A2A2),
+                    color: const Color(0xffA2A2A2),
                   ),
                 ),
                 SizedBox(
@@ -75,7 +77,7 @@ class ChatScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30.dp),
                         color: Colors.white),
                     child: Icon(Icons.phone,
-                        color: Color(0xff0038A7), size: 22.dp),
+                        color: const Color(0xff0038A7), size: 22.dp),
                   ),
                 ),
               ],
@@ -85,7 +87,7 @@ class ChatScreen extends StatelessWidget {
           SingleChildScrollView(
             child: Column(
               children: [
-              Text(
+              const Text(
                 '09:41 AM',
                 style: TextStyle(color: Color(0xff979C9E)),
               ),
@@ -102,9 +104,9 @@ class ChatScreen extends StatelessWidget {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 5.w, vertical: 1.5.h),
                             decoration: BoxDecoration(
-                                color: Color(0xff0038A7),
+                                color: const Color(0xff0038A7),
                                 borderRadius: BorderRadius.circular(20.dp)),
-                            child: Text(
+                            child: const Text(
                               'Hi, Mandy',
                               style: TextStyle(color: Colors.white),
                             ),
@@ -134,9 +136,9 @@ class ChatScreen extends StatelessWidget {
                           padding: EdgeInsets.symmetric(
                               horizontal: 5.w, vertical: 1.5.h),
                           decoration: BoxDecoration(
-                              color: Color(0xff0038A7),
+                              color: const Color(0xff0038A7),
                               borderRadius: BorderRadius.circular(20.dp)),
-                          child: Text(
+                          child: const Text(
                             'I’ve tried the app',
                             style: TextStyle(color: Colors.white),
                           ),
@@ -173,9 +175,9 @@ class ChatScreen extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.5.h),
                     decoration: BoxDecoration(
-                        color: Color(0xffF2F4F5),
+                        color: const Color(0xffF2F4F5),
                         borderRadius: BorderRadius.circular(20.dp)),
-                    child: Text(
+                    child: const Text(
                       'Really ?',
                       style: TextStyle(color: Colors.black),
                     ),
@@ -191,9 +193,9 @@ class ChatScreen extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.5.h),
                     decoration: BoxDecoration(
-                        color: Color(0xff0038A7),
+                        color: const Color(0xff0038A7),
                         borderRadius: BorderRadius.circular(20.dp)),
-                    child: Text(
+                    child: const Text(
                       'Yeah, It’s really good!',
                       style: TextStyle(color: Colors.white),
                     ),
@@ -238,7 +240,7 @@ class ChatScreen extends StatelessWidget {
                   ),
                   Text(
                     'Typing...',
-                    style: TextStyle(color: Color(0xff979C9E), fontSize: 15.dp),
+                    style: TextStyle(color: const Color(0xff979C9E), fontSize: 15.dp),
                   ),
                 ],
               ),
@@ -248,7 +250,7 @@ class ChatScreen extends StatelessWidget {
           ),
           Divider(
             thickness: 0.2.h,
-            color: Color(0xffF2F4F5),
+            color: const Color(0xffF2F4F5),
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 5.0.w, vertical: 2.h),
@@ -256,13 +258,13 @@ class ChatScreen extends StatelessWidget {
               decoration: InputDecoration(
                   contentPadding: EdgeInsets.symmetric(horizontal: 5.w),
                   hintText: 'Type your message',
-                  hintStyle: TextStyle(
+                  hintStyle: const TextStyle(
                       color: Color(0xff72777A)
                   ),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(40.dp),
                       borderSide:
-                      BorderSide(color: Color(0xff979C9E), width: 2.w))),
+                      BorderSide(color: const Color(0xff979C9E), width: 2.w))),
             ),
           )
           ////////

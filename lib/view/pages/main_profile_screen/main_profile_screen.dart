@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen_directory/edit_my_profile_screen.dart';
+import 'package:voo_app/view/pages/main_profile_screen/app_settings_screen/app_settings_screen.dart';
+import 'package:voo_app/view/pages/main_profile_screen/bank_account_screen_edit_profile_screen/bank_account_screen_edit_profile_screen.dart';
+import 'package:voo_app/view/pages/main_profile_screen/cash_back_screen/cash_back_screen.dart';
+import 'package:voo_app/view/pages/main_profile_screen/claim_screen/claim_screen.dart';
+import 'package:voo_app/view/pages/main_profile_screen/earnings_screen/earnings_screen.dart';
+import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen/edit_my_profile_screen.dart';
+import 'package:voo_app/view/pages/main_profile_screen/help_center/help_center_screen.dart';
 import 'package:voo_app/view/pages/main_profile_screen/notifications_screen/notifications_screen.dart';
+import 'package:voo_app/view/pages/main_profile_screen/vehicle_information_screen_edit_profile_screen/vehicle_information_screen_edit_profile_screen.dart';
 
 class MainProfileScreen extends StatelessWidget {
+  const MainProfileScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,11 +26,11 @@ class MainProfileScreen extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 10.w,
-                    backgroundColor: Color(0xffECECEC),
+                    backgroundColor: const Color(0xffECECEC),
                     child: Icon(
                       Icons.person,
                       size: 52.dp,
-                      color: Color(0xffA2A2A2),
+                      color: const Color(0xffA2A2A2),
                     ),
                   ),
                   SizedBox(
@@ -44,13 +53,13 @@ class MainProfileScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => EditMyProfileScreen()));
+                        builder: (context) => const EditMyProfileScreen()));
               },
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.edit_outlined,
                       color: Color(0xff808080),
                     ),
@@ -61,40 +70,10 @@ class MainProfileScreen extends StatelessWidget {
                       'Edit My Profile',
                       style: TextStyle(fontSize: 15.dp),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Icon(
                       Icons.arrow_forward_ios,
-                      color: Color(0xffA2A2A2),
-                      size: 17.dp,
-                    )
-                  ],
-                ),
-              ),
-            ),
-            const Divider(
-              color: Color(0xffF5F4F4),
-            ),
-            InkWell(
-              onTap: () {},
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.settings,
-                      color: Color(0xff808080),
-                    ),
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    Text(
-                      'App Settings',
-                      style: TextStyle(fontSize: 15.dp),
-                    ),
-                    Spacer(),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xffA2A2A2),
+                      color: const Color(0xffA2A2A2),
                       size: 17.dp,
                     )
                   ],
@@ -110,13 +89,49 @@ class MainProfileScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            NotificationsScreen()));
+                            const AppSettingsScreen()));
               },
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                 child: Row(
                   children: [
+                    const Icon(
+                      Icons.settings,
+                      color: Color(0xff808080),
+                    ),
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                    Text(
+                      'App Settings',
+                      style: TextStyle(fontSize: 15.dp),
+                    ),
+                    const Spacer(),
                     Icon(
+                      Icons.arrow_forward_ios,
+                      color: const Color(0xffA2A2A2),
+                      size: 17.dp,
+                    )
+                  ],
+                ),
+              ),
+            ),
+            const Divider(
+              color: Color(0xffF5F4F4),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const NotificationsScreen()));
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                child: Row(
+                  children: [
+                    const Icon(
                       Icons.notifications,
                       color: Color(0xff808080),
                     ),
@@ -127,10 +142,10 @@ class MainProfileScreen extends StatelessWidget {
                       'Notifications',
                       style: TextStyle(fontSize: 15.dp),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Icon(
                       Icons.arrow_forward_ios,
-                      color: Color(0xffA2A2A2),
+                      color: const Color(0xffA2A2A2),
                       size: 17.dp,
                     )
                   ],
@@ -141,12 +156,17 @@ class MainProfileScreen extends StatelessWidget {
               color: Color(0xffF5F4F4),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>const VehicleInformationScreenEditProfileScreen()));
+              },
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.directions_car,
                       color: Color(0xff808080),
                     ),
@@ -157,10 +177,10 @@ class MainProfileScreen extends StatelessWidget {
                       'Vehicle Information',
                       style: TextStyle(fontSize: 15.dp),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Icon(
                       Icons.arrow_forward_ios,
-                      color: Color(0xffA2A2A2),
+                      color: const Color(0xffA2A2A2),
                       size: 17.dp,
                     )
                   ],
@@ -171,12 +191,17 @@ class MainProfileScreen extends StatelessWidget {
               color: Color(0xffF5F4F4),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>const BankAccountScreenEditProfileScreen()));
+              },
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.credit_card,
                       color: Color(0xff808080),
                     ),
@@ -187,10 +212,10 @@ class MainProfileScreen extends StatelessWidget {
                       'Bank Account',
                       style: TextStyle(fontSize: 15.dp),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Icon(
                       Icons.arrow_forward_ios,
-                      color: Color(0xffA2A2A2),
+                      color: const Color(0xffA2A2A2),
                       size: 17.dp,
                     )
                   ],
@@ -201,12 +226,17 @@ class MainProfileScreen extends StatelessWidget {
               color: Color(0xffF5F4F4),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>const EarningsScreen()));
+              },
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.money_outlined,
                       color: Color(0xff808080),
                     ),
@@ -217,10 +247,10 @@ class MainProfileScreen extends StatelessWidget {
                       'Earnings',
                       style: TextStyle(fontSize: 15.dp),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Icon(
                       Icons.arrow_forward_ios,
-                      color: Color(0xffA2A2A2),
+                      color: const Color(0xffA2A2A2),
                       size: 17.dp,
                     )
                   ],
@@ -231,12 +261,52 @@ class MainProfileScreen extends StatelessWidget {
               color: Color(0xffF5F4F4),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>const ClaimScreen()));
+              },
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                 child: Row(
                   children: [
+                    const Icon(
+                      Icons.compare_arrows,
+                      color: Color(0xff808080),
+                    ),
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                    Text(
+                      'Claim',
+                      style: TextStyle(fontSize: 15.dp),
+                    ),
+                    const Spacer(),
                     Icon(
+                      Icons.arrow_forward_ios,
+                      color: const Color(0xffA2A2A2),
+                      size: 17.dp,
+                    )
+                  ],
+                ),
+              ),
+            ),
+            const Divider(
+              color: Color(0xffF5F4F4),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CashBackScreen()));
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                child: Row(
+                  children: [
+                    const Icon(
                       Icons.attach_money,
                       color: Color(0xff808080),
                     ),
@@ -244,13 +314,13 @@ class MainProfileScreen extends StatelessWidget {
                       width: 3.w,
                     ),
                     Text(
-                      'Cashback',
+                      'Cash back',
                       style: TextStyle(fontSize: 15.dp),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Icon(
                       Icons.arrow_forward_ios,
-                      color: Color(0xffA2A2A2),
+                      color: const Color(0xffA2A2A2),
                       size: 17.dp,
                     )
                   ],
@@ -261,12 +331,17 @@ class MainProfileScreen extends StatelessWidget {
               color: Color(0xffF5F4F4),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const HelpCenterScreen()));
+              },
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.help_outlined,
                       color: Color(0xff808080),
                     ),
@@ -277,10 +352,10 @@ class MainProfileScreen extends StatelessWidget {
                       'Help Center',
                       style: TextStyle(fontSize: 15.dp),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Icon(
                       Icons.arrow_forward_ios,
-                      color: Color(0xffA2A2A2),
+                      color: const Color(0xffA2A2A2),
                       size: 17.dp,
                     )
                   ],

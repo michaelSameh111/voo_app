@@ -12,7 +12,7 @@ class AddYourPhotoScreen extends StatelessWidget {
       body: SafeArea(
         child: Center(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 23),
+            padding: const EdgeInsets.symmetric(horizontal: 23),
             child: Column(
               children: [
                 Text(
@@ -20,18 +20,18 @@ class AddYourPhotoScreen extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 25.dp,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xffF70415)),
+                      color: const Color(0xffF70415)),
                 ),
                 Text(
                   'Lorem ipsum dolor sit amet consectetur. Morbi nulla ultricies .',
-                  style: TextStyle(fontSize: 14.dp, color: Color(0xff808080)),
+                  style: TextStyle(fontSize: 14.dp, color: const Color(0xff808080)),
                 ),
                 SizedBox(
                   height: 5.h,
                 ),
                 InkWell(
                   onTap: () {}, //open gallery
-                  child: CircleAvatar(
+                  child: const CircleAvatar(
                     radius: 75.0,
                     backgroundColor: Color(0xffA2A2A2),
                     child: Icon(
@@ -49,16 +49,14 @@ class AddYourPhotoScreen extends StatelessWidget {
                   height: 5.5.h,
                   child: OutlinedButton(
                       style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: Color(0xff808080))),
+                          side: const BorderSide(color: Color(0xff808080))),
                       onPressed: () {},
-                      child: Container(
-                        child: Text(
-                          'Use the outline as a guide',
-                          style: TextStyle(
-                              color: Color(0xff808080),
-                              fontSize: 15.dp,
-                              fontWeight: FontWeight.bold),
-                        ),
+                      child: Text(
+                        'Use the outline as a guide',
+                        style: TextStyle(
+                            color: const Color(0xff808080),
+                            fontSize: 15.dp,
+                            fontWeight: FontWeight.bold),
                       )),
                 ),
                 SizedBox(
@@ -66,7 +64,7 @@ class AddYourPhotoScreen extends StatelessWidget {
                 ),
                 CircledNextButton(
                     nextScreen:
-                        CheckInfoScreen()), // el mafrood go to screen reset password // mo2akatan will go back to login screen
+                        const CheckInfoScreen()), // el mafrood go to screen reset password // mo2akatan will go back to login screen
               ],
             ),
           ),

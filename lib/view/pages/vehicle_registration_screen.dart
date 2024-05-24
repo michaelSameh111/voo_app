@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:voo_app/view/pages/insurance_screen.dart';
-import 'package:voo_app/view/pages/login_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class VehicleRegistrationScreen extends StatelessWidget {
+  const VehicleRegistrationScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 23),
+            padding: const EdgeInsets.symmetric(horizontal: 23),
             child: Column(
               children: [
                 SizedBox(
@@ -29,17 +30,17 @@ class VehicleRegistrationScreen extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 25.dp,
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xffF70415)),
+                                color: const Color(0xffF70415)),
                           ),
                           SizedBox(
                             height: 4.h,
                           ),
                           DottedBorder(
-                            dashPattern: [8, 4],
-                            color: Color(0xff808080),
+                            dashPattern: const [8, 4],
+                            color: const Color(0xff808080),
                             child: Container(
-                              padding: EdgeInsets.all(20),
-                              decoration: BoxDecoration(
+                              padding: const EdgeInsets.all(20),
+                              decoration: const BoxDecoration(
                                 color: Color(0xffF5F4F4),
                               ),
                               child: Column(
@@ -50,7 +51,7 @@ class VehicleRegistrationScreen extends StatelessWidget {
                                   ),
                                   TextButton(
                                     onPressed: () {},
-                                    child: Text(
+                                    child: const Text(
                                       'Click here to take a clear picture of the\n                     registration card',
                                       style: TextStyle(color: Colors.black),
                                     ),
@@ -93,9 +94,9 @@ class VehicleRegistrationScreen extends StatelessWidget {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                          color: Color(0xffF5F4F4),
+                          color: const Color(0xffF5F4F4),
                           borderRadius: BorderRadius.circular(10)),
-                      child: TextField(
+                      child: const TextField(
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(15),
@@ -106,9 +107,9 @@ class VehicleRegistrationScreen extends StatelessWidget {
                     SizedBox(height: 19.h,),
                     MainElevatedButton(
                         nextScreen:
-                        InsuranceScreen(), //mo2akatan 3amelha LoginScreen next page
+                        const InsuranceScreen(), //mo2akatan 3amelha LoginScreen next page
                         text: 'Next',
-                        backgroundColor: Color(0xff0038A7)),
+                        backgroundColor: const Color(0xff0038A7)),
 
                   ],
                 ),

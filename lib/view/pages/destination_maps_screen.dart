@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 
 class DestinationMapsScreen extends StatelessWidget {
+  const DestinationMapsScreen({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class DestinationMapsScreen extends StatelessWidget {
                   TextStyle(fontWeight: FontWeight.bold, fontSize: 16.dp),
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -81,7 +83,7 @@ class DestinationMapsScreen extends StatelessWidget {
                 padding: EdgeInsets.all(10.dp),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20)),
                   boxShadow: [
@@ -98,13 +100,11 @@ class DestinationMapsScreen extends StatelessWidget {
                       width: 80.w,
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xff0038A7)),
+                              backgroundColor: const Color(0xff0038A7)),
                           onPressed: () {},
-                          child: Container(
-                            child: Text(
-                              'Navigate to destination',
-                              style: TextStyle(color: Colors.white),
-                            ),
+                          child: const Text(
+                            'Navigate to destination',
+                            style: TextStyle(color: Colors.white),
                           )),
                     ),
                   ],

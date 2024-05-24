@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-import 'package:voo_app/view/pages/driver_license.dart';
-import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen_directory/edit_my_profile_screen.dart';
+import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen/edit_my_profile_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class ChangeLanguageBasicInfoScreen extends StatefulWidget {
+  const ChangeLanguageBasicInfoScreen({super.key});
+
   @override
   State<ChangeLanguageBasicInfoScreen> createState() => _ChangeLanguageBasicInfoScreenState();
 }
@@ -26,7 +27,7 @@ class _ChangeLanguageBasicInfoScreenState extends State<ChangeLanguageBasicInfoS
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          EditMyProfileScreen()));
+                          const EditMyProfileScreen()));
             },
             child: Container(
                 decoration: BoxDecoration(
@@ -37,7 +38,7 @@ class _ChangeLanguageBasicInfoScreenState extends State<ChangeLanguageBasicInfoS
                   )],
                   shape: BoxShape.circle,
                   color: Colors.white,),
-                child: Icon(Icons.arrow_back)),
+                child: const Icon(Icons.arrow_back)),
           ),
         ),
         title: Text('Change Language',
@@ -51,7 +52,7 @@ class _ChangeLanguageBasicInfoScreenState extends State<ChangeLanguageBasicInfoS
       body: SafeArea(
         child: Center(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 23),
+            padding: const EdgeInsets.symmetric(horizontal: 23),
             child: Column(
               children: [
                 SizedBox(height: 5.h,),
@@ -60,13 +61,13 @@ class _ChangeLanguageBasicInfoScreenState extends State<ChangeLanguageBasicInfoS
                   EdgeInsets.symmetric(horizontal: 10.w,),
                   decoration: BoxDecoration(
                       color: selectedLanguage == 'English'
-                          ? Color(0xff0038A7)
+                          ? const Color(0xff0038A7)
                           : Colors.white,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
                           color: selectedLanguage == 'English'
                               ? Colors.transparent
-                              : Color(0xffC4C4C4))),
+                              : const Color(0xffC4C4C4))),
                   child: Row(
                     children: [
                       Text(
@@ -74,11 +75,11 @@ class _ChangeLanguageBasicInfoScreenState extends State<ChangeLanguageBasicInfoS
                         style: TextStyle(
                             color: selectedLanguage == 'English'
                                 ? Colors.white
-                                : Color(0xffC4C4C4),
+                                : const Color(0xffC4C4C4),
                             fontSize: 16.dp,
                             fontWeight: FontWeight.bold),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Radio<String>(
                         value: 'English',
                         groupValue: selectedLanguage,
@@ -100,13 +101,13 @@ class _ChangeLanguageBasicInfoScreenState extends State<ChangeLanguageBasicInfoS
                   EdgeInsets.symmetric(horizontal: 10.w,),
                   decoration: BoxDecoration(
                       color: selectedLanguage == 'Spanish'
-                          ? Color(0xff0038A7)
+                          ? const Color(0xff0038A7)
                           : Colors.white,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
                           color: selectedLanguage == 'Spanish'
                               ? Colors.transparent
-                              : Color(0xffC4C4C4))),
+                              : const Color(0xffC4C4C4))),
                   child: Row(
                     children: [
                       Text(
@@ -114,11 +115,11 @@ class _ChangeLanguageBasicInfoScreenState extends State<ChangeLanguageBasicInfoS
                         style: TextStyle(
                             color: selectedLanguage == 'Spanish'
                                 ? Colors.white
-                                : Color(0xffC4C4C4),
+                                : const Color(0xffC4C4C4),
                             fontSize: 16.dp,
                             fontWeight: FontWeight.bold),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Radio<String>(
                         value: 'Spanish',
                         groupValue: selectedLanguage,
@@ -141,13 +142,13 @@ class _ChangeLanguageBasicInfoScreenState extends State<ChangeLanguageBasicInfoS
                   ),
                   decoration: BoxDecoration(
                       color: selectedLanguage == 'Arabic'
-                          ? Color(0xff0038A7)
+                          ? const Color(0xff0038A7)
                           : Colors.white,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
                           color: selectedLanguage == 'Arabic'
                               ? Colors.transparent
-                              : Color(0xffC4C4C4))),
+                              : const Color(0xffC4C4C4))),
                   child: Row(
                     children: [
                       Text(
@@ -155,11 +156,11 @@ class _ChangeLanguageBasicInfoScreenState extends State<ChangeLanguageBasicInfoS
                         style: TextStyle(
                             color: selectedLanguage == 'Arabic'
                                 ? Colors.white
-                                : Color(0xffC4C4C4),
+                                : const Color(0xffC4C4C4),
                             fontSize: 16.dp,
                             fontWeight: FontWeight.bold),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Radio<String>(
                         value: 'Arabic',
                         groupValue: selectedLanguage,
@@ -175,9 +176,9 @@ class _ChangeLanguageBasicInfoScreenState extends State<ChangeLanguageBasicInfoS
                 ),
                 const Spacer(),
                 MainElevatedButton(
-                    nextScreen: BasicInfoScreen(),
+                    nextScreen: const BasicInfoScreen(),
                     text: 'Next',
-                    backgroundColor: Color(0xff0038A7)),
+                    backgroundColor: const Color(0xff0038A7)),
                 SizedBox(
                   height: 4.h,
                 ),

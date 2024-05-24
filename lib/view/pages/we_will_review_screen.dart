@@ -19,9 +19,9 @@ class WeWillReviewScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            YourSafetyComeFirstScreen()));
+                            const YourSafetyComeFirstScreen()));
               },
-                  child: Text('Go to (your safety come first screen)'))
+                  child: const Text('Go to (your safety come first screen)'))
             ],
           )),
 

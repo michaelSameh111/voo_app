@@ -1,13 +1,9 @@
-import 'dart:io';
-import 'package:flutter/cupertino.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:voo_app/view/pages/login_screen.dart';
+import 'package:voo_app/view/pages/add_your_photo_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
-
-import '../../Controller/Login/login_cubit.dart';
 
 class RegisterNowScreen extends StatefulWidget {
   @override
@@ -15,25 +11,11 @@ class RegisterNowScreen extends StatefulWidget {
 }
 
 class _RegisterNowScreenState extends State<RegisterNowScreen> {
-  GlobalKey<FormState> formKey = GlobalKey();
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
-  TextEditingController phoneNumberController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
-  bool hasUppercaseBool = false;
-  bool hasLowercaseBool = false;
-  bool hasNumberBool = false;
-  bool hasSpecialCharacterBool = false;
-  bool characterNumber = false;
-  File? file;
   final List<String> gender = [
-    'Choose gender',
     'Male',
     'Female',
   ];
-  String? selectedValue = 'Choose gender';
+  String? selectedValue;
 
   TextEditingController dateController = TextEditingController();
   final selectedGender = TextEditingController();
@@ -41,231 +23,175 @@ class _RegisterNowScreenState extends State<RegisterNowScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoginCubit, LoginState>(
-  listener: (context, state) {},
-  builder: (context, state) {
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
-          child: Form(
-            key: formKey,
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 23),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    SizedBox(height: 5.h),
-                    Column(
-                      children: [
-                        Text(
-                          'Register Now',
-                          style: GoogleFonts.roboto(
-                              fontSize: 25.dp,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xffF70415)),
-                        ),
-                        Text(
-                          'Enter your details to proceed further',
-                          style: GoogleFonts.roboto(
-                              fontSize: 14.dp, color: Color(0xff808080)),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    InkWell(
-                      onTap: () async {
-                        await LoginCubit.get(context).pickImage(image: LoginCubit.registerImage);
-                        setState(() {});
-                      },
-                      child: CircleAvatar(
-                        radius: 13.w,
-                        backgroundColor: Color(0xffA2A2A2),
-                        child: LoginCubit.registerImage != null
-                            ? CircleAvatar(
-                                radius: 13.w,
-                                backgroundColor: Color(0xffA2A2A2),
-                                child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(50),
-                                    child: Image.file(
-                                      LoginCubit.registerImage!,
-                                      fit: BoxFit.fill,
-                                      height: 300,
-                                      width: 300,
-                                    )))
-                            : Icon(
-                                Icons.person,
-                                size: 18.w,
-                                color: Colors.white,
-                              ),
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 23),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(height: 10.h),
+                  Column(
+                    children: [
+                      Text(
+                        'Register Now',
+                        style: TextStyle(
+                            fontSize: 25.dp,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xffF70415)),
+                      ),
+                      Text(
+                        'Enter your details to proceed further',
+                        style: TextStyle(
+                            fontSize: 14.dp, color: Color(0xff808080)),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  InkWell(
+                    onTap: (){
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddYourPhotoScreen(),
+                          ));
+                    },
+                    child: CircleAvatar(
+                      radius: 50.0,
+                      backgroundColor: Color(0xffA2A2A2),
+                      child: Icon(
+                        Icons.person,
+                        size: 70.0,
+                        color: Colors.white,
                       ),
                     ),
-                    TextButton(
-                        onPressed: () async {
-                          await LoginCubit.get(context).pickImage(image: LoginCubit.registerImage);
-                          setState(() {});
-                        },
-                        child: Text(
-                          'Add your photo',
-                          style: GoogleFonts.roboto(
-                              color: Colors.black,
-                              fontSize: 15.dp,
-                              fontWeight: FontWeight.bold),
-                        )),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Text(
-                      'First Name *',
-                      style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.bold, fontSize: 15.dp),
-                    ),
-                    TextFormField(
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'First Name is Empty';
-                        }
-                        return null;
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AddYourPhotoScreen(),
+                            ));
                       },
-                      controller: firstNameController,
+                      child: Text(
+                        'Add your photo',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15.dp,
+                            fontWeight: FontWeight.bold),
+                      )),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    'First Name *',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Color(0xffF5F4F4),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: TextField(
                       decoration: InputDecoration(
-                          filled: true,
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.transparent)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.transparent)),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.transparent)),
+                          border: InputBorder.none,
                           contentPadding: EdgeInsets.all(15),
                           hintText: 'First Name'),
                     ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    // Text(
-                    //   'Middle Name *',
-                    //   style:
-                    //       GoogleFonts.roboto(fontWeight: FontWeight.bold, fontSize: 15.dp),
-                    // ),
-                    // SizedBox(
-                    //   height: 2.h,
-                    // ),
-                    // Container(
-                    //   decoration: BoxDecoration(
-                    //       color: Color(0xffF5F4F4),
-                    //       borderRadius: BorderRadius.circular(10)),
-                    //   child: TextFormField(
-                    //     decoration: InputDecoration(
-                    //         border: InputBorder.none,
-                    //         contentPadding: EdgeInsets.all(15),
-                    //         hintText: 'Middle Name'),
-                    //   ),
-                    // ),
-                    // SizedBox(
-                    //   height: 5.h,
-                    // ),
-                    Text(
-                      'Last Name *',
-                      style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.bold, fontSize: 15.dp),
-                    ),
-                    TextFormField(
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Last Name is Empty';
-                        }
-                        return null;
-                      },
-                      controller: lastNameController,
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    'Middle Name *',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Color(0xffF5F4F4),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: TextField(
                       decoration: InputDecoration(
-                          filled: true,
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.transparent)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.transparent)),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.transparent)),
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.all(15),
+                          hintText: 'Middle Name'),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    'Last Name *',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Color(0xffF5F4F4),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: TextField(
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
                           contentPadding: EdgeInsets.all(15),
                           hintText: 'Last Name'),
                     ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    Text(
-                      'Phone number *',
-                      style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.bold, fontSize: 15.dp),
-                    ),
-                    TextFormField(
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Phone Number is Empty';
-                        }
-                        return null;
-                      },
-                      controller: phoneNumberController,
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    'Phone number *',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Color(0xffF5F4F4),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: const TextField(
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                          filled: true,
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.transparent)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.transparent)),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.transparent)),
+                          border: InputBorder.none,
                           contentPadding: EdgeInsets.all(15),
-                          hintText: 'Enter Your Phone Number'),
+                          hintText: 'Enter your phone number'),
                     ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    Text(
-                      'Date of Birth *',
-                      style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.bold, fontSize: 15.dp),
-                    ),
-                    TextFormField(
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Date of birth is Empty';
-                        }
-                        return null;
-                      },
-                      readOnly: true,
-                      decoration: InputDecoration(
-                          filled: true,
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.transparent)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.transparent)),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.transparent)),
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    'Date of Birth *',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Color(0xffF5F4F4),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: TextField(
+                      decoration: const InputDecoration(
+                          border: InputBorder.none,
                           contentPadding: EdgeInsets.all(15),
                           hintText: 'Choose your date of birth',
                           prefixIcon: Icon(Icons.calendar_today)),
@@ -274,283 +200,251 @@ class _RegisterNowScreenState extends State<RegisterNowScreen> {
                       },
                       controller: dateController,
                     ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    Text(
-                      'Gender *',
-                      style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.bold, fontSize: 15.dp),
-                    ),
-                    DropdownButtonFormField<String>(
-
-                      decoration: InputDecoration(
-                        filled: true,
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                const BorderSide(color: Colors.transparent)),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                const BorderSide(color: Colors.transparent)),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                const BorderSide(color: Colors.transparent)),
-                      ),
-                      validator: (value) {
-                        if (value == 'Choose gender') {
-                          return 'Please choose gender';
-                        }
-                        return null;
-                      },
-                      items: gender
-                          .map((String item) => DropdownMenuItem<String>(
-                                value: item,
-                                child: Text(
-                                  item,
-                                  style: GoogleFonts.roboto(
-                                    fontSize: 14.dp,
-                                    color: Colors.black,
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    'Gender *',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Container(
+                      decoration: BoxDecoration(
+                          color: Color(0xffF5F4F4),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton2<String>(
+                            isExpanded: true,
+                            hint: const Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    'Select Gender',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ))
-                          .toList(),
-                      value: selectedValue,
-                      onChanged: (String? value) {
-                        setState(() {
-                          selectedValue = value;
-                        });
-                      },
-                    ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    Text(
-                      'Email Address*',
-                      style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.bold, fontSize: 15.dp),
-                    ),
-                    TextFormField(
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Email is Empty';
-                        }
-                        return null;
-                      },
-                      controller: emailController,
+                                )
+                              ],
+                            ),
+                            items: gender
+                                .map((String item) => DropdownMenuItem<String>(
+                                      value: item,
+                                      child: Text(
+                                        item,
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.black,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ))
+                                .toList(),
+                            value: selectedValue,
+                            onChanged: (String? value) {
+                              setState(() {
+                                selectedValue = value;
+                              });
+                            }),
+                      )),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    'Email Address*',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Color(0xffF5F4F4),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: TextField(
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
-                          filled: true,
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.transparent)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.transparent)),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.transparent)),
+                          border: InputBorder.none,
                           contentPadding: EdgeInsets.all(15),
                           hintText: 'Enter your email address'),
                     ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    Text(
-                      'Password *',
-                      style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.bold, fontSize: 15.dp),
-                    ),
-                    TextFormField(
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Password is Empty';
-                        }
-                        return null;
-                      },
-                      controller: passwordController,
-                      onChanged: (value) {
-                        setState(() {
-                          hasUppercaseBool = hasUppercase(value);
-                          hasLowercaseBool = hasLowercase(value);
-                          hasNumberBool = hasNumber(value);
-                          hasSpecialCharacterBool = hasSpecialCharacter(value);
-                          characterNumber = value.length >= 8;
-                        });
-                      },
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    'Password *',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Color(0xffF5F4F4),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: TextField(
                       obscureText: true,
                       decoration: InputDecoration(
-                          filled: true,
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.transparent)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.transparent)),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.transparent)),
+                          border: InputBorder.none,
                           contentPadding: EdgeInsets.all(15),
-                          hintText: 'Password'),
+                          hintText: 'Enter your password'),
                     ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Has Upper Case',
-                          style: hasUppercaseBool
-                              ? TextStyle(color: Colors.green, fontSize: 14.dp)
-                              : TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 14.dp,
-                                ),
-                        )),
-                    Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Has Lower Case',
-                          style: hasLowercaseBool
-                              ? TextStyle(color: Colors.green, fontSize: 14.dp)
-                              : TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 14.dp,
-                                ),
-                        )),
-                    Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Has Number',
-                          style: hasNumberBool
-                              ? TextStyle(color: Colors.green, fontSize: 14.dp)
-                              : TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 14.dp,
-                                ),
-                        )),
-                    Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Has Special Character',
-                          style: hasSpecialCharacterBool
-                              ? TextStyle(color: Colors.green, fontSize: 14.dp)
-                              : TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 14.dp,
-                                ),
-                        )),
-                    Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          '8 Characters or more',
-                          style: characterNumber
-                              ? TextStyle(color: Colors.green, fontSize: 14.dp)
-                              : TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 14.dp,
-                                ),
-                        )),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    Text(
-                      'Confirm Password *',
-                      style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.bold, fontSize: 15.dp),
-                    ),
-                    TextFormField(
-                      controller: confirmPasswordController,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Password is Empty';
-                        } else if (value != passwordController.text) {
-                          return 'Password Doesn\'t match';
-                        }
-                        return null;
-                      },
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.check_circle,
+                        color: Color(0xffA2A2A2),
+                        size: 18.dp,
+                      ),
+                      SizedBox(
+                        width: 2.w,
+                      ),
+                      Text(
+                        'Min. 8 characters',
+                        style: TextStyle(
+                            fontSize: 15.dp, color: Color(0xffA2A2A2)),
+                      )
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.check_circle,
+                        color: Colors.green,
+                        size: 18.dp,
+                      ),
+                      SizedBox(
+                        width: 2.w,
+                      ),
+                      Text(
+                        'Capital letter',
+                        style: TextStyle(
+                            fontSize: 15.dp, color: Color(0xffA2A2A2)),
+                      )
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.check_circle,
+                        color: Color(0xffA2A2A2),
+                        size: 18.dp,
+                      ),
+                      SizedBox(
+                        width: 2.w,
+                      ),
+                      Text(
+                        'Small letter',
+                        style: TextStyle(
+                            fontSize: 15.dp, color: Color(0xffA2A2A2)),
+                      )
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.check_circle,
+                        color: Color(0xffA2A2A2),
+                        size: 18.dp,
+                      ),
+                      SizedBox(
+                        width: 2.w,
+                      ),
+                      Text(
+                        'Number',
+                        style: TextStyle(
+                            fontSize: 15.dp, color: Color(0xffA2A2A2)),
+                      )
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.check_circle,
+                        color: Color(0xffA2A2A2),
+                        size: 18.dp,
+                      ),
+                      SizedBox(
+                        width: 2.w,
+                      ),
+                      Text(
+                        'Special characters',
+                        style: TextStyle(
+                            fontSize: 15.dp, color: Color(0xffA2A2A2)),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text(
+                    'Confirm Password *',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Color(0xffF5F4F4),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: TextField(
                       obscureText: true,
                       decoration: InputDecoration(
-                          filled: true,
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.transparent)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.transparent)),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.transparent)),
+                          border: InputBorder.none,
                           contentPadding: EdgeInsets.all(15),
-                          hintText: 'Confirm Password'),
+                          hintText: 'Enter your password'),
                     ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    MainElevatedButtonTwo(
-                      condition: state is RegisterLoadingState,
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            LoginCubit.get(context).registerUser(
-                                firstName: firstNameController.text,
-                                lastName: lastNameController.text,
-                                email: emailController.text,
-                                phone: phoneNumberController.text,
-                                password: passwordController.text,
-                                passwordConfirmation:
-                                    confirmPasswordController.text,
-                                context: context,
-                                birthDate: dateController.text,
-                                gender: selectedValue!,
-                                file: LoginCubit.registerImage);
-                          }
-                        },
-                        text: 'Register',
-                        backgroundColor: Color(0xff0038A7)),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  MainElevatedButton(
+                      nextScreen: AddYourPhotoScreen(),
+                      text: 'Register',
+                      backgroundColor: Color(0xff0038A7)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'Already a user ?',
-                          style: GoogleFonts.roboto(
-                              fontSize: 15.dp, color: Color(0xff646363)),
-                        ),
-                        TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => LoginScreen()));
-                            },
-                            child: Text(
-                              'Login',
-                              style:
-                                  GoogleFonts.roboto(color: Color(0xffF70415)),
-                            ))
-                      ],
-                    )
-                  ],
-                ),
+                      Text(
+                        'Already a user ?',
+                        style: TextStyle(
+                            fontSize: 15.dp, color: Color(0xff646363)),
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginScreen()));
+                          },
+                          child: Text(
+                            'Login',
+                            style: TextStyle(color: Color(0xffF70415)),
+                          ))
+                    ],
+                  )
+                ],
               ),
             ),
           ),
         ),
       ),
     );
-  },
-);
   }
 
   Future<void> selectDate() async {
@@ -565,20 +459,4 @@ class _RegisterNowScreenState extends State<RegisterNowScreen> {
       });
     }
   }
-}
-
-bool hasUppercase(String password) {
-  return password.contains(RegExp(r'[A-Z]'));
-}
-
-bool hasLowercase(String password) {
-  return password.contains(RegExp(r'[a-z]'));
-}
-
-bool hasNumber(String password) {
-  return password.contains(RegExp(r'[0-9]'));
-}
-
-bool hasSpecialCharacter(String password) {
-  return password.contains(RegExp(r'[^\w\s]|_'));
 }

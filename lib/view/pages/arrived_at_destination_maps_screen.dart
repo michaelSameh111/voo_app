@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/view/pages/collect_cash_screen.dart';
-import 'package:voo_app/view/pages/destination_maps_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class ArrivedAtDestinationMapsScreen extends StatefulWidget {
+  const ArrivedAtDestinationMapsScreen({super.key});
+
   @override
   State<ArrivedAtDestinationMapsScreen> createState() =>
       _ArrivedAtDestinationMapsScreenState();
@@ -38,7 +39,7 @@ class _ArrivedAtDestinationMapsScreenState
                   onPressed: () {
                     arrivedAtDestinationShowModalSheet(context);
                   },
-                  child: Text('Finish the trip'))
+                  child: const Text('Finish the trip'))
             ],
           ),
         ),
@@ -61,7 +62,7 @@ class _ArrivedAtDestinationMapsScreenState
             SizedBox(
               height: 5.h,
             ),
-            Image(
+            const Image(
               image:
                   AssetImage('assets/images/enable_location_access_image.png'),
             ),
@@ -69,7 +70,7 @@ class _ArrivedAtDestinationMapsScreenState
             Text(
               'Arrived at Customer Location',
               style: TextStyle(
-                  color: Color(0xff0038A7),
+                  color: const Color(0xff0038A7),
                   fontSize: 20.dp,
                   fontWeight: FontWeight.bold),
             ),
@@ -78,7 +79,7 @@ class _ArrivedAtDestinationMapsScreenState
             ),
             Text(
               '6358 Elign St. Celina, Delaware....',
-              style: TextStyle(color: Color(0xff1D1B1B), fontSize: 15.dp),
+              style: TextStyle(color: const Color(0xff1D1B1B), fontSize: 15.dp),
             ),
             SizedBox(
               height: 4.h,
@@ -87,15 +88,13 @@ class _ArrivedAtDestinationMapsScreenState
               width: 80.w,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xff0038A7)),
+                      backgroundColor: const Color(0xff0038A7)),
                   onPressed: () {
                     arrivedAtDestinationShowModalSheet(context);
                   },
-                  child: Container(
-                    child: Text(
-                      'Arrived to pickup location',
-                      style: TextStyle(color: Colors.white),
-                    ),
+                  child: const Text(
+                    'Arrived to pickup location',
+                    style: TextStyle(color: Colors.white),
                   )),
             ),
             SizedBox(
@@ -103,16 +102,16 @@ class _ArrivedAtDestinationMapsScreenState
             ),
             MainElevatedButton(
                 // el button da kan mawgood f screen tanya makan el done button eli fo2eeh
-                nextScreen: CollectCashScreen(),
+                nextScreen: const CollectCashScreen(),
                 text: 'End trip',
-                backgroundColor: Color(0xff0038A7)),
+                backgroundColor: const Color(0xff0038A7)),
             TextButton(
                 onPressed: () {
                   cancelTripShowModalSheet(context);
                 },
                 child: Text(
                   'Cancel trip',
-                  style: TextStyle(color: Color(0xff646363), fontSize: 15.dp),
+                  style: TextStyle(color: const Color(0xff646363), fontSize: 15.dp),
                 ))
           ],
         ),
@@ -144,7 +143,7 @@ class _ArrivedAtDestinationMapsScreenState
                   SizedBox(
                     height: 1.5.h,
                   ),
-                  Divider(),
+                  const Divider(),
                   SizedBox(
                     height: 1.5.h,
                   ),
@@ -156,7 +155,7 @@ class _ArrivedAtDestinationMapsScreenState
                         onPressed: () {
                           tellUsWhyShowModalSheet(context);
                         },
-                        child: Text(
+                        child: const Text(
                           'Yes, Cancel',
                           style: TextStyle(color: Colors.white),
                         )),
@@ -169,19 +168,17 @@ class _ArrivedAtDestinationMapsScreenState
                     height: 5.5.h,
                     child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: Color(0xff646363))),
+                            side: const BorderSide(color: Color(0xff646363))),
                         onPressed: () {
                           Navigator.pop(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      ArrivedAtDestinationMapsScreen()));
+                                      const ArrivedAtDestinationMapsScreen()));
                         },
-                        child: Container(
-                          child: Text(
-                            'No, Keep ride',
-                            style: TextStyle(color: Color(0xff646363)),
-                          ),
+                        child: const Text(
+                          'No, Keep ride',
+                          style: TextStyle(color: Color(0xff646363)),
                         )),
                   ),
                 ],
@@ -218,7 +215,7 @@ class _ArrivedAtDestinationMapsScreenState
                       SizedBox(
                         height: 1.5.h,
                       ),
-                      Divider(),
+                      const Divider(),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 3.0.w),
                         child: StatefulBuilder(
@@ -234,7 +231,7 @@ class _ArrivedAtDestinationMapsScreenState
                                       scale: 1.3,
                                       child: Checkbox(
                                           activeColor: Colors.red,
-                                          shape: CircleBorder(),
+                                          shape: const CircleBorder(),
                                           value: isChecked1,
                                           onChanged: (bool? value) {
                                             setState(() {
@@ -257,7 +254,7 @@ class _ArrivedAtDestinationMapsScreenState
                                       scale: 1.3,
                                       child: Checkbox(
                                           activeColor: Colors.red,
-                                          shape: CircleBorder(),
+                                          shape: const CircleBorder(),
                                           value: isChecked2,
                                           onChanged: (bool? value) {
                                             setState(() {
@@ -280,7 +277,7 @@ class _ArrivedAtDestinationMapsScreenState
                                       scale: 1.3,
                                       child: Checkbox(
                                           activeColor: Colors.red,
-                                          shape: CircleBorder(),
+                                          shape: const CircleBorder(),
                                           value: isChecked3,
                                           onChanged: (bool? value) {
                                             setState(() {
@@ -303,7 +300,7 @@ class _ArrivedAtDestinationMapsScreenState
                                       scale: 1.3,
                                       child: Checkbox(
                                           activeColor: Colors.red,
-                                          shape: CircleBorder(),
+                                          shape: const CircleBorder(),
                                           value: isChecked4,
                                           onChanged: (bool? value) {
                                             setState(() {
@@ -326,7 +323,7 @@ class _ArrivedAtDestinationMapsScreenState
                                       scale: 1.3,
                                       child: Checkbox(
                                           activeColor: Colors.red,
-                                          shape: CircleBorder(),
+                                          shape: const CircleBorder(),
                                           value: isChecked5,
                                           onChanged: (bool? value) {
                                             setState(() {
@@ -355,7 +352,7 @@ class _ArrivedAtDestinationMapsScreenState
                                               bookingCancelledSuccessfullyModalSheet(
                                                   context);
                                             },
-                                            child: Text(
+                                            child: const Text(
                                               'Submit',
                                               style: TextStyle(color: Colors.white),
                                             )),
@@ -367,19 +364,17 @@ class _ArrivedAtDestinationMapsScreenState
                                         width: 43.w,
                                         child: OutlinedButton(
                                             style: OutlinedButton.styleFrom(
-                                                side: BorderSide(color: Colors.red)),
+                                                side: const BorderSide(color: Colors.red)),
                                             onPressed: () {
                                               Navigator.pop(
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          ArrivedAtDestinationMapsScreen()));
+                                                          const ArrivedAtDestinationMapsScreen()));
                                             },
-                                            child: Container(
-                                              child: Text(
-                                                'Keep ride',
-                                                style: TextStyle(color: Colors.red),
-                                              ),
+                                            child: const Text(
+                                              'Keep ride',
+                                              style: TextStyle(color: Colors.red),
                                             )),
                                       ),
                                     ],
@@ -421,14 +416,14 @@ class _ArrivedAtDestinationMapsScreenState
               fontSize: 18.dp),),
             SizedBox(height: 1.h,),
             Text('Your booking with CRN : #854HG23 has',
-              style: TextStyle(color: Color(0xff646363),
+              style: TextStyle(color: const Color(0xff646363),
               fontSize: 14.dp),),
             Text('been canceled successfully',
-              style: TextStyle(color: Color(0xff646363),
+              style: TextStyle(color: const Color(0xff646363),
                   fontSize: 14.dp),),
             SizedBox(height: 2.h,),
             MainElevatedButton(
-                nextScreen: ArrivedAtDestinationMapsScreen(),
+                nextScreen: const ArrivedAtDestinationMapsScreen(),
                 text: 'Got it',
                 backgroundColor: Colors.red)
 

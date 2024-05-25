@@ -16,7 +16,7 @@ class LoginDataModel {
   dynamic serviceRadiusLongitude;
   String? image;
   String? status;
-  dynamic driverData;
+  DriverData? driverData;
   DriverVehicle? driverVehicle;
   DriverLicense? driverLicense;
   DriverInsurance? driverInsurance;
@@ -62,7 +62,9 @@ class LoginDataModel {
     serviceRadiusLongitude = json['service_radius_longitude'];
     image = json['image'];
     status = json['status'];
-    driverData = json['driver_data'];
+    driverData = json['driver_data'] != null
+        ? new DriverData.fromJson(json['driver_data'])
+        : null;
     driverVehicle = json['driver_vehicle'] != null
         ? new DriverVehicle.fromJson(json['driver_vehicle'])
         : null;
@@ -93,7 +95,9 @@ class LoginDataModel {
     data['service_radius_longitude'] = this.serviceRadiusLongitude;
     data['image'] = this.image;
     data['status'] = this.status;
-    data['driver_data'] = this.driverData;
+    if (this.driverData != null) {
+      data['driver_data'] = this.driverData!.toJson();
+    }
     if (this.driverVehicle != null) {
       data['driver_vehicle'] = this.driverVehicle!.toJson();
     }
@@ -103,6 +107,71 @@ class LoginDataModel {
     if (this.driverInsurance != null) {
       data['driver_insurance'] = this.driverInsurance!.toJson();
     }
+    return data;
+  }
+}
+
+class DriverData {
+  int? id;
+  int? driver;
+  String? securityCode;
+  String? socialSecurityNumber;
+  String? country;
+  String? city;
+  String? state;
+  String? address;
+  String? postalCode;
+  String? language;
+  String? backgroundCheckStatus;
+  String? createdAt;
+  String? updatedAt;
+
+  DriverData(
+      {this.id,
+        this.driver,
+        this.securityCode,
+        this.socialSecurityNumber,
+        this.country,
+        this.city,
+        this.state,
+        this.address,
+        this.postalCode,
+        this.language,
+        this.backgroundCheckStatus,
+        this.createdAt,
+        this.updatedAt});
+
+  DriverData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    driver = json['driver'];
+    securityCode = json['security_code'];
+    socialSecurityNumber = json['social_security_number'];
+    country = json['country'];
+    city = json['city'];
+    state = json['state'];
+    address = json['address'];
+    postalCode = json['postal_code'];
+    language = json['language'];
+    backgroundCheckStatus = json['background_check_status'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['driver'] = this.driver;
+    data['security_code'] = this.securityCode;
+    data['social_security_number'] = this.socialSecurityNumber;
+    data['country'] = this.country;
+    data['city'] = this.city;
+    data['state'] = this.state;
+    data['address'] = this.address;
+    data['postal_code'] = this.postalCode;
+    data['language'] = this.language;
+    data['background_check_status'] = this.backgroundCheckStatus;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
     return data;
   }
 }
@@ -119,7 +188,9 @@ class DriverVehicle {
   String? doors;
   String? wheelchairAccess;
   String? kidsSeat;
+  String? color;
   String? rc;
+  String? rcImage;
   String? rcExpiry;
   String? primaryCar;
   String? createdAt;
@@ -137,7 +208,9 @@ class DriverVehicle {
         this.doors,
         this.wheelchairAccess,
         this.kidsSeat,
+        this.color,
         this.rc,
+        this.rcImage,
         this.rcExpiry,
         this.primaryCar,
         this.createdAt,
@@ -155,7 +228,9 @@ class DriverVehicle {
     doors = json['doors'];
     wheelchairAccess = json['wheelchair_access'];
     kidsSeat = json['kids_seat'];
+    color = json['color'];
     rc = json['rc'];
+    rcImage = json['rc_image'];
     rcExpiry = json['rc_expiry'];
     primaryCar = json['primary_car'];
     createdAt = json['created_at'];
@@ -175,7 +250,9 @@ class DriverVehicle {
     data['doors'] = this.doors;
     data['wheelchair_access'] = this.wheelchairAccess;
     data['kids_seat'] = this.kidsSeat;
+    data['color'] = this.color;
     data['rc'] = this.rc;
+    data['rc_image'] = this.rcImage;
     data['rc_expiry'] = this.rcExpiry;
     data['primary_car'] = this.primaryCar;
     data['created_at'] = this.createdAt;

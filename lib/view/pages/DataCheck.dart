@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-import 'package:voo_app/Controller/Login/login_cubit.dart';
-import 'package:voo_app/view/widgets/ImagePickScreen.dart';
+import 'package:voo_app/view/pages/driver_license.dart';
+import 'package:voo_app/view/pages/insurance_screen.dart';
+import 'package:voo_app/view/pages/select_transport_screen.dart';
+import 'package:voo_app/view/pages/social_security_screen.dart';
 import 'package:voo_app/view/widgets/raise_documents_container_widget.dart';
 
-class CarImages extends StatelessWidget {
-  const CarImages({super.key});
+class DataCheckScreen extends StatelessWidget {
+  const DataCheckScreen({super.key});
+
 
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoginCubit, LoginState>(
-  listener: (context, state) {
-    // TODO: implement listener
-  },
-  builder: (context, state) {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -43,48 +40,47 @@ class CarImages extends StatelessWidget {
             ),
           ),
           title: Text(
-            'Car Images',
+            'Verify Your Data',
             style: TextStyle(fontSize: 20.dp, fontWeight: FontWeight.bold,color: Colors.black),
           ),
         ),
 
         body:
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 3.0.w),
+          padding: EdgeInsets.symmetric(horizontal: 3.0.w,vertical: 2.h),
           child: Column(
             children: [
               RaiseDocumentsContainerWidget(
                   uploadedPicture: true,
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>VehicleFrontImage()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>SocialSecurityScreen()));
                   },
-                  text: 'Front side'),
+                  text: 'Driver Data'),
+              SizedBox(height: 2.h,),
+              RaiseDocumentsContainerWidget(
+                  uploadedPicture: false,
+                  text: 'Insurance Data',
+                onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>InsuranceScreen()));
+                },
+              ),
               SizedBox(height: 2.h,),
               RaiseDocumentsContainerWidget(
                   uploadedPicture: false,
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>VehicleBackImage()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>DriverLicenseScreen()));
                   },
-                  text: 'Back Side'),
+                  text: 'License Data'),
               SizedBox(height: 2.h,),
               RaiseDocumentsContainerWidget(
                   uploadedPicture: true,
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>VehicleLeftImage()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> SelectTransportScreen()));
                   },
-                  text: 'Left side'),
-              SizedBox(height: 2.h,),
-              RaiseDocumentsContainerWidget(
-                  uploadedPicture: true,
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>VehicleRightImage()));
-                  },
-                  text: 'Right side'),
+                  text: 'Vehicle Data'),
             ],
           ),
         )
     );
-  },
-);
   }
 }

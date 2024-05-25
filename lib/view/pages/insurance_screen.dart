@@ -56,7 +56,7 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
                                   style: TextStyle(
                                       fontSize: 25.dp,
                                       fontWeight: FontWeight.bold,
-                                      color: Color(0xffF70415)),
+                                      color: Colors.black),
                                 ),
                                 SizedBox(
                                   height: 4.h,
@@ -113,7 +113,7 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
                                                   .styleFrom(
                                                   backgroundColor:
                                                   const Color(
-                                                      0xff0038A7)),
+                                                      0xffFF6A03)),
                                               onPressed: () async {
                                                 await LoginCubit.get(
                                                     context)
@@ -225,9 +225,10 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
                             controller: expiryDateController,
                           ),
                           SizedBox(
-                            height: 19.h,
+                            height: 5.h,
                           ),
                           MainElevatedButtonTwo(
+                            condition: state is AddInsuranceLicenseLoadingState,
                               onPressed: () {
                                 if (formKey.currentState!.validate()) {
                                   if (LoginCubit.insuranceLicense == null) {
@@ -242,11 +243,16 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
                                       insuranceExpiry:
                                       expiryDateController.text,
                                       frontImage: LoginCubit.insuranceLicense,
-                                      context: context);
+                                      context: context).then((value){
+                                        if(state is AddInsuranceLicenseSuccessState){
+                                          Navigator.pop(context);
+                                        }
+                                  });
                                 }
                               },
                               text: 'Next',
-                              backgroundColor: Color(0xff0038A7)),
+                              backgroundColor: Color(0xffFF6A03)),
+                          SizedBox(height: 2.h,)
                         ],
                       )
                     ],

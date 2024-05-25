@@ -26,7 +26,7 @@ class SocialSecurityScreen extends StatelessWidget {
         child: SafeArea(
           child: Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 23),
+              padding: const EdgeInsets.symmetric(horizontal: 23),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -37,7 +37,7 @@ class SocialSecurityScreen extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 25.dp,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xffF70415)),
+                            color: const Color(0xffF70415)),
                       ),
                     ),
                     SizedBox(
@@ -45,7 +45,7 @@ class SocialSecurityScreen extends StatelessWidget {
                     ),
                     Text(
                       '  We’ll need to pay you and to run your\n background check-it won’t be used for\n                      credit check',
-                      style: TextStyle(fontSize: 14.dp, color: Color(0xff808080)),
+                      style: TextStyle(fontSize: 14.dp, color: const Color(0xff808080)),
                     ),
                     SizedBox(
                       height: 5.h,
@@ -80,15 +80,15 @@ class SocialSecurityScreen extends StatelessWidget {
                               }
                             },
                             // controller: stateController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               filled: true,
                               fillColor: Color(0xffC4C4C4),
                               focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(color: Colors.transparent)),
+                                  borderSide: BorderSide(color: Colors.transparent)),
                               enabledBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(color: Colors.transparent)),
+                                  borderSide: BorderSide(color: Colors.transparent)),
                               border: OutlineInputBorder(
-                                  borderSide: const BorderSide(color: Colors.transparent)),
+                                  borderSide: BorderSide(color: Colors.transparent)),
                               contentPadding: EdgeInsets.all(15),
                             ),
                           ),
@@ -114,15 +114,15 @@ class SocialSecurityScreen extends StatelessWidget {
                               }
                             },
                             // controller: stateController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               filled: true,
                               fillColor: Color(0xffC4C4C4),
                               focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(color: Colors.transparent)),
+                                  borderSide: BorderSide(color: Colors.transparent)),
                               enabledBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(color: Colors.transparent)),
+                                  borderSide: BorderSide(color: Colors.transparent)),
                               border: OutlineInputBorder(
-                                  borderSide: const BorderSide(color: Colors.transparent)),
+                                  borderSide: BorderSide(color: Colors.transparent)),
                               contentPadding: EdgeInsets.all(15),
                             ),
                           ),
@@ -142,15 +142,15 @@ class SocialSecurityScreen extends StatelessWidget {
                                 return null;
                               }
                             },
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               filled: true,
                               fillColor: Color(0xffC4C4C4),
                               focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(color: Colors.transparent)),
+                                  borderSide: BorderSide(color: Colors.transparent)),
                               enabledBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(color: Colors.transparent)),
+                                  borderSide: BorderSide(color: Colors.transparent)),
                               border: OutlineInputBorder(
-                                  borderSide: const BorderSide(color: Colors.transparent)),
+                                  borderSide: BorderSide(color: Colors.transparent)),
                               contentPadding: EdgeInsets.all(15),
                             ),
                           ),
@@ -161,7 +161,6 @@ class SocialSecurityScreen extends StatelessWidget {
                     MainElevatedButtonTwo(
                         onPressed: (){
                           if(formKey.currentState!.validate()){
-
                             socialSecurity = '${controllerOne.text} ${controllerTwo.text} ${controllerThree.text}';
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>LocationScreen())).whenComplete((){
                               print(socialSecurity);
@@ -169,7 +168,7 @@ class SocialSecurityScreen extends StatelessWidget {
                           }
                         },
                         text: 'Next',
-                        backgroundColor: Color(0xff0038A7)),
+                        backgroundColor: const Color(0xff0038A7)),
                     SizedBox(height: 3.h,),
                   ],
                 ),

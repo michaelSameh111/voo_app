@@ -44,7 +44,7 @@ class CircledNextButtonTwo extends StatelessWidget {
         width: 17.w,
         height: 17.h,
         decoration: BoxDecoration(
-          color: Color(0xff0038A7),
+          color: Color(0xffFF6A03),
           shape: BoxShape.circle,
         ),
         child: Icon(

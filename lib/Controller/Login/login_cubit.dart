@@ -12,6 +12,7 @@ import 'package:voo_app/Controller/Data/data_cubit.dart';
 import 'package:voo_app/view/pages/enable_location_access_screen.dart';
 import 'package:voo_app/view/pages/home_page_maps_screen.dart';
 import 'package:voo_app/view/pages/login_screen.dart';
+import 'package:voo_app/view/pages/social_security_screen.dart';
 
 import '../../Model/LoginDataModel.dart';
 import '../Constants.dart';
@@ -48,11 +49,13 @@ class LoginCubit extends Cubit<LoginState> {
       emit(LoginSuccessState());
       if (state is LoginSuccessState) {
         DataCubit.get(context).getVehicleTypes();
-        Navigator.pushAndRemoveUntil(
+        if(loginData.driverData == null){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>SocialSecurityScreen()));
+        } else {  Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => HomePageMapsScreen()),
-          (route) => false,
-        );
+              (route) => false,
+        );}
         if (rememberMe == true) {
           CacheHelper.saveData(
               key: 'username', value: loginEmailController.text);

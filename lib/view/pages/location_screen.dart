@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/Controller/Constants.dart';
 import 'package:voo_app/Controller/Login/login_cubit.dart';
+import 'package:voo_app/view/pages/home_page_maps_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 //ignore_for_file: must_be_immutable
 
@@ -30,7 +31,13 @@ class LocationScreen extends StatelessWidget {
                 onPressed: (){
                   print(socialSecurity);
                   if(formKey.currentState!.validate()){
-                    LoginCubit.get(context).addDriverData(language: languageDropDown,socialSecurity: socialSecurity!, country: 'United States', city: cityController.text, state: stateController.text, address: addressController.text, postalCode: postalCodeController.text, context: context);
+                    LoginCubit.get(context).addDriverData(language: languageDropDown,socialSecurity: socialSecurity!, country: 'United States', city: cityController.text, state: stateController.text, address: addressController.text, postalCode: postalCodeController.text, context: context).whenComplete((){
+                      
+                      if(state is AddDriverDataSuccessState){
+                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomePageMapsScreen()), (route) => false,);
+                      }
+                      
+                    });
                   }
                 },
                 text: 'Next',
@@ -55,7 +62,7 @@ class LocationScreen extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: 25.dp,
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xffF70415)),
+                                  color: Colors.black),
                             ),
                             Text(
                               'Select your state and city',
@@ -75,7 +82,7 @@ class LocationScreen extends StatelessWidget {
                                 child: Text(
                                   'United States',
                                   style: TextStyle(
-                                      color: Color(0xff0038A7),
+                                      color: Color(0xffFF6A03),
                                       fontSize: 17.dp,
                                       fontWeight: FontWeight.bold),
                                 ),

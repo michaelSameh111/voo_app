@@ -7,6 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_places_autocomplete_text_field/model/prediction.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:voo_app/view/pages/DataCheck.dart';
 import 'package:voo_app/view/pages/customer_location_maps_screen.dart';
 
 import '../../Controller/Constants.dart';
@@ -38,7 +39,7 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
       backgroundColor: Colors.grey.shade300,
       body: screens[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: const Color(0xff0038A7),
+        selectedItemColor: const Color(0xffFF6A03),
         unselectedItemColor: const Color(0xffA2A2A2),
         currentIndex: currentIndex,
         onTap: (int index) {
@@ -341,7 +342,7 @@ class _HomePageState extends State<HomePage> {
                 CameraUpdate.newCameraPosition(
                     CameraPosition(
                       target: LatLng(sourcePosition!.latitude, sourcePosition!.longitude),
-                      zoom: 18,)));},child: Icon(Icons.my_location),elevation: 0,backgroundColor: Colors.white,)),
+                      zoom: 18,)));},child: Icon(Icons.my_location,color: Colors.black,),elevation: 0,backgroundColor: Colors.white,)),
           // GooglePlacesAutoCompleteTextFormField(
           //     textEditingController: textEditingController,
           //     googleAPIKey:   googleMapApiKey,
@@ -376,13 +377,22 @@ class _HomePageState extends State<HomePage> {
                     padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
                     child: Row(
                       children: [
-                        const CircleAvatar(
-                          radius: 22.0,
+                         CircleAvatar(
+                          radius: 3.h,
                           backgroundColor: Color(0xffA2A2A2),
-                          child: Icon(
-                            Icons.person,
-                            size: 30.0,
-                            color: Colors.white,
+                          child: Image.network(
+                            '${loginData.image}',
+                            fit: BoxFit.fill,
+                            height: 30.h,
+                            width: 30.h,
+                            errorBuilder: (context,object,skipTrace){
+                              return
+                                Icon(
+                                  Icons.person,
+                                  size: 52.dp,
+                                  color: const Color(0xffA2A2A2),
+                                );
+                            },
                           ),
                         ),
                         const Spacer(),
@@ -390,26 +400,31 @@ class _HomePageState extends State<HomePage> {
                           padding: EdgeInsets.symmetric(
                               horizontal: 3.w, vertical: 1.h),
                           decoration: BoxDecoration(
-                              color: const Color(0xff0038A7),
+                              color: const Color(0xffFF6A03),
                               borderRadius: BorderRadius.circular(20)),
-                          child: Row(
-                            children: [
-                              const Text(
-                                'Online',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              SizedBox(
-                                width: 1.5.w,
-                              ),
-                              CircleAvatar(
-                                backgroundColor: Colors.white,
-                                radius: 2.5.w,
-                                child: CircleAvatar(
-                                  backgroundColor: const Color(0xff637eb7),
-                                  radius: 1.8.w,
+                          child: InkWell(
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>DataCheckScreen()));
+                            },
+                            child: Row(
+                              children: [
+                                const Text(
+                                  'Online',
+                                  style: TextStyle(color: Colors.white),
                                 ),
-                              )
-                            ],
+                                SizedBox(
+                                  width: 1.5.w,
+                                ),
+                                CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  radius: 2.5.w,
+                                  child: CircleAvatar(
+                                    backgroundColor: const Color(0xffFF6A03).withOpacity(0.5),
+                                    radius: 1.8.w,
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         )
                       ],
@@ -428,14 +443,14 @@ class _HomePageState extends State<HomePage> {
                       child: Row(
                         children: [
                           CircleAvatar(
-                            backgroundColor: const Color(0xff0038A7),
+                            backgroundColor: const Color(0xffFF6A03),
                             radius: 6.w,
                             child: CircleAvatar(
                               backgroundColor: Colors.white,
                               radius: 3.5.w,
                               child: Icon(
                                 Icons.attach_money,
-                                color: const Color(0xff0038A7),
+                                color: const Color(0xffFF6A03),
                                 size: 19.dp,
                               ),
                             ),
@@ -470,14 +485,14 @@ class _HomePageState extends State<HomePage> {
                       child: Row(
                         children: [
                           CircleAvatar(
-                            backgroundColor: const Color(0xff0038A7),
+                            backgroundColor: const Color(0xffFF6A03),
                             radius: 6.w,
                             child: CircleAvatar(
                               backgroundColor: Colors.white,
                               radius: 3.5.w,
                               child: Icon(
                                 Icons.calendar_today,
-                                color: const Color(0xff0038A7),
+                                color: const Color(0xffFF6A03),
                                 size: 18.dp,
                               ),
                             ),
@@ -516,7 +531,7 @@ class _HomePageState extends State<HomePage> {
                 //       children: [
                 //         Icon(
                 //           Icons.hourglass_top,
-                //           color: const Color(0xff0038A7),
+                //           color: const Color(0xffFF6A03),
                 //           size: 30.dp,
                 //         ),
                 //         SizedBox(
@@ -525,7 +540,7 @@ class _HomePageState extends State<HomePage> {
                 //         Text(
                 //           '30',
                 //           style: TextStyle(
-                //               color: const Color(0xff0038A7), fontSize: 25.dp),
+                //               color: const Color(0xffFF6A03), fontSize: 25.dp),
                 //         ),
                 //         Text(
                 //           'Seconds',
@@ -589,7 +604,7 @@ class _HomePageState extends State<HomePage> {
                 //                               MaterialStateProperty.all(
                 //                                   Colors.transparent),
                 //                               activeTrackColor:
-                //                               const Color(0xff0038A7),
+                //                               const Color(0xffFF6A03),
                 //                               inactiveTrackColor:
                 //                               const Color(0xffD1D1D6),
                 //                               inactiveThumbColor: Colors.white,
@@ -625,7 +640,7 @@ class _HomePageState extends State<HomePage> {
                   width: 80.w,
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xff0038A7)),
+                          backgroundColor: const Color(0xffFF6A03)),
                       onPressed: () {
                         if (light == true){
                           acceptDeclineShowModalSheet(context);
@@ -681,7 +696,7 @@ class _HomePageState extends State<HomePage> {
                                                   WidgetStateProperty.all(
                                                       Colors.transparent),
                                                   activeTrackColor:
-                                                  const Color(0xff0038A7),
+                                                  const Color(0xffFF6A03),
                                                   inactiveTrackColor:
                                                   const Color(0xffD1D1D6),
                                                   inactiveThumbColor: Colors.white,
@@ -886,7 +901,7 @@ void acceptDeclineShowModalSheet(BuildContext context) {
                     height: 5.5.h,
                     child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
-                            side: const BorderSide(color: Color(0xff0038A7))),
+                            side: const BorderSide(color: Color(0xffFF6A03))),
                         onPressed: () {
                           Navigator.push(
                               context,
@@ -895,7 +910,7 @@ void acceptDeclineShowModalSheet(BuildContext context) {
                         },
                         child: const Text(
                           'Decline',
-                          style: TextStyle(color: Color(0xff0038A7)),
+                          style: TextStyle(color: Color(0xffFF6A03)),
                         )),
                   ),
                   SizedBox(
@@ -906,7 +921,7 @@ void acceptDeclineShowModalSheet(BuildContext context) {
                     height: 5.5.h,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xff0038A7)),
+                            backgroundColor: const Color(0xffFF6A03)),
                         onPressed: () {
                           Navigator.push(
                               context,

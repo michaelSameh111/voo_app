@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/Controller/Constants.dart';
+import 'package:voo_app/Controller/Login/login_cubit.dart';
 import 'package:voo_app/Model/VehicleTypeModel.dart';
 import 'package:voo_app/view/pages/main_profile_screen/vehicle_information_screen_edit_profile_screen/car_documents_screen.dart';
 import 'package:voo_app/view/pages/main_profile_screen/vehicle_information_screen_edit_profile_screen/car_images.dart';
@@ -588,7 +589,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(15),
-                            hintText: 'Add Car Documents'),
+                            hintText: LoginCubit.vehicleRCImage != null ? 'Image Added Successfully' : 'Add Car Documents'),
                         keyboardType: TextInputType.number,
                       ),
                     ),
@@ -698,3 +699,4 @@ class VehicleTypesDropDown extends StatelessWidget {
     );
   }
 }
+

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/Controller/Login/login_cubit.dart';
-import 'package:voo_app/view/pages/select_transport_screen.dart';
 import 'package:voo_app/view/widgets/circled_next_button.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
@@ -38,7 +37,7 @@ class _DriverLicenseScreenState extends State<DriverLicenseScreen> {
           body: SingleChildScrollView(
             child: SafeArea(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 23),
+                padding: const EdgeInsets.symmetric(horizontal: 23),
                 child: Form(
                   key: formKey,
                   child: Column(
@@ -53,7 +52,7 @@ class _DriverLicenseScreenState extends State<DriverLicenseScreen> {
                           style: TextStyle(
                               fontSize: 25.dp,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xffF70415)),
+                              color: Colors.black),
                         ),
                       ),
                       SizedBox(
@@ -65,17 +64,17 @@ class _DriverLicenseScreenState extends State<DriverLicenseScreen> {
                             ' - Is not blurry.\n'
                             ' - Includes all four corners of the card',
                         style: TextStyle(
-                            fontSize: 14.dp, color: Color(0xff808080)),
+                            fontSize: 14.dp, color: const Color(0xff808080)),
                       ),
                       SizedBox(
                         height: 4.h,
                       ),
                       DottedBorder(
                         dashPattern: [8, 4],
-                        color: Color(0xff808080),
+                        color: const Color(0xff808080),
                         child: Container(
-                          padding: EdgeInsets.all(20),
-                          decoration: BoxDecoration(
+                          padding: const EdgeInsets.all(20),
+                          decoration: const BoxDecoration(
                             color: Color(0xfff5f4f4),
                           ),
                           child: LoginCubit.frontLicenseImage != null
@@ -91,7 +90,7 @@ class _DriverLicenseScreenState extends State<DriverLicenseScreen> {
                                 Icons.camera_alt_rounded,
                                 size: 45.dp,
                               ),
-                              TextButton(
+                              const TextButton(
                                 onPressed: null,
                                 child: Text(
                                   'Click here to upload a clear pictue of\n              front of driver\'s license',
@@ -115,7 +114,7 @@ class _DriverLicenseScreenState extends State<DriverLicenseScreen> {
                                     });
                                   },
                                   text: 'Upload',
-                                  backgroundColor: Color(0xff0038A7)),
+                                  backgroundColor: const Color(0xffFF6A03)),
                             ],
                           ),
                         ),
@@ -125,10 +124,10 @@ class _DriverLicenseScreenState extends State<DriverLicenseScreen> {
                       ),
                       DottedBorder(
                         dashPattern: [8, 4],
-                        color: Color(0xff808080),
+                        color: const Color(0xff808080),
                         child: Container(
-                          padding: EdgeInsets.all(20),
-                          decoration: BoxDecoration(
+                          padding: const EdgeInsets.all(20),
+                          decoration: const BoxDecoration(
                             color: Color(0xfff5f4f4),
                           ),
                           child: LoginCubit.backLicenseImage != null
@@ -155,7 +154,7 @@ class _DriverLicenseScreenState extends State<DriverLicenseScreen> {
                                 Icons.camera_alt_rounded,
                                 size: 45.dp,
                               ),
-                              TextButton(
+                              const TextButton(
                                 onPressed: null,
                                 child: Text(
                                   'Click here to upload a clear pictue of\n              back of driver\'s license',
@@ -173,13 +172,12 @@ class _DriverLicenseScreenState extends State<DriverLicenseScreen> {
                                             .backLicenseImage)
                                         .then((value) {
                                       setState(() {
-                                        LoginCubit.backLicenseImage =
-                                            value;
+                                        LoginCubit.backLicenseImage = value;
                                       });
                                     });
                                   },
                                   text: 'Upload',
-                                  backgroundColor: Color(0xff0038A7)),
+                                  backgroundColor: const Color(0xffFF6A03)),
                             ],
                           ),
                         ),
@@ -197,7 +195,7 @@ class _DriverLicenseScreenState extends State<DriverLicenseScreen> {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                            color: Color(0xfff5f4f4),
+                            color: const Color(0xfff5f4f4),
                             borderRadius: BorderRadius.circular(10)),
                         child: TextFormField(
                           controller: driverLicenseController,
@@ -207,7 +205,7 @@ class _DriverLicenseScreenState extends State<DriverLicenseScreen> {
                             } else
                               return null;
                           },
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                               border: InputBorder.none,
                               contentPadding: EdgeInsets.all(15),
                               hintText: 'Enter your driver license number'),
@@ -247,16 +245,16 @@ class _DriverLicenseScreenState extends State<DriverLicenseScreen> {
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide:
                                 const BorderSide(color: Colors.transparent)),
-                            contentPadding: EdgeInsets.all(15),
+                            contentPadding: const EdgeInsets.all(15),
                             hintText: 'Expiry Date',
-                            prefixIcon: Icon(Icons.calendar_today)),
+                            prefixIcon: const Icon(Icons.calendar_today)),
                         onTap: () {
                           selectDate();
                         },
                         controller: expiryDateController,
                       ),
                       SizedBox(
-                        height: 9.h,
+                        height: 1.h,
                       ),
                       Center(child: CircledNextButtonTwo(
                         onTap: () {
@@ -268,21 +266,14 @@ class _DriverLicenseScreenState extends State<DriverLicenseScreen> {
                               backImage: LoginCubit.backLicenseImage,
                               context: context,
                             ).whenComplete((){
-                              if(state is AddDriverLicenseSuccessState){
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            SelectTransportScreen()));
-                              }
-
+                              Navigator.pop(context);
                             });
 
                           }
                         },
                       )),
                       SizedBox(
-                        height: 3.h,
+                        height: 1.h,
                       ),
                     ],
                   ),

@@ -24,8 +24,8 @@ List<String> rideSettings = ['Ride', 'Packages / Bulk packages'];
 List<String> selectCarType = ['VX', 'Vcomfy'];
 List<String> wheelChairAccess = ['Yes', 'No'];
 List<String> childCarSeat = ['Yes', 'No'];
-class _SelectTransportScreenState extends State<SelectTransportScreen> {
 
+class _SelectTransportScreenState extends State<SelectTransportScreen> {
   TextEditingController yearController = TextEditingController();
   int vehicleTypeDropDown = 0;
   void onTypeChanged(int? value) {
@@ -33,6 +33,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
       vehicleTypeDropDown = value!;
     });
   }
+
   bool isChecked = false;
   DateTime? _selectedDate;
   // String currentRideSettings = rideSettings[0];
@@ -49,6 +50,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
     DataCubit.get(context).getVehicleTypes();
     super.initState();
   }
+
   void showBottomSheet() {
     showModalBottomSheet(
         context: context,
@@ -187,7 +189,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<DataCubit, DataState>(
+    return BlocConsumer<LoginCubit, LoginState>(
       listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
@@ -215,8 +217,8 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                     ),
                     Text(
                       'Car Brand *',
-                      style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 15.dp),
                     ),
                     Container(
                       decoration: BoxDecoration(
@@ -230,11 +232,13 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                         keyboardType: TextInputType.text,
                       ),
                     ),
-                    SizedBox(height: 2.h,),
+                    SizedBox(
+                      height: 2.h,
+                    ),
                     Text(
                       'Car Model *',
-                      style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 15.dp),
                     ),
                     Container(
                       decoration: BoxDecoration(
@@ -248,20 +252,24 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                         keyboardType: TextInputType.text,
                       ),
                     ),
-                    SizedBox(height: 2.h,),
+                    SizedBox(
+                      height: 2.h,
+                    ),
                     Text(
                       'Type',
-                      style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 15.dp),
                     ),
-                    VehicleTypesDropDown(vehicleDropDown: vehicleTypeDropDown, onTypeChanged: onTypeChanged),
+                    VehicleTypesDropDown(
+                        vehicleDropDown: vehicleTypeDropDown,
+                        onTypeChanged: onTypeChanged),
                     SizedBox(
                       height: 2.h,
                     ),
                     Text(
                       'Plate number *',
-                      style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 15.dp),
                     ),
                     Container(
                       decoration: BoxDecoration(
@@ -280,8 +288,8 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                     ),
                     Text(
                       'Year',
-                      style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 15.dp),
                     ),
                     Container(
                       decoration: BoxDecoration(
@@ -302,7 +310,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                                   child: YearPicker(
                                     firstDate: DateTime(1980),
                                     lastDate:
-                                    DateTime(DateTime.now().year + 100, 1),
+                                        DateTime(DateTime.now().year + 100, 1),
                                     selectedDate: _selectedDate,
                                     onChanged: (DateTime dateTime) {
                                       _selectedDate = dateTime;
@@ -419,8 +427,8 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                     // ),
                     Text(
                       'Wheelchair access',
-                      style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 15.dp),
                     ),
                     Row(
                       children: [
@@ -468,8 +476,8 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                     ),
                     Text(
                       'Child car seat',
-                      style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 15.dp),
                     ),
                     Row(
                       children: [
@@ -514,8 +522,8 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                     ),
                     Text(
                       'No of seats *',
-                      style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 15.dp),
                     ),
                     Container(
                       decoration: BoxDecoration(
@@ -534,8 +542,8 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                     ),
                     Text(
                       'Number of doors',
-                      style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 15.dp),
                     ),
                     Container(
                       decoration: BoxDecoration(
@@ -574,8 +582,8 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                     // ),
                     Text(
                       'Car documents',
-                      style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 15.dp),
                     ),
                     Container(
                       decoration: BoxDecoration(
@@ -583,13 +591,18 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                           borderRadius: BorderRadius.circular(10)),
                       child: TextFormField(
                         readOnly: true,
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>CarDocumentScreen()));
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CarDocumentScreen()));
                         },
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.all(15),
-                            hintText: LoginCubit.vehicleRCImage != null ? 'Image Added Successfully' : 'Add Car Documents'),
+                            hintText: LoginCubit.vehicleRCImage != null
+                                ? 'Image Added Successfully'
+                                : 'Add Car Documents'),
                         keyboardType: TextInputType.number,
                       ),
                     ),
@@ -598,8 +611,8 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                     ),
                     Text(
                       'Car images',
-                      style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 15.dp),
                     ),
                     Container(
                       decoration: BoxDecoration(
@@ -607,17 +620,22 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                           borderRadius: BorderRadius.circular(10)),
                       child: TextFormField(
                         readOnly: true,
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>CarImages()));
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CarImages()));
                         },
                         decoration: InputDecoration(
                             border: InputBorder.none,
-                            contentPadding: EdgeInsets.all(15),
-                            hintText: 'Add Car Images'),
+                            contentPadding: const EdgeInsets.all(15),
+                            hintText: LoginCubit.carHint),
                         keyboardType: TextInputType.number,
                       ),
                     ),
-                    SizedBox(height: 2.h,),
+                    SizedBox(
+                      height: 2.h,
+                    ),
                     Center(
                       child: MainElevatedButton(
                           nextScreen: VehicleRegistrationScreen(),
@@ -637,20 +655,25 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
     );
   }
 }
+
 //ignore_for_file: must_be_immutable
 class VehicleTypesDropDown extends StatelessWidget {
   int? vehicleDropDown;
   final ValueChanged<int?> onTypeChanged;
-  VehicleTypesDropDown({super.key,required this.vehicleDropDown,required this.onTypeChanged});
+  VehicleTypesDropDown(
+      {super.key, required this.vehicleDropDown, required this.onTypeChanged});
 
   @override
   Widget build(BuildContext context) {
-    List<VehicleTypes> vehicleTypes = vehicleTypesModel.vehicleTypes!; // Assuming 'allCities' is the list of cities
+    List<VehicleTypes> vehicleTypes = vehicleTypesModel
+        .vehicleTypes!; // Assuming 'allCities' is the list of cities
 
     List<DropdownMenuItem<int>> dropdownItems = [
       DropdownMenuItem(
         value: 0,
-        child: Text('Select type',),
+        child: Text(
+          'Select type',
+        ),
       )
     ];
 
@@ -660,28 +683,24 @@ class VehicleTypesDropDown extends StatelessWidget {
         child: SizedBox(
           child: Text(
             '${vehicleTypes.title}',
-
           ),
         ),
       );
       dropdownItems.add(dropdownItem);
     }
-    return  DropdownButtonFormField<int>(
+    return DropdownButtonFormField<int>(
       decoration: InputDecoration(
         filled: true,
         fillColor: Color(0xffF5F4F4),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide:
-            const BorderSide(color: Colors.transparent)),
+            borderSide: const BorderSide(color: Colors.transparent)),
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide:
-            const BorderSide(color: Colors.transparent)),
+            borderSide: const BorderSide(color: Colors.transparent)),
         border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide:
-            const BorderSide(color: Colors.transparent)),
+            borderSide: const BorderSide(color: Colors.transparent)),
       ),
       validator: (value) {
         if (value == 0) {
@@ -694,9 +713,7 @@ class VehicleTypesDropDown extends StatelessWidget {
       onChanged: (val) {
         onTypeChanged(val);
         vehicleDropDown = val;
-
       },
     );
   }
 }
-

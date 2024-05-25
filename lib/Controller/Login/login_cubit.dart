@@ -33,6 +33,18 @@ class LoginCubit extends Cubit<LoginState> {
   static File? vehicleRightImage;
   static File? vehicleLeftImage;
   static File? vehicleRCImage;
+  static String carHint = 'Add Car Images';
+  void updateCarHint (){
+    carHint = LoginCubit.vehicleFrontImage == null &&
+        LoginCubit.vehicleLeftImage == null &&
+        LoginCubit.vehicleRightImage == null &&
+        LoginCubit.vehicleBackImage == null
+        ? 'Add Car Images'
+        : LoginCubit.vehicleFrontImage != null &&
+        LoginCubit.vehicleLeftImage != null &&
+        LoginCubit.vehicleRightImage != null &&
+        LoginCubit.vehicleBackImage != null ? 'All Images Added' : 'Please Make Sure You added all images';
+  }
   void userLogin(
       {required String email,
       required String password,
@@ -97,6 +109,7 @@ class LoginCubit extends Cubit<LoginState> {
     final myFile = await ImagePicker().pickImage(source: ImageSource.camera);
     if (myFile != null) {
       image = File(myFile.path);
+      updateCarHint();
     }
     return image;
   }

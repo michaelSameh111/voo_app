@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "215510722920",
+    "project_id": "mm-solutions-df909",
+    "storage_bucket": "mm-solutions-df909.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:215510722920:android:e5be9bb0179d19df680edd",
+        "android_client_info": {
+          "package_name": "com.example.voo_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9muoHS9zPQS_YSgSYGYY11BEATeDvqCE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

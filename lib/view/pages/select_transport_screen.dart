@@ -27,13 +27,34 @@ List<String> childCarSeat = ['Yes', 'No'];
 
 class _SelectTransportScreenState extends State<SelectTransportScreen> {
   TextEditingController yearController = TextEditingController();
+  TextEditingController expiryDateController = TextEditingController();
+  TextEditingController colorController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   int vehicleTypeDropDown = 0;
   void onTypeChanged(int? value) {
     setState(() {
       vehicleTypeDropDown = value!;
     });
   }
-
+  void showCheckImagesDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Attention'),
+          content: Text('Please check all recommended images.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Dismiss the dialog
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
   bool isChecked = false;
   DateTime? _selectedDate;
   // String currentRideSettings = rideSettings[0];
@@ -194,458 +215,667 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
       builder: (context, state) {
         return Scaffold(
           body: SingleChildScrollView(
-            child: SafeArea(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 23),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    Center(
-                      child: Text(
-                        'Select Transport ',
+            child: Form(
+              key: _formKey,
+              child: SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 23),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      Center(
+                        child: Text(
+                          'Select Transport ',
+                          style: TextStyle(
+                              fontSize: 25.dp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      Text(
+                        'Car Brand *',
                         style: TextStyle(
-                            fontSize: 25.dp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
+                            fontWeight: FontWeight.bold, fontSize: 15.dp),
                       ),
-                    ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    Text(
-                      'Car Brand *',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 15.dp),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Color(0xffF5F4F4),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.all(15),
-                            hintText: 'Ex. Toyota'),
-                        keyboardType: TextInputType.text,
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Color(0xffF5F4F4),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'This Field be empty';
+                            }
+                            return null;
+                          },
+                          controller: brandController,
+                          decoration: InputDecoration(
+                              filled: true,
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              contentPadding: EdgeInsets.all(15),
+                              hintText: 'Ex. Toyota'),
+                          keyboardType: TextInputType.text,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    Text(
-                      'Car Model *',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 15.dp),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Color(0xffF5F4F4),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.all(15),
-                            hintText: 'Ex. 316'),
-                        keyboardType: TextInputType.text,
+                      SizedBox(
+                        height: 2.h,
                       ),
-                    ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    Text(
-                      'Type',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 15.dp),
-                    ),
-                    VehicleTypesDropDown(
-                        vehicleDropDown: vehicleTypeDropDown,
-                        onTypeChanged: onTypeChanged),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    Text(
-                      'Plate number *',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 15.dp),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Color(0xffF5F4F4),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.all(15),
-                            hintText: 'Enter plate number'),
-                        keyboardType: TextInputType.text,
+                      Text(
+                        'Car Model *',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15.dp),
                       ),
-                    ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    Text(
-                      'Year',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 15.dp),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Color(0xffF5F4F4),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: TextFormField(
-                        // onTap: showBottomSheet,
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text("Select Year"),
-                                content: Container(
-                                  // Need to use container to add size constraint.
-                                  width: 300,
-                                  height: 300,
-                                  child: YearPicker(
-                                    firstDate: DateTime(1980),
-                                    lastDate:
-                                        DateTime(DateTime.now().year + 100, 1),
-                                    selectedDate: _selectedDate,
-                                    onChanged: (DateTime dateTime) {
-                                      _selectedDate = dateTime;
-                                      yearController.text =
-                                          dateTime.year.toString();
-                                      Navigator.pop(context);
-                                    },
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Color(0xffF5F4F4),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: TextFormField(
+                          controller: modelController,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'This Field be empty';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                              filled: true,
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              contentPadding: EdgeInsets.all(15),
+                              hintText: 'Ex. 316'),
+                          keyboardType: TextInputType.text,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      Text(
+                        'Type',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      ),
+                      VehicleTypesDropDown(
+                          vehicleDropDown: vehicleTypeDropDown,
+                          onTypeChanged: onTypeChanged),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      Text(
+                        'Plate number *',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Color(0xffF5F4F4),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: TextFormField(
+                          controller: plateInfoController,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'This Field be empty';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                              filled: true,
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              contentPadding: EdgeInsets.all(15),
+                              hintText: 'Enter Plate Number'),
+                          keyboardType: TextInputType.text,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      Text(
+                        'Year',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Color(0xffF5F4F4),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: TextFormField(
+
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'This Field be empty';
+                            }
+                            return null;
+                          },
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Select Year"),
+                                  content: Container(
+                                    // Need to use container to add size constraint.
+                                    width: 300,
+                                    height: 300,
+                                    child: YearPicker(
+                                      firstDate: DateTime(1980),
+                                      lastDate: DateTime(
+                                          DateTime.now().year + 100, 1),
+                                      selectedDate: _selectedDate,
+                                      onChanged: (DateTime dateTime) {
+                                        _selectedDate = dateTime;
+                                        yearController.text =
+                                            dateTime.year.toString();
+                                        Navigator.pop(context);
+                                      },
+                                    ),
                                   ),
+                                );
+                              },
+                            );
+                          },
+                          controller: yearController,
+                          readOnly: true,
+                          decoration: InputDecoration(
+                              filled: true,
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              contentPadding: EdgeInsets.all(15),
+                              hintText: 'Year'),
+                          keyboardType: TextInputType.text,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      //No Need In Design
+                      // Column(crossAxisAlignment: CrossAxisAlignment.start,
+                      //   children: [   Text(
+                      //     'Ride Settings',
+                      //     style:
+                      //     TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      //   ),
+                      //     ListTile(
+                      //       minTileHeight: 5.h,
+                      //       contentPadding: EdgeInsets.zero,
+                      //       title: const Text('Ride people'),
+                      //       leading: Transform.scale(
+                      //         scale: 1.2,
+                      //         child: Radio(
+                      //           activeColor: const Color(0xff0038A7),
+                      //           value: rideSettings[0],
+                      //           groupValue: currentRideSettings,
+                      //           onChanged: (value) {
+                      //             setState(() {
+                      //               currentRideSettings = value.toString();
+                      //             });
+                      //           },
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     ListTile(
+                      //       minTileHeight: 5.h,
+                      //       contentPadding: EdgeInsets.zero,
+                      //       title: const Text('Packages / Bulk packages'),
+                      //       leading: Transform.scale(
+                      //         scale: 1.2,
+                      //         child: Radio(
+                      //           activeColor: Color(0xff0038A7),
+                      //           value: rideSettings[1],
+                      //           groupValue: currentRideSettings,
+                      //           onChanged: (value) {
+                      //             setState(() {
+                      //               currentRideSettings = value.toString();
+                      //             });
+                      //           },
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     SizedBox(
+                      //       height: 2.h,
+                      //     ),
+                      //     Text(
+                      //       'Select car type',
+                      //       style:
+                      //       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      //     ),
+                      //     ListTile( minTileHeight: 5.h,
+                      //       contentPadding: EdgeInsets.zero,
+                      //       title: const Text('VX'),
+                      //       leading: Transform.scale(
+                      //         scale: 1.2,
+                      //         child: Radio(
+                      //           activeColor: Color(0xff0038A7),
+                      //           value: selectCarType[0],
+                      //           groupValue: currentSelectCarType,
+                      //           onChanged: (value) {
+                      //             setState(() {
+                      //               currentSelectCarType = value.toString();
+                      //             });
+                      //           },
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     ListTile( minTileHeight: 5.h,
+                      //       contentPadding: EdgeInsets.zero,
+                      //       title: const Text('Vcomfy'),
+                      //       leading: Transform.scale(
+                      //         scale: 1.2,
+                      //         child: Radio(
+                      //           activeColor: Color(0xff0038A7),
+                      //           value: selectCarType[1],
+                      //           groupValue: currentSelectCarType,
+                      //           onChanged: (value) {
+                      //             setState(() {
+                      //               currentSelectCarType = value.toString();
+                      //             });
+                      //           },
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     SizedBox(
+                      //       height: 2.h,
+                      //     ),],
+                      // ),
+                      Text(
+                        'Wheelchair access',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              title: const Text('Yes'),
+                              leading: Transform.scale(
+                                scale: 1.2,
+                                child: Radio(
+                                  activeColor: Color(0xff0038A7),
+                                  value: wheelChairAccess[0],
+                                  groupValue: currentWheelChairAccess,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      currentWheelChairAccess =
+                                          value.toString();
+                                    });
+                                  },
                                 ),
-                              );
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: ListTile(
+                              title: const Text('No'),
+                              leading: Transform.scale(
+                                scale: 1.2,
+                                child: Radio(
+                                  activeColor: Color(0xff0038A7),
+                                  value: wheelChairAccess[1],
+                                  groupValue: currentWheelChairAccess,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      currentWheelChairAccess =
+                                          value.toString();
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      Text(
+                        'Child car seat',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              title: const Text('Yes'),
+                              leading: Transform.scale(
+                                scale: 1.2,
+                                child: Radio(
+                                  activeColor: Color(0xff0038A7),
+                                  value: childCarSeat[0],
+                                  groupValue: currentChildCarSeat,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      currentChildCarSeat = value.toString();
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: ListTile(
+                              title: const Text('No'),
+                              leading: Transform.scale(
+                                scale: 1.2,
+                                child: Radio(
+                                  activeColor: Color(0xff0038A7),
+                                  value: childCarSeat[1],
+                                  groupValue: currentChildCarSeat,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      currentChildCarSeat = value.toString();
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        'No of seats *',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Color(0xffF5F4F4),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: TextFormField(
+                          controller: seatsController,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'This Field be empty';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                              filled: true,
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              contentPadding: EdgeInsets.all(15),
+                              hintText: 'Number Of Seats'),
+                          keyboardType: TextInputType.text,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      Text(
+                        'Number of doors',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Color(0xffF5F4F4),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: TextFormField(
+                          controller: doorsController,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'This Field be empty';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                              filled: true,
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              contentPadding: EdgeInsets.all(15),
+                              hintText: 'Number Of Doors'),
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      Text(
+                        'Rc Expiry Date',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Color(0xffF5F4F4),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'This Field be empty';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                              filled: true,
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              contentPadding: EdgeInsets.all(15),
+                              hintText: 'RC Expiry Date'),
+                          keyboardType: TextInputType.number,
+                          controller: expiryDateController,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      Text(
+                        'Vehicle Color',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Color(0xffF5F4F4),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'This Field be empty';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                              filled: true,
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              contentPadding: EdgeInsets.all(15),
+                              hintText: 'Vehicle Color'),
+                          keyboardType: TextInputType.number,
+                          controller: colorController,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      // Text(
+                      //   'Car fuel type',
+                      //   style:
+                      //       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      // ),
+                      // Container(
+                      //   decoration: BoxDecoration(
+                      //       color: Color(0xffF5F4F4),
+                      //       borderRadius: BorderRadius.circular(10)),
+                      //   child: TextFormField(
+                      //     decoration: InputDecoration(
+                      //         border: InputBorder.none,
+                      //         contentPadding: EdgeInsets.all(15),
+                      //         hintText: 'Select fuel type'),
+                      //     keyboardType: TextInputType.number,
+                      //   ),
+                      // ),
+                      // SizedBox(
+                      //   height: 2.h,
+                      // ),
+                      Text(
+                        'Car documents',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Color(0xffF5F4F4),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: TextFormField(
+                          readOnly: true,
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CarDocumentScreen()));
+                          },
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.all(15),
+                              hintText: LoginCubit.vehicleRCImage != null
+                                  ? 'Image Added Successfully'
+                                  : 'Add Car Documents'),
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      Text(
+                        'Car images',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Color(0xffF5F4F4),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: TextFormField(
+                          readOnly: true,
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CarImages()));
+                          },
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              contentPadding: const EdgeInsets.all(15),
+                              hintText: LoginCubit.carHint),
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      Center(
+                        child: MainElevatedButtonTwo(
+                          condition: state is AddDriverVehicleLoadingState,
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                if (LoginCubit.vehicleRCImage != null &&
+                                    LoginCubit.vehicleLeftImage != null &&
+                                    LoginCubit.vehicleRightImage != null &&
+                                    LoginCubit.vehicleFrontImage != null &&
+                                    LoginCubit.vehicleBackImage != null) {
+                                  LoginCubit.get(context).addVehicle(type: vehicleTypeDropDown, plateInfo: plateInfoController.text, brand: brandController.text, model: modelController.text, year: yearController.text, seats: seatsController.text, doors: doorsController.text, wheelChair: currentWheelChairAccess, kidsSeat: currentChildCarSeat, color: colorController.text, rcExpiry:expiryDateController.text , rcImage: LoginCubit.vehicleRCImage, frontImage: LoginCubit.vehicleFrontImage, backImage: LoginCubit.vehicleBackImage, rightImage: LoginCubit.vehicleRightImage, leftImage: LoginCubit.vehicleLeftImage, context: context);
+                                } else {
+                                  showCheckImagesDialog(context);
+                                }
+                              }
                             },
-                          );
-                        },
-                        controller: yearController,
-                        readOnly: true,
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.all(15),
-                            hintText: 'Year'),
-                        keyboardType: TextInputType.text,
+                            text: 'Add Vehicle',
+                            backgroundColor: Color(0xffFF6A03)),
                       ),
-                    ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    //No Need In Design
-                    // Column(crossAxisAlignment: CrossAxisAlignment.start,
-                    //   children: [   Text(
-                    //     'Ride Settings',
-                    //     style:
-                    //     TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
-                    //   ),
-                    //     ListTile(
-                    //       minTileHeight: 5.h,
-                    //       contentPadding: EdgeInsets.zero,
-                    //       title: const Text('Ride people'),
-                    //       leading: Transform.scale(
-                    //         scale: 1.2,
-                    //         child: Radio(
-                    //           activeColor: const Color(0xff0038A7),
-                    //           value: rideSettings[0],
-                    //           groupValue: currentRideSettings,
-                    //           onChanged: (value) {
-                    //             setState(() {
-                    //               currentRideSettings = value.toString();
-                    //             });
-                    //           },
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     ListTile(
-                    //       minTileHeight: 5.h,
-                    //       contentPadding: EdgeInsets.zero,
-                    //       title: const Text('Packages / Bulk packages'),
-                    //       leading: Transform.scale(
-                    //         scale: 1.2,
-                    //         child: Radio(
-                    //           activeColor: Color(0xff0038A7),
-                    //           value: rideSettings[1],
-                    //           groupValue: currentRideSettings,
-                    //           onChanged: (value) {
-                    //             setState(() {
-                    //               currentRideSettings = value.toString();
-                    //             });
-                    //           },
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     SizedBox(
-                    //       height: 2.h,
-                    //     ),
-                    //     Text(
-                    //       'Select car type',
-                    //       style:
-                    //       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
-                    //     ),
-                    //     ListTile( minTileHeight: 5.h,
-                    //       contentPadding: EdgeInsets.zero,
-                    //       title: const Text('VX'),
-                    //       leading: Transform.scale(
-                    //         scale: 1.2,
-                    //         child: Radio(
-                    //           activeColor: Color(0xff0038A7),
-                    //           value: selectCarType[0],
-                    //           groupValue: currentSelectCarType,
-                    //           onChanged: (value) {
-                    //             setState(() {
-                    //               currentSelectCarType = value.toString();
-                    //             });
-                    //           },
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     ListTile( minTileHeight: 5.h,
-                    //       contentPadding: EdgeInsets.zero,
-                    //       title: const Text('Vcomfy'),
-                    //       leading: Transform.scale(
-                    //         scale: 1.2,
-                    //         child: Radio(
-                    //           activeColor: Color(0xff0038A7),
-                    //           value: selectCarType[1],
-                    //           groupValue: currentSelectCarType,
-                    //           onChanged: (value) {
-                    //             setState(() {
-                    //               currentSelectCarType = value.toString();
-                    //             });
-                    //           },
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     SizedBox(
-                    //       height: 2.h,
-                    //     ),],
-                    // ),
-                    Text(
-                      'Wheelchair access',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 15.dp),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: const Text('Yes'),
-                            leading: Transform.scale(
-                              scale: 1.2,
-                              child: Radio(
-                                activeColor: Color(0xff0038A7),
-                                value: wheelChairAccess[0],
-                                groupValue: currentWheelChairAccess,
-                                onChanged: (value) {
-                                  setState(() {
-                                    currentWheelChairAccess = value.toString();
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: ListTile(
-                            title: const Text('No'),
-                            leading: Transform.scale(
-                              scale: 1.2,
-                              child: Radio(
-                                activeColor: Color(0xff0038A7),
-                                value: wheelChairAccess[1],
-                                groupValue: currentWheelChairAccess,
-                                onChanged: (value) {
-                                  setState(() {
-                                    currentWheelChairAccess = value.toString();
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    Text(
-                      'Child car seat',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 15.dp),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ListTile(
-                            contentPadding: EdgeInsets.zero,
-                            title: const Text('Yes'),
-                            leading: Transform.scale(
-                              scale: 1.2,
-                              child: Radio(
-                                activeColor: Color(0xff0038A7),
-                                value: childCarSeat[0],
-                                groupValue: currentChildCarSeat,
-                                onChanged: (value) {
-                                  setState(() {
-                                    currentChildCarSeat = value.toString();
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: ListTile(
-                            title: const Text('No'),
-                            leading: Transform.scale(
-                              scale: 1.2,
-                              child: Radio(
-                                activeColor: Color(0xff0038A7),
-                                value: childCarSeat[1],
-                                groupValue: currentChildCarSeat,
-                                onChanged: (value) {
-                                  setState(() {
-                                    currentChildCarSeat = value.toString();
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      'No of seats *',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 15.dp),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Color(0xffF5F4F4),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.all(15),
-                            hintText: 'Number of Seats'),
-                        keyboardType: TextInputType.text,
+                      SizedBox(
+                        height: 2.h,
                       ),
-                    ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    Text(
-                      'Number of doors',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 15.dp),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Color(0xffF5F4F4),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.all(15),
-                            hintText: 'Number of doors'),
-                        keyboardType: TextInputType.number,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    // Text(
-                    //   'Car fuel type',
-                    //   style:
-                    //       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
-                    // ),
-                    // Container(
-                    //   decoration: BoxDecoration(
-                    //       color: Color(0xffF5F4F4),
-                    //       borderRadius: BorderRadius.circular(10)),
-                    //   child: TextFormField(
-                    //     decoration: InputDecoration(
-                    //         border: InputBorder.none,
-                    //         contentPadding: EdgeInsets.all(15),
-                    //         hintText: 'Select fuel type'),
-                    //     keyboardType: TextInputType.number,
-                    //   ),
-                    // ),
-                    // SizedBox(
-                    //   height: 2.h,
-                    // ),
-                    Text(
-                      'Car documents',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 15.dp),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Color(0xffF5F4F4),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: TextFormField(
-                        readOnly: true,
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CarDocumentScreen()));
-                        },
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.all(15),
-                            hintText: LoginCubit.vehicleRCImage != null
-                                ? 'Image Added Successfully'
-                                : 'Add Car Documents'),
-                        keyboardType: TextInputType.number,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    Text(
-                      'Car images',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 15.dp),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Color(0xffF5F4F4),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: TextFormField(
-                        readOnly: true,
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CarImages()));
-                        },
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            contentPadding: const EdgeInsets.all(15),
-                            hintText: LoginCubit.carHint),
-                        keyboardType: TextInputType.number,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    Center(
-                      child: MainElevatedButton(
-                          nextScreen: VehicleRegistrationScreen(),
-                          text: 'Next',
-                          backgroundColor: Color(0xffFF6A03)),
-                    ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

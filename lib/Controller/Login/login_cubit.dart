@@ -431,38 +431,42 @@ class LoginCubit extends Cubit<LoginState> {
     });
   }
 
-  Future<void> addVehicle(
-      {required int type,
-        required String plateInfo,
-        required String brand,
-        required String model,
-        required String year,
-        required String seats,
-        required String doors,
-        required String wheelChair,
-        required String kidsSeat,
-        required String color,
-        required String rcExpiry,
-        required File? rcImage,
-        required File? frontImage,
-        required File? backImage,
-        required File? rightImage,
-        required File? leftImage,
-        required BuildContext context})async {
+  Future<void> addVehicle({
+    required int type,
+    required String plateInfo,
+    required String brand,
+    required String model,
+    required String year,
+    required String seats,
+    required String doors,
+    required String wheelChair,
+    required String kidsSeat,
+    required String color,
+    required String rcExpiry,
+    required File? rcImage,
+    required File? frontImage,
+    required File? backImage,
+    required File? rightImage,
+    required File? leftImage,
+    required BuildContext context,
+  }) async {
     emit(AddDriverVehicleLoadingState());
-    DioHelper.postData(
-        url: 'driver-vehicles/add',
+
+    try {
+      final response = await DioHelper.postData(
+        url: 'http://10.0.2.2:8000/api/driver-vehicles/add',
         data: FormData.fromMap({
-          'vehicle_type' : type,
-          'plate_info' : plateInfo,
-          'make' : brand,
-          'model' : model,
-          'year' : seats,
-          'doors' : doors,
-          'wheelchair_access' : wheelChair,
-          'kids_seat' : kidsSeat,
-          'color' : color,
-          'rc_expiry' : rcExpiry,
+          'vehicle_type': type,
+          'plate_info': plateInfo,
+          'make': brand,
+          'model': model,
+          'year': year,
+          'seats': seats,
+          'doors': doors,
+          'wheelchair_access': wheelChair,
+          'kids_seat': kidsSeat,
+          'color': color,
+          'rc_expiry': rcExpiry,
           if (LoginCubit.vehicleRCImage != null)
             'rc_image': await MultipartFile.fromFile(
               LoginCubit.vehicleRCImage!.path,
@@ -494,14 +498,25 @@ class LoginCubit extends Cubit<LoginState> {
               contentType: MediaType("image", "jpeg"),
             ),
         }),
-        token: token)
-        .then((value) async {
+        token: token,
+      );
+
+      print('Response data: ${response.data}');
       emit(AddDriverVehicleSuccessState());
-    }).catchError((error,stacktrace) {
-      print(error);
-      print(stacktrace);
+    } catch (error) {
+      if (error is DioError) {
+        if (error.response != null) {
+          print('Error response data: ${error.response?.data}');
+          print('Error response status: ${error.response?.statusCode}');
+          print('Error response headers: ${error.response?.headers}');
+        } else {
+          print('Error message: ${error.message}');
+        }
+      } else {
+        print('Unexpected error: $error');
+      }
       emit(AddDriverVehicleErrorState(error.toString()));
-    });
+    }
   }
 
 

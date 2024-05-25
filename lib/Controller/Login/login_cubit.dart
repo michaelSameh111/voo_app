@@ -53,6 +53,7 @@ class LoginCubit extends Cubit<LoginState> {
     DioHelper.postData(url: 'http://10.0.2.2:8000/api/auth/login', data: {
       'email': email,
       'password': password,
+      'fcm_token': fcmToken
     }).then((value) async {
       loginData = LoginDataModel.fromJson(value.data);
       token = loginData.accessToken;

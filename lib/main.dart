@@ -1,9 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/Controller/Data/data_cubit.dart';
+import 'package:voo_app/Controller/Firebase%20Notifications.dart';
 import 'package:voo_app/firebase_options.dart';
 import 'package:voo_app/view/pages/splash_screen.dart';
 import 'Controller/Login/login_cubit.dart';
@@ -14,25 +16,21 @@ import 'Controller/shared-prefrences.dart';
 
 
 void main() async{
-  // A5oya Mo7a haktblk b3d kol line by3ml eh
   WidgetsFlutterBinding.ensureInitialized();
-  // Lama bt3ml init le 7agat fel main lazem tktb el line beta3 ensure Initialized dh
   DioHelper.init();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  // Bensha8al el DIO .. elly howa bngeb meno el data mel API
+  await FirebaseNotifications().initNotifications();
+  await FirebaseNotifications().handleBackgroundNotifications();
   CacheHelper.init();
-  //  Bensha8al el shared prefrences .. 3ashan law fe remember me .. aw 7aga fe local storage
   ErrorWidget.builder = (FlutterErrorDetails details) => const Material(
     child: Center(
       child: Text('There is an Error'),
     ),
 
   );
-  // deh lama ykon fe error mesh hytl3 el shasha el 7amra .. hayetla3 shasha maktob feha Error we 5las
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.white,
       statusBarIconBrightness: Brightness.dark));
-  // dh 3ashan el 7etta elly fo2 5ales fel app tb2a wa5da nafs el loon .. we loon el icons zy el wifi we kda
   Bloc.observer =MyBlocObserver();
   runApp(const MyApp());
 }

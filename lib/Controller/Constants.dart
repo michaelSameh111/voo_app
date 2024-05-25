@@ -4,6 +4,7 @@ import 'package:voo_app/Model/LoginDataModel.dart';
 import 'package:voo_app/Model/VehicleTypeModel.dart';
 
 String? token = '';
+String? fcmToken = '';
 String? loggedInEmail = '';
 String? loggedInPassword = '';
 bool rememberMe = false;

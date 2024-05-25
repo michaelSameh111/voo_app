@@ -28,6 +28,7 @@ List<String> childCarSeat = ['Yes', 'No'];
 class _SelectTransportScreenState extends State<SelectTransportScreen> {
   TextEditingController yearController = TextEditingController();
   TextEditingController expiryDateController = TextEditingController();
+  TextEditingController rcController = TextEditingController();
   TextEditingController colorController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   int vehicleTypeDropDown = 0;
@@ -738,6 +739,45 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                         height: 2.h,
                       ),
                       Text(
+                        'RC Number',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Color(0xffF5F4F4),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'This Field be empty';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                              filled: true,
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              contentPadding: EdgeInsets.all(15),
+                              hintText: 'RC Number'),
+                          keyboardType: TextInputType.number,
+                          controller: rcController,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      Text(
                         'Vehicle Color',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 15.dp),
@@ -797,7 +837,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                       //   height: 2.h,
                       // ),
                       Text(
-                        'Car documents',
+                        'RC Image',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 15.dp),
                       ),
@@ -862,7 +902,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                                     LoginCubit.vehicleRightImage != null &&
                                     LoginCubit.vehicleFrontImage != null &&
                                     LoginCubit.vehicleBackImage != null) {
-                                  LoginCubit.get(context).addVehicle(type: vehicleTypeDropDown, plateInfo: plateInfoController.text, brand: brandController.text, model: modelController.text, year: yearController.text, seats: seatsController.text, doors: doorsController.text, wheelChair: currentWheelChairAccess, kidsSeat: currentChildCarSeat, color: colorController.text, rcExpiry:expiryDateController.text , rcImage: LoginCubit.vehicleRCImage, frontImage: LoginCubit.vehicleFrontImage, backImage: LoginCubit.vehicleBackImage, rightImage: LoginCubit.vehicleRightImage, leftImage: LoginCubit.vehicleLeftImage, context: context);
+                                  LoginCubit.get(context).addVehicle(type: vehicleTypeDropDown, plateInfo: plateInfoController.text, brand: brandController.text, model: modelController.text, year: yearController.text, seats: seatsController.text, doors: doorsController.text, wheelChair: currentWheelChairAccess, kidsSeat: currentChildCarSeat, color: colorController.text,rc: rcController.text, rcExpiry:expiryDateController.text , rcImage: LoginCubit.vehicleRCImage, frontImage: LoginCubit.vehicleFrontImage, backImage: LoginCubit.vehicleBackImage, rightImage: LoginCubit.vehicleRightImage, leftImage: LoginCubit.vehicleLeftImage, context: context);
                                 } else {
                                   showCheckImagesDialog(context);
                                 }

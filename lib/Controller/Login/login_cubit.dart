@@ -50,7 +50,7 @@ class LoginCubit extends Cubit<LoginState> {
       required String password,
       required BuildContext context}) {
     emit(LoginLoadingState());
-    DioHelper.postData(url: 'http://10.0.2.2:8000/api/auth/login', data: {
+    DioHelper.postData(url: 'https://innovationscope.com/demos/voo/public/api/auth/login', data: {
       'email': email,
       'password': password,
       'fcm_token': fcmToken
@@ -59,6 +59,7 @@ class LoginCubit extends Cubit<LoginState> {
       token = loginData.accessToken;
       loggedInEmail = email;
       loggedInPassword = password;
+      print('User  $token');
       emit(LoginSuccessState());
       if (state is LoginSuccessState) {
         DataCubit.get(context).getVehicleTypes();
@@ -378,7 +379,7 @@ class LoginCubit extends Cubit<LoginState> {
         required BuildContext context})async {
     emit(AddDriverDataLoadingState());
     DioHelper.postData(
-        url: 'http://10.0.2.2:8000/api/driver-data/add',
+        url: 'https://innovationscope.com/demos/voo/public/api/driver-data/add',
         data: FormData.fromMap({
           'security_code' : socialSecurity,
           'social_security_number' : socialSecurity,
@@ -411,7 +412,7 @@ class LoginCubit extends Cubit<LoginState> {
         required BuildContext context})async {
     emit(EditDriverDataLoadingState());
     DioHelper.postData(
-        url: 'http://10.0.2.2:8000/api/driver-data/edit',
+        url: 'https://innovationscope.com/demos/voo/public/api/driver-data/edit',
         data: FormData.fromMap({
           'security_code' : socialSecurity,
           'social_security_number' : socialSecurity,
@@ -456,7 +457,7 @@ class LoginCubit extends Cubit<LoginState> {
 
     try {
       final response = await DioHelper.postData(
-        url: 'http://10.0.2.2:8000/api/driver-vehicles/add',
+        url: 'https://innovationscope.com/demos/voo/public/api/driver-vehicles/add',
         data: FormData.fromMap({
           'vehicle_type': type,
           'plate_info': plateInfo,

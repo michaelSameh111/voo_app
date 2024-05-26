@@ -7,6 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_places_autocomplete_text_field/model/prediction.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:voo_app/Controller/Firebase%20Notifications.dart';
 import 'package:voo_app/view/pages/DataCheck.dart';
 import 'package:voo_app/view/pages/customer_location_maps_screen.dart';
 
@@ -149,7 +150,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-
+    FirebaseNotifications().handle(context);
     // addCustomMarker();
     //
     // _markers.add(Marker(
@@ -169,86 +170,86 @@ class _HomePageState extends State<HomePage> {
       },);
       print(locationEnabled);
       if (!locationEnabled) {
-        // print('Noooooooooooooooooooooooooooo');
-        // showDialog(
-        //   context: context,
-        //   builder: (context) => StatefulBuilder(
-        //     builder: (context, setState) {
-        //       return Theme(
-        //         data: ThemeData(dialogBackgroundColor: Colors.white),
-        //         child: Dialog(
-        //           elevation: 0,
-        //           child: Stack(
-        //             clipBehavior: Clip.none,
-        //             alignment: Alignment.topCenter,
-        //             children: [
-        //               SizedBox(
-        //                 width: double.infinity,
-        //                 child: Column(
-        //                   mainAxisAlignment: MainAxisAlignment.center,
-        //                   crossAxisAlignment: CrossAxisAlignment.center,
-        //                   mainAxisSize: MainAxisSize.min,
-        //                   children: [
-        //                     SizedBox(
-        //                       height: 5.h,
-        //                     ),
-        //                     Padding(
-        //                       padding: EdgeInsets.symmetric(horizontal: 5.w),
-        //                       child: Text(
-        //                         'Please provide the location permission from settings',
-        //                         textAlign: TextAlign.center,
-        //                         style: TextStyle(
-        //                             fontWeight: FontWeight.w500,
-        //                             fontSize: 14.dp,
-        //                             color: const Color(0xff646363)),
-        //                       ),
-        //                     ),
-        //                     SizedBox(
-        //                       height: 1.h,
-        //                     ),
-        //                     const Divider(),
-        //                     // SizedBox(
-        //                     //   height: 1.5.h,
-        //                     // ),
-        //                     GestureDetector(
-        //                       onTap: () {
-        //                         toggleLocation();
-        //                       },
-        //                       child: SizedBox(
-        //                         height: 5.h,
-        //                         width: double.infinity,
-        //                         child: Center(
-        //                           child: Text(
-        //                             'Go To Settings',
-        //                             style: TextStyle(
-        //                                 color: const Color(0xfff70415),
-        //                                 fontSize: 20.dp,
-        //                                 fontWeight: FontWeight.bold),
-        //                           ),
-        //                         ),
-        //                       ),
-        //                     )
-        //                   ],
-        //                 ),
-        //               ),
-        //               Positioned(
-        //                 top: -50,
-        //                 child: CircleAvatar(
-        //                   backgroundColor: Colors.white,
-        //                   radius: 5.h,
-        //                   child: Image.asset(
-        //                     'assets/images/notification_offline.png',
-        //                     width: 12.w,
-        //                   ),
-        //                 ),
-        //               )
-        //             ],
-        //           ),
-        //         ),
-        //       );
-        //     },
-        //   ),
-        // );
+        print('Noooooooooooooooooooooooooooo');
+        showDialog(
+          context: context,
+          builder: (context) => StatefulBuilder(
+            builder: (context, setState) {
+              return Theme(
+                data: ThemeData(dialogBackgroundColor: Colors.white),
+                child: Dialog(
+                  elevation: 0,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    alignment: Alignment.topCenter,
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5.w),
+                              child: Text(
+                                'Please provide the location permission from settings',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14.dp,
+                                    color: const Color(0xff646363)),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 1.h,
+                            ),
+                            const Divider(),
+                            // SizedBox(
+                            //   height: 1.5.h,
+                            // ),
+                            GestureDetector(
+                              onTap: () {
+                                toggleLocation();
+                              },
+                              child: SizedBox(
+                                height: 5.h,
+                                width: double.infinity,
+                                child: Center(
+                                  child: Text(
+                                    'Go To Settings',
+                                    style: TextStyle(
+                                        color: const Color(0xfff70415),
+                                        fontSize: 20.dp,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Positioned(
+                        top: -50,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 5.h,
+                          child: Image.asset(
+                            'assets/images/notification_offline.png',
+                            width: 12.w,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        );
       } else {
         controller = await googleMapController.future;
         locationStream = Geolocator.getPositionStream(
@@ -265,6 +266,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> checkLocationEnabled() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    await Geolocator.requestPermission();
     setState(() {
       locationEnabled = serviceEnabled;
     });

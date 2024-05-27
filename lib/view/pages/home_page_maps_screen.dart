@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
@@ -7,11 +9,11 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_places_autocomplete_text_field/model/prediction.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:voo_app/Controller/Firebase%20Notifications.dart';
 import 'package:voo_app/view/pages/DataCheck.dart';
 import 'package:voo_app/view/pages/customer_location_maps_screen.dart';
 
 import '../../Controller/Constants.dart';
+import '../../Model/TripModel.dart';
 import 'history _screen/history_screen.dart';
 import 'main_profile_screen/main_profile_screen.dart';
 
@@ -27,16 +29,16 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
   bool light = true;
   bool showDialogBool = false;
 
-  List <Widget> screens = [
+  List<Widget> screens = [
     HomePage(),
     HistoryScreen(),
     MainProfileScreen(),
-
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       backgroundColor: Colors.grey.shade300,
       body: screens[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -60,6 +62,7 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
     );
   }
 }
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -69,30 +72,74 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   LatLng? destinationPosition = const LatLng(31.2449, 29.9725);
-  Prediction? pickedLocation ;
+  Prediction? pickedLocation;
   bool locationEnabled = false;
   List<LatLng> polyLineCoordinates = [];
-  final Set<Marker> _markers = {
-  };
+  int time = 0;
+  Future<int?> getEstimatedTime({
+    required double driverLat,
+    required double driverLng,
+    required double riderLat,
+    required double riderLng,
+    required String apiKey,
+  }) async {
+    final origin = '$driverLat,$driverLng';
+    final destination = '$riderLat,$riderLng';
+    const url = 'https://maps.googleapis.com/maps/api/directions/json';
+
+    final dio = Dio();
+
+    try {
+      final response = await dio.get(url, queryParameters: {
+        'origin': origin,
+        'destination': destination,
+        'key': apiKey,
+      });
+
+      if (response.statusCode == 200) {
+        final jsonResponse = response.data;
+        if (jsonResponse['status'] == 'OK') {
+          final legs = jsonResponse['routes'][0]['legs'];
+          if (legs.isNotEmpty) {
+            final duration = legs[0]['duration']['value'];
+            return Duration(seconds: duration).inMinutes;
+          }
+        } else {
+          print('Error: ${jsonResponse['status']}');
+        }
+      } else {
+        print('Failed to load directions');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+
+    return null;
+  }
+
+  final Set<Marker> _markers = {};
   Stream<Position>? locationStream;
   Completer<GoogleMapController> googleMapController = Completer();
   StreamSubscription<Position>? _positionStreamSubscription;
   Position? _previousPosition;
   GoogleMapController? controller;
   final TextEditingController textEditingController = TextEditingController();
-
   BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
-  void addCustomMarker(){
-    BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(15,15)), 'assets/images/car.png').then((icon){
+  void addCustomMarker() {
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(15, 15)), 'assets/images/car.png')
+        .then((icon) {
       setState(() {
         markerIcon = icon;
       });
     });
   }
+
   Future<void> _addMarker(Prediction prediction) async {
     final marker = Marker(
       markerId: MarkerId(prediction.placeId!),
-      position: LatLng(double.parse(prediction.lat!),double.parse(prediction.lng!)),
+      position:
+          LatLng(double.parse(prediction.lat!), double.parse(prediction.lng!)),
       infoWindow: InfoWindow(
         title: prediction.description,
       ),
@@ -101,7 +148,235 @@ class _HomePageState extends State<HomePage> {
       _markers.add(marker);
     });
   }
-  void getPolyPoints(double lat , double lng ) async {
+
+  Future handle(BuildContext context) async {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      TripModel? newTrip;
+      try {
+        newTrip = TripModel.fromJson(message.data);
+      } catch (error) {
+        print("Error parsing trip data: $error");
+      }
+      if (newTrip != null) {
+        tripModel = newTrip;
+      }
+      print(message.notification?.body);
+      print('Got a message whilst in the foreground!');
+      print('Message data: ${message.data}');
+      getEstimatedTime(
+              driverLat: sourcePosition!.latitude,
+              driverLng: sourcePosition!.longitude,
+              riderLat: double.parse(tripModel.pickupLatitude!),
+              riderLng: double.parse(tripModel.pickupLongitude!),
+              apiKey: googleMapApiKey)
+          .then((value) async {
+        time = value!;
+        print(time);
+        acceptDeclineShowModalSheet(context);
+      });
+    });
+  }
+
+  void acceptDeclineShowModalSheet(BuildContext context) {
+    showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(23), topRight: Radius.circular((23))),
+      ),
+      context: context,
+      builder: (context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 2.h),
+            child: Row(
+              children: [
+                Text(
+                  'Ride Request',
+                  style: TextStyle(
+                    fontSize: 18.dp,
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  '$time mins away',
+                  style: TextStyle(color: Color(0xff808080)),
+                )
+              ],
+            ),
+          ),
+          const Divider(),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5.0.w, vertical: 3.h),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 7.0.w,
+                      backgroundColor: const Color(0xffECECEC),
+                      child: Icon(
+                        Icons.person,
+                        size: 11.w,
+                        color: const Color(0xffA2A2A2),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 2.w,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${tripModel.rider}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15.dp),
+                        ),
+                        Text(
+                          'Cash Payment',
+                          style: TextStyle(
+                              color: const Color(0xff808080), fontSize: 13.dp),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 4.h,
+                ),
+                Row(
+                  children: [
+                    Image.asset(
+                      'assets/images/from_to_image.png',
+                    ),
+                    SizedBox(
+                      width: 2.w,
+                    ),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '481 Eighth Avenue, Hell\'s Kitchen,\nNew York, NY 10001 , United States',
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 13.dp),
+                          ),
+                          SizedBox(
+                            height: 1.h,
+                          ),
+                          Stack(
+                            children: [
+                              Positioned(
+                                  right: -50,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(10.dp),
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.4),
+                                              spreadRadius: 10,
+                                              blurRadius: 10,
+                                              offset: const Offset(0, 7))
+                                        ]),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(6.dp),
+                                      child: const Text(
+                                        '10 mins trip',
+                                        style:
+                                            TextStyle(color: Color(0xff808080)),
+                                      ),
+                                    ),
+                                  )),
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                padding: EdgeInsets.only(left: 50.w),
+                                width: 80.w,
+                                height: 0.2.h,
+                                decoration:
+                                    const BoxDecoration(color: Colors.black
+                                        //0xffE2E2E2
+                                        ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 1.h,
+                          ),
+                          // Divider(
+                          //   height: 5.h,
+                          //   color: Color(0xffE2E2E2),
+                          // ),
+                          Text(
+                            'The New Yorker, A Wyndham Hotel',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 13.dp),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ), // same Row as in collect cash screen
+                SizedBox(
+                  height: 2.h,
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 40.w,
+                      height: 5.5.h,
+                      child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                              side: const BorderSide(color: Color(0xffFF6A03))),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const HomePageMapsScreen()));
+                          },
+                          child: const Text(
+                            'Decline',
+                            style: TextStyle(color: Color(0xffFF6A03)),
+                          )),
+                    ),
+                    SizedBox(
+                      width: 7.w,
+                    ),
+                    SizedBox(
+                      width: 40.w,
+                      height: 5.5.h,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xffFF6A03)),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const CustomerLocationMapsScreen()));
+                          },
+                          child: const Text(
+                            'Accept',
+                            style: TextStyle(color: Colors.white),
+                          )),
+                    )
+                  ],
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  void getPolyPoints(double lat, double lng) async {
     PolylinePoints polylinePoints = PolylinePoints();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
         googleMapApiKey,
@@ -116,6 +391,7 @@ class _HomePageState extends State<HomePage> {
       print('Nothing');
     }
   }
+
   void startListeningToLocationChanges() {
     _positionStreamSubscription = locationStream!.listen((Position position) {
       if (_previousPosition != null &&
@@ -138,10 +414,12 @@ class _HomePageState extends State<HomePage> {
       }
     });
   }
+
   void stopListeningToLocationChanges() {
     _positionStreamSubscription?.cancel();
     _positionStreamSubscription = null;
   }
+
   @override
   void dispose() {
     stopListeningToLocationChanges();
@@ -150,7 +428,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    FirebaseNotifications().handle(context);
+    handle(context);
     // addCustomMarker();
     //
     // _markers.add(Marker(
@@ -161,13 +439,18 @@ class _HomePageState extends State<HomePage> {
     checkLocationEnabled().whenComplete(() async {
       sourcePosition ??= await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
-      Timer(Duration(seconds: 1),() {
-        _markers.add(Marker(
-            markerId: const MarkerId('Source'),
-            icon: markerIcon,
-            position: LatLng(sourcePosition!.latitude,
-                sourcePosition!.longitude)),);
-      },);
+      Timer(
+        Duration(seconds: 1),
+        () {
+          _markers.add(
+            Marker(
+                markerId: const MarkerId('Source'),
+                icon: markerIcon,
+                position: LatLng(
+                    sourcePosition!.latitude, sourcePosition!.longitude)),
+          );
+        },
+      );
       if (!locationEnabled) {
         showDialog(
           context: context,
@@ -252,7 +535,8 @@ class _HomePageState extends State<HomePage> {
         controller = await googleMapController.future;
         locationStream = Geolocator.getPositionStream(
             locationSettings: const LocationSettings(
-              accuracy: LocationAccuracy.high,));
+          accuracy: LocationAccuracy.high,
+        ));
         startListeningToLocationChanges();
       }
     });
@@ -260,11 +544,11 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-
-
   Future<void> checkLocationEnabled() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if(serviceEnabled != true){  await Geolocator.requestPermission();}
+    if (serviceEnabled != true) {
+      await Geolocator.requestPermission();
+    }
 
     setState(() {
       locationEnabled = serviceEnabled;
@@ -285,6 +569,7 @@ class _HomePageState extends State<HomePage> {
       locationEnabled = !locationEnabled;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     bool light = true;
@@ -300,9 +585,9 @@ class _HomePageState extends State<HomePage> {
             zoomGesturesEnabled: true,
             trafficEnabled: true,
             initialCameraPosition: CameraPosition(
-              target: sourcePosition == null ? LatLng(31.2447917,
-                  29.9740327) : LatLng(sourcePosition!.latitude,
-                  sourcePosition!.longitude),
+              target: sourcePosition == null
+                  ? LatLng(31.2447917, 29.9740327)
+                  : LatLng(sourcePosition!.latitude, sourcePosition!.longitude),
               zoom: 14.5,
             ),
             onMapCreated: (mapController) {
@@ -336,14 +621,27 @@ class _HomePageState extends State<HomePage> {
             //       position: destinationPosition!),
             // },
           ),
-          Positioned(bottom: 10,left: 10 ,child: FloatingActionButton(onPressed: (){
-            print(sourcePosition!.longitude);
-            print(sourcePosition!.latitude);
-            controller!.animateCamera(
-                CameraUpdate.newCameraPosition(
-                    CameraPosition(
-                      target: LatLng(sourcePosition!.latitude, sourcePosition!.longitude),
-                      zoom: 18,)));},child: Icon(Icons.my_location,color: Colors.black,),elevation: 0,backgroundColor: Colors.white,)),
+          Positioned(
+              bottom: 10,
+              left: 10,
+              child: FloatingActionButton(
+                onPressed: () {
+                  print(sourcePosition!.longitude);
+                  print(sourcePosition!.latitude);
+                  controller!.animateCamera(
+                      CameraUpdate.newCameraPosition(CameraPosition(
+                    target: LatLng(
+                        sourcePosition!.latitude, sourcePosition!.longitude),
+                    zoom: 18,
+                  )));
+                },
+                child: Icon(
+                  Icons.my_location,
+                  color: Colors.black,
+                ),
+                elevation: 0,
+                backgroundColor: Colors.white,
+              )),
           // GooglePlacesAutoCompleteTextFormField(
           //     textEditingController: textEditingController,
           //     googleAPIKey:   googleMapApiKey,
@@ -375,10 +673,11 @@ class _HomePageState extends State<HomePage> {
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(3.w)),
-                    padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
                     child: Row(
                       children: [
-                         CircleAvatar(
+                        CircleAvatar(
                           radius: 3.h,
                           backgroundColor: Color(0xffA2A2A2),
                           child: Image.network(
@@ -386,13 +685,12 @@ class _HomePageState extends State<HomePage> {
                             fit: BoxFit.fill,
                             height: 30.h,
                             width: 30.h,
-                            errorBuilder: (context,object,skipTrace){
-                              return
-                                Icon(
-                                  Icons.person,
-                                  size: 52.dp,
-                                  color: const Color(0xffA2A2A2),
-                                );
+                            errorBuilder: (context, object, skipTrace) {
+                              return Icon(
+                                Icons.person,
+                                size: 52.dp,
+                                color: const Color(0xffA2A2A2),
+                              );
                             },
                           ),
                         ),
@@ -404,8 +702,11 @@ class _HomePageState extends State<HomePage> {
                               color: const Color(0xffFF6A03),
                               borderRadius: BorderRadius.circular(20)),
                           child: InkWell(
-                            onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>DataCheckScreen()));
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => DataCheckScreen()));
                             },
                             child: Row(
                               children: [
@@ -420,7 +721,8 @@ class _HomePageState extends State<HomePage> {
                                   backgroundColor: Colors.white,
                                   radius: 2.5.w,
                                   child: CircleAvatar(
-                                    backgroundColor: const Color(0xffFF6A03).withOpacity(0.5),
+                                    backgroundColor: const Color(0xffFF6A03)
+                                        .withOpacity(0.5),
                                     radius: 1.8.w,
                                   ),
                                 )
@@ -436,8 +738,8 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   children: [
                     Container(
-                      padding:
-                      EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.5.h),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 5.w, vertical: 1.5.h),
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10)),
@@ -469,7 +771,8 @@ class _HomePageState extends State<HomePage> {
                               Text(
                                 '\$250',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 15.dp),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15.dp),
                               )
                             ],
                           )
@@ -478,8 +781,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                     const Spacer(),
                     Container(
-                      padding:
-                      EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 4.w, vertical: 1.5.h),
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10)),
@@ -511,7 +814,8 @@ class _HomePageState extends State<HomePage> {
                               Text(
                                 '10',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 15.dp),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15.dp),
                               )
                             ],
                           )
@@ -643,11 +947,10 @@ class _HomePageState extends State<HomePage> {
                       style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xffFF6A03)),
                       onPressed: () {
-                        if (light == true){
+                        if (light == true) {
                           acceptDeclineShowModalSheet(context);
                           //&& showDialog closed
-                        }
-                        else{
+                        } else {
                           showDialog(
                             context: context,
                             builder: (context) => StatefulBuilder(
@@ -666,14 +969,15 @@ class _HomePageState extends State<HomePage> {
                                           width: double.infinity,
                                           child: Column(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                                MainAxisAlignment.center,
                                             children: [
                                               Text(
                                                 'You\'re offline',
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 18.dp,
-                                                    color: const Color(0xff646363)),
+                                                    color: const Color(
+                                                        0xff646363)),
                                               ),
                                               SizedBox(
                                                 height: 1.h,
@@ -682,7 +986,8 @@ class _HomePageState extends State<HomePage> {
                                                 'Go online to accept jobs.',
                                                 style: TextStyle(
                                                     fontSize: 15.dp,
-                                                    color: const Color(0xff646363)),
+                                                    color: const Color(
+                                                        0xff646363)),
                                                 textAlign: TextAlign.center,
                                               ),
                                               SizedBox(
@@ -694,24 +999,28 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                               Switch(
                                                   trackOutlineColor:
-                                                  WidgetStateProperty.all(
-                                                      Colors.transparent),
+                                                      WidgetStateProperty.all(
+                                                          Colors.transparent),
                                                   activeTrackColor:
-                                                  const Color(0xffFF6A03),
+                                                      const Color(0xffFF6A03),
                                                   inactiveTrackColor:
-                                                  const Color(0xffD1D1D6),
-                                                  inactiveThumbColor: Colors.white,
+                                                      const Color(0xffD1D1D6),
+                                                  inactiveThumbColor:
+                                                      Colors.white,
                                                   value: light,
                                                   onChanged: (bool value) {
                                                     setState(() {
                                                       light = value;
                                                       showDialogBool = value;
 
-                                                      if(showDialogBool == true){
-                                                        Navigator.of(context).pop();
+                                                      if (showDialogBool ==
+                                                          true) {
+                                                        Navigator.of(context)
+                                                            .pop();
                                                       }
 
-                                                      acceptDeclineShowModalSheet(context);
+                                                      acceptDeclineShowModalSheet(
+                                                          context);
                                                     });
                                                   }),
                                             ],
@@ -736,7 +1045,6 @@ class _HomePageState extends State<HomePage> {
                             ),
                           );
                         }
-
                       },
                       child: const Text(
                         'Find Jobs',
@@ -750,197 +1058,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
-
-
-void acceptDeclineShowModalSheet(BuildContext context) {
-  showModalBottomSheet(
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(23), topRight: Radius.circular((23))),
-    ),
-    context: context,
-    builder: (context) => Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 2.h),
-          child: Row(
-            children: [
-              Text(
-                'Ride Request',
-                style: TextStyle(
-                  fontSize: 18.dp,
-                ),
-              ),
-              const Spacer(),
-              const Text(
-                '5 mins away',
-                style: TextStyle(color: Color(0xff808080)),
-              )
-            ],
-          ),
-        ),
-        const Divider(),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5.0.w, vertical: 3.h),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 7.0.w,
-                    backgroundColor: const Color(0xffECECEC),
-                    child: Icon(
-                      Icons.person,
-                      size: 11.w,
-                      color: const Color(0xffA2A2A2),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 2.w,
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        'Nader Nabil',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15.dp),
-                      ),
-                      Text(
-                        'Cash Payment',
-                        style: TextStyle(
-                            color: const Color(0xff808080), fontSize: 13.dp),
-                      )
-                    ],
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 4.h,
-              ),
-              Row(
-                children: [
-                  Image.asset(
-                    'assets/images/from_to_image.png',
-                  ),
-                  SizedBox(
-                    width: 2.w,
-                  ),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '481 Eighth Avenue, Hell\'s Kitchen,\nNew York, NY 10001 , United Statessssssssssssssssssssss',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 13.dp),
-                        ),
-                        SizedBox(
-                          height: 1.h,
-                        ),
-                        Stack(
-                          children: [
-                            Positioned(
-                                right: -50,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10.dp),
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color: Colors.grey.withOpacity(0.4),
-                                            spreadRadius: 10,
-                                            blurRadius: 10,
-                                            offset: const Offset(0, 7))
-                                      ]),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(6.dp),
-                                    child: const Text(
-                                      '10 mins trip',
-                                      style: TextStyle(color: Color(0xff808080)),
-                                    ),
-                                  ),
-                                )),
-                            Container(
-                              alignment: Alignment.centerLeft,
-                              padding: EdgeInsets.only(left: 50.w),
-                              width: 80.w,
-                              height: 0.2.h,
-                              decoration: const BoxDecoration(color: Colors.black
-                                  //0xffE2E2E2
-                                  ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 1.h,
-                        ),
-                        // Divider(
-                        //   height: 5.h,
-                        //   color: Color(0xffE2E2E2),
-                        // ),
-                        Text(
-                          'The New Yorker, A Wyndham Hotel',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 13.dp),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ), // same Row as in collect cash screen
-              SizedBox(
-                height: 8.h,
-              ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: 40.w,
-                    height: 5.5.h,
-                    child: OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                            side: const BorderSide(color: Color(0xffFF6A03))),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const HomePageMapsScreen()));
-                        },
-                        child: const Text(
-                          'Decline',
-                          style: TextStyle(color: Color(0xffFF6A03)),
-                        )),
-                  ),
-                  SizedBox(
-                    width: 7.w,
-                  ),
-                  SizedBox(
-                    width: 40.w,
-                    height: 5.5.h,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xffFF6A03)),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const CustomerLocationMapsScreen()));
-                        },
-                        child: const Text(
-                          'Accept',
-                          style: TextStyle(color: Colors.white),
-                        )),
-                  )
-                ],
-              )
-            ],
-          ),
-        )
-      ],
-    ),
-  );
 }

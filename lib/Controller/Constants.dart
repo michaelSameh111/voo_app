@@ -20,6 +20,7 @@ String? language ;
 const String googleMapApiKey = 'AIzaSyC0vwuoMC2YaegAD6xJEomD0VjNRVXYh60';
 Position? sourcePosition;
 TripModel tripModel = TripModel();
+
 void showSimpleDialog(BuildContext context,String title,String desc) {
   showDialog(
     context: context,

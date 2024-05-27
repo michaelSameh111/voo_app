@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 
@@ -11,6 +12,8 @@ class HistoryScreen extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
           toolbarHeight: 10.h,
           leading: Padding(
             padding: EdgeInsets.symmetric(horizontal: 2.0.w),
@@ -30,18 +33,47 @@ class HistoryScreen extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: Colors.white,
                   ),
-                  child: const Icon(Icons.arrow_back)),
+                  child: const Icon(Icons.arrow_back,color: Colors.black,)),
             ),
           ),
           title: Text(
             'History',
-            style: TextStyle(fontSize: 20.dp, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 20.dp, fontWeight: FontWeight.bold,color: Colors.black),
           ),
-          bottom: const TabBar(
+          bottom: TabBar(
+            indicator: const UnderlineTabIndicator(
+              borderSide: BorderSide(color: Color(0xffFF6A03),width: 2),
+            ),
+            labelStyle: TextStyle(color: Color(0xffFF6A03)),
+            unselectedLabelColor: Color(0xff808080),
             tabs: [
-              Tab(text: 'Active',),
-              Tab(text: 'Completed',),
-              Tab(text: 'Cancelled',)
+          Padding(
+          padding: EdgeInsets.symmetric(vertical: 1.h),
+          child: Text(
+            'Active',
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14.8.dp),
+          ),
+        ),
+          Padding(
+          padding: EdgeInsets.symmetric(vertical: 1.h),
+          child: Text(
+            'Completed',
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14.8.dp),
+          ),
+        ),
+          Padding(
+          padding: EdgeInsets.symmetric(vertical: 1.h),
+          child: Text(
+            'Canceled',
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14.8.dp),
+          ),
+        ),
             ],
           ),
         ),

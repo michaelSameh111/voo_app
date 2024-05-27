@@ -28,7 +28,7 @@ class TripModel {
   factory TripModel.fromJson(Map<String, dynamic> json) {
     return TripModel(
       preferredVehicleType: json['"preferred_vehicle_type"'],
-      pickupLongitude: json['\"pickup_longitude\"'],
+      pickupLongitude: json['pickup_longitude'],
       pickupLatitude: json['pickup_latitude'],
       destinationLatitude: json['destination_latitude'],
       shift: json['shift'],

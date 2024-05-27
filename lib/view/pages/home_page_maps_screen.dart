@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_places_autocomplete_text_field/model/prediction.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:voo_app/Controller/Firebase%20Notifications.dart';
+import 'package:voo_app/Model/TripModel.dart';
 import 'package:voo_app/view/pages/DataCheck.dart';
 import 'package:voo_app/view/pages/customer_location_maps_screen.dart';
 
@@ -72,6 +73,7 @@ class _HomePageState extends State<HomePage> {
   Prediction? pickedLocation ;
   bool locationEnabled = false;
   List<LatLng> polyLineCoordinates = [];
+   TripModel? tripModel = TripModel();
   final Set<Marker> _markers = {
   };
   Stream<Position>? locationStream;
@@ -150,7 +152,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    FirebaseNotifications().handle(context);
+    FirebaseNotifications().handle(context,tripModel);
     // addCustomMarker();
     //
     // _markers.add(Marker(

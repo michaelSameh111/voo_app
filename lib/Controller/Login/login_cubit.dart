@@ -304,8 +304,8 @@ class LoginCubit extends Cubit<LoginState> {
       sourcePosition = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
     }).catchError((error,stacktrace) {
-      // print(error);
-      // print(stacktrace);
+      print(error);
+      print(stacktrace);
       emit(EditDriverLicenseErrorState(error.toString()));
     });
   }

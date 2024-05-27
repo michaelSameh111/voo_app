@@ -26,28 +26,22 @@ class FirebaseNotifications {
     FirebaseMessaging.instance.getInitialMessage().then(handleMessage);
     FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
   }
-  Future handle(BuildContext context, TripModel? trip) async {
+  Future handle(BuildContext context) async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      // Parse the JSON data (handle potential errors)
       TripModel? newTrip;
       try {
         newTrip = TripModel.fromJson(message.data);
       } catch (error) {
         print("Error parsing trip data: $error");
       }
-
-      // Update trip only if parsing was successful and newTrip is not null
       if (newTrip != null) {
-        trip = newTrip;
-        print(newTrip.shift);
-        print(newTrip!.pickup);
+        tripModel = newTrip;
       }
 
       showSimpleDialogs(context, '${message.notification?.title}', message.notification!.body!, null);
       print(message.notification?.body);
       print('Got a message whilst in the foreground!');
       print('Message data: ${message.data}');
-      print('Message data: ${message.data['tripdata'].runtimeType}');
     });
   }
 }

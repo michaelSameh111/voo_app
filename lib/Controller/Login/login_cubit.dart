@@ -10,11 +10,12 @@ import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:voo_app/Controller/Data/data_cubit.dart';
 import 'package:voo_app/view/pages/enable_location_access_screen.dart';
-import 'package:voo_app/view/pages/home_page_maps_screen.dart';
+import 'package:voo_app/view/pages/HomePage/home_page_maps_screen.dart';
 import 'package:voo_app/view/pages/login_screen.dart';
 import 'package:voo_app/view/pages/social_security_screen.dart';
 
 import '../../Model/LoginDataModel.dart';
+import '../../view/pages/HomePage/Home.dart';
 import '../Constants.dart';
 import '../dio-helper.dart';
 import '../shared-prefrences.dart';

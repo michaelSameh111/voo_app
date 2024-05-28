@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/Controller/Constants.dart';
 import 'package:voo_app/Controller/Login/login_cubit.dart';
-import 'package:voo_app/view/pages/home_page_maps_screen.dart';
+import 'package:voo_app/view/pages/HomePage/Home.dart';
+import 'package:voo_app/view/pages/HomePage/home_page_maps_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 //ignore_for_file: must_be_immutable
 

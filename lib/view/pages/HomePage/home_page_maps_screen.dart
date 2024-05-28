@@ -475,7 +475,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void startListeningToLocationChanges() {
+  void startListeningToLocationChanges(bool drivingState) {
     _positionStreamSubscription = locationStream!.listen((Position position) {
       if (_previousPosition != null &&
           (_previousPosition!.latitude != position.latitude ||
@@ -483,15 +483,23 @@ class _HomePageState extends State<HomePage> {
         _previousPosition = position;
         setState(() {
           sourcePosition = position;
+
+          final updatedMarker = Marker(
+            markerId: MarkerId('source'),
+            position: LatLng(position.latitude, position.longitude),
+          );
+
+          _markers.removeWhere((marker) => marker.markerId == MarkerId('source'));
+          _markers.add(updatedMarker);
+
+         if(drivingState){ controller!.animateCamera(
+           CameraUpdate.newCameraPosition(
+             CameraPosition(
+               target: LatLng(position.latitude, position.longitude),
+             ),
+           ),
+         );}
         });
-        controller!.animateCamera(
-          CameraUpdate.newCameraPosition(
-            CameraPosition(
-              target: LatLng(position.latitude, position.longitude),
-              zoom: 20,
-            ),
-          ),
-        );
       } else {
         _previousPosition = position;
       }
@@ -535,7 +543,7 @@ class _HomePageState extends State<HomePage> {
         () {
           setState(() {
             _markers.add(Marker(
-                markerId: const MarkerId('Source'),
+                markerId: const MarkerId('source'),
                 icon: markerIcon,
                 position: LatLng(
                     sourcePosition!.latitude, sourcePosition!.longitude)));
@@ -634,11 +642,11 @@ class _HomePageState extends State<HomePage> {
         //   ),
         // );
       } else {
-        // locationStream = Geolocator.getPositionStream(
-        //     locationSettings: const LocationSettings(
-        //       accuracy: LocationAccuracy.high,
-        //     ));
-        // startListeningToLocationChanges();
+        locationStream = Geolocator.getPositionStream(
+            locationSettings: const LocationSettings(
+              accuracy: LocationAccuracy.high,
+            ));
+        startListeningToLocationChanges(false);
       }
     });
     handle(context);
@@ -707,6 +715,7 @@ class _HomePageState extends State<HomePage> {
               textColor: Colors.white,
               gravity: ToastGravity.TOP);
           polyLineCoordinates.clear();
+          stopListeningToLocationChanges();
         }
         if(state is AcceptTripLoadingState){
           showDialog(
@@ -732,6 +741,11 @@ class _HomePageState extends State<HomePage> {
         if (state is AcceptTripSuccessState) {
           Navigator.pop(context);
           Navigator.pop(context);
+          locationStream = Geolocator.getPositionStream(
+              locationSettings: const LocationSettings(
+                accuracy: LocationAccuracy.high,
+              ));
+          startListeningToLocationChanges(true);
           setState(() {
             tripToPickup = true;
             setState(() {

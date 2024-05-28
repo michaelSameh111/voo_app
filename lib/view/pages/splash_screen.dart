@@ -24,16 +24,20 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Image.asset('assets/images/VOO_logo_splash_screen.png'),
-          Expanded(child: Image.asset('assets/images/car_splash_screen.png')),
-          Image.asset('assets/images/welcome_splash_screen.png'),
-          SizedBox(
-            height: 8.h,
-          )
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(25),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(height: 8.h,),
+            Expanded(child: Image.asset('assets/images/car_splash_screen.png',height: 50.h,)),
+            Image.asset('assets/images/welcome_splash_screen.png',height: 10.h,),
+            SizedBox(
+              height: 8.h,
+            )
+          ],
+        ),
       ),
     );
   }

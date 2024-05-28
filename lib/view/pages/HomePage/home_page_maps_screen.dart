@@ -27,9 +27,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool locationEnabled = false;
-  bool tripToPickup = true;
+  bool tripToPickup = false;
   List<LatLng> polyLineCoordinates = [];
   int time = 0;
+  bool loadingState = false;
   Future<int?> getEstimatedTime({
     required double driverLat,
     required double driverLng,
@@ -110,10 +111,12 @@ class _HomePageState extends State<HomePage> {
       }
       if (newTrip != null) {
         tripModel = newTrip;
+
       }
       print(message.notification?.body);
       print('Got a message whilst in the foreground!');
       print('Message data: ${message.data}');
+      print(tripModel.tripId);
       getEstimatedTime(
               driverLat: sourcePosition!.latitude,
               driverLng: sourcePosition!.longitude,
@@ -440,7 +443,7 @@ class _HomePageState extends State<HomePage> {
                                     sourcePosition!.longitude.toString(),
                                 context: context);
                           },
-                          child: const Text(
+                          child: loadingState == true ? Center(child: CircularProgressIndicator(color: Colors.white,),) : const Text(
                             'Accept',
                             style: TextStyle(color: Colors.white),
                           )),
@@ -455,12 +458,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void getPolyPoints(double lat, double lng) async {
+  void getPolyPoint(double lat, double lng) async {
+    polyLineCoordinates.clear();
     PolylinePoints polylinePoints = PolylinePoints();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
         googleMapApiKey,
         PointLatLng(sourcePosition!.latitude, sourcePosition!.longitude),
-        PointLatLng(lat, lng));
+        PointLatLng(double.parse(tripModel.pickupLatitude!), double.parse(tripModel.pickupLongitude!)));
     print(result.points);
     if (result.points.isNotEmpty) {
       result.points.forEach((PointLatLng point) =>
@@ -681,22 +685,67 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     bool light = true;
+
     bool showDialogBool = false;
     return BlocConsumer<DataCubit, DataState>(
       listener: (context, state) {
+        if (state is ArrivedAtLocationSuccessState){
+          Fluttertoast.showToast(
+              msg:
+              'Rider Notified That You\'ve arrived',
+              fontSize: 16.dp,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              gravity: ToastGravity.TOP);
+        }
+        if (state is CancelTripSuccessState){
+          Fluttertoast.showToast(
+              msg:
+              'Trip Canceled Successfully',
+              fontSize: 16.dp,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              gravity: ToastGravity.TOP);
+          polyLineCoordinates.clear();
+        }
+        if(state is AcceptTripLoadingState){
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return Dialog(
+                backgroundColor: Colors.transparent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ), // Optional for rounded corners
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              );
+            },
+          );
+
+        }
         if (state is AcceptTripSuccessState) {
+          Navigator.pop(context);
+          Navigator.pop(context);
           setState(() {
             tripToPickup = true;
             setState(() {
+              loadingState = false;
               _markers.add(Marker(
-                  markerId: const MarkerId('Source'),
+                  markerId: const MarkerId('destination'),
                   icon: markerIcon,
                   position: LatLng(double.parse(tripModel.pickupLatitude!),
                       double.parse(tripModel.pickupLongitude!))));
             });
-            getPolyPoints(double.parse(tripModel.pickupLatitude!),
-                double.parse(tripModel.pickupLatitude!));
+            getPolyPoint(double.parse(tripModel.destinationLatitude!),
+                double.parse(tripModel.destinationLongitude!));
           });
+
         }
       },
       builder: (context, state) {
@@ -1075,13 +1124,8 @@ class _HomePageState extends State<HomePage> {
                                     backgroundColor: const Color(0xffFF6A03)),
                                 onPressed: () {
                                   if (light == true) {
-                                    Fluttertoast.showToast(
-                                        msg:
-                                            'Rider Notified That You\'ve arrived',
-                                        fontSize: 16.dp,
-                                        backgroundColor: Colors.green,
-                                        textColor: Colors.white,
-                                        gravity: ToastGravity.TOP);
+                                    DataCubit.get(context).arrivedAtLocation(tripId: int.parse(tripModel.tripId!), context: context);
+
                                   } else {
                                     showDialog(
                                       context: context,

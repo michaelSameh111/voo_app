@@ -1,5 +1,6 @@
 class TripModel {
   String? preferredVehicleType;
+  String? tripId;
   String? pickupLongitude;
   String? pickupLatitude;
   String? destinationLatitude;
@@ -13,6 +14,7 @@ class TripModel {
 
   TripModel({
     this.preferredVehicleType,
+    this.tripId,
     this.pickupLongitude,
     this.pickupLatitude,
     this.destinationLatitude,
@@ -29,6 +31,7 @@ class TripModel {
     return TripModel(
       preferredVehicleType: json['"preferred_vehicle_type"'],
       pickupLongitude: json['pickup_longitude'],
+      tripId: json['trip_id'],
       pickupLatitude: json['pickup_latitude'],
       destinationLatitude: json['destination_latitude'],
       shift: json['shift'],

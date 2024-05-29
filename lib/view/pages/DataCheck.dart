@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:voo_app/Controller/Constants.dart';
 import 'package:voo_app/view/pages/driver_license.dart';
 import 'package:voo_app/view/pages/insurance_screen.dart';
 import 'package:voo_app/view/pages/select_transport_screen.dart';
@@ -51,14 +52,14 @@ class DataCheckScreen extends StatelessWidget {
           child: Column(
             children: [
               RaiseDocumentsContainerWidget(
-                  uploadedPicture: true,
+                  uploadedPicture: loginData.driverData != null ? true : false,
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>SocialSecurityScreen()));
                   },
                   text: 'Driver Data'),
               SizedBox(height: 2.h,),
               RaiseDocumentsContainerWidget(
-                  uploadedPicture: false,
+                  uploadedPicture:loginData.driverInsurance != null ? true : false,
                   text: 'Insurance Data',
                 onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>InsuranceScreen()));
@@ -66,14 +67,14 @@ class DataCheckScreen extends StatelessWidget {
               ),
               SizedBox(height: 2.h,),
               RaiseDocumentsContainerWidget(
-                  uploadedPicture: false,
+                  uploadedPicture:loginData.driverLicense != null ? true : false,
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>DriverLicenseScreen()));
                   },
                   text: 'License Data'),
               SizedBox(height: 2.h,),
               RaiseDocumentsContainerWidget(
-                  uploadedPicture: true,
+                  uploadedPicture:loginData.driverVehicle != null ? true : false,
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=> SelectTransportScreen()));
                   },

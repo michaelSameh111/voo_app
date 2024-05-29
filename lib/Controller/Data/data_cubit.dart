@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:voo_app/Model/DriverDataModel.dart';
+import 'package:voo_app/Model/EndTripModel.dart';
 import 'package:voo_app/Model/InsuranceDataModel.dart';
 import 'package:voo_app/Model/LicenseDataModel.dart';
 import 'package:voo_app/Model/VehicleTypeModel.dart';
@@ -96,7 +97,7 @@ class DataCubit extends Cubit<DataState> {
       print('Stacktrace: $stacktrace');
 
       // If the error has a response, log the response data as well
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response != null) {
           print('Error response data: ${error.response?.data}');
         } else {
@@ -152,9 +153,11 @@ class DataCubit extends Cubit<DataState> {
     });
   }
 
-  Future<void> endTrip(
+  Future<EndTripModel> endTrip(
       {required int tripId,
-        required BuildContext context})async {
+        required BuildContext context,
+      required EndTripModel endTripModel
+      })async {
     emit(EndTripLoadingState());
     DioHelper.postData(
         url: 'trip/end',
@@ -163,12 +166,17 @@ class DataCubit extends Cubit<DataState> {
         }),
         token: token)
         .then((value) async {
+          endTripModel = EndTripModel.fromJson(value.data);
+         if(endTripModel != null){
+           print(endTripModel!.total);
+         }
       emit(EndTripSuccessState());
     }).catchError((error,stacktrace) {
       print(error);
       print(stacktrace);
       emit(EndTripErrorState());
     });
+    return endTripModel;
   }
 
   Future<void> cancelTrip(

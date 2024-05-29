@@ -102,7 +102,7 @@ class _ArrivedAtDestinationMapsScreenState
             ),
             MainElevatedButton(
                 // el button da kan mawgood f screen tanya makan el done button eli fo2eeh
-                nextScreen: const CollectCashScreen(),
+                nextScreen:  CollectCashScreen(),
                 text: 'End trip',
                 backgroundColor: const Color(0xff0038A7)),
             TextButton(

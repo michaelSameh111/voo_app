@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:voo_app/Model/EndTripModel.dart';
 import 'package:voo_app/view/pages/chat_screen.dart';
-
+//ignore_for_file: must_be_immutable
 class CollectCashScreen extends StatelessWidget {
-  const CollectCashScreen({super.key});
+  EndTripModel? endTripModel;
+   CollectCashScreen({super.key,this.endTripModel});
 
   @override
   Widget build(BuildContext context) {

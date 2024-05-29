@@ -12,7 +12,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_places_autocomplete_text_field/model/prediction.dart';
 import 'package:voo_app/Controller/Data/data_cubit.dart';
+import 'package:voo_app/Model/EndTripModel.dart';
 import 'package:voo_app/view/pages/DataCheck.dart';
+import 'package:voo_app/view/widgets/CountDownDialog.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 import '../../../Controller/Constants.dart';
 import '../../../Model/TripModel.dart';
@@ -28,8 +30,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool locationEnabled = false;
-  bool tripToPickup = false;
+  bool drivingState = false;
+  bool incomingRequest = false;
   List<LatLng> polyLineCoordinates = [];
+  double cameraZoom = 17;
   int time = 0;
   bool loadingState = false;
   Future<int?> getEstimatedTime({
@@ -79,6 +83,7 @@ class _HomePageState extends State<HomePage> {
   StreamSubscription<Position>? _positionStreamSubscription;
   Position? _previousPosition;
   GoogleMapController? controller;
+  EndTripModel endTripModel  = EndTripModel();
   BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
   void addCustomMarker() {
     BitmapDescriptor.fromAssetImage(
@@ -103,38 +108,54 @@ class _HomePageState extends State<HomePage> {
       _markers.add(marker);
     });
   }
-  Future handle(BuildContext context) async {
+  Future handle(BuildContext contextt) async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       TripModel? newTrip;
-      try {
-        newTrip = TripModel.fromJson(message.data);
-      } catch (error) {
-        print("Error parsing trip data: $error");
-      }
-      if (newTrip != null) {
-        tripModel = newTrip;
+      if(message.data['rider'] != null){
+        try {
+          newTrip = TripModel.fromJson(message.data);
+        } catch (error) {
+          print("Error parsing trip data: $error");
+        }
+        if (newTrip != null) {
+          tripModel = newTrip;
+          trip ??= newTrip;
 
-      }
-      print(message.notification?.body);
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
-      print(tripModel.tripId);
-      getEstimatedTime(
+
+        }
+        print(message.notification?.body);
+        print('Got a message whilst in the foreground!');
+        print('Message data: ${message.data}');
+        if(tripModel.pickupLongitude == null || tripModel.pickupLatitude == null ){}else{
+          getEstimatedTime(
               driverLat: sourcePosition!.latitude,
               driverLng: sourcePosition!.longitude,
               riderLat: double.parse(tripModel.pickupLatitude!),
               riderLng: double.parse(tripModel.pickupLongitude!),
               apiKey: googleMapApiKey)
-          .then((value) async {
-        time = value!;
-        final x = await getAddressFromLatLng(
-            double.parse(tripModel.pickupLatitude!),
-            double.parse(tripModel.pickupLongitude!));
-        final y = await getAddressFromLatLng(
-            double.parse(tripModel.destinationLatitude!),
-            double.parse(tripModel.destinationLongitude!));
-        acceptDeclineShowModalSheet(context, x, y);
-      });
+              .then((value) async {
+            time = value!;
+            final x = await getAddressFromLatLng(
+                double.parse(tripModel.pickupLatitude!),
+                double.parse(tripModel.pickupLongitude!));
+            final y = await getAddressFromLatLng(
+                double.parse(tripModel.destinationLatitude!),
+                double.parse(tripModel.destinationLongitude!));
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return CountdownDialog(
+                  onTimerFinish: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                );
+              },
+            );
+            acceptDeclineShowModalSheet(contextt, x, y);
+          });
+        }
+      }
     });
   }
 
@@ -148,6 +169,7 @@ class _HomePageState extends State<HomePage> {
       ),
       context: context,
       builder: (context) => Column(
+       crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
@@ -172,6 +194,7 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 5.0.w, vertical: 3.h),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
@@ -240,12 +263,52 @@ class _HomePageState extends State<HomePage> {
                   height: 4.h,
                 ),
                 MainElevatedButtonTwo(
-                    onPressed: () {},
+                    onPressed: () {
+                      DataCubit.get(context).startTrip(tripId: int.parse(tripModel.tripId!),  driverLocation:
+                      'https://maps.google.com/?q=${sourcePosition!.latitude},${sourcePosition!.longitude}',
+                          driverLocationLat:
+                          sourcePosition!.latitude.toString(),
+                          driverLocationLng:
+                          sourcePosition!.longitude.toString(),
+                          context: context);
+                    },
                     text: 'Start trip',
-                    backgroundColor: const Color(0xff0038A7)),
+                    backgroundColor: const Color(0xffFF6A03)),
                 TextButton(
                     onPressed: () {
-                      // cancelTripShowModalSheet(context);
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Confirmation'),
+                            content: Text(
+                                'Are you sure you want to cancel?'),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(
+                                    context), // No button action
+                                child: Text('No'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  DataCubit.get(context).cancelTrip(
+                                      tripId:int.parse(tripModel.tripId!),
+                                      context: context);
+                                  Navigator.pop(context);
+                                  setState(() {
+                                    tripToPickup = false;
+                                  });
+                                }, // Yes button action
+                                child: Text(
+                                  'Yes',
+                                  style:
+                                  TextStyle(color: Colors.red),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                     child: Text(
                       'Cancel trip',
@@ -264,6 +327,7 @@ class _HomePageState extends State<HomePage> {
       BuildContext context, String? pickUp, String? destination) {
     showModalBottomSheet(
       isDismissible: false,
+      barrierColor: Colors.transparent,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(23), topRight: Radius.circular((23))),
@@ -416,6 +480,7 @@ class _HomePageState extends State<HomePage> {
                               side: const BorderSide(color: Color(0xffFF6A03))),
                           onPressed: () {
                             Navigator.pop(context);
+                            Navigator.pop(context);
                             setState(() {
                               tripToPickup = false;
                             });
@@ -436,7 +501,7 @@ class _HomePageState extends State<HomePage> {
                               backgroundColor: const Color(0xffFF6A03)),
                           onPressed: () {
                             DataCubit.get(context).acceptTrip(
-                                tripId: 118,
+                                tripId: int.parse(tripModel.tripId!),
                                 driverLocation:
                                     'https://maps.google.com/?q=${sourcePosition!.latitude},${sourcePosition!.longitude}',
                                 driverLocationLat:
@@ -466,7 +531,7 @@ class _HomePageState extends State<HomePage> {
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
         googleMapApiKey,
         PointLatLng(sourcePosition!.latitude, sourcePosition!.longitude),
-        PointLatLng(double.parse(tripModel.pickupLatitude!), double.parse(tripModel.pickupLongitude!)));
+        PointLatLng(lat,lng));
     print(result.points);
     if (result.points.isNotEmpty) {
       result.points.forEach((PointLatLng point) =>
@@ -477,7 +542,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void startListeningToLocationChanges(bool drivingState) {
+  void startListeningToLocationChanges() {
     _positionStreamSubscription = locationStream!.listen((Position position) {
       if (_previousPosition != null &&
           (_previousPosition!.latitude != position.latitude ||
@@ -485,7 +550,6 @@ class _HomePageState extends State<HomePage> {
         _previousPosition = position;
         setState(() {
           sourcePosition = position;
-
           final updatedMarker = Marker(
             markerId: MarkerId('source'),
             rotation: position.heading,
@@ -498,8 +562,8 @@ class _HomePageState extends State<HomePage> {
          if(drivingState){ controller!.animateCamera(
            CameraUpdate.newCameraPosition(
              CameraPosition(
-               zoom: 25,
                target: LatLng(position.latitude, position.longitude),
+               zoom: cameraZoom
              ),
            ),
          );}
@@ -648,10 +712,11 @@ class _HomePageState extends State<HomePage> {
         // );
       } else {
         locationStream = Geolocator.getPositionStream(
-            locationSettings: const LocationSettings(
+            locationSettings:  LocationSettings(
               accuracy: LocationAccuracy.high,
+              distanceFilter: drivingState == true ? 50 : 0
             ));
-        startListeningToLocationChanges(true);
+        startListeningToLocationChanges();
       }
     });
     handle(context);
@@ -702,6 +767,30 @@ class _HomePageState extends State<HomePage> {
     bool showDialogBool = false;
     return BlocConsumer<DataCubit, DataState>(
       listener: (context, state) {
+        if(state is StartTripSuccessState){
+          Navigator.pop(context);
+          locationStream = Geolocator.getPositionStream(
+              locationSettings: const LocationSettings(
+                accuracy: LocationAccuracy.high,
+              ));
+          setState(() {
+            drivingState = true;
+            tripToPickup = false;
+            tripToDestination = true;
+            setState(() {
+              loadingState = false;
+              _markers.add(Marker(
+                  markerId: const MarkerId('destination'),
+                  icon: BitmapDescriptor.defaultMarker,
+                  position: LatLng(double.parse(tripModel.destinationLatitude!),
+                      double.parse(tripModel.destinationLongitude!))));
+              getPolyPoint(double.parse(tripModel.destinationLatitude!),
+                  double.parse(tripModel.destinationLongitude!));
+            });
+
+          });
+          startListeningToLocationChanges();
+        }
         if (state is ArrivedAtLocationSuccessState){
           Fluttertoast.showToast(
               msg:
@@ -710,6 +799,16 @@ class _HomePageState extends State<HomePage> {
               backgroundColor: Colors.green,
               textColor: Colors.white,
               gravity: ToastGravity.TOP);
+          getEstimatedTime(
+              driverLat: sourcePosition!.latitude,
+              driverLng: sourcePosition!.longitude,
+              riderLat: double.parse(tripModel.pickupLatitude!),
+              riderLng: double.parse(tripModel.pickupLongitude!),
+              apiKey: googleMapApiKey)
+              .then((value) async {
+            time = value!;
+          });
+          arrivedToPickupShowModalSheet(context);
         }
         if (state is CancelTripSuccessState){
           Fluttertoast.showToast(
@@ -746,12 +845,13 @@ class _HomePageState extends State<HomePage> {
         if (state is AcceptTripSuccessState) {
           Navigator.pop(context);
           Navigator.pop(context);
+          Navigator.pop(context);
           locationStream = Geolocator.getPositionStream(
               locationSettings: const LocationSettings(
                 accuracy: LocationAccuracy.high,
               ));
-          startListeningToLocationChanges(true);
           setState(() {
+            drivingState = true;
             tripToPickup = true;
             setState(() {
               loadingState = false;
@@ -760,11 +860,12 @@ class _HomePageState extends State<HomePage> {
                   icon: BitmapDescriptor.defaultMarker,
                   position: LatLng(double.parse(tripModel.pickupLatitude!),
                       double.parse(tripModel.pickupLongitude!))));
+              getPolyPoint(double.parse(tripModel.pickupLatitude!),
+                  double.parse(tripModel.pickupLongitude!));
             });
-            getPolyPoint(double.parse(tripModel.destinationLatitude!),
-                double.parse(tripModel.destinationLongitude!));
-          });
 
+          });
+          startListeningToLocationChanges();
         }
       },
       builder: (context, state) {
@@ -776,6 +877,9 @@ class _HomePageState extends State<HomePage> {
                 scrollGesturesEnabled: true,
                 zoomGesturesEnabled: true,
                 trafficEnabled: true,
+                onCameraMove: (CameraPosition position){
+                  cameraZoom = position.zoom;
+                },
                 initialCameraPosition: CameraPosition(
                   target: sourcePosition == null
                       ? LatLng(31.2447917, 29.9740327)
@@ -792,6 +896,7 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.blue,
                       visible: true,
                       points: polyLineCoordinates,
+
                       width: 5)
                 },
                 markers: _markers,
@@ -823,8 +928,7 @@ class _HomePageState extends State<HomePage> {
                           CameraUpdate.newCameraPosition(CameraPosition(
                         target: LatLng(sourcePosition!.latitude,
                             sourcePosition!.longitude),
-                        zoom: 30,
-                            bearing:sourcePosition!.heading
+                        zoom: 20,
                       )));
                     },
                     child: Icon(
@@ -1020,35 +1124,6 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: 5.h,
                     ),
-                    // CircleAvatar(
-                    //   radius: 19.5.w,
-                    //   backgroundColor: Colors.white,
-                    //   child: Padding(
-                    //     padding: EdgeInsets.symmetric(vertical: 3.0.h),
-                    //     child: Column(
-                    //       children: [
-                    //         Icon(
-                    //           Icons.hourglass_top,
-                    //           color: const Color(0xffFF6A03),
-                    //           size: 30.dp,
-                    //         ),
-                    //         SizedBox(
-                    //           height: 0.6.h,
-                    //         ),
-                    //         Text(
-                    //           '30',
-                    //           style: TextStyle(
-                    //               color: const Color(0xffFF6A03), fontSize: 25.dp),
-                    //         ),
-                    //         Text(
-                    //           'Seconds',
-                    //           style: TextStyle(
-                    //               color: const Color(0xff808080), fontSize: 16.dp),
-                    //         )
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
                     const Spacer(),
                     // ElevatedButton(
                     //   child: const Text('Change location state (for UI)'),
@@ -1143,6 +1218,15 @@ class _HomePageState extends State<HomePage> {
                                 onPressed: () {
                                   if (light == true) {
                                     DataCubit.get(context).arrivedAtLocation(tripId: int.parse(tripModel.tripId!), context: context);
+                                    getEstimatedTime(
+                                        driverLat: sourcePosition!.latitude,
+                                        driverLng: sourcePosition!.longitude,
+                                        riderLat: double.parse(tripModel.destinationLatitude!),
+                                        riderLng: double.parse(tripModel.destinationLongitude!),
+                                        apiKey: googleMapApiKey)
+                                        .then((value) async {
+                                      time = value!;
+                                    });
 
                                   } else {
                                     showDialog(
@@ -1257,7 +1341,129 @@ class _HomePageState extends State<HomePage> {
                                   style: TextStyle(color: Colors.white),
                                 )),
                           )
-                        : SizedBox(),
+                        : tripToPickup == false && tripToDestination == true ? SizedBox(
+                      width: 40.w,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xffFF6A03)),
+                          onPressed: () {
+                            if (light == true) {
+                              DataCubit.get(context).endTrip(tripId: int.parse(tripModel.tripId!), context: context, endTripModel: endTripModel).then((value){
+                                endTripModel = value;
+                              });
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (context) => StatefulBuilder(
+                                  builder: (context, setState) {
+                                    return Theme(
+                                      data: ThemeData(
+                                          dialogBackgroundColor:
+                                          Colors.white),
+                                      child: Dialog(
+                                        elevation: 0,
+                                        child: Stack(
+                                          clipBehavior: Clip.none,
+                                          alignment: Alignment.topCenter,
+                                          children: [
+                                            SizedBox(
+                                              height: 28.h,
+                                              width: double.infinity,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment
+                                                    .center,
+                                                children: [
+                                                  Text(
+                                                    'You\'re offline',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .bold,
+                                                        fontSize: 18.dp,
+                                                        color: const Color(
+                                                            0xff646363)),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 1.h,
+                                                  ),
+                                                  Text(
+                                                    'Go online to accept jobs.',
+                                                    style: TextStyle(
+                                                        fontSize: 15.dp,
+                                                        color: const Color(
+                                                            0xff646363)),
+                                                    textAlign:
+                                                    TextAlign.center,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 1.5.h,
+                                                  ),
+                                                  const Divider(),
+                                                  SizedBox(
+                                                    height: 1.5.h,
+                                                  ),
+                                                  Switch(
+                                                      trackOutlineColor:
+                                                      WidgetStateProperty
+                                                          .all(Colors
+                                                          .transparent),
+                                                      activeTrackColor:
+                                                      const Color(
+                                                          0xffFF6A03),
+                                                      inactiveTrackColor:
+                                                      const Color(
+                                                          0xffD1D1D6),
+                                                      inactiveThumbColor:
+                                                      Colors.white,
+                                                      value: light,
+                                                      onChanged:
+                                                          (bool value) {
+                                                        setState(() {
+                                                          light = value;
+                                                          showDialogBool =
+                                                              value;
+
+                                                          if (showDialogBool ==
+                                                              true) {
+                                                            Navigator.of(
+                                                                context)
+                                                                .pop();
+                                                          }
+
+                                                          // acceptDeclineShowModalSheet(
+                                                          //     context);
+                                                        });
+                                                      }),
+                                                ],
+                                              ),
+                                            ),
+                                            Positioned(
+                                              top: -50,
+                                              child: CircleAvatar(
+                                                backgroundColor:
+                                                Colors.white,
+                                                radius: 40,
+                                                child: Image.asset(
+                                                  'assets/images/notification_offline.png',
+                                                  width: 12.w,
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            }
+                          },
+                          child: const Text(
+                            'End Trip',
+                            style: TextStyle(color: Colors.white),
+                          )),
+                    ) : SizedBox(),
                     tripToPickup == true
                         ? SizedBox(
                             width: 40.w,
@@ -1282,7 +1488,7 @@ class _HomePageState extends State<HomePage> {
                                           TextButton(
                                             onPressed: () {
                                               DataCubit.get(context).cancelTrip(
-                                                  tripId: 119,
+                                                  tripId:int.parse(tripModel.tripId!),
                                                   context: context);
                                               Navigator.pop(context);
                                               setState(() {

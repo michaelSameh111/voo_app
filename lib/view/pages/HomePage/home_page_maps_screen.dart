@@ -18,6 +18,7 @@ import '../../../Controller/Constants.dart';
 import '../../../Model/TripModel.dart';
 
 
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -81,7 +82,7 @@ class _HomePageState extends State<HomePage> {
   BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
   void addCustomMarker() {
     BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(size: Size(15, 15)), 'assets/images/car.png')
+            ImageConfiguration(size: Size(1, 1)), 'assets/images/car.png')
         .then((icon) {
       setState(() {
         markerIcon = icon;
@@ -90,6 +91,7 @@ class _HomePageState extends State<HomePage> {
   }
   Future<void> _addMarker(Prediction prediction) async {
     final marker = Marker(
+
       markerId: MarkerId(prediction.placeId!),
       position:
           LatLng(double.parse(prediction.lat!), double.parse(prediction.lng!)),
@@ -486,15 +488,17 @@ class _HomePageState extends State<HomePage> {
 
           final updatedMarker = Marker(
             markerId: MarkerId('source'),
+            rotation: position.heading,
+            icon: markerIcon,
             position: LatLng(position.latitude, position.longitude),
           );
-
           _markers.removeWhere((marker) => marker.markerId == MarkerId('source'));
           _markers.add(updatedMarker);
 
          if(drivingState){ controller!.animateCamera(
            CameraUpdate.newCameraPosition(
              CameraPosition(
+               zoom: 25,
                target: LatLng(position.latitude, position.longitude),
              ),
            ),
@@ -538,6 +542,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     checkLocationEnabled().whenComplete(() async {
       controller = await googleMapController.future;
+      addCustomMarker();
       Timer(
         Duration(seconds: 1),
         () {
@@ -646,7 +651,7 @@ class _HomePageState extends State<HomePage> {
             locationSettings: const LocationSettings(
               accuracy: LocationAccuracy.high,
             ));
-        startListeningToLocationChanges(false);
+        startListeningToLocationChanges(true);
       }
     });
     handle(context);
@@ -752,7 +757,7 @@ class _HomePageState extends State<HomePage> {
               loadingState = false;
               _markers.add(Marker(
                   markerId: const MarkerId('destination'),
-                  icon: markerIcon,
+                  icon: BitmapDescriptor.defaultMarker,
                   position: LatLng(double.parse(tripModel.pickupLatitude!),
                       double.parse(tripModel.pickupLongitude!))));
             });
@@ -814,13 +819,12 @@ class _HomePageState extends State<HomePage> {
                   left: 10,
                   child: FloatingActionButton(
                     onPressed: () {
-                      print(sourcePosition!.longitude);
-                      print(sourcePosition!.latitude);
                       controller!.animateCamera(
                           CameraUpdate.newCameraPosition(CameraPosition(
                         target: LatLng(sourcePosition!.latitude,
                             sourcePosition!.longitude),
-                        zoom: 18,
+                        zoom: 30,
+                            bearing:sourcePosition!.heading
                       )));
                     },
                     child: Icon(

@@ -135,7 +135,7 @@ class ChangePasswordBasicInfoScreen extends StatelessWidget {
               MainElevatedButton(
                   nextScreen: const ChangePasswordBasicInfoScreen(),
                   text: 'Update',
-                  backgroundColor: const Color(0xff0038A7)),
+                  backgroundColor: const Color(0xffFF6A03)),
             ],
           ),
         ),

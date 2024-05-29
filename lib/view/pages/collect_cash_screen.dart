@@ -44,11 +44,11 @@ class CollectCashScreen extends StatelessWidget {
                 SizedBox(height: 2.h,),
                 TextButton(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),),
+                    backgroundColor: WidgetStateProperty.all<Color>(Colors.transparent),),
                     onPressed: (){},
                     child: Text('Trip Summary',
                       style: TextStyle(
-                        color: const Color(0xff0038A7),
+                        color: const Color(0xffFF6A03),
                         fontSize: 23.dp
                       ),)),
                 Padding(
@@ -164,7 +164,7 @@ class CollectCashScreen extends StatelessWidget {
                         padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 5.w),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.dp),
-                            color: const Color(0xff0038A7)
+                            color: const Color(0xffFF6A03)
                         ),
                         child: Row(
                           children: [
@@ -203,7 +203,7 @@ class CollectCashScreen extends StatelessWidget {
                         width: 80.w,
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xff0038A7)),
+                                backgroundColor: const Color(0xffFF6A03)),
                             onPressed: () {
                               Navigator.push(
                                   context,

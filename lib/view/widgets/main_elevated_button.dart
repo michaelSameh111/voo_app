@@ -6,8 +6,9 @@ class MainElevatedButton extends StatelessWidget {
   Widget nextScreen;
   String text;
   Color backgroundColor;
-
+  bool? circularBorder;
   MainElevatedButton({
+    this.circularBorder,
     required this.nextScreen,
     required this.text,
     required this.backgroundColor
@@ -19,6 +20,10 @@ class MainElevatedButton extends StatelessWidget {
       width: 80.w,
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
+            elevation: 0,
+              shape: circularBorder == true  ? RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)
+              ) : null,
               backgroundColor: backgroundColor),
           onPressed: () {
             Navigator.push(
@@ -41,8 +46,10 @@ class MainElevatedButtonTwo extends StatelessWidget {
   String text;
   Color backgroundColor;
   bool? condition;
+  bool? circularBorder;
 
   MainElevatedButtonTwo({
+    this.circularBorder,
     required this.onPressed,
     required this.text,
     required this.backgroundColor,
@@ -55,6 +62,10 @@ class MainElevatedButtonTwo extends StatelessWidget {
       width: 80.w,
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
+              elevation: 0,
+              shape: circularBorder == true  ? RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)
+              ) : null,
               backgroundColor: backgroundColor),
           onPressed: onPressed,
           child: Container(

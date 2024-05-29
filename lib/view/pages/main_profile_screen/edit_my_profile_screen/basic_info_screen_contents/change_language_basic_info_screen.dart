@@ -61,7 +61,7 @@ class _ChangeLanguageBasicInfoScreenState extends State<ChangeLanguageBasicInfoS
                   EdgeInsets.symmetric(horizontal: 10.w,),
                   decoration: BoxDecoration(
                       color: selectedLanguage == 'English'
-                          ? const Color(0xff0038A7)
+                          ? const Color(0xffFF6A03)
                           : Colors.white,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
@@ -101,7 +101,7 @@ class _ChangeLanguageBasicInfoScreenState extends State<ChangeLanguageBasicInfoS
                   EdgeInsets.symmetric(horizontal: 10.w,),
                   decoration: BoxDecoration(
                       color: selectedLanguage == 'Spanish'
-                          ? const Color(0xff0038A7)
+                          ? const Color(0xffFF6A03)
                           : Colors.white,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
@@ -142,7 +142,7 @@ class _ChangeLanguageBasicInfoScreenState extends State<ChangeLanguageBasicInfoS
                   ),
                   decoration: BoxDecoration(
                       color: selectedLanguage == 'Arabic'
-                          ? const Color(0xff0038A7)
+                          ? const Color(0xffFF6A03)
                           : Colors.white,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
@@ -178,7 +178,7 @@ class _ChangeLanguageBasicInfoScreenState extends State<ChangeLanguageBasicInfoS
                 MainElevatedButton(
                     nextScreen: const BasicInfoScreen(),
                     text: 'Next',
-                    backgroundColor: const Color(0xff0038A7)),
+                    backgroundColor: const Color(0xffFF6A03)),
                 SizedBox(
                   height: 4.h,
                 ),

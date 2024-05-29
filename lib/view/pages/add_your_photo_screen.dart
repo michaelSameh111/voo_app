@@ -20,7 +20,7 @@ class AddYourPhotoScreen extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 25.dp,
                       fontWeight: FontWeight.bold,
-                      color: const Color(0xffF70415)),
+                      color:  Colors.black),
                 ),
                 Text(
                   'Lorem ipsum dolor sit amet consectetur. Morbi nulla ultricies .',

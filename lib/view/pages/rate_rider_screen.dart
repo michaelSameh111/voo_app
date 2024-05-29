@@ -11,7 +11,6 @@ class RateRiderScreen extends StatefulWidget {
 }
 
 class _RateRiderScreenState extends State<RateRiderScreen> {
-  double rating = 3.5;
   double _rating = 2.5;
 
   @override
@@ -61,7 +60,7 @@ class _RateRiderScreenState extends State<RateRiderScreen> {
                     width: 2.w,
                   ),
                   CircleAvatar(
-                    backgroundColor: Colors.red,
+                    backgroundColor: Colors.black,
                     radius: 1.5.w,
                   ),
                   SizedBox(
@@ -118,7 +117,7 @@ class _RateRiderScreenState extends State<RateRiderScreen> {
                 customHalfFilledIcon: Icons.star_half,
                 customEmptyIcon: Icons.star_border,
                 interactiveTooltips: true,
-                filledColor: Colors.red,
+                filledColor: Color(0xffFF6A03),
               ),
               // Padding(
               //   padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 2.h),
@@ -166,7 +165,7 @@ class _RateRiderScreenState extends State<RateRiderScreen> {
               MainElevatedButton(
                   nextScreen: const RateRiderScreen(),
                   text: ('Submit'),
-                  backgroundColor: const Color(0xff0038A7)),
+                  backgroundColor: const Color(0xffFF6A03)),
               SizedBox(height: 4.h,),
             ],
           ),

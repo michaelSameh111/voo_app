@@ -246,7 +246,7 @@ class _BankAccountScreenEditProfileScreenState extends State<BankAccountScreenEd
                 nextScreen:
                 const MainProfileScreen(),
                 text: 'Update',
-                backgroundColor: const Color(0xff0038A7)),
+                backgroundColor: const Color(0xffFF6A03)),
             SizedBox(height: 4.h,),
           ],
         ),

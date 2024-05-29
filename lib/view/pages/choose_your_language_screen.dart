@@ -27,7 +27,7 @@ class _ChooseYourLangScreenState extends State<ChooseYourLangScreen> {
                   style: TextStyle(
                       fontSize: 25.dp,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xffF70415)),
+                      color: Colors.black),
                 ),
                 Text(
                   'Lorem ipsum dolor sit amet consectetur. Morbi nulla ultricies .',
@@ -41,7 +41,7 @@ class _ChooseYourLangScreenState extends State<ChooseYourLangScreen> {
                   EdgeInsets.symmetric(horizontal: 10.w, vertical: 1.h),
                   decoration: BoxDecoration(
                       color: selectedLanguage == 'English'
-                          ? Color(0xff0038A7)
+                          ? Color(0xffFF6A03)
                           : Colors.white,
                       borderRadius: BorderRadius.circular(30),
                       border: Border.all(
@@ -81,7 +81,7 @@ class _ChooseYourLangScreenState extends State<ChooseYourLangScreen> {
                   EdgeInsets.symmetric(horizontal: 10.w, vertical: 1.h),
                   decoration: BoxDecoration(
                       color: selectedLanguage == 'Spanish'
-                          ? Color(0xff0038A7)
+                          ? Color(0xffFF6A03)
                           : Colors.white,
                       borderRadius: BorderRadius.circular(30),
                       border: Border.all(
@@ -121,7 +121,7 @@ class _ChooseYourLangScreenState extends State<ChooseYourLangScreen> {
                   EdgeInsets.symmetric(horizontal: 10.w, vertical: 1.h),
                   decoration: BoxDecoration(
                       color: selectedLanguage == 'Arabic'
-                          ? Color(0xff0038A7)
+                          ? Color(0xffFF6A03)
                           : Colors.white,
                       borderRadius: BorderRadius.circular(30),
                       border: Border.all(
@@ -157,7 +157,7 @@ class _ChooseYourLangScreenState extends State<ChooseYourLangScreen> {
                 MainElevatedButton(
                     nextScreen: DriverLicenseScreen(),
                     text: 'Next',
-                    backgroundColor: Color(0xff0038A7)),
+                    backgroundColor: Color(0xffFF6A03)),
                 SizedBox(
                   height: 4.h,
                 ),

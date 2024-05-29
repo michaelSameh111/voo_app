@@ -45,7 +45,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
             title: Text('Nader Nabil',style: GoogleFonts.roboto(fontSize: 30.dp,color: Colors.black,fontWeight: FontWeight.bold),),
             bottom: TabBar(
              indicator: const UnderlineTabIndicator(
-               borderSide: BorderSide(color: Color(0xff0038A7),width: 2),
+               borderSide: BorderSide(color: Color(0xffFF6A03),width: 2),
              ),
 
               tabs: [
@@ -54,7 +54,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                   child: Text(
                     'Basic Info',
                     style: TextStyle(
-                        color: const Color(0xff0038A7),
+                        color: const Color(0xffFF6A03),
                         fontWeight: FontWeight.bold,
                         fontSize: 14.8.dp),
                   ),
@@ -64,7 +64,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                   child: Text(
                     'Driver License',
                     style: TextStyle(
-                        color: const Color(0xff0038A7),
+                        color: const Color(0xffFF6A03),
                         fontWeight: FontWeight.bold,
                         fontSize: 13.dp),
                   ),
@@ -74,7 +74,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                   child: Text(
                     'Insurance',
                     style: TextStyle(
-                        color: const Color(0xff0038A7),
+                        color: const Color(0xffFF6A03),
                         fontWeight: FontWeight.bold,
                         fontSize: 14.8.dp),
                   ),
@@ -355,7 +355,7 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                 MainElevatedButton(
                     nextScreen: const BasicInfoScreen(),
                     text: 'Update',
-                    backgroundColor: const Color(0xff0038A7)),
+                    backgroundColor: const Color(0xffFF6A03)),
                 SizedBox(height: 2.h,)
               ],
             ),
@@ -462,7 +462,7 @@ class DriverLicenseScreenInEditMyProfile extends StatelessWidget {
                             nextScreen:
                             const DriverLicenseScreenInEditMyProfile(), //mo2akatan 3amelha LoginScreen next page
                             text: 'Upload',
-                            backgroundColor: const Color(0xff0038A7)),
+                            backgroundColor: const Color(0xffFF6A03)),
                       ],
                     ),
                   ),
@@ -473,7 +473,7 @@ class DriverLicenseScreenInEditMyProfile extends StatelessWidget {
                     width: 40.w,
                     child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
-                            side: const BorderSide(color: Color(0xff0038A7))),
+                            side: const BorderSide(color: Color(0xffFF6A03))),
                         onPressed: () {
                           Navigator.push(
                               context,
@@ -482,7 +482,7 @@ class DriverLicenseScreenInEditMyProfile extends StatelessWidget {
                         },
                         child: const Text(
                           'Edit photo',
-                          style: TextStyle(color: Color(0xff0038A7)),
+                          style: TextStyle(color: Color(0xffFF6A03)),
                         )),
                   ),
                 ),
@@ -515,7 +515,7 @@ class DriverLicenseScreenInEditMyProfile extends StatelessWidget {
                             nextScreen:
                             const DriverLicenseScreenInEditMyProfile(), //mo2akatan 3amelha LoginScreen next page
                             text: 'Upload',
-                            backgroundColor: const Color(0xff0038A7)),
+                            backgroundColor: const Color(0xffFF6A03)),
                       ],
                     ),
                   ),
@@ -526,7 +526,7 @@ class DriverLicenseScreenInEditMyProfile extends StatelessWidget {
                     width: 40.w,
                     child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
-                            side: const BorderSide(color: Color(0xff0038A7))),
+                            side: const BorderSide(color: Color(0xffFF6A03))),
                         onPressed: () {
                           Navigator.push(
                               context,
@@ -535,7 +535,7 @@ class DriverLicenseScreenInEditMyProfile extends StatelessWidget {
                         },
                         child: const Text(
                           'Edit photo',
-                          style: TextStyle(color: Color(0xff0038A7)),
+                          style: TextStyle(color: Color(0xffFF6A03)),
                         )),
                   ),
                 ),
@@ -568,7 +568,7 @@ class DriverLicenseScreenInEditMyProfile extends StatelessWidget {
                       nextScreen:
                       const DriverLicenseScreenInEditMyProfile(), //mo2akatan 3amelha LoginScreen next page
                       text: 'Update',
-                      backgroundColor: const Color(0xff0038A7)),
+                      backgroundColor: const Color(0xffFF6A03)),
                 ),
                 SizedBox(
                   height: 2.h,
@@ -631,7 +631,7 @@ class InsuranceScreenInEditMyProfile extends StatelessWidget {
                     width: 40.w,
                     child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
-                            side: const BorderSide(color: Color(0xff0038A7))),
+                            side: const BorderSide(color: Color(0xffFF6A03))),
                         onPressed: () {
                           Navigator.push(
                               context,
@@ -640,7 +640,7 @@ class InsuranceScreenInEditMyProfile extends StatelessWidget {
                         },
                         child: const Text(
                           'Edit photo',
-                          style: TextStyle(color: Color(0xff0038A7)),
+                          style: TextStyle(color: Color(0xffFF6A03)),
                         )),
                   ),
                 ),
@@ -652,7 +652,7 @@ class InsuranceScreenInEditMyProfile extends StatelessWidget {
                       nextScreen:
                       const InsuranceScreenInEditMyProfile(), //mo2akatan 3amelha LoginScreen next page
                       text: 'Update',
-                      backgroundColor: const Color(0xff0038A7)),
+                      backgroundColor: const Color(0xffFF6A03)),
                 ),
 
               ],

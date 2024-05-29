@@ -63,7 +63,7 @@ class _RegisterNowScreenState extends State<RegisterNowScreen> {
                               style: GoogleFonts.roboto(
                                   fontSize: 25.dp,
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xffF70415)),
+                                  color: Colors.black),
                             ),
                             Text(
                               'Enter your details to proceed further',
@@ -518,7 +518,7 @@ class _RegisterNowScreenState extends State<RegisterNowScreen> {
                               }
                             },
                             text: 'Register',
-                            backgroundColor: Color(0xff0038A7)),
+                            backgroundColor: Color(0xffFF6A03)),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -537,7 +537,7 @@ class _RegisterNowScreenState extends State<RegisterNowScreen> {
                                 child: Text(
                                   'Login',
                                   style:
-                                  GoogleFonts.roboto(color: Color(0xffF70415)),
+                                  GoogleFonts.roboto(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 15.dp),
                                 ))
                           ],
                         )

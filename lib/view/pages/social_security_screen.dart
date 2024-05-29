@@ -37,7 +37,7 @@ class SocialSecurityScreen extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 25.dp,
                             fontWeight: FontWeight.bold,
-                            color: const Color(0xffF70415)),
+                            color:  Colors.black),
                       ),
                     ),
                     SizedBox(
@@ -168,7 +168,7 @@ class SocialSecurityScreen extends StatelessWidget {
                           }
                         },
                         text: 'Next',
-                        backgroundColor: const Color(0xff0038A7)),
+                        backgroundColor: const Color(0xffFF6A03)),
                     SizedBox(height: 3.h,),
                   ],
                 ),

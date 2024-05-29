@@ -44,8 +44,9 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen> {
                     style: TextStyle(
                         fontSize: 25.dp,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xffF70415)),
+                        color: Colors.black),
                   ),
+                  SizedBox(height: 1.h,),
                   Text(
                     'Enter your details to proceed further',
                     style: TextStyle(fontSize: 14.dp, color: Color(0xff808080)),
@@ -58,29 +59,33 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen> {
                     height: 4.h,
                   ),
                   MainElevatedButton(
+                    circularBorder: true,
                       nextScreen: LoginScreen(),
                       text: 'Login',
-                      backgroundColor: Color(0xff0038A7)),
+                      backgroundColor: Color(0xffFF6A03)),
                   SizedBox(
                     height: 2.h,
                   ),
                   SizedBox(
                     width: 80.w,
-                    height: 5.5.h,
-                    child: OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: Color(0xff0038A7))),
+                    height: 5.h,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15)
+                            ),
+                            side: BorderSide(color: Color(0xffFF6A03),),),
                         onPressed: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => RegisterNowScreen()));
                         },
-                        child: Container(
-                          child: Text(
-                            'Sign Up',
-                            style: TextStyle(color: Color(0xff0038A7)),
-                          ),
+                        child: Text(
+                          'Sign Up',
+                          style: TextStyle(color: Color(0xffFF6A03)),
                         )),
                   )
                 ],

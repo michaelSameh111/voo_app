@@ -1,8 +1,3 @@
-// ignore: file_names
-// ignore: file_names
-// ignore: file_names
-// ignore: file_names
-// ignore_for_file: file_names
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';

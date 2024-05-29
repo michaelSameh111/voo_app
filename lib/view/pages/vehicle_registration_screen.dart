@@ -30,7 +30,7 @@ class VehicleRegistrationScreen extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 25.dp,
                                 fontWeight: FontWeight.bold,
-                                color: const Color(0xffF70415)),
+                                color:  Colors.black),
                           ),
                           SizedBox(
                             height: 4.h,
@@ -63,7 +63,7 @@ class VehicleRegistrationScreen extends StatelessWidget {
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                             backgroundColor:
-                                            const Color(0xff0038A7)),
+                                            const Color(0xffFF6A03)),
                                         onPressed: () {},
                                         child: Text(
                                           '+',
@@ -109,7 +109,7 @@ class VehicleRegistrationScreen extends StatelessWidget {
                         nextScreen:
                          InsuranceScreen(), //mo2akatan 3amelha LoginScreen next page
                         text: 'Next',
-                        backgroundColor: const Color(0xff0038A7)),
+                        backgroundColor: const Color(0xffFF6A03)),
 
                   ],
                 ),

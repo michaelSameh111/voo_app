@@ -47,7 +47,7 @@ class _AddNewCarScreenState extends State<AddNewCarScreen> {
                       style: TextStyle(
                           fontSize: 25.dp,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0xffF70415)),
+                          color:  Colors.black),
                     ),
                   ),
                   Row(
@@ -61,7 +61,7 @@ class _AddNewCarScreenState extends State<AddNewCarScreen> {
                             isChecked = value!;
                           });
                         },
-                        activeColor: const Color(0xff0038A7),
+                        activeColor: const Color(0xffFF6A03),
                         checkColor: Colors.white,
                       ),
                     ],
@@ -78,7 +78,7 @@ class _AddNewCarScreenState extends State<AddNewCarScreen> {
                             isChecked = value!;
                           });
                         },
-                        activeColor: const Color(0xff0038A7),
+                        activeColor: const Color(0xffFF6A03),
                         checkColor: Colors.white,
                       ),
                     ],
@@ -95,7 +95,7 @@ class _AddNewCarScreenState extends State<AddNewCarScreen> {
                             isChecked = value!;
                           });
                         },
-                        activeColor: const Color(0xff0038A7),
+                        activeColor: const Color(0xffFF6A03),
                         checkColor: Colors.white,
                       ),
                     ],
@@ -112,7 +112,7 @@ class _AddNewCarScreenState extends State<AddNewCarScreen> {
                             isChecked = value!;
                           });
                         },
-                        activeColor: const Color(0xff0038A7),
+                        activeColor: const Color(0xffFF6A03),
                         checkColor: Colors.white,
                       ),
                     ],
@@ -129,7 +129,7 @@ class _AddNewCarScreenState extends State<AddNewCarScreen> {
                             isChecked = value!;
                           });
                         },
-                        activeColor: const Color(0xff0038A7),
+                        activeColor: const Color(0xffFF6A03),
                         checkColor: Colors.white,
                       ),
                     ],
@@ -170,7 +170,7 @@ class _AddNewCarScreenState extends State<AddNewCarScreen> {
                             isChecked = value!;
                           });
                         },
-                        activeColor: const Color(0xff0038A7),
+                        activeColor: const Color(0xffFF6A03),
                         checkColor: Colors.white,
                       ),
                     ],
@@ -187,7 +187,7 @@ class _AddNewCarScreenState extends State<AddNewCarScreen> {
                             isChecked = value!;
                           });
                         },
-                        activeColor: const Color(0xff0038A7),
+                        activeColor: const Color(0xffFF6A03),
                         checkColor: Colors.white,
                       ),
                     ],
@@ -204,7 +204,7 @@ class _AddNewCarScreenState extends State<AddNewCarScreen> {
                             isChecked = value!;
                           });
                         },
-                        activeColor: const Color(0xff0038A7),
+                        activeColor: const Color(0xffFF6A03),
                         checkColor: Colors.white,
                       ),
                     ],
@@ -221,7 +221,7 @@ class _AddNewCarScreenState extends State<AddNewCarScreen> {
                             isChecked = value!;
                           });
                         },
-                        activeColor: const Color(0xff0038A7),
+                        activeColor: const Color(0xffFF6A03),
                         checkColor: Colors.white,
                       ),
                     ],
@@ -238,7 +238,7 @@ class _AddNewCarScreenState extends State<AddNewCarScreen> {
                             isChecked = value!;
                           });
                         },
-                        activeColor: const Color(0xff0038A7),
+                        activeColor: const Color(0xffFF6A03),
                         checkColor: Colors.white,
                       ),
                     ],
@@ -395,7 +395,7 @@ class _AddNewCarScreenState extends State<AddNewCarScreen> {
                   leading: Transform.scale(
                     scale: 1.2,
                     child: Radio(
-                      activeColor: const Color(0xff0038A7),
+                      activeColor: const Color(0xffFF6A03),
                       value: rideSettings[0],
                       groupValue: currentRideSettings,
                       onChanged: (value){
@@ -411,7 +411,7 @@ class _AddNewCarScreenState extends State<AddNewCarScreen> {
                   leading: Transform.scale(
                     scale: 1.2,
                     child: Radio(
-                      activeColor: const Color(0xff0038A7),
+                      activeColor: const Color(0xffFF6A03),
                       value: rideSettings[1],
                       groupValue: currentRideSettings,
                       onChanged: (value){
@@ -435,7 +435,7 @@ class _AddNewCarScreenState extends State<AddNewCarScreen> {
                   leading: Transform.scale(
                     scale: 1.2,
                     child: Radio(
-                      activeColor: const Color(0xff0038A7),
+                      activeColor: const Color(0xffFF6A03),
                       value: selectCarType[0],
                       groupValue: currentSelectCarType,
                       onChanged: (value){
@@ -451,7 +451,7 @@ class _AddNewCarScreenState extends State<AddNewCarScreen> {
                   leading: Transform.scale(
                     scale: 1.2,
                     child: Radio(
-                      activeColor: const Color(0xff0038A7),
+                      activeColor: const Color(0xffFF6A03),
                       value: selectCarType[1],
                       groupValue: currentSelectCarType,
                       onChanged: (value){
@@ -478,7 +478,7 @@ class _AddNewCarScreenState extends State<AddNewCarScreen> {
                         leading: Transform.scale(
                           scale: 1.2,
                           child: Radio(
-                            activeColor: const Color(0xff0038A7),
+                            activeColor: const Color(0xffFF6A03),
                             value: wheelChairAccess[0],
                             groupValue: currentWheelChairAccess,
                             onChanged: (value){
@@ -496,7 +496,7 @@ class _AddNewCarScreenState extends State<AddNewCarScreen> {
                         leading: Transform.scale(
                           scale: 1.2,
                           child: Radio(
-                            activeColor: const Color(0xff0038A7),
+                            activeColor: const Color(0xffFF6A03),
                             value: wheelChairAccess[1],
                             groupValue: currentWheelChairAccess,
                             onChanged: (value){
@@ -526,7 +526,7 @@ class _AddNewCarScreenState extends State<AddNewCarScreen> {
                         leading: Transform.scale(
                           scale: 1.2,
                           child: Radio(
-                            activeColor: const Color(0xff0038A7),
+                            activeColor: const Color(0xffFF6A03),
                             value: childCarSeat[0],
                             groupValue: currentChildCarSeat,
                             onChanged: (value){
@@ -544,7 +544,7 @@ class _AddNewCarScreenState extends State<AddNewCarScreen> {
                         leading: Transform.scale(
                           scale: 1.2,
                           child: Radio(
-                            activeColor: const Color(0xff0038A7),
+                            activeColor: const Color(0xffFF6A03),
                             value: childCarSeat[1],
                             groupValue: currentChildCarSeat,
                             onChanged: (value){
@@ -681,7 +681,7 @@ class _AddNewCarScreenState extends State<AddNewCarScreen> {
                       nextScreen:
                       const VehicleInformationScreenEditProfileScreen(),
                       text: 'Next',
-                      backgroundColor: const Color(0xff0038A7)),
+                      backgroundColor: const Color(0xffFF6A03)),
                 ),
                 SizedBox(
                   height: 5.h,

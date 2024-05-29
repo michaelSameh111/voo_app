@@ -41,6 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               fontWeight: FontWeight.bold,
                               color: Colors.black),
                         ),
+                        SizedBox(height: 1.h,),
                         Text(
                           'Enter your details to proceed further',
                           style: GoogleFonts.roboto(
@@ -143,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       isChecked = value!;
                                     });
                                   },
-                                  activeColor: Color(0xff0038A7),
+                                  activeColor: Color(0xffFF6A03),
                                   checkColor: Colors.white,
                                 ),
                                 Text(
@@ -156,6 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               height: 3.h,
                             ),
                             MainElevatedButtonTwo(
+                              circularBorder: true,
                               condition: state is LoginLoadingState,
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
@@ -166,8 +168,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   }
                                 },
                                 text: 'Login',
-                                backgroundColor: Color(0xff0038A7)),
-                            Row(
+                                backgroundColor: Color(0xffFF6A03)),
+                            Row(mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text('Don\'t have an account ?'),
                                 TextButton(
@@ -181,7 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     child: Text(
                                       'Register now',
                                       style: GoogleFonts.roboto(
-                                          color: Color(0xffF70415)),
+                                          color: Colors.black,fontSize: 15.dp,fontWeight: FontWeight.bold),
                                     ))
                               ],
                             )

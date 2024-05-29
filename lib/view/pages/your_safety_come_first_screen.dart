@@ -31,7 +31,7 @@ class _YourSafetyComeFirstScreenState extends State<YourSafetyComeFirstScreen> {
                       style: TextStyle(
                           fontSize: 25.dp,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0xff0038A7)),
+                          color: const Color(0xffFF6A03)),
                     ),
                   ),
                   SizedBox(
@@ -89,7 +89,7 @@ class _YourSafetyComeFirstScreenState extends State<YourSafetyComeFirstScreen> {
                             isChecked = value!;
                           });
                         },
-                        activeColor: const Color(0xff0038A7),
+                        activeColor: const Color(0xffFF6A03),
                         checkColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
@@ -109,7 +109,7 @@ class _YourSafetyComeFirstScreenState extends State<YourSafetyComeFirstScreen> {
                     child: MainElevatedButton(
                         nextScreen: const BackgroundLocationScreen(), //Background location screen
                         text: 'Next',
-                        backgroundColor: const Color(0xff0038A7)),
+                        backgroundColor: const Color(0xffFF6A03)),
                   )
                 ],
               ),
@@ -120,7 +120,7 @@ class _YourSafetyComeFirstScreenState extends State<YourSafetyComeFirstScreen> {
     );
   }
 }
-
+//ignore_for_file: must_be_immutable
 class ArrowAndText extends StatelessWidget {
   String text;
 

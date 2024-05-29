@@ -20,9 +20,9 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen> {
   DriverDataModel driverDataModel = DriverDataModel();
   @override
   void initState() {
-    DataCubit.get(context).getDriverLicenseData(licenseDataModel).then((value)=>licenseDataModel = value);
-    DataCubit.get(context).getDriverInsuranceData(insuranceDataModel).then((value)=>insuranceDataModel = value);
-    DataCubit.get(context).getDriverData(driverDataModel).then((value)=>driverDataModel = value);
+    // DataCubit.get(context).getDriverLicenseData(licenseDataModel).then((value)=>licenseDataModel = value);
+    // DataCubit.get(context).getDriverInsuranceData(insuranceDataModel).then((value)=>insuranceDataModel = value);
+    // DataCubit.get(context).getDriverData(driverDataModel).then((value)=>driverDataModel = value);
     super.initState();
   }
   @override

@@ -5,6 +5,9 @@ class EndTripModel {
   double? total;
   double? grandTotal;
   double? driverTotal;
+  int? tripDuration;
+  String? pickup;
+  String? destination;
 
   EndTripModel(
       {this.status,
@@ -12,7 +15,10 @@ class EndTripModel {
         this.tripEndTime,
         this.total,
         this.grandTotal,
-        this.driverTotal});
+        this.driverTotal,
+        this.tripDuration,
+        this.pickup,
+        this.destination});
 
   EndTripModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
@@ -21,6 +27,9 @@ class EndTripModel {
     total = json['total'];
     grandTotal = json['grand_total'];
     driverTotal = json['driver_total'];
+    tripDuration = json['Trip duration'];
+    pickup = json['Pickup'];
+    destination = json['Destination'];
   }
 
   Map<String, dynamic> toJson() {
@@ -31,6 +40,9 @@ class EndTripModel {
     data['total'] = this.total;
     data['grand_total'] = this.grandTotal;
     data['driver_total'] = this.driverTotal;
+    data['Trip duration'] = this.tripDuration;
+    data['Pickup'] = this.pickup;
+    data['Destination'] = this.destination;
     return data;
   }
 }

@@ -9,13 +9,12 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:voo_app/Controller/Data/data_cubit.dart';
+import 'package:voo_app/view/pages/LandingPage.dart';
 import 'package:voo_app/view/pages/enable_location_access_screen.dart';
-import 'package:voo_app/view/pages/HomePage/home_page_maps_screen.dart';
 import 'package:voo_app/view/pages/login_screen.dart';
 import 'package:voo_app/view/pages/social_security_screen.dart';
 
 import '../../Model/LoginDataModel.dart';
-import '../../view/pages/HomePage/Home.dart';
 import '../Constants.dart';
 import '../dio-helper.dart';
 import '../shared-prefrences.dart';
@@ -68,7 +67,7 @@ class LoginCubit extends Cubit<LoginState> {
           Navigator.push(context, MaterialPageRoute(builder: (context)=>SocialSecurityScreen()));
         } else {  Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => HomePageMapsScreen()),
+          MaterialPageRoute(builder: (context) => Landingpage()),
               (route) => false,
         );}
         if (rememberMe == true) {
@@ -510,7 +509,7 @@ class LoginCubit extends Cubit<LoginState> {
       print('Response data: ${response.data}');
       emit(AddDriverVehicleSuccessState());
     } catch (error) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response != null) {
           print('Error response data: ${error.response?.data}');
           print('Error response status: ${error.response?.statusCode}');

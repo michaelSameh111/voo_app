@@ -9,11 +9,12 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_places_autocomplete_text_field/model/prediction.dart';
 import 'package:voo_app/Controller/Data/data_cubit.dart';
-import 'package:voo_app/Model/EndTripModel.dart';
 import 'package:voo_app/view/pages/DataCheck.dart';
+import 'package:voo_app/view/pages/collect_cash_screen.dart';
 import 'package:voo_app/view/widgets/CountDownDialog.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 import '../../../Controller/Constants.dart';
@@ -35,6 +36,7 @@ class _HomePageState extends State<HomePage> {
   List<LatLng> polyLineCoordinates = [];
   double cameraZoom = 17;
   int time = 0;
+  String? destinationLocation = '';
   bool loadingState = false;
   Future<int?> getEstimatedTime({
     required double driverLat,
@@ -83,7 +85,7 @@ class _HomePageState extends State<HomePage> {
   StreamSubscription<Position>? _positionStreamSubscription;
   Position? _previousPosition;
   GoogleMapController? controller;
-  EndTripModel endTripModel  = EndTripModel();
+
   BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
   void addCustomMarker() {
     BitmapDescriptor.fromAssetImage(
@@ -169,7 +171,6 @@ class _HomePageState extends State<HomePage> {
       ),
       context: context,
       builder: (context) => Column(
-       crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
@@ -213,6 +214,7 @@ class _HomePageState extends State<HomePage> {
                     Row(
                       children: [
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               '${tripModel.rider}',
@@ -263,8 +265,9 @@ class _HomePageState extends State<HomePage> {
                   height: 4.h,
                 ),
                 MainElevatedButtonTwo(
-                    onPressed: () {
-                      DataCubit.get(context).startTrip(tripId: int.parse(tripModel.tripId!),  driverLocation:
+                    onPressed: () async{
+                      String? pickupLocation = await getAddressFromLatLng(sourcePosition!.latitude, sourcePosition!.longitude);
+                      DataCubit.get(context).startTrip(pickUpTitle: pickupLocation,tripId: int.parse(tripModel.tripId!),  driverLocation:
                       'https://maps.google.com/?q=${sourcePosition!.latitude},${sourcePosition!.longitude}',
                           driverLocationLat:
                           sourcePosition!.latitude.toString(),
@@ -767,6 +770,12 @@ class _HomePageState extends State<HomePage> {
     bool showDialogBool = false;
     return BlocConsumer<DataCubit, DataState>(
       listener: (context, state) {
+        if(state is EndTripSuccessState){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>CollectCashScreen(destinationLocation: destinationLocation,)));
+          tripToDestination = false;
+          polyLineCoordinates.clear();
+          print(endTripModel.total);
+        }
         if(state is StartTripSuccessState){
           Navigator.pop(context);
           locationStream = Geolocator.getPositionStream(
@@ -990,6 +999,8 @@ class _HomePageState extends State<HomePage> {
                                 },
                               ),
                             ),
+                            Spacer(),
+                            Text('${loginData.firstName} ${loginData.lastName}',style: GoogleFonts.roboto(fontSize: 14.dp,color: Colors.black,fontWeight: FontWeight.bold),),
                             const Spacer(),
                             Container(
                               padding: EdgeInsets.symmetric(
@@ -1346,11 +1357,10 @@ class _HomePageState extends State<HomePage> {
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xffFF6A03)),
-                          onPressed: () {
+                          onPressed: ()async {
                             if (light == true) {
-                              DataCubit.get(context).endTrip(tripId: int.parse(tripModel.tripId!), context: context, endTripModel: endTripModel).then((value){
-                                endTripModel = value;
-                              });
+                               destinationLocation = await getAddressFromLatLng(sourcePosition!.latitude, sourcePosition!.longitude);
+                              DataCubit.get(context).endTrip(destinationTitle: destinationLocation,tripId: int.parse(tripModel.tripId!), context: context,);
                             } else {
                               showDialog(
                                 context: context,
@@ -1493,6 +1503,7 @@ class _HomePageState extends State<HomePage> {
                                               Navigator.pop(context);
                                               setState(() {
                                                 tripToPickup = false;
+                                                polyLineCoordinates.clear();
                                               });
                                             }, // Yes button action
                                             child: Text(

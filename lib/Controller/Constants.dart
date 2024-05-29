@@ -5,6 +5,8 @@ import 'package:voo_app/Model/LoginDataModel.dart';
 import 'package:voo_app/Model/TripModel.dart';
 import 'package:voo_app/Model/VehicleTypeModel.dart';
 
+import '../Model/EndTripModel.dart';
+
 String? token = '';
 String? fcmToken = '';
 String? loggedInEmail = '';
@@ -23,6 +25,7 @@ TripModel tripModel = TripModel();
 TripModel? trip ;
 bool tripToPickup = false;
 bool tripToDestination = false;
+EndTripModel endTripModel  = EndTripModel();
 
 
 void showSimpleDialog(BuildContext context,String title,String desc) {

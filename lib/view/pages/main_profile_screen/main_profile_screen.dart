@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/Controller/Constants.dart';
+import 'package:voo_app/view/pages/LandingPage.dart';
 import 'package:voo_app/view/pages/main_profile_screen/app_settings_screen/app_settings_screen.dart';
 import 'package:voo_app/view/pages/main_profile_screen/bank_account_screen_edit_profile_screen/bank_account_screen_edit_profile_screen.dart';
 import 'package:voo_app/view/pages/main_profile_screen/cash_back_screen/cash_back_screen.dart';
@@ -328,6 +329,39 @@ class MainProfileScreen extends StatelessWidget {
                     ),
                     Text(
                       'Cash back',
+                      style: TextStyle(fontSize: 15.dp),
+                    ),
+                    const Spacer(),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      color: const Color(0xffA2A2A2),
+                      size: 17.dp,
+                    )
+                  ],
+                ),
+              ),
+            ),
+            const Divider(
+              color: Color(0xffF5F4F4),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Landingpage(settings: true,)));
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.groups,
+                      color: Color(0xff808080),
+                    ),
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                    Text(
+                      'Partners',
                       style: TextStyle(fontSize: 15.dp),
                     ),
                     const Spacer(),

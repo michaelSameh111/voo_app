@@ -1,8 +1,6 @@
-import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:voo_app/Model/DriverDataModel.dart';
 import 'package:voo_app/Model/EndTripModel.dart';
 import 'package:voo_app/Model/InsuranceDataModel.dart';
@@ -133,6 +131,7 @@ class DataCubit extends Cubit<DataState> {
         required String driverLocation,
         required String driverLocationLat,
         required String driverLocationLng,
+         String? pickUpTitle,
         required BuildContext context})async {
     emit(StartTripLoadingState());
     DioHelper.postData(
@@ -142,6 +141,7 @@ class DataCubit extends Cubit<DataState> {
           'driver_location' : driverLocation,
           'driver_location_latitude' : driverLocationLat,
           'driver_location_longitude' : driverLocationLng,
+          'pickup_title' : pickUpTitle,
         }),
         token: token)
         .then((value) async {
@@ -153,30 +153,32 @@ class DataCubit extends Cubit<DataState> {
     });
   }
 
-  Future<EndTripModel> endTrip(
+  Future<void> endTrip(
       {required int tripId,
+        String? destinationTitle,
         required BuildContext context,
-      required EndTripModel endTripModel
       })async {
     emit(EndTripLoadingState());
     DioHelper.postData(
         url: 'trip/end',
         data: FormData.fromMap({
           'tripId' : tripId,
+          'destination_title' : destinationTitle,
         }),
         token: token)
-        .then((value) async {
+        .then((value)  {
           endTripModel = EndTripModel.fromJson(value.data);
-         if(endTripModel != null){
-           print(endTripModel!.total);
-         }
+         // if(endTripModel != null){
+         //   print(endTripModel.total);
+         // }
+
       emit(EndTripSuccessState());
     }).catchError((error,stacktrace) {
       print(error);
       print(stacktrace);
       emit(EndTripErrorState());
     });
-    return endTripModel;
+
   }
 
   Future<void> cancelTrip(

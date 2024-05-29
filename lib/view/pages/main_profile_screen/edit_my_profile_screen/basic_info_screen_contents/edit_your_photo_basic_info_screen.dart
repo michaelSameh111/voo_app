@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen/edit_my_profile_screen.dart';
 
 class EditYourPhotoBasicInfoScreen extends StatelessWidget {
   const EditYourPhotoBasicInfoScreen({Key? key}) : super(key: key);

@@ -53,28 +53,30 @@ class _LandingpageState extends State<Landingpage> {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(5.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('We are thrilled to inform you that you now have the opportunity to partner with us. ',style: GoogleFonts.roboto(color: Color(0xffFF6A03),fontWeight: FontWeight.bold,fontSize: 22.dp),),
-              SizedBox(height: 2.h,),
-              Image.network(
-                'https://innovationscope.com/demos/voo/public/FrontEnd/images/feature-img-2.webp',
-                height: 40.h,
-                width: 80.w,
-              ),
-              SizedBox(height: 2.h,),
-              Text(
-                '''At Voo, we select partners based on their performance. Keep an eye out for notifications and expect a call from us to discuss how you can become a partner and start your own business.
-We're excited to help you grow with Voo!
-            ''',
-                style: GoogleFonts.roboto(
-                    fontSize: 16.dp,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold),
-              ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('We are thrilled to inform you that you now have the opportunity to partner with us. ',style: GoogleFonts.roboto(color: Color(0xffFF6A03),fontWeight: FontWeight.bold,fontSize: 22.dp),),
+                SizedBox(height: 2.h,),
+                Image.network(
+                  'https://innovationscope.com/demos/voo/public/FrontEnd/images/feature-img-2.webp',
+                  height: 40.h,
+                  width: 80.w,
+                ),
+                SizedBox(height: 2.h,),
+                Text(
+                  '''At Voo, we select partners based on their performance. Keep an eye out for notifications and expect a call from us to discuss how you can become a partner and start your own business.
+            We're excited to help you grow with Voo!
+              ''',
+                  style: GoogleFonts.roboto(
+                      fontSize: 16.dp,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
 
-            ],
+              ],
+            ),
           ),
         ),
       ),

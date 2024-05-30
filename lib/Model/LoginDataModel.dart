@@ -15,10 +15,10 @@ class LoginDataModel {
   dynamic serviceRadiusLatitude;
   dynamic serviceRadiusLongitude;
   String? image;
-  String? status;
+  dynamic status;
   DriverData? driverData;
   DriverVehicle? driverVehicle;
-  DriverLicense? driverLicense;
+  List<DriverLicense>? driverLicense;
   DriverInsurance? driverInsurance;
 
   LoginDataModel(
@@ -68,9 +68,12 @@ class LoginDataModel {
     driverVehicle = json['driver_vehicle'] != null
         ? new DriverVehicle.fromJson(json['driver_vehicle'])
         : null;
-    driverLicense = json['driver_license'] != null
-        ? new DriverLicense.fromJson(json['driver_license'])
-        : null;
+    if (json['driver_license'] != null) {
+      driverLicense = <DriverLicense>[];
+      json['driver_license'].forEach((v) {
+        driverLicense!.add(new DriverLicense.fromJson(v));
+      });
+    }
     driverInsurance = json['driver_insurance'] != null
         ? new DriverInsurance.fromJson(json['driver_insurance'])
         : null;
@@ -102,7 +105,8 @@ class LoginDataModel {
       data['driver_vehicle'] = this.driverVehicle!.toJson();
     }
     if (this.driverLicense != null) {
-      data['driver_license'] = this.driverLicense!.toJson();
+      data['driver_license'] =
+          this.driverLicense!.map((v) => v.toJson()).toList();
     }
     if (this.driverInsurance != null) {
       data['driver_insurance'] = this.driverInsurance!.toJson();
@@ -262,46 +266,30 @@ class DriverVehicle {
 }
 
 class DriverLicense {
-  int? id;
-  int? driver;
   String? licenseNumber;
   String? licenseExpiry;
   String? licenseFrontImage;
   String? licenseBackImage;
-  String? createdAt;
-  String? updatedAt;
 
   DriverLicense(
-      {this.id,
-        this.driver,
-        this.licenseNumber,
+      {this.licenseNumber,
         this.licenseExpiry,
         this.licenseFrontImage,
-        this.licenseBackImage,
-        this.createdAt,
-        this.updatedAt});
+        this.licenseBackImage});
 
   DriverLicense.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    driver = json['driver'];
     licenseNumber = json['license_number'];
     licenseExpiry = json['license_expiry'];
     licenseFrontImage = json['license_front_image'];
     licenseBackImage = json['license_back_image'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['driver'] = this.driver;
     data['license_number'] = this.licenseNumber;
     data['license_expiry'] = this.licenseExpiry;
     data['license_front_image'] = this.licenseFrontImage;
     data['license_back_image'] = this.licenseBackImage;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
     return data;
   }
 }

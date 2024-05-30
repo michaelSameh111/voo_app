@@ -5,7 +5,8 @@ import 'package:voo_app/view/pages/location_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 //ignore_for_file: must_be_immutable
 class SocialSecurityScreen extends StatelessWidget {
-  SocialSecurityScreen({Key? key}) : super(key: key);
+  bool? login ;
+  SocialSecurityScreen({Key? key, this.login}) : super(key: key);
   TextEditingController controllerOne = TextEditingController();
   TextEditingController controllerTwo = TextEditingController();
   TextEditingController controllerThree = TextEditingController();
@@ -162,8 +163,7 @@ class SocialSecurityScreen extends StatelessWidget {
                         onPressed: (){
                           if(formKey.currentState!.validate()){
                             socialSecurity = '${controllerOne.text} ${controllerTwo.text} ${controllerThree.text}';
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>LocationScreen())).whenComplete((){
-                              print(socialSecurity);
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>LocationScreen(login: login,))).whenComplete((){
                             });
                           }
                         },

@@ -55,16 +55,21 @@ class LoginCubit extends Cubit<LoginState> {
       'password': password,
       'fcm_token': fcmToken
     }).then((value) async {
+      print(value.data);
       loginData = LoginDataModel.fromJson(value.data);
       token = loginData.accessToken;
       loggedInEmail = email;
       loggedInPassword = password;
+      if(loginData.driverData != null){ driverData = loginData.driverData!;}
+      if(loginData.driverVehicle != null){ driverVehicle = loginData.driverVehicle!;}
+      if(loginData.driverInsurance != null){ insuranceData = loginData.driverInsurance!;}
+      if(loginData.driverLicense != null && loginData.driverLicense!.isNotEmpty){ licenseData = loginData.driverLicense![0];}
       print('User  $token');
       emit(LoginSuccessState());
       if (state is LoginSuccessState) {
         DataCubit.get(context).getVehicleTypes();
         if(loginData.driverData == null){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>SocialSecurityScreen()));
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>SocialSecurityScreen(login: true,)));
         } else {  Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => Landingpage()),
@@ -101,7 +106,7 @@ class LoginCubit extends Cubit<LoginState> {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => EnableLocationAccessScreen()));
+                  builder: (context) => Landingpage()));
         }
       }
     });
@@ -125,22 +130,23 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
-  void registerUser(
-      {required String firstName,
-      required String lastName,
-      required String email,
-      required String phone,
-      required String gender,
-      required String birthDate,
-      required String password,
-      required String passwordConfirmation,
-      File? file,
-      String fileName = '',
-      required BuildContext context}) async {
+  void registerUser({
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String phone,
+    required String gender,
+    required String birthDate,
+    required String password,
+    required String passwordConfirmation,
+    File? file,
+    String fileName = '',
+    required BuildContext context,
+  }) async {
     emit(RegisterLoadingState());
-    DioHelper.postData(
-      url: 'auth/register',
-      data: FormData.fromMap({
+
+    try {
+      FormData formData = FormData.fromMap({
         'first_name': firstName,
         'last_name': lastName,
         'email': email,
@@ -152,21 +158,72 @@ class LoginCubit extends Cubit<LoginState> {
         if (LoginCubit.registerImage != null)
           'image': await MultipartFile.fromFile(
             LoginCubit.registerImage!.path,
-            filename: LoginCubit.registerImage!.path.split('/').last,
+            filename: LoginCubit.registerImage!
+                .path
+                .split('/')
+                .last,
             contentType: MediaType("image", "jpeg"),
           ),
-      }),
-    ).then((value) async {
+      });
+
+      Response response = await DioHelper.postData(
+        url: 'auth/register',
+        data: formData,
+      );
+
       emit(RegisterSuccessState());
       if (state is RegisterSuccessState) {
         userLogin(email: email, password: password, context: context);
       }
-    }).catchError((error, stacktrace) {
-      print(error);
-      print(stacktrace);
-      print(file);
+    } catch (error) {
+      if (error is DioError) {
+        if (error.response != null) {
+          if (error.response?.statusCode == 422) {
+            var errors = error.response?.data['errors'];
+            if (errors != null) {
+              if (errors.containsKey('email') && errors.containsKey('phone') ) {
+                Fluttertoast.showToast(
+                  msg: 'Email & Phone are already taken',
+                  toastLength: Toast.LENGTH_LONG,
+                  gravity: ToastGravity.BOTTOM,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.dp,
+
+                );
+              }
+              else if (errors.containsKey('email')) {
+                Fluttertoast.showToast(
+                  msg: 'Email is already taken',
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.dp,
+                );
+              }
+              else if (errors.containsKey('phone')) {
+                Fluttertoast.showToast(
+                  msg: 'Phone is already taken',
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.dp,
+                );
+              }
+            }
+          } else {
+            print('Error response data: ${error.response?.data}');
+          }
+        }
+        print('Error message: ${error.message}');
+        print('Stacktrace: ${error.stackTrace}');
+      } else {
+        print('Error: $error');
+      }
       emit(RegisterErrorState(error.toString()));
-    });
+    }
   }
 
   void editUser(
@@ -266,6 +323,7 @@ class LoginCubit extends Cubit<LoginState> {
         token: token)
         .then((value) async {
       emit(AddDriverLicenseSuccessState());
+      DataCubit.get(context).getDriverLicenseData();
     }).catchError((error,stacktrace) {
       // print(error);
       // print(stacktrace);
@@ -391,7 +449,8 @@ class LoginCubit extends Cubit<LoginState> {
           'language' : language
         }),
         token: token)
-        .then((value) async {
+        .whenComplete(()  {
+      DataCubit.get(context).getDriverData();
       emit(AddDriverDataSuccessState());
     }).catchError((error,stacktrace) {
       print(error);

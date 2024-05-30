@@ -233,7 +233,9 @@ class _HomePageState extends State<HomePage> {
                           width: 30.w,
                         ),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+
+                          },
                           child: Container(
                             padding: EdgeInsets.all(5.dp),
                             decoration: BoxDecoration(
@@ -599,11 +601,13 @@ class _HomePageState extends State<HomePage> {
     return null;
   }
 
-  @override
-  void dispose() {
-    stopListeningToLocationChanges();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _removeOverlay();
+  //   stopListeningToLocationChanges();
+  //
+  //   super.dispose();
+  // }
 
   @override
   void initState() {
@@ -881,6 +885,7 @@ class _HomePageState extends State<HomePage> {
         return SafeArea(
           child: Stack(
             children: [
+
               GoogleMap(
                 buildingsEnabled: false,
                 scrollGesturesEnabled: true,
@@ -928,6 +933,22 @@ class _HomePageState extends State<HomePage> {
                 //       position: destinationPosition!),
                 // },
               ),
+              Positioned(child: Container(
+                color: Colors.red,
+                padding: EdgeInsets.all(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Please Complete Your Data First',
+                      style: GoogleFonts.roboto(color: Colors.white, fontSize: 14.dp,),
+                    ),
+                    InkWell(onTap:() {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>DataCheckScreen()));
+                    },child: Icon(Icons.arrow_forward, color: Colors.white))
+                  ],
+                ),
+              )),
               Positioned(
                   bottom: 10,
                   left: 10,
@@ -971,7 +992,7 @@ class _HomePageState extends State<HomePage> {
               //     }
               // ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 8.h),
                 child: Column(
                   children: [
                     Container(
@@ -982,21 +1003,26 @@ class _HomePageState extends State<HomePage> {
                             horizontal: 5.w, vertical: 1.h),
                         child: Row(
                           children: [
-                            CircleAvatar(
-                              radius: 3.h,
-                              backgroundColor: Color(0xffA2A2A2),
-                              child: Image.network(
-                                '${loginData.image}',
-                                fit: BoxFit.fill,
-                                height: 30.h,
-                                width: 30.h,
-                                errorBuilder: (context, object, skipTrace) {
-                                  return Icon(
-                                    Icons.person,
-                                    size: 52.dp,
-                                    color: const Color(0xffA2A2A2),
-                                  );
-                                },
+                            GestureDetector(
+                              onTap: (){
+                                DataCubit.get(context).getDriverData();
+                              },
+                              child: CircleAvatar(
+                                radius: 3.h,
+                                backgroundColor: Color(0xffA2A2A2),
+                                child: Image.network(
+                                  '${loginData.image}',
+                                  fit: BoxFit.fill,
+                                  height: 30.h,
+                                  width: 30.h,
+                                  errorBuilder: (context, object, skipTrace) {
+                                    return Icon(
+                                      Icons.person,
+                                      size: 52.dp,
+                                      color: const Color(0xffA2A2A2),
+                                    );
+                                  },
+                                ),
                               ),
                             ),
                             Spacer(),
@@ -1019,7 +1045,7 @@ class _HomePageState extends State<HomePage> {
                                 child: Row(
                                   children: [
                                     const Text(
-                                      'Online',
+                                      'Pending',
                                       style: TextStyle(color: Colors.white),
                                     ),
                                     SizedBox(
@@ -1029,8 +1055,9 @@ class _HomePageState extends State<HomePage> {
                                       backgroundColor: Colors.white,
                                       radius: 2.5.w,
                                       child: CircleAvatar(
-                                        backgroundColor: const Color(0xffFF6A03)
-                                            .withOpacity(0.5),
+                                        backgroundColor: Colors.white,
+                                        // backgroundColor: const Color(0xffFF6A03)
+                                        //     .withOpacity(0.5),
                                         radius: 1.8.w,
                                       ),
                                     )

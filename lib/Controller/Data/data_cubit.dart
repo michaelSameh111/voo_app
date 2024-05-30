@@ -1,12 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:voo_app/Model/DriverDataModel.dart';
 import 'package:voo_app/Model/EndTripModel.dart';
-import 'package:voo_app/Model/InsuranceDataModel.dart';
-import 'package:voo_app/Model/LicenseDataModel.dart';
 import 'package:voo_app/Model/VehicleTypeModel.dart';
 
+import '../../Model/LoginDataModel.dart';
 import '../Constants.dart';
 import '../dio-helper.dart';
 
@@ -17,7 +15,7 @@ class DataCubit extends Cubit<DataState> {
   static DataCubit get(context) => BlocProvider.of(context);
   Future<void> getVehicleTypes() {
     emit(GetVehicleTypesLoadingState());
-    return DioHelper.getData(url: 'vehicle-types', token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MTY1NTc5MjcsImV4cCI6MTcxNzE2MjcyNywibmJmIjoxNzE2NTU3OTI3LCJqdGkiOiI0dzQzcWpGdk1CSzM2WWVKIiwic3ViIjoiMyIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.JFl9vyahRtBfB9chV41jHJkfEa2ZLplqVd9IjSfHMlE')
+    return DioHelper.getData(url: 'vehicle-types', token: token)
         .then((value) {
       vehicleTypesModel = VehicleTypesModel.fromJson(value.data);
       emit(GetVehicleTypesSuccessState());
@@ -26,40 +24,35 @@ class DataCubit extends Cubit<DataState> {
       emit(GetVehicleTypesErrorState());
     });
   }
-  Future<LicenseDataModel> getDriverLicenseData(LicenseDataModel licenseDataModel) {
+  Future<void> getDriverLicenseData() {
     emit(GetLicenseDataLoadingState());
-    return DioHelper.getData(url: 'driver-license', token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MTY1NTc5MjcsImV4cCI6MTcxNzE2MjcyNywibmJmIjoxNzE2NTU3OTI3LCJqdGkiOiI0dzQzcWpGdk1CSzM2WWVKIiwic3ViIjoiMyIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.JFl9vyahRtBfB9chV41jHJkfEa2ZLplqVd9IjSfHMlE')
+    return DioHelper.getData(url: 'driver-license', token: token)
         .then((value) {
-     licenseDataModel  = LicenseDataModel.fromJson(value.data);
-     print(licenseDataModel.driverLicense!.licenseNumber);
+     licenseData  = DriverLicense.fromJson(value.data['Driver license']);
       emit(GetLicenseDataSuccessState());
-      return licenseDataModel;
+      return licenseData;
     }).catchError((error) {
       print(error.toString());
       emit(GetLicenseDataErrorState());
     });
   }
-  Future<InsuranceDataModel> getDriverInsuranceData(InsuranceDataModel insuranceDataModel) {
+  Future<void> getDriverInsuranceData() {
     emit(GetInsuranceDataLoadingState());
-    return DioHelper.getData(url: 'driver-insurance/edit', token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MTY1NTc5MjcsImV4cCI6MTcxNzE2MjcyNywibmJmIjoxNzE2NTU3OTI3LCJqdGkiOiI0dzQzcWpGdk1CSzM2WWVKIiwic3ViIjoiMyIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.JFl9vyahRtBfB9chV41jHJkfEa2ZLplqVd9IjSfHMlE')
+    return DioHelper.getData(url: 'driver-insurance/edit', token: token)
         .then((value) {
-     insuranceDataModel  = InsuranceDataModel.fromJson(value.data);
-     print(insuranceDataModel.insuranceData!.insuranceNumber);
+     insuranceData  = DriverInsurance.fromJson(value.data['insurance_data']);
       emit(GetInsuranceDataSuccessState());
-      return insuranceDataModel;
     }).catchError((error) {
       print(error.toString());
       emit(GetInsuranceDataErrorState());
     });
   }
-  Future<DriverDataModel> getDriverData(DriverDataModel driverDataModel) {
+  Future<void> getDriverData() {
     emit(GetDriverDataLoadingState());
-    return DioHelper.getData(url: 'driver-data', token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MTY1NTc5MjcsImV4cCI6MTcxNzE2MjcyNywibmJmIjoxNzE2NTU3OTI3LCJqdGkiOiI0dzQzcWpGdk1CSzM2WWVKIiwic3ViIjoiMyIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.JFl9vyahRtBfB9chV41jHJkfEa2ZLplqVd9IjSfHMlE')
+    return DioHelper.getData(url: 'driver-data', token: token)
         .then((value) {
-     driverDataModel  = DriverDataModel.fromJson(value.data);
-     print(driverDataModel.driverData!.country);
+     driverData  = DriverData.fromJson(value.data['Driver data']);
       emit(GetDriverDataSuccessState());
-      return driverDataModel;
     }).catchError((error) {
       print(error.toString());
       emit(GetDriverDataErrorState());

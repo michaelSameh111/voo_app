@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:voo_app/Model/InsuranceDataModel.dart';
 import 'package:voo_app/Model/LoginDataModel.dart';
 import 'package:voo_app/Model/TripModel.dart';
 import 'package:voo_app/Model/VehicleTypeModel.dart';
@@ -26,6 +27,10 @@ TripModel? trip ;
 bool tripToPickup = false;
 bool tripToDestination = false;
 EndTripModel endTripModel  = EndTripModel();
+DriverData driverData = DriverData();
+DriverInsurance insuranceData = DriverInsurance();
+DriverLicense licenseData = DriverLicense();
+DriverVehicle driverVehicle = DriverVehicle();
 
 
 void showSimpleDialog(BuildContext context,String title,String desc) {

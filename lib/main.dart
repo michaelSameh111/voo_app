@@ -49,7 +49,19 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             home: const SplashScreen(),
             debugShowCheckedModeBanner: false,
-            theme: ThemeData(useMaterial3: false,primaryColor: Color(0xffFF6A03)),
+            theme: ThemeData(useMaterial3: false,primaryColor: Color(0xffFF6A03),
+              colorScheme: ColorScheme.light(
+                primary: Color(0xffFF6A03),
+                onPrimary: Colors.white,
+                surface: Colors.white,
+                onSurface: Colors.black,
+              ),
+              datePickerTheme: DatePickerThemeData(
+                  headerBackgroundColor: Color(0xffFF6A03),
+                  headerForegroundColor: Colors.white,
+                  dividerColor: Colors.transparent
+              ),
+            ),
           );
         },
       ),

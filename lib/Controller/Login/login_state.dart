@@ -102,3 +102,5 @@ class ChangeDriverStatusErrorState extends LoginState {
 
 class EditAccountImagePickerState extends LoginState {}
 
+class ImagePickingState extends LoginState {}
+class ImagePickingSuccessState extends LoginState {}

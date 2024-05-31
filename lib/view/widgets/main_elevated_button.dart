@@ -7,8 +7,10 @@ class MainElevatedButton extends StatelessWidget {
   String text;
   Color backgroundColor;
   bool? circularBorder;
+  bool? removeRoutes;
   MainElevatedButton({
     this.circularBorder,
+    this.removeRoutes,
     required this.nextScreen,
     required this.text,
     required this.backgroundColor
@@ -26,10 +28,17 @@ class MainElevatedButton extends StatelessWidget {
               ) : null,
               backgroundColor: backgroundColor),
           onPressed: () {
-            Navigator.push(
+            if(removeRoutes == true){
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => nextScreen),
+                    (route) => false,
+              );
+            }else { Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => nextScreen));
+                    builder: (context) => nextScreen));}
+
           },
           child: Container(
             child: Text(

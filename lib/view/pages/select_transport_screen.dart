@@ -9,6 +9,7 @@ import 'package:voo_app/view/pages/main_profile_screen/vehicle_information_scree
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 import '../../Controller/Data/data_cubit.dart';
+import 'DataCheck.dart';
 
 class SelectTransportScreen extends StatefulWidget {
   const SelectTransportScreen({Key? key}) : super(key: key);
@@ -64,6 +65,19 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
   TextEditingController doorsController = TextEditingController();
   String currentWheelChairAccess = wheelChairAccess[0];
   String currentChildCarSeat = childCarSeat[0];
+  Future<void> selectDate() async {
+    DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+
+        firstDate: DateTime(1950),
+        lastDate: DateTime(2100));
+    if (picked != null) {
+      setState(() {
+        expiryDateController.text = picked.toString().split(" ")[0];
+      });
+    }
+  }
   @override
   void initState() {
     DataCubit.get(context).getVehicleTypes();
@@ -209,7 +223,12 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LoginCubit, LoginState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is AddDriverVehicleSuccessState){
+          Navigator.popUntil(context,(route) => route.isFirst);
+          Navigator.push(context, MaterialPageRoute(builder: (context) => DataCheckScreen()));
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           body: SingleChildScrollView(
@@ -701,36 +720,35 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 15.dp),
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Color(0xffF5F4F4),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'This Field be empty';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                              filled: true,
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                  const BorderSide(color: Colors.transparent)),
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                  const BorderSide(color: Colors.transparent)),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                  const BorderSide(color: Colors.transparent)),
-                              contentPadding: EdgeInsets.all(15),
-                              hintText: 'RC Expiry Date'),
-                          keyboardType: TextInputType.number,
-                          controller: expiryDateController,
-                        ),
+                      TextFormField(
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'This Field is Empty';
+                          }
+                          return null;
+                        },
+                        readOnly: true,
+                        decoration: InputDecoration(
+                            filled: true,
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide:
+                                const BorderSide(color: Colors.transparent)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide:
+                                const BorderSide(color: Colors.transparent)),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide:
+                                const BorderSide(color: Colors.transparent)),
+                            contentPadding: const EdgeInsets.all(15),
+                            hintText: 'RC Expiry Date',
+                            prefixIcon: const Icon(Icons.calendar_today)),
+                        onTap: () {
+                          selectDate();
+                        },
+                        controller: expiryDateController,
                       ),
                       SizedBox(
                         height: 2.h,
@@ -848,7 +866,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => CarDocumentScreen()));
+                                    builder: (context) => RcImageScreen()));
                           },
                           decoration: InputDecoration(
                               border: InputBorder.none,
@@ -862,10 +880,19 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                       SizedBox(
                         height: 2.h,
                       ),
-                      Text(
-                        'Car images',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      InkWell(
+                        onTap: (){
+                          print(LoginCubit.carHint);
+                          print(LoginCubit.vehicleFrontImage);
+                          print(LoginCubit.vehicleBackImage);
+                          print(LoginCubit.vehicleLeftImage);
+                          print(LoginCubit.vehicleRightImage);
+                        },
+                        child: Text(
+                          'Car images',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15.dp),
+                        ),
                       ),
                       Container(
                         decoration: BoxDecoration(

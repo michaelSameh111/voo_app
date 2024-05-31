@@ -12,9 +12,7 @@ class CarImages extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LoginCubit, LoginState>(
-  listener: (context, state) {
-    // TODO: implement listener
-  },
+  listener: (context, state) {},
   builder: (context, state) {
     return Scaffold(
         appBar: AppBar(
@@ -54,28 +52,28 @@ class CarImages extends StatelessWidget {
           child: Column(
             children: [
               RaiseDocumentsContainerWidget(
-                  uploadedPicture: true,
+                  uploadedPicture: LoginCubit.vehicleFrontImage == null ? false : true,
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>VehicleFrontImage()));
                   },
                   text: 'Front side'),
               SizedBox(height: 2.h,),
               RaiseDocumentsContainerWidget(
-                  uploadedPicture: false,
+                  uploadedPicture: LoginCubit.vehicleBackImage == null ? false : true,
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>VehicleBackImage()));
                   },
                   text: 'Back Side'),
               SizedBox(height: 2.h,),
               RaiseDocumentsContainerWidget(
-                  uploadedPicture: true,
+                  uploadedPicture: LoginCubit.vehicleLeftImage == null ? false : true,
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>VehicleLeftImage()));
                   },
                   text: 'Left side'),
               SizedBox(height: 2.h,),
               RaiseDocumentsContainerWidget(
-                  uploadedPicture: true,
+                  uploadedPicture: LoginCubit.vehicleRightImage == null ? false : true,
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>VehicleRightImage()));
                   },

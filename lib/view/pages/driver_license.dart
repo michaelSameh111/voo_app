@@ -6,6 +6,8 @@ import 'package:voo_app/Controller/Login/login_cubit.dart';
 import 'package:voo_app/view/widgets/circled_next_button.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
+import 'DataCheck.dart';
+
 class DriverLicenseScreen extends StatefulWidget {
   @override
   State<DriverLicenseScreen> createState() => _DriverLicenseScreenState();
@@ -31,7 +33,12 @@ class _DriverLicenseScreenState extends State<DriverLicenseScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LoginCubit, LoginState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is AddDriverLicenseSuccessState){
+          Navigator.popUntil(context,(route) => route.isFirst);
+          Navigator.push(context, MaterialPageRoute(builder: (context) => DataCheckScreen()));
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           body: SingleChildScrollView(
@@ -205,10 +212,23 @@ class _DriverLicenseScreenState extends State<DriverLicenseScreen> {
                             } else
                               return null;
                           },
-                          decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.all(15),
-                              hintText: 'Enter your driver license number'),
+                          decoration: InputDecoration(
+                              filled: true,
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent)),
+                              contentPadding: const EdgeInsets.all(15),
+                              hintText: 'Driver License Number',
+                          ),
                           keyboardType: TextInputType.number,
                         ),
                       ),
@@ -257,6 +277,7 @@ class _DriverLicenseScreenState extends State<DriverLicenseScreen> {
                         height: 1.h,
                       ),
                       Center(child: CircledNextButtonTwo(
+                        condition: state is AddDriverLicenseLoadingState,
                         onTap: () {
                           if (formKey.currentState!.validate()) {
                             LoginCubit.get(context).addDriverLicense(
@@ -265,9 +286,7 @@ class _DriverLicenseScreenState extends State<DriverLicenseScreen> {
                               frontImage: LoginCubit.frontLicenseImage,
                               backImage: LoginCubit.backLicenseImage,
                               context: context,
-                            ).whenComplete((){
-                              Navigator.pop(context);
-                            });
+                            );
 
                           }
                         },

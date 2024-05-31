@@ -206,7 +206,7 @@ class _RcImageScreenState extends State<RcImageScreen> {
                                 }
 
                             },
-                            text: 'Next',
+                            text: 'Done',
                             backgroundColor: Color(0xffFF6A03)),
                         SizedBox(height: 2.h,)
                       ],

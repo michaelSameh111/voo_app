@@ -22,6 +22,10 @@ class GetDriverDataLoadingState extends DataState {}
 class GetDriverDataSuccessState extends DataState {}
 class GetDriverDataErrorState extends DataState {}
 
+class GetDriverVehicleDataLoadingState extends DataState {}
+class GetDriverVehicleDataSuccessState extends DataState {}
+class GetDriverVehicleDataErrorState extends DataState {}
+
 class AcceptTripLoadingState extends DataState {}
 class AcceptTripSuccessState extends DataState {}
 class AcceptTripErrorState extends DataState {}

@@ -76,8 +76,11 @@ class _RegisterNowScreenState extends State<RegisterNowScreen> {
                         ),
                         InkWell(
                           onTap: () async {
-                            await LoginCubit.get(context).pickImage(image: LoginCubit.registerImage);
-                            setState(() {});
+                             LoginCubit.get(context).pickImage(image: LoginCubit.registerImage).then((value){
+                               setState(() {
+                                 LoginCubit.registerImage = value;
+                               });
+                             });
                           },
                           child: CircleAvatar(
                             radius: 13.w,

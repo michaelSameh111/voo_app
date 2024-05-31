@@ -28,7 +28,7 @@ class DataCubit extends Cubit<DataState> {
     emit(GetLicenseDataLoadingState());
     return DioHelper.getData(url: 'driver-license', token: token)
         .then((value) {
-     licenseData  = DriverLicense.fromJson(value.data['Driver license']);
+     licenseData  = DriverLicense.fromJson(value.data['Driver license'][0]);
       emit(GetLicenseDataSuccessState());
       return licenseData;
     }).catchError((error) {
@@ -56,6 +56,17 @@ class DataCubit extends Cubit<DataState> {
     }).catchError((error) {
       print(error.toString());
       emit(GetDriverDataErrorState());
+    });
+  }
+  Future<void> getDriverVehicleData() {
+    emit(GetDriverVehicleDataLoadingState());
+    return DioHelper.getData(url: 'driver-vehicles', token: token)
+        .then((value) {
+     driverVehicle  = DriverVehicle.fromJson(value.data['vehicles'][0]);
+      emit(GetDriverVehicleDataSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(GetDriverVehicleDataErrorState());
     });
   }
   Future<void> acceptTrip({

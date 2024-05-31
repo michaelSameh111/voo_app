@@ -33,8 +33,9 @@ class CircledNextButton extends StatelessWidget {
 }
 class CircledNextButtonTwo extends StatelessWidget {
   final GestureTapCallback? onTap;
+  bool? condition;
 
-  CircledNextButtonTwo({required this.onTap});
+  CircledNextButtonTwo({required this.onTap,this.condition});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,15 @@ class CircledNextButtonTwo extends StatelessWidget {
           color: Color(0xffFF6A03),
           shape: BoxShape.circle,
         ),
-        child: Icon(
+        child: condition == true
+            ? Align(
+          alignment: Alignment.center,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            color: Colors.white,
+          ),
+        )
+            : Icon(
           Icons.navigate_next,
           color: Colors.white,
           size: 32.dp,

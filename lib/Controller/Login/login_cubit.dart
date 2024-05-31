@@ -10,7 +10,6 @@ import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:voo_app/Controller/Data/data_cubit.dart';
 import 'package:voo_app/view/pages/LandingPage.dart';
-import 'package:voo_app/view/pages/enable_location_access_screen.dart';
 import 'package:voo_app/view/pages/login_screen.dart';
 import 'package:voo_app/view/pages/social_security_screen.dart';
 
@@ -40,10 +39,7 @@ class LoginCubit extends Cubit<LoginState> {
         LoginCubit.vehicleRightImage == null &&
         LoginCubit.vehicleBackImage == null
         ? 'Add Car Images'
-        : LoginCubit.vehicleFrontImage != null &&
-        LoginCubit.vehicleLeftImage != null &&
-        LoginCubit.vehicleRightImage != null &&
-        LoginCubit.vehicleBackImage != null ? 'All Images Added' : 'Please Make Sure You added all images';
+        : 'Images Added';
   }
   void userLogin(
       {required String email,
@@ -113,11 +109,13 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future pickImage({required File? image}) async {
+    emit(ImagePickingState());
     final myFile = await ImagePicker().pickImage(source: ImageSource.camera);
     if (myFile != null) {
       image = File(myFile.path);
       updateCarHint();
     }
+    emit(ImagePickingSuccessState());
     return image;
   }
 
@@ -390,6 +388,7 @@ class LoginCubit extends Cubit<LoginState> {
         token: token)
         .then((value) async {
       emit(AddInsuranceLicenseSuccessState());
+      DataCubit.get(context).getDriverInsuranceData();
     }).catchError((error,stacktrace) {
       print(error);
       print(stacktrace);
@@ -566,6 +565,7 @@ class LoginCubit extends Cubit<LoginState> {
       );
 
       print('Response data: ${response.data}');
+      DataCubit.get(context).getDriverVehicleData();
       emit(AddDriverVehicleSuccessState());
     } catch (error) {
       if (error is DioException) {
@@ -585,7 +585,11 @@ class LoginCubit extends Cubit<LoginState> {
 
 
   Future<void> changeDriverStatus(
-      {required String status,
+      {
+        required String status,
+        required String location,
+        required String lat,
+        required String lng,
         required BuildContext context})async {
     emit(ChangeDriverStatusLoadingState());
     DioHelper.postData(
@@ -593,6 +597,9 @@ class LoginCubit extends Cubit<LoginState> {
         'driver-status/update',
         data: {
           'accepting_rides': status,
+          'driver_location' : location,
+          'driver_latitude' : lat,
+          'driver_longitude' : lng,
         },
         token: token)
         .then((value) async {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/Controller/Constants.dart';
+import 'package:voo_app/Controller/Data/data_cubit.dart';
 import 'package:voo_app/view/pages/driver_license.dart';
 import 'package:voo_app/view/pages/insurance_screen.dart';
 import 'package:voo_app/view/pages/select_transport_screen.dart';
@@ -14,6 +16,9 @@ class DataCheckScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocConsumer<DataCubit, DataState>(
+  listener: (context, state) {},
+  builder: (context, state) {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -52,14 +57,14 @@ class DataCheckScreen extends StatelessWidget {
           child: Column(
             children: [
               RaiseDocumentsContainerWidget(
-                  uploadedPicture: loginData.driverData != null ? true : false,
+                  uploadedPicture: driverData!= null ? true : false,
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>SocialSecurityScreen()));
                   },
                   text: 'Driver Data'),
               SizedBox(height: 2.h,),
               RaiseDocumentsContainerWidget(
-                  uploadedPicture:loginData.driverInsurance != null ? true : false,
+                  uploadedPicture:insuranceData != null ? true : false,
                   text: 'Insurance Data',
                 onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>InsuranceScreen()));
@@ -67,14 +72,14 @@ class DataCheckScreen extends StatelessWidget {
               ),
               SizedBox(height: 2.h,),
               RaiseDocumentsContainerWidget(
-                  uploadedPicture:loginData.driverLicense != null ? true : false,
+                  uploadedPicture:licenseData != null ? true : false,
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>DriverLicenseScreen()));
                   },
                   text: 'License Data'),
               SizedBox(height: 2.h,),
               RaiseDocumentsContainerWidget(
-                  uploadedPicture:loginData.driverVehicle != null ? true : false,
+                  uploadedPicture:driverVehicle != null ? true : false,
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=> SelectTransportScreen()));
                   },
@@ -83,5 +88,7 @@ class DataCheckScreen extends StatelessWidget {
           ),
         )
     );
+  },
+);
   }
 }

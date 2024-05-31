@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/Controller/Constants.dart';
 import 'package:voo_app/Controller/Login/login_cubit.dart';
+import 'package:voo_app/view/pages/DataCheck.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class InsuranceScreen extends StatefulWidget {
@@ -31,7 +32,12 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LoginCubit, LoginState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is AddInsuranceLicenseSuccessState){
+          Navigator.popUntil(context,(route) => route.isFirst);
+          Navigator.push(context, MaterialPageRoute(builder: (context) => DataCheckScreen()));
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           body: SingleChildScrollView(
@@ -243,11 +249,7 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
                                       insuranceExpiry:
                                       expiryDateController.text,
                                       frontImage: LoginCubit.insuranceLicense,
-                                      context: context).then((value){
-                                        if(state is AddInsuranceLicenseSuccessState){
-                                          Navigator.pop(context);
-                                        }
-                                  });
+                                      context: context);
                                 }
                               },
                               text: 'Next',

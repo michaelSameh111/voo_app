@@ -10,11 +10,18 @@ import 'package:voo_app/view/pages/splash_screen.dart';
 import 'Controller/Login/login_cubit.dart';
 import 'Controller/dio-helper.dart';
 import 'Controller/shared-prefrences.dart';
+import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
+import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 
 
 
 
 void main() async{
+  final GoogleMapsFlutterPlatform mapsImplementation =
+      GoogleMapsFlutterPlatform.instance;
+  if (mapsImplementation is GoogleMapsFlutterAndroid) {
+    mapsImplementation.useAndroidViewSurface = true;
+  }
   WidgetsFlutterBinding.ensureInitialized();
   DioHelper.init();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

@@ -933,6 +933,7 @@ class _HomePageState extends State<HomePage> {
                 //       position: destinationPosition!),
                 // },
               ),
+              driverData != null && driverVehicle != null && licenseData != null && insuranceData != null ? SizedBox() :
               Positioned(child: Container(
                 color: Colors.red,
                 padding: EdgeInsets.all(10),
@@ -1010,18 +1011,21 @@ class _HomePageState extends State<HomePage> {
                               child: CircleAvatar(
                                 radius: 3.h,
                                 backgroundColor: Color(0xffA2A2A2),
-                                child: Image.network(
-                                  '${loginData.image}',
-                                  fit: BoxFit.fill,
-                                  height: 30.h,
-                                  width: 30.h,
-                                  errorBuilder: (context, object, skipTrace) {
-                                    return Icon(
-                                      Icons.person,
-                                      size: 52.dp,
-                                      color: const Color(0xffA2A2A2),
-                                    );
-                                  },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: Image.network(
+                                    '${loginData.image}',
+                                    fit: BoxFit.fill,
+                                    height: 30.h,
+                                    width: 30.h,
+                                    errorBuilder: (context, object, skipTrace) {
+                                      return Icon(
+                                        Icons.person,
+                                        size: 52.dp,
+                                        color: const Color(0xffA2A2A2),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                             ),

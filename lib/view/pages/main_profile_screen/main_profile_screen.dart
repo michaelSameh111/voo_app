@@ -29,19 +29,22 @@ class MainProfileScreen extends StatelessWidget {
                   CircleAvatar(
                     radius: 10.w,
                     backgroundColor: const Color(0xffECECEC),
-                    child: Image.network(
-                      '${loginData.image}',
-                      fit: BoxFit.fill,
-                      height: 30.h,
-                      width: 30.h,
-                      errorBuilder: (context,object,skipTrace){
-                        return
-                        Icon(
-                              Icons.person,
-                              size: 52.dp,
-                              color: const Color(0xffA2A2A2),
-                            );
-                      },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: Image.network(
+                        '${loginData.image}',
+                        fit: BoxFit.fill,
+                        height: 30.h,
+                        width: 30.h,
+                        errorBuilder: (context,object,skipTrace){
+                          return
+                          Icon(
+                                Icons.person,
+                                size: 52.dp,
+                                color: const Color(0xffA2A2A2),
+                              );
+                        },
+                      ),
                     ),
                     // child: Icon(
                     //   Icons.person,

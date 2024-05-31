@@ -445,7 +445,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                                   const BorderSide(color: Colors.transparent)),
                               contentPadding: EdgeInsets.all(15),
                               hintText: 'Year'),
-                          keyboardType: TextInputType.text,
+                          keyboardType: TextInputType.number,
                         ),
                       ),
                       SizedBox(
@@ -670,7 +670,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                                   const BorderSide(color: Colors.transparent)),
                               contentPadding: EdgeInsets.all(15),
                               hintText: 'Number Of Seats'),
-                          keyboardType: TextInputType.text,
+                          keyboardType: TextInputType.number,
                         ),
                       ),
                       SizedBox(
@@ -824,7 +824,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                                   const BorderSide(color: Colors.transparent)),
                               contentPadding: EdgeInsets.all(15),
                               hintText: 'Vehicle Color'),
-                          keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.text,
                           controller: colorController,
                         ),
                       ),
@@ -880,19 +880,10 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                       SizedBox(
                         height: 2.h,
                       ),
-                      InkWell(
-                        onTap: (){
-                          print(LoginCubit.carHint);
-                          print(LoginCubit.vehicleFrontImage);
-                          print(LoginCubit.vehicleBackImage);
-                          print(LoginCubit.vehicleLeftImage);
-                          print(LoginCubit.vehicleRightImage);
-                        },
-                        child: Text(
-                          'Car images',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15.dp),
-                        ),
+                      Text(
+                        'Car images',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15.dp),
                       ),
                       Container(
                         decoration: BoxDecoration(

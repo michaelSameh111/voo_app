@@ -38,6 +38,7 @@ class _HomePageState extends State<HomePage> {
   int time = 0;
   String? destinationLocation = '';
   bool loadingState = false;
+  bool coming = false;
   Future<int?> getEstimatedTime({
     required double driverLat,
     required double driverLng,
@@ -112,52 +113,57 @@ class _HomePageState extends State<HomePage> {
   }
   Future handle(BuildContext contextt) async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      TripModel? newTrip;
-      if(message.data['rider'] != null){
-        try {
-          newTrip = TripModel.fromJson(message.data);
-        } catch (error) {
-          print("Error parsing trip data: $error");
-        }
-        if (newTrip != null) {
-          tripModel = newTrip;
-          trip ??= newTrip;
+      print(coming);
+      if(coming == true){}else{
+        TripModel? newTrip;
+        if(message.data['rider'] != null){
+          try {
+            newTrip = TripModel.fromJson(message.data);
+          } catch (error) {
+            print("Error parsing trip data: $error");
+          }
+          if (newTrip != null) {
+            tripModel = newTrip;
+            trip ??= newTrip;
 
 
+          }
+          print(message.notification?.body);
+          print('Got a message whilst in the foreground!');
+          print('Message data: ${message.data}');
+          if(tripModel.pickupLongitude == null || tripModel.pickupLatitude == null ){}else{
+            getEstimatedTime(
+                driverLat: sourcePosition!.latitude,
+                driverLng: sourcePosition!.longitude,
+                riderLat: double.parse(tripModel.pickupLatitude!),
+                riderLng: double.parse(tripModel.pickupLongitude!),
+                apiKey: googleMapApiKey)
+                .then((value) async {
+              time = value!;
+              final x = await getAddressFromLatLng(
+                  double.parse(tripModel.pickupLatitude!),
+                  double.parse(tripModel.pickupLongitude!));
+              final y = await getAddressFromLatLng(
+                  double.parse(tripModel.destinationLatitude!),
+                  double.parse(tripModel.destinationLongitude!));
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return CountdownDialog(
+                    onTimerFinish: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                  );
+                },
+              );
+              acceptDeclineShowModalSheet(contextt, x, y);
+            });
+          }
         }
-        print(message.notification?.body);
-        print('Got a message whilst in the foreground!');
-        print('Message data: ${message.data}');
-        if(tripModel.pickupLongitude == null || tripModel.pickupLatitude == null ){}else{
-          getEstimatedTime(
-              driverLat: sourcePosition!.latitude,
-              driverLng: sourcePosition!.longitude,
-              riderLat: double.parse(tripModel.pickupLatitude!),
-              riderLng: double.parse(tripModel.pickupLongitude!),
-              apiKey: googleMapApiKey)
-              .then((value) async {
-            time = value!;
-            final x = await getAddressFromLatLng(
-                double.parse(tripModel.pickupLatitude!),
-                double.parse(tripModel.pickupLongitude!));
-            final y = await getAddressFromLatLng(
-                double.parse(tripModel.destinationLatitude!),
-                double.parse(tripModel.destinationLongitude!));
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return CountdownDialog(
-                  onTimerFinish: () {
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                  },
-                );
-              },
-            );
-            acceptDeclineShowModalSheet(contextt, x, y);
-          });
-        }
+        coming = true;
       }
+
     });
   }
 
@@ -1049,7 +1055,7 @@ class _HomePageState extends State<HomePage> {
                                 child: Row(
                                   children: [
                                     const Text(
-                                      'Pending',
+                                      'On',
                                       style: TextStyle(color: Colors.white),
                                     ),
                                     SizedBox(
@@ -1059,9 +1065,9 @@ class _HomePageState extends State<HomePage> {
                                       backgroundColor: Colors.white,
                                       radius: 2.5.w,
                                       child: CircleAvatar(
-                                        backgroundColor: Colors.white,
-                                        // backgroundColor: const Color(0xffFF6A03)
-                                        //     .withOpacity(0.5),
+                                        // backgroundColor: Colors.white,
+                                        backgroundColor: const Color(0xffFF6A03)
+                                            .withOpacity(0.5),
                                         radius: 1.8.w,
                                       ),
                                     )

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:voo_app/Controller/Constants.dart';
+import 'package:voo_app/view/pages/HomePage/Home.dart';
 import 'package:voo_app/view/pages/chat_screen.dart';
 //ignore_for_file: must_be_immutable
 class CollectCashScreen extends StatelessWidget {
@@ -213,10 +215,17 @@ class CollectCashScreen extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xffFF6A03)),
                         onPressed: () {
+                          Fluttertoast.showToast(
+                              msg:
+                              'Thank You!',
+                              fontSize: 16.dp,
+                              backgroundColor: Colors.green,
+                              textColor: Colors.white,
+                              gravity: ToastGravity.TOP);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const ChatScreen()));
+                                  builder: (context) => const HomePageMapsScreen()));
                         },
                         child: const Text(
                           'Cash collected',

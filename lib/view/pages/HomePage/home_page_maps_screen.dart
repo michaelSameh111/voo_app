@@ -1044,35 +1044,26 @@ class _HomePageState extends State<HomePage> {
                               decoration: BoxDecoration(
                                   color: const Color(0xffFF6A03),
                                   borderRadius: BorderRadius.circular(20)),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              DataCheckScreen()));
-                                },
-                                child: Row(
-                                  children: [
-                                    const Text(
-                                      'On',
-                                      style: TextStyle(color: Colors.white),
+                              child: Row(
+                                children: [
+                                   Text(
+                                    driverData != null && driverVehicle != null && licenseData != null && insuranceData != null ?
+                                    'On' : 'Pending',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  SizedBox(
+                                    width: 1.5.w,
+                                  ),
+                                  CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    radius: 2.5.w,
+                                    child: CircleAvatar(
+                                      // backgroundColor: Colors.white,
+                                      backgroundColor: driverData != null && driverVehicle != null && licenseData != null && insuranceData != null ? Color(0xffFF6A03).withOpacity(0.5) : Colors.white,
+                                      radius: 1.8.w,
                                     ),
-                                    SizedBox(
-                                      width: 1.5.w,
-                                    ),
-                                    CircleAvatar(
-                                      backgroundColor: Colors.white,
-                                      radius: 2.5.w,
-                                      child: CircleAvatar(
-                                        // backgroundColor: Colors.white,
-                                        backgroundColor: const Color(0xffFF6A03)
-                                            .withOpacity(0.5),
-                                        radius: 1.8.w,
-                                      ),
-                                    )
-                                  ],
-                                ),
+                                  )
+                                ],
                               ),
                             )
                           ],

@@ -101,4 +101,3 @@ class MyBlocObserver extends BlocObserver {
     print('onClose -- ${bloc.runtimeType}');
   }
 }
-// dh 7aga esmaha BlocObserver .. 3ashan ab2a 3aref ana fe anhy state (law mesh fahem now 3ady)

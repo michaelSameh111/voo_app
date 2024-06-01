@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:voo_app/Model/LoginDataModel.dart';
 import 'package:voo_app/Model/TripModel.dart';
@@ -39,29 +38,6 @@ void showSimpleDialog(BuildContext context,String title,String desc) {
       return AlertDialog(
         title: Text('Please Add Insurance Image'),
         content: Text('An insurance image is required to proceed.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('OK'),
-          ),
-        ],
-      );
-    },
-  );
-}
-void showSimpleDialogs(BuildContext context,String title,String desc,String? image) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('$title'),
-        content: Column(mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('$desc'),
-            SizedBox(height: 2.h,),
-            image == null ? SizedBox() : Image.network(image,height: 20.h,width: 100.w,)
-          ],
-        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),

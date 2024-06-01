@@ -1,21 +1,34 @@
 package com.example.voo_app
 
-import android.os.Bundle
 import com.zendrive.sdk.Zendrive
 import com.zendrive.sdk.ZendriveConfiguration
 import com.zendrive.sdk.ZendriveDriveDetectionMode
 import com.zendrive.sdk.ZendriveDriverAttributes
 import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.MethodChannel
 
 
 class MainActivity: FlutterActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //todo android channel for setup zendrive after user login.
+
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+        super.configureFlutterEngine(flutterEngine)
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, ZENDRIVE_CHANNEL)
+            .setMethodCallHandler { call, result ->
+                when (call.method) {
+                    ZENDRIVE_CHANNEL_SETUP_METHOD -> {
+                        val args = call.arguments as Map<*, *>
+                        val driverName = args[DRIVER_NAME]
+                        val driverId = args[DRIVER_ID]
+                        if (driverName?.toString() != null && driverId?.toString() != null) {
+                            zendriveSetup(driverName.toString(), driverId.toString())
+                        }
+                    }
+                }
+            }
 
     }
-
     private fun zendriveSetup(driverName: String, driverId: String) {
         val driverAttributes = ZendriveDriverAttributes().apply {
             alias = driverName
@@ -31,7 +44,7 @@ class MainActivity: FlutterActivity() {
             VooZendriveNotificationProvider::class.java
         ) { result ->
             if (result.isSuccess) {
-                println(">>> ZendriveSDK setup success")
+                println(">>> ZendriveSDK setup success with: ${driverName}")
             } else {
                 println(">>> Error: ${result.errorMessage}")
             }
@@ -40,6 +53,10 @@ class MainActivity: FlutterActivity() {
     }
 
     companion object {
+        private const val ZENDRIVE_CHANNEL = "zendrive_channel"
+        private const val ZENDRIVE_CHANNEL_SETUP_METHOD = "setup"
+        private const val DRIVER_NAME = "driver_name"
+        private const val DRIVER_ID = "driver_id"
         private const val SDK_KEY = "msxuMLUGR65VBdk4x3MkNxIg7XvJeNdE"
     }
 

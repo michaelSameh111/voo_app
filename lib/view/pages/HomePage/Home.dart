@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:voo_app/Controller/Constants.dart';
+import 'package:voo_app/Model/LoginDataModel.dart';
 
 import '../history _screen/history_screen.dart';
-import 'home_page_maps_screen.dart';
 import '../main_profile_screen/main_profile_screen.dart';
+import 'home_page_maps_screen.dart';
 
 class HomePageMapsScreen extends StatefulWidget {
   const HomePageMapsScreen({super.key});
@@ -21,6 +24,12 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
     HistoryScreen(),
     MainProfileScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _initZendrive(loginData, context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,5 +56,13 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
         ],
       ),
     );
+  }
+
+  void _initZendrive(LoginDataModel loginData, BuildContext context) {
+    var sdkChannel = MethodChannel("zendrive_channel");
+    sdkChannel.invokeMethod("setup", {
+      "driver_name": "${loginData.firstName} ${loginData.lastName}",
+      "driver_id": loginData.userId
+    });
   }
 }

@@ -138,10 +138,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             Row(
                               children: [
                                 Checkbox(
-                                  value: isChecked,
+                                  value: rememberMe,
                                   onChanged: (bool? value) {
                                     setState(() {
-                                      isChecked = value!;
+                                      rememberMe = value!;
                                     });
                                   },
                                   activeColor: Color(0xffFF6A03),

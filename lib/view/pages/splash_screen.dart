@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/view/pages/login_register_screen.dart';
 
+import '../../Controller/Login/login_cubit.dart';
+import '../../Controller/shared-prefrences.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -14,10 +17,18 @@ class _SplashScreenState extends State<SplashScreen> {
   // ignore: must_call_super
   @override
   void initState() {
-    Timer(const Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) =>  LoginRegisterScreen()));
+    print(CacheHelper.getData(key: 'loggedin'));
+    Timer(const Duration(seconds: 1), () {
+      if (CacheHelper.getData(key: 'loggedin') == null) {
+        print('nonn');
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) =>  LoginRegisterScreen()));
+      } else {
+        LoginCubit.get(context).userLogin(
+            context: context,
+            email: CacheHelper.getData(key: 'username'),
+            password: CacheHelper.getData(key: 'password'));
+      }
     });
   }
 

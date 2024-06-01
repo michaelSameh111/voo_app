@@ -77,6 +77,8 @@ class LoginCubit extends Cubit<LoginState> {
           CacheHelper.saveData(
               key: 'password', value: loginPasswordController.text);
           CacheHelper.saveData(key: 'loggedin', value: true);
+        } else {
+          print(rememberMe);
         }
       }
     }).catchError((error) {

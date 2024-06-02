@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
@@ -17,6 +18,7 @@ import 'package:voo_app/view/pages/DataCheck.dart';
 import 'package:voo_app/view/pages/collect_cash_screen.dart';
 import 'package:voo_app/view/widgets/CountDownDialog.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
+
 import '../../../Controller/Constants.dart';
 import '../../../Model/TripModel.dart';
 
@@ -114,8 +116,8 @@ class _HomePageState extends State<HomePage> {
   Future handle(BuildContext contextt) async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print(coming);
-      if(coming == true){}else{
-        TripModel? newTrip;
+      // if(coming == true){}else{
+      TripModel? newTrip;
         if(message.data['rider'] != null){
           try {
             newTrip = TripModel.fromJson(message.data);
@@ -139,8 +141,8 @@ class _HomePageState extends State<HomePage> {
                 riderLng: double.parse(tripModel.pickupLongitude!),
                 apiKey: googleMapApiKey)
                 .then((value) async {
-              time = value!;
-              final x = await getAddressFromLatLng(
+            // time = value!;
+            final x = await getAddressFromLatLng(
                   double.parse(tripModel.pickupLatitude!),
                   double.parse(tripModel.pickupLongitude!));
               final y = await getAddressFromLatLng(
@@ -161,9 +163,8 @@ class _HomePageState extends State<HomePage> {
             });
           }
         }
-        coming = true;
-      }
-
+      // coming = true;
+      // }
     });
   }
 
@@ -784,6 +785,7 @@ class _HomePageState extends State<HomePage> {
           Navigator.push(context, MaterialPageRoute(builder: (context)=>CollectCashScreen(destinationLocation: destinationLocation,)));
           tripToDestination = false;
           polyLineCoordinates.clear();
+          endTracking();
           print(endTripModel.total);
         }
         if(state is StartTripSuccessState){
@@ -792,6 +794,7 @@ class _HomePageState extends State<HomePage> {
               locationSettings: const LocationSettings(
                 accuracy: LocationAccuracy.high,
               ));
+          startTrackingTrip(tripModel.tripId);
           setState(() {
             drivingState = true;
             tripToPickup = false;
@@ -838,6 +841,7 @@ class _HomePageState extends State<HomePage> {
               textColor: Colors.white,
               gravity: ToastGravity.TOP);
           polyLineCoordinates.clear();
+          endTracking();
           stopListeningToLocationChanges();
         }
         if(state is AcceptTripLoadingState){
@@ -869,6 +873,7 @@ class _HomePageState extends State<HomePage> {
               locationSettings: const LocationSettings(
                 accuracy: LocationAccuracy.high,
               ));
+          onWayToPickupTracking(tripModel.tripId);
           setState(() {
             drivingState = true;
             tripToPickup = true;
@@ -1560,4 +1565,20 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+
+  void startTrackingTrip(String? tripId) {
+    const sdkChannel = MethodChannel(ZENDRIVE_CHANNEL);
+    sdkChannel.invokeMethod("startTrip", {"trip_id": tripId});
+  }
+
+  void onWayToPickupTracking(String? tripId) {
+    const sdkChannel = MethodChannel(ZENDRIVE_CHANNEL);
+    sdkChannel.invokeMethod("onWay", {"trip_id": tripId});
+  }
+
+  void endTracking() {
+    const sdkChannel = MethodChannel(ZENDRIVE_CHANNEL);
+    sdkChannel.invokeMethod("endTrip");
+  }
+
 }

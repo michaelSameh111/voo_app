@@ -10,27 +10,27 @@ import com.zendrive.sdk.ZendriveBroadcastReceiver
 
 class VooZendriveReceiver : ZendriveBroadcastReceiver() {
     override fun onDriveStart(p0: Context?, p1: DriveStartInfo?) {
-        println("driver start")
+        println(">>> driver start")
     }
 
     override fun onDriveEnd(p0: Context?, p1: EstimatedDriveInfo?) {
-        println("driver end")
+        println(">>> driver end")
     }
 
     override fun onDriveAnalyzed(p0: Context?, p1: AnalyzedDriveInfo?) {
-        println("driver analyzed")
+        println(">>> driver analyzed")
     }
 
     override fun onDriveResume(p0: Context?, p1: DriveResumeInfo?) {
-        println("driver resume")
+        println(">>> driver resume")
     }
 
     override fun onAccident(p0: Context?, p1: AccidentInfo?) {
-        println("driver accident")
+        println(">>> driver accident")
     }
 
     override fun onZendriveSettingsConfigChanged(p0: Context?, p1: Boolean, p2: Boolean) {
-        println("setting changed")
+        println(">>> setting changed")
     }
 
 }

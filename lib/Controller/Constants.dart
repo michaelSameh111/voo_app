@@ -29,7 +29,7 @@ DriverData? driverData;
 DriverInsurance? insuranceData;
 DriverLicense? licenseData;
 DriverVehicle? driverVehicle;
-
+const String FAIRMATIC_CHANNEL = "fairmatic_channel";
 
 void showSimpleDialog(BuildContext context,String title,String desc) {
   showDialog(

@@ -30,6 +30,16 @@ android {
     compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
+    lintOptions {
+        // This is needed to avoid spurious lint errors from libthrift and log4j.
+        disable 'InvalidPackage'
+    }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -79,5 +89,9 @@ dependencies {
         implementation 'com.google.firebase:firebase-messaging'
         implementation 'com.google.android.gms:play-services-basement:18.1.0' // Add this line
         implementation 'androidx.multidex:multidex:2.0.1' // If you have multiDex enabled
+
+//        implementation 'com.zendrive.sdk.android:ZendriveSDK:10.0.1'
+        implementation 'com.fairmatic:sdk:2.0.0'
+
     }
 }

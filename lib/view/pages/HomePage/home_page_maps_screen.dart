@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
@@ -17,6 +18,7 @@ import 'package:voo_app/view/pages/DataCheck.dart';
 import 'package:voo_app/view/pages/collect_cash_screen.dart';
 import 'package:voo_app/view/widgets/CountDownDialog.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
+
 import '../../../Controller/Constants.dart';
 import '../../../Model/TripModel.dart';
 
@@ -114,8 +116,8 @@ class _HomePageState extends State<HomePage> {
   Future handle(BuildContext contextt) async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print(coming);
-      if(coming == true){}else{
-        TripModel? newTrip;
+      // if(coming == true){}else{
+      TripModel? newTrip;
         if(message.data['rider'] != null){
           try {
             newTrip = TripModel.fromJson(message.data);
@@ -139,8 +141,8 @@ class _HomePageState extends State<HomePage> {
                 riderLng: double.parse(tripModel.pickupLongitude!),
                 apiKey: googleMapApiKey)
                 .then((value) async {
-              time = value!;
-              final x = await getAddressFromLatLng(
+            // time = value!;
+            final x = await getAddressFromLatLng(
                   double.parse(tripModel.pickupLatitude!),
                   double.parse(tripModel.pickupLongitude!));
               final y = await getAddressFromLatLng(
@@ -161,9 +163,8 @@ class _HomePageState extends State<HomePage> {
             });
           }
         }
-        coming = true;
-      }
-
+      // coming = true;
+      // }
     });
   }
 
@@ -784,6 +785,7 @@ class _HomePageState extends State<HomePage> {
           Navigator.push(context, MaterialPageRoute(builder: (context)=>CollectCashScreen(destinationLocation: destinationLocation,)));
           tripToDestination = false;
           polyLineCoordinates.clear();
+          turnOn();
           print(endTripModel.total);
         }
         if(state is StartTripSuccessState){
@@ -808,6 +810,7 @@ class _HomePageState extends State<HomePage> {
             });
 
           });
+          startTrackingTrip(tripModel.tripId);
           startListeningToLocationChanges();
         }
         if (state is ArrivedAtLocationSuccessState){
@@ -838,6 +841,7 @@ class _HomePageState extends State<HomePage> {
               textColor: Colors.white,
               gravity: ToastGravity.TOP);
           polyLineCoordinates.clear();
+          turnOn();
           stopListeningToLocationChanges();
         }
         if(state is AcceptTripLoadingState){
@@ -869,6 +873,7 @@ class _HomePageState extends State<HomePage> {
               locationSettings: const LocationSettings(
                 accuracy: LocationAccuracy.high,
               ));
+          onWayToPickupTracking(tripModel.tripId);
           setState(() {
             drivingState = true;
             tripToPickup = true;
@@ -1560,4 +1565,41 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+
+  /**
+   * invoke when driver is turn off or close application (toggle off)
+   * p0
+   * */
+  void turnOff() {
+    const sdkChannel = MethodChannel(FAIRMATIC_CHANNEL);
+    sdkChannel.invokeMethod("turnOff");
+  }
+
+  /**
+   * when driver is looking for new trip (toggle on)
+   * p1
+   * */
+  void turnOn() {
+    const sdkChannel = MethodChannel(FAIRMATIC_CHANNEL);
+    sdkChannel.invokeMethod("readyForTrip");
+  }
+
+  /**
+   * Invoked when driver accept trip.
+   * P2
+   * */
+  void onWayToPickupTracking(String? tripId) {
+    const sdkChannel = MethodChannel(FAIRMATIC_CHANNEL);
+    sdkChannel.invokeMethod("onWay", {"trip_id": tripId});
+  }
+
+  /**
+   * Invoked when start trip.
+   * P3
+   * */
+  void startTrackingTrip(String? tripId) {
+    const sdkChannel = MethodChannel(FAIRMATIC_CHANNEL);
+    sdkChannel.invokeMethod("startTrip", {"trip_id": tripId});
+  }
+
 }

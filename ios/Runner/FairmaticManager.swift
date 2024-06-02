@@ -36,6 +36,49 @@ class FairmaticManager : NSObject {
         }
         
     }
+    
+    func startTrip(tripId:String){
+        Fairmatic.startDriveWithPeriod3(tripId){success, error in
+            if success {
+                print(">>> trip started succesfully with id: \(tripId)}")
+            } else if let error = error{
+                print(">>> start trip has an error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func onWayToPickup(tripId:String){
+        Fairmatic.startDriveWithPeriod2(tripId){success, error in
+            if success {
+                print(">>> driver on his way to passanger succesfully: \(tripId)}")
+            } else if let error = error{
+                print(">>> driver on his way has an error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func readyForTrip(){
+        Fairmatic.startDriveWithPeriod1(){success, error in
+            if success {
+                print(">>> driver available for new ride")
+            } else if let error = error{
+                print(">>> driver available for new ride has an error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func turnOff(){
+        Fairmatic.stopPeriod(){success, error in
+            if success {
+                print(">>> driver turn off")
+            } else if let error = error{
+                print(">>> driver driver turn off error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    
+    
 
 }
 

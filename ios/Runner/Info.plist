@@ -26,12 +26,25 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We need 'Always Allow' location permission to provide you with
+            driving analytics and emergency support in case of collisions.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need background location permission to provide you with
+            driving analytics and emergency support in case of collisions.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Please provide location permission to get the best navigation support.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>We use activity to detect your trips faster and more accurately.
+            This also reduces the amount of battery we use.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
 		<string>location</string>
+		<string>processing</string>
+		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

@@ -26,17 +26,40 @@ import GoogleMaps
       
       fairmaticChannel.setMethodCallHandler({
           (call: FlutterMethodCall,result: @escaping FlutterResult) -> Void in
-          
-          if call.method  == "setup" {
-              let args = call.arguments as? Dictionary<String,String>
 
+          let args = call.arguments as? Dictionary<String,String>
+
+          if call.method  == "setup" {
+              
               self.fairmaticManager.setup(driverName: args?["driver_name"] ,
                                        driverEmail:args?["driver_email"],
                                        driverPhone: args?["driver_phone"],
                                        driverId: args?["driver_id"])
           }
           
+          else if call.method == "startTrip" {
+              let tripId = args?["trip_id"]
+              if  tripId != nil{
+                  self.fairmaticManager.startTrip(tripId: tripId!)
+              }
+          }
           
+          else if call.method == "onWay" {
+              let tripId = args?["trip_id"]
+              if  tripId != nil{
+                  self.fairmaticManager.onWayToPickup(tripId: tripId!)
+              }
+          }
+          
+          else if call.method == "readyForTrip" {
+              self.fairmaticManager.readyForTrip()
+          }
+          
+          else if call.method == "turnOff" {
+              self.fairmaticManager.turnOff()
+          }
+          
+
           
       })
     

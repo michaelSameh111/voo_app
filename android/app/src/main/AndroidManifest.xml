@@ -39,7 +39,8 @@
             android:name="firebase_analytics_collection_enabled"
             android:value="false" />
 
-        <receiver android:name=".VooZendriveReceiver"/>
+
+        <receiver android:name=".VooFairmaticReceiver" />
 
     </application>
 

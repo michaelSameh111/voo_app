@@ -28,7 +28,7 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
   @override
   void initState() {
     super.initState();
-    _initZendrive(loginData, context);
+    _initTrackingSDK(loginData, context);
   }
 
   @override
@@ -58,11 +58,12 @@ class _HomePageMapsScreenState extends State<HomePageMapsScreen> {
     );
   }
 
-  void _initZendrive(LoginDataModel loginData, BuildContext context) {
-    var sdkChannel = MethodChannel("zendrive_channel");
+  void _initTrackingSDK(LoginDataModel loginData, BuildContext context) {
+    var sdkChannel = MethodChannel(FAIRMATIC_CHANNEL);
     sdkChannel.invokeMethod("setup", {
       "driver_name": "${loginData.firstName} ${loginData.lastName}",
-      "driver_id": loginData.userId
+      "driver_id": loginData.userId,
+      "driver_phone": loginData.phone,
     });
   }
 }

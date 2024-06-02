@@ -6,11 +6,13 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import com.fairmatic.sdk.classes.FairmaticNotificationContainer
+import com.fairmatic.sdk.classes.FairmaticNotificationProvider
 import com.zendrive.sdk.ZendriveNotificationContainer
 import com.zendrive.sdk.ZendriveNotificationProvider
 
 
-class VooZendriveNotificationProvider : ZendriveNotificationProvider {
+class VooFairmaticNotificationProvider : FairmaticNotificationProvider {
 
     private fun createNotification(content: String, context: Context): Notification {
         createNotificationChannels(context)
@@ -45,22 +47,22 @@ class VooZendriveNotificationProvider : ZendriveNotificationProvider {
         }
     }
 
-    override fun getWaitingForDriveNotificationContainer(context: Context): ZendriveNotificationContainer {
+    override fun getWaitingForDriveNotificationContainer(context: Context): FairmaticNotificationContainer {
         createNotificationChannels(context)
         val notification = createNotification("waiting for Drive", context)
-        return ZendriveNotificationContainer(ZENDRIVE_NOTIFICATION_ID, notification)
+        return FairmaticNotificationContainer(ZENDRIVE_NOTIFICATION_ID, notification)
     }
 
-    override fun getMaybeInDriveNotificationContainer(context: Context): ZendriveNotificationContainer {
+    override fun getMaybeInDriveNotificationContainer(context: Context): FairmaticNotificationContainer {
         createNotificationChannels(context)
         val notification = createNotification("Detecting Possible Drive", context)
-        return ZendriveNotificationContainer(ZENDRIVE_NOTIFICATION_ID, notification)
+        return FairmaticNotificationContainer(ZENDRIVE_NOTIFICATION_ID, notification)
     }
 
-    override fun getInDriveNotificationContainer(context: Context): ZendriveNotificationContainer {
+    override fun getInDriveNotificationContainer(context: Context): FairmaticNotificationContainer {
         createNotificationChannels(context)
         val notification = createNotification("Drive Active.", context)
-        return ZendriveNotificationContainer(ZENDRIVE_NOTIFICATION_ID, notification)
+        return FairmaticNotificationContainer(ZENDRIVE_NOTIFICATION_ID, notification)
     }
 
 

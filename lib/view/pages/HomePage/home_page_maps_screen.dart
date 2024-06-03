@@ -1570,7 +1570,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void turnOn() {
-    sdkChannel.invokeMethod("turnOn");
+    sdkChannel.invokeMethod("turnON");
   }
 
   void acceptRequest(String? tripId) {

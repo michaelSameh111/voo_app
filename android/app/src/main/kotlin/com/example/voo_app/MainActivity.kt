@@ -80,9 +80,9 @@ class MainActivity: FlutterActivity() {
         driverId: String
     ) {
         val fairmaticDriverAttributes = FairmaticDriverAttributes(
-            name = "Safwat",
-            email = "safwat.nassif.malek@gmail.com",
-            phoneNumber = "01202283617"
+            name = name,
+            email = email,
+            phoneNumber = phoneNumber
         )
 
         val fairmaticConfiguration = FairmaticConfiguration(

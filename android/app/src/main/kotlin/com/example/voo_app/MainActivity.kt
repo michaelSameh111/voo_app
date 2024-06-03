@@ -17,11 +17,11 @@ class MainActivity: FlutterActivity() {
         super.configureFlutterEngine(flutterEngine)
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, FAIRMATIC_CHANNEL)
             .setMethodCallHandler { call, result ->
-                val args = call.arguments as Map<*, *>
-                val driverId = args[DRIVER_ID]
 
                 when (call.method) {
                     SETUP_METHOD -> {
+                        val args = call.arguments as Map<*, *>
+                        val driverId = args[DRIVER_ID]
                         val driverName = args[DRIVER_NAME]
                         val driverEmail = args[DRIVER_EMAIL]
                         val driverPhone = args[DRIVER_PHONE]
@@ -36,26 +36,32 @@ class MainActivity: FlutterActivity() {
                         }
                     }
 
-                    START_TRACKING -> {
-                        val tripId = args[TRIP_ID]
+                    TURN_ON -> {
+                        turnOn()
+                    }
+
+                    ACCEPT_REQUEST -> {
+                        val args = call.arguments as Map<*, *>
+                        val tripId = args[TRIP_ID]?.toString()
+                        if (tripId != null) acceptRequest(tripId)
+                    }
+
+                    CANCEL_REQUEST -> {
+                        cancelRequest()
+                    }
+
+                    START_TRIP -> {
+                        val args = call.arguments as Map<*, *>
+                        val tripId = args[TRIP_ID]?.toString()
                         tripId?.let {
-                            startTrip(tripId.toString())
+                            startTrip(tripId)
                         } ?: run {
                             println(">>> trip id is null")
                         }
                     }
 
-                    ON_WAY -> {
-                        val tripId = args[TRIP_ID]
-                        tripId?.let {
-                            onWayToPickup(tripId.toString())
-                        } ?: run {
-                            println(">>> trip id is null")
-                        }
-                    }
-
-                    READY_TRACKING -> {
-                        readyForTrip()
+                    END_TRIP -> {
+                        endTrip()
                     }
 
                     TURN_OFF->{
@@ -74,9 +80,9 @@ class MainActivity: FlutterActivity() {
         driverId: String
     ) {
         val fairmaticDriverAttributes = FairmaticDriverAttributes(
-            name = name,
-            email = email,
-            phoneNumber = phoneNumber
+            name = "Safwat",
+            email = "safwat.nassif.malek@gmail.com",
+            phoneNumber = "01202283617"
         )
 
         val fairmaticConfiguration = FairmaticConfiguration(
@@ -103,45 +109,69 @@ class MainActivity: FlutterActivity() {
 
     }
 
+    private fun turnOn() {
+        val turnOnCallback = object : FairmaticOperationCallback {
+            override fun onCompletion(result: FairmaticOperationResult) {
+                if (result is FairmaticOperationResult.Success) {
+                    println(">>> driver ready for a trip")
+                } else {
+                    println(">>> driver ready for a trip has an error: ${(result as FairmaticOperationResult.Failure).errorMessage}")
+                }
+            }
+        }
+        requestP1(turnOnCallback)
+    }
+
+    private fun acceptRequest(tripId: String) {
+        val acceptRequestCallback = object : FairmaticOperationCallback {
+            override fun onCompletion(result: FairmaticOperationResult) {
+                if (result is FairmaticOperationResult.Success) {
+                    println(">>> driver has accept the request: $tripId")
+                } else {
+                    println(">>> accept request has an error: ${(result as FairmaticOperationResult.Failure).errorMessage}")
+                }
+            }
+        }
+        requestP2(tripId, acceptRequestCallback)
+    }
+
+    private fun cancelRequest() {
+        val cancelReqCallback = object : FairmaticOperationCallback {
+            override fun onCompletion(result: FairmaticOperationResult) {
+                if (result is FairmaticOperationResult.Success) {
+                    println(">>> driver canceled request")
+                } else {
+                    println(">>> cancel request has an error: ${(result as FairmaticOperationResult.Failure).errorMessage}")
+                }
+            }
+        }
+        requestP1(cancelReqCallback)
+    }
+
     private fun startTrip(tripId: String) {
         val startTrackingCallback = object : FairmaticOperationCallback {
             override fun onCompletion(result: FairmaticOperationResult) {
                 if (result is FairmaticOperationResult.Success) {
-                    println(">>> trip started fairmatic successfully")
+                    println(">>> trip started  successfully")
                 } else {
                     println(">>> trip started fairmatic error: $result")
                 }
             }
         }
-
-        Fairmatic.startDriveWithPeriod3(context, tripId, startTrackingCallback)
+        requestP3(tripId, startTrackingCallback)
     }
 
-    private fun onWayToPickup(tripId: String) {
-        val onWayCallback = object : FairmaticOperationCallback {
+    private fun endTrip() {
+        val endTripCallback = object : FairmaticOperationCallback {
             override fun onCompletion(result: FairmaticOperationResult) {
                 if (result is FairmaticOperationResult.Success) {
-                    println(">>> driver on way to pickup the trip: $tripId")
-                } else {
-                    println(">>> on way has an error: ${(result as FairmaticOperationResult.Failure).errorMessage}")
-                }
-            }
-        }
-        Fairmatic.startDriveWithPeriod2(context, tripId, onWayCallback)
-    }
-
-    private fun readyForTrip() {
-        val stopTripCallback = object : FairmaticOperationCallback {
-            override fun onCompletion(result: FairmaticOperationResult) {
-                if (result is FairmaticOperationResult.Success) {
-                    println(">>> trip ended success")
+                    println(">>> driver end trip")
                 } else {
                     println(">>> end trip has an error: ${(result as FairmaticOperationResult.Failure).errorMessage}")
                 }
             }
         }
-
-        Fairmatic.startDriveWithPeriod1(context, stopTripCallback)
+        requestP1(endTripCallback)
     }
 
     private fun turnOff() {
@@ -155,18 +185,37 @@ class MainActivity: FlutterActivity() {
             }
         }
 
-        Fairmatic.stopPeriod(context, stopTripCallback)
+        requestStop(stopTripCallback)
 
+    }
+
+    private fun requestP3(tripId: String, callback: FairmaticOperationCallback) {
+        Fairmatic.startDriveWithPeriod3(context, tripId, callback)
+    }
+
+    private fun requestP2(tripId: String, callback: FairmaticOperationCallback) {
+
+        Fairmatic.startDriveWithPeriod2(context, tripId, callback)
+    }
+
+    private fun requestP1(callback: FairmaticOperationCallback) {
+        Fairmatic.startDriveWithPeriod1(context, callback)
+    }
+
+    private fun requestStop(callback: FairmaticOperationCallback) {
+        Fairmatic.stopPeriod(context, callback)
     }
 
     companion object {
         private const val FAIRMATIC_CHANNEL = "fairmatic_channel"
 
         private const val SETUP_METHOD = "setup"
-        private const val READY_TRACKING = "readyForTrip"
-        private const val START_TRACKING = "startTrip"
-        private const val ON_WAY = "onWay"
+        private const val START_TRIP = "startTrip"
+        private const val END_TRIP = "endTrip"
         private const val TURN_OFF = "turnOff"
+        private const val TURN_ON = "turnON"
+        private const val ACCEPT_REQUEST = "acceptRequest"
+        private const val CANCEL_REQUEST = "cancelRequest"
 
         private const val DRIVER_NAME = "driver_name"
         private const val DRIVER_ID = "driver_id"

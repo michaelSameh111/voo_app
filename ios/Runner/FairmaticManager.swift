@@ -37,8 +37,39 @@ class FairmaticManager : NSObject {
         
     }
     
+    func trunOn(){
+        requestP1(){success, error in
+            if success {
+                print(">>> driver available for new ride")
+            } else if let error = error{
+                print(">>> driver turn on has an error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func acceptTrip(tripId:String){
+        requestP2(tripId: tripId){success, error in
+            if success {
+                print(">>> driver has accept trip: \(tripId)}")
+            } else if let error = error{
+                print(">>> driver accept trip has an error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    
+    func cancleRequest(){
+        requestP1(){success, error in
+            if success {
+                print(">>> driver cancel request ride")
+            } else if let error = error{
+                print(">>> driver request cancel has an error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     func startTrip(tripId:String){
-        Fairmatic.startDriveWithPeriod3(tripId){success, error in
+        requestP3(tripId: tripId){success, error in
             if success {
                 print(">>> trip started succesfully with id: \(tripId)}")
             } else if let error = error{
@@ -47,25 +78,17 @@ class FairmaticManager : NSObject {
         }
     }
     
-    func onWayToPickup(tripId:String){
-        Fairmatic.startDriveWithPeriod2(tripId){success, error in
+    
+    func endTrip(){
+        requestP1(){success, error in
             if success {
-                print(">>> driver on his way to passanger succesfully: \(tripId)}")
+                print(">>> driver end trip success")
             } else if let error = error{
-                print(">>> driver on his way has an error: \(error.localizedDescription)")
+                print(">>> driver end trip has an error: \(error.localizedDescription)")
             }
         }
     }
     
-    func readyForTrip(){
-        Fairmatic.startDriveWithPeriod1(){success, error in
-            if success {
-                print(">>> driver available for new ride")
-            } else if let error = error{
-                print(">>> driver available for new ride has an error: \(error.localizedDescription)")
-            }
-        }
-    }
     
     func turnOff(){
         Fairmatic.stopPeriod(){success, error in
@@ -78,6 +101,18 @@ class FairmaticManager : NSObject {
     }
     
     
+    private func requestP1(completionHandler: FairmaticSDK.InsuranceAPICompletionHandler?){
+        Fairmatic.startDriveWithPeriod1(completionHandler)
+    }
+    private func requestP2(tripId:String, completionHandler: FairmaticSDK.InsuranceAPICompletionHandler?){
+        Fairmatic.startDriveWithPeriod2(tripId,completionHandler: completionHandler)
+    }
+    private func requestP3(tripId:String, completionHandler: FairmaticSDK.InsuranceAPICompletionHandler?){
+        Fairmatic.startDriveWithPeriod3(tripId,completionHandler: completionHandler)
+    }
+    private func requestStop(completionHandler: FairmaticSDK.InsuranceAPICompletionHandler?){
+        Fairmatic.stopPeriod(completionHandler)
+    }
     
 
 }

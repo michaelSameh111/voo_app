@@ -27,32 +27,41 @@ import GoogleMaps
       fairmaticChannel.setMethodCallHandler({
           (call: FlutterMethodCall,result: @escaping FlutterResult) -> Void in
 
-          let args = call.arguments as? Dictionary<String,String>
-
           if call.method  == "setup" {
-              
+              let args = call.arguments as? Dictionary<String,String>
+
               self.fairmaticManager.setup(driverName: args?["driver_name"] ,
                                        driverEmail:args?["driver_email"],
                                        driverPhone: args?["driver_phone"],
                                        driverId: args?["driver_id"])
           }
           
+          else if call.method == "turnON"{
+              self.fairmaticManager.trunOn()
+          }
+          
+          else if call.method == "acceptRequest" {
+              let args = call.arguments as? Dictionary<String,String>
+              let tripId = args?["trip_id"]
+              if  tripId != nil{
+                  self.fairmaticManager.acceptTrip(tripId: tripId!)
+              }
+          }
+          
+          else if call.method == "cancelRequest"{
+              self.fairmaticManager.cancleRequest()
+          }
+          
           else if call.method == "startTrip" {
+              let args = call.arguments as? Dictionary<String,String>
               let tripId = args?["trip_id"]
               if  tripId != nil{
                   self.fairmaticManager.startTrip(tripId: tripId!)
               }
           }
           
-          else if call.method == "onWay" {
-              let tripId = args?["trip_id"]
-              if  tripId != nil{
-                  self.fairmaticManager.onWayToPickup(tripId: tripId!)
-              }
-          }
-          
-          else if call.method == "readyForTrip" {
-              self.fairmaticManager.readyForTrip()
+          else if call.method == "endTrip" {
+              self.fairmaticManager.endTrip()
           }
           
           else if call.method == "turnOff" {

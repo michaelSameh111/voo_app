@@ -40,6 +40,9 @@ class _HomePageState extends State<HomePage> {
   String? destinationLocation = '';
   bool loadingState = false;
   bool coming = false;
+
+  final sdkChannel = MethodChannel(FAIRMATIC_CHANNEL);
+
   Future<int?> getEstimatedTime({
     required double driverLat,
     required double driverLng,
@@ -786,7 +789,7 @@ class _HomePageState extends State<HomePage> {
           Navigator.push(context, MaterialPageRoute(builder: (context)=>CollectCashScreen(destinationLocation: destinationLocation,)));
           tripToDestination = false;
           polyLineCoordinates.clear();
-          turnOn();
+          endTrip();
           print(endTripModel.total);
         }
         if(state is StartTripSuccessState){
@@ -811,7 +814,7 @@ class _HomePageState extends State<HomePage> {
             });
 
           });
-          startTrackingTrip(tripModel.tripId);
+          startTrip(tripModel.tripId);
           startListeningToLocationChanges();
         }
         if (state is ArrivedAtLocationSuccessState){
@@ -842,7 +845,7 @@ class _HomePageState extends State<HomePage> {
               textColor: Colors.white,
               gravity: ToastGravity.TOP);
           polyLineCoordinates.clear();
-          turnOn();
+          cancelRequest();
           stopListeningToLocationChanges();
         }
         if(state is AcceptTripLoadingState){
@@ -874,7 +877,7 @@ class _HomePageState extends State<HomePage> {
               locationSettings: const LocationSettings(
                 accuracy: LocationAccuracy.high,
               ));
-          onWayToPickupTracking(tripModel.tripId);
+          acceptRequest(tripModel.tripId);
           setState(() {
             drivingState = true;
             tripToPickup = true;
@@ -1565,40 +1568,28 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  /**
-   * invoke when driver is turn off or close application (toggle off)
-   * p0
-   * */
-  void turnOff() {
-    const sdkChannel = MethodChannel(FAIRMATIC_CHANNEL);
-    sdkChannel.invokeMethod("turnOff");
-  }
-
-  /**
-   * when driver is looking for new trip (toggle on)
-   * p1
-   * */
   void turnOn() {
-    const sdkChannel = MethodChannel(FAIRMATIC_CHANNEL);
-    sdkChannel.invokeMethod("readyForTrip");
+    sdkChannel.invokeMethod("turnON");
   }
 
-  /**
-   * Invoked when driver accept trip.
-   * P2
-   * */
-  void onWayToPickupTracking(String? tripId) {
-    const sdkChannel = MethodChannel(FAIRMATIC_CHANNEL);
-    sdkChannel.invokeMethod("onWay", {"trip_id": tripId});
+  void acceptRequest(String? tripId) {
+    sdkChannel.invokeMethod("acceptRequest", {"trip_id": tripId});
   }
 
-  /**
-   * Invoked when start trip.
-   * P3
-   * */
-  void startTrackingTrip(String? tripId) {
-    const sdkChannel = MethodChannel(FAIRMATIC_CHANNEL);
+  void cancelRequest() {
+    sdkChannel.invokeMethod("acceptRequest");
+  }
+
+  void startTrip(String? tripId) {
     sdkChannel.invokeMethod("startTrip", {"trip_id": tripId});
+  }
+
+  void endTrip() {
+    sdkChannel.invokeMethod("endTrip");
+  }
+
+  void turnOff() {
+    sdkChannel.invokeMethod("turnOff");
   }
 
 }

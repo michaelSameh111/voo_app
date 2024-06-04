@@ -91,12 +91,7 @@ class ChangePasswordErrorState extends LoginState {
 }
 
 
-class ChangeDriverStatusLoadingState extends LoginState {}
-class ChangeDriverStatusSuccessState extends LoginState {}
-class ChangeDriverStatusErrorState extends LoginState {
-  final String error;
-  ChangeDriverStatusErrorState(this.error);
-}
+
 
 
 
@@ -104,3 +99,7 @@ class EditAccountImagePickerState extends LoginState {}
 
 class ImagePickingState extends LoginState {}
 class ImagePickingSuccessState extends LoginState {}
+
+class EditAccountImageLoadingState extends LoginState {}
+class EditAccountImageSuccessState extends LoginState {}
+class EditAccountImageErrorState extends LoginState {}

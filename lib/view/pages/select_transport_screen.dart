@@ -5,7 +5,6 @@ import 'package:voo_app/Controller/Constants.dart';
 import 'package:voo_app/Controller/Login/login_cubit.dart';
 import 'package:voo_app/Model/VehicleTypeModel.dart';
 import 'package:voo_app/view/pages/main_profile_screen/vehicle_information_screen_edit_profile_screen/car_documents_screen.dart';
-import 'package:voo_app/view/pages/main_profile_screen/vehicle_information_screen_edit_profile_screen/car_images.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 import '../../Controller/Data/data_cubit.dart';
@@ -716,7 +715,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                         height: 2.h,
                       ),
                       Text(
-                        'Rc Expiry Date',
+                        'Registration Expiry Date',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 15.dp),
                       ),
@@ -743,7 +742,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                                 borderSide:
                                 const BorderSide(color: Colors.transparent)),
                             contentPadding: const EdgeInsets.all(15),
-                            hintText: 'RC Expiry Date',
+                            hintText: 'Registration Expiry Date',
                             prefixIcon: const Icon(Icons.calendar_today)),
                         onTap: () {
                           selectDate();
@@ -754,7 +753,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                         height: 2.h,
                       ),
                       Text(
-                        'RC Number',
+                        'Registration Number',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 15.dp),
                       ),
@@ -784,8 +783,8 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                                   borderSide:
                                   const BorderSide(color: Colors.transparent)),
                               contentPadding: EdgeInsets.all(15),
-                              hintText: 'RC Number'),
-                          keyboardType: TextInputType.number,
+                              hintText: 'Registration Number'),
+                          keyboardType: TextInputType.text,
                           controller: rcController,
                         ),
                       ),
@@ -852,7 +851,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                       //   height: 2.h,
                       // ),
                       Text(
-                        'RC Image',
+                        'Registration Image',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 15.dp),
                       ),
@@ -880,44 +879,40 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                       SizedBox(
                         height: 2.h,
                       ),
-                      Text(
-                        'Car images',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15.dp),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Color(0xffF5F4F4),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: TextFormField(
-                          readOnly: true,
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CarImages()));
-                          },
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              contentPadding: const EdgeInsets.all(15),
-                              hintText: LoginCubit.carHint),
-                          keyboardType: TextInputType.number,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 2.h,
-                      ),
+                      // Text(
+                      //   'Car images',
+                      //   style: TextStyle(
+                      //       fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      // ),
+                      // Container(
+                      //   decoration: BoxDecoration(
+                      //       color: Color(0xffF5F4F4),
+                      //       borderRadius: BorderRadius.circular(10)),
+                      //   child: TextFormField(
+                      //     readOnly: true,
+                      //     onTap: () {
+                      //       Navigator.push(
+                      //           context,
+                      //           MaterialPageRoute(
+                      //               builder: (context) => CarImages()));
+                      //     },
+                      //     decoration: InputDecoration(
+                      //         border: InputBorder.none,
+                      //         contentPadding: const EdgeInsets.all(15),
+                      //         hintText: LoginCubit.carHint),
+                      //     keyboardType: TextInputType.number,
+                      //   ),
+                      // ),
+                      // SizedBox(
+                      //   height: 2.h,
+                      // ),
                       Center(
                         child: MainElevatedButtonTwo(
                           condition: state is AddDriverVehicleLoadingState,
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                if (LoginCubit.vehicleRCImage != null &&
-                                    LoginCubit.vehicleLeftImage != null &&
-                                    LoginCubit.vehicleRightImage != null &&
-                                    LoginCubit.vehicleFrontImage != null &&
-                                    LoginCubit.vehicleBackImage != null) {
-                                  LoginCubit.get(context).addVehicle(type: vehicleTypeDropDown, plateInfo: plateInfoController.text, brand: brandController.text, model: modelController.text, year: yearController.text, seats: seatsController.text, doors: doorsController.text, wheelChair: currentWheelChairAccess, kidsSeat: currentChildCarSeat, color: colorController.text,rc: rcController.text, rcExpiry:expiryDateController.text , rcImage: LoginCubit.vehicleRCImage, frontImage: LoginCubit.vehicleFrontImage, backImage: LoginCubit.vehicleBackImage, rightImage: LoginCubit.vehicleRightImage, leftImage: LoginCubit.vehicleLeftImage, context: context);
+                                if (LoginCubit.vehicleRCImage != null) {
+                                  LoginCubit.get(context).addVehicle(type: vehicleTypeDropDown, plateInfo: plateInfoController.text, brand: brandController.text, model: modelController.text, year: yearController.text, seats: seatsController.text, doors: doorsController.text, wheelChair: currentWheelChairAccess, kidsSeat: currentChildCarSeat, color: colorController.text,rc: rcController.text, rcExpiry:expiryDateController.text , rcImage: LoginCubit.vehicleRCImage, context: context);
                                 } else {
                                   showCheckImagesDialog(context);
                                 }
@@ -957,7 +952,7 @@ class VehicleTypesDropDown extends StatelessWidget {
       DropdownMenuItem(
         value: 0,
         child: Text(
-          'Select type',
+          'Select Car',
         ),
       )
     ];
@@ -989,7 +984,7 @@ class VehicleTypesDropDown extends StatelessWidget {
       ),
       validator: (value) {
         if (value == 0) {
-          return 'Please choose type';
+          return 'Please choose Car';
         }
         return null;
       },

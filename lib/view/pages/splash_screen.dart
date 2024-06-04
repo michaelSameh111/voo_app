@@ -17,10 +17,9 @@ class _SplashScreenState extends State<SplashScreen> {
   // ignore: must_call_super
   @override
   void initState() {
-    print(CacheHelper.getData(key: 'loggedin'));
+    super.initState();
     Timer(const Duration(seconds: 1), () {
       if (CacheHelper.getData(key: 'loggedin') == null) {
-        print('nonn');
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) =>  LoginRegisterScreen()));
       } else {

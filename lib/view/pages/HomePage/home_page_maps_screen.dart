@@ -22,8 +22,6 @@ import 'package:voo_app/view/widgets/main_elevated_button.dart';
 import '../../../Controller/Constants.dart';
 import '../../../Model/TripModel.dart';
 
-
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -34,7 +32,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool locationEnabled = false;
   bool drivingState = false;
-  bool incomingRequest = false;
   List<LatLng> polyLineCoordinates = [];
   double cameraZoom = 17;
   int time = 0;
@@ -102,9 +99,9 @@ class _HomePageState extends State<HomePage> {
       });
     });
   }
+
   Future<void> _addMarker(Prediction prediction) async {
     final marker = Marker(
-
       markerId: MarkerId(prediction.placeId!),
       position:
           LatLng(double.parse(prediction.lat!), double.parse(prediction.lng!)),
@@ -116,56 +113,61 @@ class _HomePageState extends State<HomePage> {
       _markers.add(marker);
     });
   }
-  Future handle(BuildContext contextt) async {
+
+  Future handle(BuildContext context) async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print(coming);
-      // if(coming == true){}else{
       TripModel? newTrip;
-        if(message.data['rider'] != null){
-          try {
-            newTrip = TripModel.fromJson(message.data);
-          } catch (error) {
-            print("Error parsing trip data: $error");
-          }
-          if (newTrip != null) {
-            tripModel = newTrip;
-            trip ??= newTrip;
-
-
-          }
-          print(message.notification?.body);
-          print('Got a message whilst in the foreground!');
-          print('Message data: ${message.data}');
-          if(tripModel.pickupLongitude == null || tripModel.pickupLatitude == null ){}else{
-            getEstimatedTime(
-                driverLat: sourcePosition!.latitude,
-                driverLng: sourcePosition!.longitude,
-                riderLat: double.parse(tripModel.pickupLatitude!),
-                riderLng: double.parse(tripModel.pickupLongitude!),
-                apiKey: googleMapApiKey)
-                .then((value) async {
+      if (message.data['rider'] != null) {
+        try {
+          newTrip = TripModel.fromJson(message.data);
+        } catch (error) {
+          print("Error parsing trip data: $error");
+        }
+        if (newTrip != null) {
+          tripModel = newTrip;
+          trip ??= newTrip;
+        }
+        print(message.notification?.body);
+        print('Got a message whilst in the foreground!');
+        print('Message data: ${message.data}');
+        if (tripModel.pickupLongitude == null ||
+            tripModel.pickupLatitude == null) {
+        } else {
+          getEstimatedTime(
+                  driverLat: sourcePosition!.latitude,
+                  driverLng: sourcePosition!.longitude,
+                  riderLat: double.parse(tripModel.pickupLatitude!),
+                  riderLng: double.parse(tripModel.pickupLongitude!),
+                  apiKey: googleMapApiKey)
+              .then((value) async {
             // time = value!;
             final x = await getAddressFromLatLng(
-                  double.parse(tripModel.pickupLatitude!),
-                  double.parse(tripModel.pickupLongitude!));
-              final y = await getAddressFromLatLng(
+                double.parse(tripModel.pickupLatitude!),
+                double.parse(tripModel.pickupLongitude!));
+            final y;
+            if (tripModel.destinationLatitude != null) {
+              y = await getAddressFromLatLng(
                   double.parse(tripModel.destinationLatitude!),
                   double.parse(tripModel.destinationLongitude!));
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return CountdownDialog(
-                    onTimerFinish: () {
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                    },
-                  );
-                },
-              );
-              acceptDeclineShowModalSheet(contextt, x, y);
-            });
-          }
+            } else {
+              y = 'Not Specified';
+            }
+
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return CountdownDialog(
+                  onTimerFinish: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                );
+              },
+            );
+            acceptDeclineShowModalSheet(context, x, y);
+          });
         }
+      }
       // coming = true;
       // }
     });
@@ -243,9 +245,7 @@ class _HomePageState extends State<HomePage> {
                           width: 30.w,
                         ),
                         InkWell(
-                          onTap: () {
-
-                          },
+                          onTap: () {},
                           child: Container(
                             padding: EdgeInsets.all(5.dp),
                             decoration: BoxDecoration(
@@ -277,14 +277,18 @@ class _HomePageState extends State<HomePage> {
                   height: 4.h,
                 ),
                 MainElevatedButtonTwo(
-                    onPressed: () async{
-                      String? pickupLocation = await getAddressFromLatLng(sourcePosition!.latitude, sourcePosition!.longitude);
-                      DataCubit.get(context).startTrip(pickUpTitle: pickupLocation,tripId: int.parse(tripModel.tripId!),  driverLocation:
-                      'https://maps.google.com/?q=${sourcePosition!.latitude},${sourcePosition!.longitude}',
+                    onPressed: () async {
+                      String? pickupLocation = await getAddressFromLatLng(
+                          sourcePosition!.latitude, sourcePosition!.longitude);
+                      DataCubit.get(context).startTrip(
+                          pickUpTitle: pickupLocation,
+                          tripId: int.parse(tripModel.tripId!),
+                          driverLocation:
+                              'https://maps.google.com/?q=${sourcePosition!.latitude},${sourcePosition!.longitude}',
                           driverLocationLat:
-                          sourcePosition!.latitude.toString(),
+                              sourcePosition!.latitude.toString(),
                           driverLocationLng:
-                          sourcePosition!.longitude.toString(),
+                              sourcePosition!.longitude.toString(),
                           context: context);
                     },
                     text: 'Start trip',
@@ -296,18 +300,17 @@ class _HomePageState extends State<HomePage> {
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: Text('Confirmation'),
-                            content: Text(
-                                'Are you sure you want to cancel?'),
+                            content: Text('Are you sure you want to cancel?'),
                             actions: [
                               TextButton(
-                                onPressed: () => Navigator.pop(
-                                    context), // No button action
+                                onPressed: () =>
+                                    Navigator.pop(context), // No button action
                                 child: Text('No'),
                               ),
                               TextButton(
                                 onPressed: () {
                                   DataCubit.get(context).cancelTrip(
-                                      tripId:int.parse(tripModel.tripId!),
+                                      tripId: int.parse(tripModel.tripId!),
                                       context: context);
                                   Navigator.pop(context);
                                   setState(() {
@@ -316,8 +319,7 @@ class _HomePageState extends State<HomePage> {
                                 }, // Yes button action
                                 child: Text(
                                   'Yes',
-                                  style:
-                                  TextStyle(color: Colors.red),
+                                  style: TextStyle(color: Colors.red),
                                 ),
                               ),
                             ],
@@ -525,10 +527,16 @@ class _HomePageState extends State<HomePage> {
                                     sourcePosition!.longitude.toString(),
                                 context: context);
                           },
-                          child: loadingState == true ? Center(child: CircularProgressIndicator(color: Colors.white,),) : const Text(
-                            'Accept',
-                            style: TextStyle(color: Colors.white),
-                          )),
+                          child: loadingState == true
+                              ? Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : const Text(
+                                  'Accept',
+                                  style: TextStyle(color: Colors.white),
+                                )),
                     )
                   ],
                 )
@@ -546,7 +554,7 @@ class _HomePageState extends State<HomePage> {
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
         googleMapApiKey,
         PointLatLng(sourcePosition!.latitude, sourcePosition!.longitude),
-        PointLatLng(lat,lng));
+        PointLatLng(lat, lng));
     print(result.points);
     if (result.points.isNotEmpty) {
       result.points.forEach((PointLatLng point) =>
@@ -571,17 +579,19 @@ class _HomePageState extends State<HomePage> {
             icon: markerIcon,
             position: LatLng(position.latitude, position.longitude),
           );
-          _markers.removeWhere((marker) => marker.markerId == MarkerId('source'));
+          _markers
+              .removeWhere((marker) => marker.markerId == MarkerId('source'));
           _markers.add(updatedMarker);
 
-         if(drivingState){ controller!.animateCamera(
-           CameraUpdate.newCameraPosition(
-             CameraPosition(
-               target: LatLng(position.latitude, position.longitude),
-               zoom: cameraZoom
-             ),
-           ),
-         );}
+          if (drivingState) {
+            controller!.animateCamera(
+              CameraUpdate.newCameraPosition(
+                CameraPosition(
+                    target: LatLng(position.latitude, position.longitude),
+                    zoom: cameraZoom),
+              ),
+            );
+          }
         });
       } else {
         _previousPosition = position;
@@ -611,13 +621,12 @@ class _HomePageState extends State<HomePage> {
     return null;
   }
 
-  // @override
-  // void dispose() {
-  //   _removeOverlay();
-  //   stopListeningToLocationChanges();
-  //
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    stopListeningToLocationChanges();
+
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -729,10 +738,9 @@ class _HomePageState extends State<HomePage> {
         // );
       } else {
         locationStream = Geolocator.getPositionStream(
-            locationSettings:  LocationSettings(
-              accuracy: LocationAccuracy.high,
-              distanceFilter: drivingState == true ? 50 : 0
-            ));
+            locationSettings: LocationSettings(
+                accuracy: LocationAccuracy.high,
+                distanceFilter: drivingState == true ? 50 : 0));
         startListeningToLocationChanges();
       }
     });
@@ -779,24 +787,29 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    bool light = true;
-
+    bool? light;
+    loginData.acceptingRides == null ? light = false : light = true;
     bool showDialogBool = false;
     return BlocConsumer<DataCubit, DataState>(
       listener: (context, state) {
-        if(state is EndTripSuccessState){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>CollectCashScreen(destinationLocation: destinationLocation,)));
+        if (state is EndTripSuccessState) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CollectCashScreen(
+                        destinationLocation: destinationLocation,
+                      )));
           tripToDestination = false;
           polyLineCoordinates.clear();
           endTrip();
           print(endTripModel.total);
         }
-        if(state is StartTripSuccessState){
+        if (state is StartTripSuccessState) {
           Navigator.pop(context);
           locationStream = Geolocator.getPositionStream(
               locationSettings: const LocationSettings(
-                accuracy: LocationAccuracy.high,
-              ));
+            accuracy: LocationAccuracy.high,
+          ));
           setState(() {
             drivingState = true;
             tripToPickup = false;
@@ -811,34 +824,31 @@ class _HomePageState extends State<HomePage> {
               getPolyPoint(double.parse(tripModel.destinationLatitude!),
                   double.parse(tripModel.destinationLongitude!));
             });
-
           });
           startTrip(tripModel.tripId);
           startListeningToLocationChanges();
         }
-        if (state is ArrivedAtLocationSuccessState){
+        if (state is ArrivedAtLocationSuccessState) {
           Fluttertoast.showToast(
-              msg:
-              'Rider Notified That You\'ve arrived',
+              msg: 'Rider Notified That You\'ve arrived',
               fontSize: 16.dp,
               backgroundColor: Colors.green,
               textColor: Colors.white,
               gravity: ToastGravity.TOP);
           getEstimatedTime(
-              driverLat: sourcePosition!.latitude,
-              driverLng: sourcePosition!.longitude,
-              riderLat: double.parse(tripModel.pickupLatitude!),
-              riderLng: double.parse(tripModel.pickupLongitude!),
-              apiKey: googleMapApiKey)
+                  driverLat: sourcePosition!.latitude,
+                  driverLng: sourcePosition!.longitude,
+                  riderLat: double.parse(tripModel.pickupLatitude!),
+                  riderLng: double.parse(tripModel.pickupLongitude!),
+                  apiKey: googleMapApiKey)
               .then((value) async {
             time = value!;
           });
           arrivedToPickupShowModalSheet(context);
         }
-        if (state is CancelTripSuccessState){
+        if (state is CancelTripSuccessState) {
           Fluttertoast.showToast(
-              msg:
-              'Trip Canceled Successfully',
+              msg: 'Trip Canceled Successfully',
               fontSize: 16.dp,
               backgroundColor: Colors.red,
               textColor: Colors.white,
@@ -847,7 +857,7 @@ class _HomePageState extends State<HomePage> {
           cancelRequest();
           stopListeningToLocationChanges();
         }
-        if(state is AcceptTripLoadingState){
+        if (state is AcceptTripLoadingState) {
           showDialog(
             context: context,
             barrierDismissible: false,
@@ -866,7 +876,6 @@ class _HomePageState extends State<HomePage> {
               );
             },
           );
-
         }
         if (state is AcceptTripSuccessState) {
           Navigator.pop(context);
@@ -874,8 +883,8 @@ class _HomePageState extends State<HomePage> {
           Navigator.pop(context);
           locationStream = Geolocator.getPositionStream(
               locationSettings: const LocationSettings(
-                accuracy: LocationAccuracy.high,
-              ));
+            accuracy: LocationAccuracy.high,
+          ));
           acceptRequest(tripModel.tripId);
           setState(() {
             drivingState = true;
@@ -890,7 +899,6 @@ class _HomePageState extends State<HomePage> {
               getPolyPoint(double.parse(tripModel.pickupLatitude!),
                   double.parse(tripModel.pickupLongitude!));
             });
-
           });
           startListeningToLocationChanges();
         }
@@ -899,13 +907,12 @@ class _HomePageState extends State<HomePage> {
         return SafeArea(
           child: Stack(
             children: [
-
               GoogleMap(
-                buildingsEnabled: false,
+                buildingsEnabled: true,
                 scrollGesturesEnabled: true,
                 zoomGesturesEnabled: true,
                 trafficEnabled: true,
-                onCameraMove: (CameraPosition position){
+                onCameraMove: (CameraPosition position) {
                   cameraZoom = position.zoom;
                 },
                 initialCameraPosition: CameraPosition(
@@ -924,7 +931,6 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.blue,
                       visible: true,
                       points: polyLineCoordinates,
-
                       width: 5)
                 },
                 markers: _markers,
@@ -947,23 +953,38 @@ class _HomePageState extends State<HomePage> {
                 //       position: destinationPosition!),
                 // },
               ),
-              driverData != null && driverVehicle != null && licenseData != null && insuranceData != null ? SizedBox() :
-              Positioned(child: Container(
-                color: Colors.red,
-                padding: EdgeInsets.all(10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Please Complete Your Data First',
-                      style: GoogleFonts.roboto(color: Colors.white, fontSize: 14.dp,),
-                    ),
-                    InkWell(onTap:() {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>DataCheckScreen()));
-                    },child: Icon(Icons.arrow_forward, color: Colors.white))
-                  ],
-                ),
-              )),
+              driverData != null &&
+                      driverVehicle != null &&
+                      licenseData != null &&
+                      insuranceData != null
+                  ? SizedBox()
+                  : Positioned(
+                      child: Container(
+                      color: Colors.red,
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Please Complete Your Data First',
+                            style: GoogleFonts.roboto(
+                              color: Colors.white,
+                              fontSize: 14.dp,
+                            ),
+                          ),
+                          InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            DataCheckScreen()));
+                              },
+                              child: Icon(Icons.arrow_forward,
+                                  color: Colors.white))
+                        ],
+                      ),
+                    )),
               Positioned(
                   bottom: 10,
                   left: 10,
@@ -1019,7 +1040,7 @@ class _HomePageState extends State<HomePage> {
                         child: Row(
                           children: [
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 DataCubit.get(context).getDriverData();
                               },
                               child: CircleAvatar(
@@ -1044,34 +1065,179 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             Spacer(),
-                            Text('${loginData.firstName} ${loginData.lastName}',style: GoogleFonts.roboto(fontSize: 14.dp,color: Colors.black,fontWeight: FontWeight.bold),),
+                            Text(
+                              '${loginData.firstName} ${loginData.lastName}',
+                              style: GoogleFonts.roboto(
+                                  fontSize: 14.dp,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                            ),
                             const Spacer(),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 3.w, vertical: 1.h),
-                              decoration: BoxDecoration(
-                                  color: const Color(0xffFF6A03),
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Row(
-                                children: [
-                                   Text(
-                                    driverData != null && driverVehicle != null && licenseData != null && insuranceData != null ?
-                                    'On' : 'Pending',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  SizedBox(
-                                    width: 1.5.w,
-                                  ),
-                                  CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    radius: 2.5.w,
-                                    child: CircleAvatar(
-                                      // backgroundColor: Colors.white,
-                                      backgroundColor: driverData != null && driverVehicle != null && licenseData != null && insuranceData != null ? Color(0xffFF6A03).withOpacity(0.5) : Colors.white,
-                                      radius: 1.8.w,
+                            InkWell(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder:
+                                        (context) =>
+                                            BlocConsumer<DataCubit, DataState>(
+                                              listener: (context, state) {},
+                                              builder: (context, state) {
+                                                return StatefulBuilder(
+                                                  builder: (context, setState) {
+                                                    return Theme(
+                                                      data: ThemeData(
+                                                          dialogBackgroundColor:
+                                                              Colors.white),
+                                                      child: Dialog(
+                                                        elevation: 0,
+                                                        child: Stack(
+                                                          clipBehavior:
+                                                              Clip.none,
+                                                          alignment: Alignment
+                                                              .topCenter,
+                                                          children: [
+                                                            SizedBox(
+                                                              height: 28.h,
+                                                              width: double
+                                                                  .infinity,
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Text(
+                                                                    loginData.acceptingRides ==
+                                                                            null
+                                                                        ? 'You\'re Offline'
+                                                                        : 'You\'re ${loginData.acceptingRides}',
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        fontSize: 18
+                                                                            .dp,
+                                                                        color: const Color(
+                                                                            0xff646363)),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 1.h,
+                                                                  ),
+                                                                  Text(
+                                                                    loginData.acceptingRides ==
+                                                                            null
+                                                                        ? 'Go online to accept jobs.'
+                                                                        : 'You\'re Online ',
+                                                                    style: TextStyle(
+                                                                        fontSize: 15
+                                                                            .dp,
+                                                                        color: const Color(
+                                                                            0xff646363)),
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height:
+                                                                        1.5.h,
+                                                                  ),
+                                                                  const Divider(),
+                                                                  SizedBox(
+                                                                    height:
+                                                                        1.5.h,
+                                                                  ),
+                                                                  state is ChangeDriverStatusLoadingState
+                                                                      ? CircularProgressIndicator()
+                                                                      : Switch(
+                                                                          trackOutlineColor: WidgetStateProperty.all(Colors
+                                                                              .transparent),
+                                                                          activeTrackColor: const Color(
+                                                                              0xffFF6A03),
+                                                                          inactiveTrackColor: const Color(
+                                                                              0xffD1D1D6),
+                                                                          inactiveThumbColor: Colors
+                                                                              .white,
+                                                                          value:
+                                                                              light!,
+                                                                          onChanged:
+                                                                              (bool value) {
+                                                                            DataCubit.get(context).changeDriverStatus(
+                                                                                status: light == false ? 'On' : 'Off',
+                                                                                context: context);
+                                                                            setState(() {
+                                                                              value == true ?
+                                                                              loginData.acceptingRides = 'on' : loginData.acceptingRides = null;
+                                                                              light = value;
+                                                                            });
+                                                                            state;
+                                                                          }),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Positioned(
+                                                              top: -50,
+                                                              child:
+                                                                  CircleAvatar(
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                                radius: 40,
+                                                                child:
+                                                                    Image.asset(
+                                                                  'assets/images/notification_offline.png',
+                                                                  width: 12.w,
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                            ));
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 3.w, vertical: 1.h),
+                                decoration: BoxDecoration(
+                                    color: const Color(0xffFF6A03),
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      driverData != null &&
+                                              driverVehicle != null &&
+                                              licenseData != null &&
+                                              insuranceData != null
+                                          ? loginData.acceptingRides == null
+                                              ? 'Off'
+                                              : 'On'
+                                          : 'Pending',
+                                      style: TextStyle(color: Colors.white),
                                     ),
-                                  )
-                                ],
+                                    SizedBox(
+                                      width: 1.5.w,
+                                    ),
+                                    CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      radius: 2.5.w,
+                                      child: CircleAvatar(
+                                        // backgroundColor: Colors.white,
+                                        backgroundColor: driverData != null &&
+                                                driverVehicle != null &&
+                                                licenseData != null &&
+                                                insuranceData != null
+                                            ? loginData.acceptingRides != null
+                                                ? Color(0xffFF6A03)
+                                                    .withOpacity(0.5)
+                                                : Colors.white
+                                            : Colors.white,
+                                        radius: 1.8.w,
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             )
                           ],
@@ -1113,7 +1279,7 @@ class _HomePageState extends State<HomePage> {
                                     style: TextStyle(color: Color(0xff646363)),
                                   ),
                                   Text(
-                                    '\$250',
+                                    '${loginData.totalEarnings}',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15.dp),
@@ -1156,7 +1322,7 @@ class _HomePageState extends State<HomePage> {
                                     style: TextStyle(color: Color(0xff646363)),
                                   ),
                                   Text(
-                                    '10',
+                                    '${loginData.totalTrips}',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15.dp),
@@ -1172,90 +1338,6 @@ class _HomePageState extends State<HomePage> {
                       height: 5.h,
                     ),
                     const Spacer(),
-                    // ElevatedButton(
-                    //   child: const Text('Change location state (for UI)'),
-                    //   onPressed: () {
-                    //     showDialog(
-                    //         context: context,
-                    //         builder: (context) => StatefulBuilder(
-                    //           builder: (context, setState) {
-                    //             return Theme(
-                    //               data: ThemeData(
-                    //                   dialogBackgroundColor: Colors.white),
-                    //               child: Dialog(
-                    //                 elevation: 0,
-                    //                 child: Stack(
-                    //                   clipBehavior: Clip.none,
-                    //                   alignment: Alignment.topCenter,
-                    //                   children: [
-                    //                     SizedBox(
-                    //                       height: 28.h,
-                    //                       width: double.infinity,
-                    //                       child: Column(
-                    //                         mainAxisAlignment:
-                    //                         MainAxisAlignment.center,
-                    //                         children: [
-                    //                           Text(
-                    //                             'You\'re offline',
-                    //                             style: TextStyle(
-                    //                                 fontWeight: FontWeight.bold,
-                    //                                 fontSize: 18.dp,
-                    //                                 color: const Color(0xff646363)),
-                    //                           ),
-                    //                           SizedBox(
-                    //                             height: 1.h,
-                    //                           ),
-                    //                           Text(
-                    //                             'Go online to accept jobs.',
-                    //                             style: TextStyle(
-                    //                                 fontSize: 15.dp,
-                    //                                 color: const Color(0xff646363)),
-                    //                             textAlign: TextAlign.center,
-                    //                           ),
-                    //                           SizedBox(
-                    //                             height: 1.5.h,
-                    //                           ),
-                    //                           const Divider(),
-                    //                           SizedBox(
-                    //                             height: 1.5.h,
-                    //                           ),
-                    //                           Switch(
-                    //                               trackOutlineColor:
-                    //                               MaterialStateProperty.all(
-                    //                                   Colors.transparent),
-                    //                               activeTrackColor:
-                    //                               const Color(0xffFF6A03),
-                    //                               inactiveTrackColor:
-                    //                               const Color(0xffD1D1D6),
-                    //                               inactiveThumbColor: Colors.white,
-                    //                               value: light,
-                    //                               onChanged: (bool value) {
-                    //                                 setState(() {
-                    //                                   light = value;
-                    //                                 });
-                    //                               }),
-                    //                         ],
-                    //                       ),
-                    //                     ),
-                    //                     Positioned(
-                    //                       top: -50,
-                    //                       child: CircleAvatar(
-                    //                         backgroundColor: Colors.white,
-                    //                         radius: 40,
-                    //                         child: Image.asset(
-                    //                           'assets/images/notification_offline.png',
-                    //                           width: 12.w,
-                    //                         ),
-                    //                       ),
-                    //                     )
-                    //                   ],
-                    //                 ),
-                    //               ),
-                    //             );
-                    //           },
-                    //         ));
-                    //   },
-                    // ),
                     tripToPickup == true
                         ? SizedBox(
                             width: 40.w,
@@ -1264,17 +1346,21 @@ class _HomePageState extends State<HomePage> {
                                     backgroundColor: const Color(0xffFF6A03)),
                                 onPressed: () {
                                   if (light == true) {
-                                    DataCubit.get(context).arrivedAtLocation(tripId: int.parse(tripModel.tripId!), context: context);
+                                    DataCubit.get(context).arrivedAtLocation(
+                                        tripId: int.parse(tripModel.tripId!),
+                                        context: context);
                                     getEstimatedTime(
-                                        driverLat: sourcePosition!.latitude,
-                                        driverLng: sourcePosition!.longitude,
-                                        riderLat: double.parse(tripModel.destinationLatitude!),
-                                        riderLng: double.parse(tripModel.destinationLongitude!),
-                                        apiKey: googleMapApiKey)
+                                            driverLat: sourcePosition!.latitude,
+                                            driverLng:
+                                                sourcePosition!.longitude,
+                                            riderLat: double.parse(
+                                                tripModel.destinationLatitude!),
+                                            riderLng: double.parse(tripModel
+                                                .destinationLongitude!),
+                                            apiKey: googleMapApiKey)
                                         .then((value) async {
                                       time = value!;
                                     });
-
                                   } else {
                                     showDialog(
                                       context: context,
@@ -1340,7 +1426,7 @@ class _HomePageState extends State<HomePage> {
                                                                     0xffD1D1D6),
                                                             inactiveThumbColor:
                                                                 Colors.white,
-                                                            value: light,
+                                                            value: light!,
                                                             onChanged:
                                                                 (bool value) {
                                                               setState(() {
@@ -1388,128 +1474,144 @@ class _HomePageState extends State<HomePage> {
                                   style: TextStyle(color: Colors.white),
                                 )),
                           )
-                        : tripToPickup == false && tripToDestination == true ? SizedBox(
-                      width: 40.w,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xffFF6A03)),
-                          onPressed: ()async {
-                            if (light == true) {
-                               destinationLocation = await getAddressFromLatLng(sourcePosition!.latitude, sourcePosition!.longitude);
-                              DataCubit.get(context).endTrip(destinationTitle: destinationLocation,tripId: int.parse(tripModel.tripId!), context: context,);
-                            } else {
-                              showDialog(
-                                context: context,
-                                builder: (context) => StatefulBuilder(
-                                  builder: (context, setState) {
-                                    return Theme(
-                                      data: ThemeData(
-                                          dialogBackgroundColor:
-                                          Colors.white),
-                                      child: Dialog(
-                                        elevation: 0,
-                                        child: Stack(
-                                          clipBehavior: Clip.none,
-                                          alignment: Alignment.topCenter,
-                                          children: [
-                                            SizedBox(
-                                              height: 28.h,
-                                              width: double.infinity,
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .center,
-                                                children: [
-                                                  Text(
-                                                    'You\'re offline',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                        FontWeight
-                                                            .bold,
-                                                        fontSize: 18.dp,
-                                                        color: const Color(
-                                                            0xff646363)),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 1.h,
-                                                  ),
-                                                  Text(
-                                                    'Go online to accept jobs.',
-                                                    style: TextStyle(
-                                                        fontSize: 15.dp,
-                                                        color: const Color(
-                                                            0xff646363)),
-                                                    textAlign:
-                                                    TextAlign.center,
-                                                  ),
-                                                  SizedBox(
-                                                    height: 1.5.h,
-                                                  ),
-                                                  const Divider(),
-                                                  SizedBox(
-                                                    height: 1.5.h,
-                                                  ),
-                                                  Switch(
-                                                      trackOutlineColor:
-                                                      WidgetStateProperty
-                                                          .all(Colors
-                                                          .transparent),
-                                                      activeTrackColor:
-                                                      const Color(
-                                                          0xffFF6A03),
-                                                      inactiveTrackColor:
-                                                      const Color(
-                                                          0xffD1D1D6),
-                                                      inactiveThumbColor:
-                                                      Colors.white,
-                                                      value: light,
-                                                      onChanged:
-                                                          (bool value) {
-                                                        setState(() {
-                                                          light = value;
-                                                          showDialogBool =
-                                                              value;
+                        : tripToPickup == false && tripToDestination == true
+                            ? SizedBox(
+                                width: 40.w,
+                                child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            const Color(0xffFF6A03)),
+                                    onPressed: () async {
+                                      if (light == true) {
+                                        destinationLocation =
+                                            await getAddressFromLatLng(
+                                                sourcePosition!.latitude,
+                                                sourcePosition!.longitude);
+                                        DataCubit.get(context).endTrip(
+                                          destinationTitle: destinationLocation,
+                                          tripId: int.parse(tripModel.tripId!),
+                                          context: context,
+                                        );
+                                      } else {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => StatefulBuilder(
+                                            builder: (context, setState) {
+                                              return Theme(
+                                                data: ThemeData(
+                                                    dialogBackgroundColor:
+                                                        Colors.white),
+                                                child: Dialog(
+                                                  elevation: 0,
+                                                  child: Stack(
+                                                    clipBehavior: Clip.none,
+                                                    alignment:
+                                                        Alignment.topCenter,
+                                                    children: [
+                                                      SizedBox(
+                                                        height: 28.h,
+                                                        width: double.infinity,
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Text(
+                                                              'You\'re offline',
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize:
+                                                                      18.dp,
+                                                                  color: const Color(
+                                                                      0xff646363)),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 1.h,
+                                                            ),
+                                                            Text(
+                                                              'Go online to accept jobs.',
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      15.dp,
+                                                                  color: const Color(
+                                                                      0xff646363)),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                            ),
+                                                            SizedBox(
+                                                              height: 1.5.h,
+                                                            ),
+                                                            const Divider(),
+                                                            SizedBox(
+                                                              height: 1.5.h,
+                                                            ),
+                                                            Switch(
+                                                                trackOutlineColor:
+                                                                    WidgetStateProperty
+                                                                        .all(Colors
+                                                                            .transparent),
+                                                                activeTrackColor:
+                                                                    const Color(
+                                                                        0xffFF6A03),
+                                                                inactiveTrackColor:
+                                                                    const Color(
+                                                                        0xffD1D1D6),
+                                                                inactiveThumbColor:
+                                                                    Colors
+                                                                        .white,
+                                                                value: light!,
+                                                                onChanged: (bool
+                                                                    value) {
+                                                                  setState(() {
+                                                                    light =
+                                                                        value;
+                                                                    showDialogBool =
+                                                                        value;
 
-                                                          if (showDialogBool ==
-                                                              true) {
-                                                            Navigator.of(
-                                                                context)
-                                                                .pop();
-                                                          }
+                                                                    if (showDialogBool ==
+                                                                        true) {
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                    }
 
-                                                          // acceptDeclineShowModalSheet(
-                                                          //     context);
-                                                        });
-                                                      }),
-                                                ],
-                                              ),
-                                            ),
-                                            Positioned(
-                                              top: -50,
-                                              child: CircleAvatar(
-                                                backgroundColor:
-                                                Colors.white,
-                                                radius: 40,
-                                                child: Image.asset(
-                                                  'assets/images/notification_offline.png',
-                                                  width: 12.w,
+                                                                    // acceptDeclineShowModalSheet(
+                                                                    //     context);
+                                                                  });
+                                                                }),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Positioned(
+                                                        top: -50,
+                                                        child: CircleAvatar(
+                                                          backgroundColor:
+                                                              Colors.white,
+                                                          radius: 40,
+                                                          child: Image.asset(
+                                                            'assets/images/notification_offline.png',
+                                                            width: 12.w,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              );
-                            }
-                          },
-                          child: const Text(
-                            'End Trip',
-                            style: TextStyle(color: Colors.white),
-                          )),
-                    ) : SizedBox(),
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    child: const Text(
+                                      'End Trip',
+                                      style: TextStyle(color: Colors.white),
+                                    )),
+                              )
+                            : SizedBox(),
                     tripToPickup == true
                         ? SizedBox(
                             width: 40.w,
@@ -1534,7 +1636,8 @@ class _HomePageState extends State<HomePage> {
                                           TextButton(
                                             onPressed: () {
                                               DataCubit.get(context).cancelTrip(
-                                                  tripId:int.parse(tripModel.tripId!),
+                                                  tripId: int.parse(
+                                                      tripModel.tripId!),
                                                   context: context);
                                               Navigator.pop(context);
                                               setState(() {
@@ -1592,5 +1695,4 @@ class _HomePageState extends State<HomePage> {
   void turnOff() {
     sdkChannel.invokeMethod("turnOff");
   }
-
 }

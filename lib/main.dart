@@ -57,6 +57,7 @@ class MyApp extends StatelessWidget {
             home: const SplashScreen(),
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
+              appBarTheme: AppBarTheme(color: Colors.transparent,elevation: 0),
               useMaterial3: false,primaryColor: Color(0xffFF6A03),
               colorScheme: ColorScheme.light(
                 primary: Color(0xffFF6A03),

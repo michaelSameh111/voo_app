@@ -13,9 +13,9 @@ class InsuranceScreen extends StatefulWidget {
 }
 
 class _InsuranceScreenState extends State<InsuranceScreen> {
-  TextEditingController expiryDateController = TextEditingController();
-  TextEditingController insuranceLicenseController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey();
+  TextEditingController insuranceLicenseController = TextEditingController();
+  TextEditingController expiryDateController = TextEditingController();
   Future<void> selectDate() async {
     DateTime? picked = await showDatePicker(
         context: context,
@@ -154,7 +154,7 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
                             height: 5.h,
                           ),
                           Text(
-                            'Driver License Number',
+                            'Policy Number',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 15.dp),
                           ),
@@ -188,8 +188,8 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
                                           color: Colors.transparent)),
                                   contentPadding: EdgeInsets.all(15),
                                   hintText:
-                                  'Enter your Insurance license number'),
-                              keyboardType: TextInputType.number,
+                                  'Enter your Policy number'),
+                              keyboardType: TextInputType.text,
                             ),
                           ),
                           Text(

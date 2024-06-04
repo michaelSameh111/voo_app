@@ -12,6 +12,9 @@ import 'package:voo_app/view/pages/main_profile_screen/help_center/help_center_s
 import 'package:voo_app/view/pages/main_profile_screen/notifications_screen/notifications_screen.dart';
 import 'package:voo_app/view/pages/main_profile_screen/vehicle_information_screen_edit_profile_screen/vehicle_information_screen_edit_profile_screen.dart';
 
+import '../../../Controller/shared-prefrences.dart';
+import '../login_screen.dart';
+
 class MainProfileScreen extends StatelessWidget {
   const MainProfileScreen({super.key});
 
@@ -415,9 +418,71 @@ class MainProfileScreen extends StatelessWidget {
             const Divider(
               color: Color(0xffF5F4F4),
             ),
+            InkWell(
+              onTap: () {
+              showLogoutDialog(context);
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.logout,
+                      color: Color(0xff808080),
+                    ),
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                    Text(
+                      'Log out',
+                      style: TextStyle(fontSize: 15.dp),
+                    ),
+                    const Spacer(),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      color: const Color(0xffA2A2A2),
+                      size: 17.dp,
+                    )
+                  ],
+                ),
+              ),
+            ),
+            const Divider(
+              color: Color(0xffF5F4F4),
+            ),
           ],
         ),
       ),
     ));
+  }
+  Future<void> showLogoutDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // prevents closing the dialog on tapping outside
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Log out'),
+          content: const Text('Are you sure you want to log out?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () => Navigator.pop(context),
+            ),
+            TextButton(
+              child: const Text('Log out'),
+              onPressed: () {
+                CacheHelper.removeData(key: 'loggedin');
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>  LoginScreen()),
+                      (route) => false,
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

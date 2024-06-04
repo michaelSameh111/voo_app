@@ -99,7 +99,7 @@ class _RcImageScreenState extends State<RcImageScreen> {
                           child: Column(
                             children: [
                               Text(
-                                'Rc Image',
+                                'Registration Image',
                                 style: TextStyle(
                                     fontSize: 25.dp,
                                     fontWeight: FontWeight.bold,
@@ -199,8 +199,8 @@ class _RcImageScreenState extends State<RcImageScreen> {
                                 if (LoginCubit.vehicleRCImage == null) {
                                   showSimpleDialog(
                                       context,
-                                      'Please Add RC Image',
-                                      'An RC is required to proceed.');
+                                      'Please Add Registration Image',
+                                      'Registration is required to proceed.');
                                 } else {
                                   Navigator.pop(context);
                                 }

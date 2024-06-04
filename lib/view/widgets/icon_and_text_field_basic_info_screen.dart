@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-
+//ignore_for_file: must_be_immutable
 class IconAndTextField extends StatelessWidget {
   Icon icon;
   String hintText;
   TextInputType keyboardType;
+  TextEditingController controller;
 
   IconAndTextField ({super.key,
     required this.icon,
     required this.hintText,
     required this.keyboardType,
+    required this.controller
 });
 
   @override
@@ -25,7 +27,8 @@ class IconAndTextField extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(6)),
           color: Color(0xffF5F4F4),
         ),
-        child: TextField(
+        child: TextFormField(
+          controller: controller,
           keyboardType: keyboardType,
           decoration: InputDecoration(
             border: InputBorder.none,

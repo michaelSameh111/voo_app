@@ -176,7 +176,7 @@ class LoginCubit extends Cubit<LoginState> {
         userLogin(email: email, password: password, context: context);
       }
     } catch (error) {
-      if (error is DioError) {
+      if (error is DioException) {
         if (error.response != null) {
           if (error.response?.statusCode == 422) {
             var errors = error.response?.data['errors'];
@@ -231,15 +231,17 @@ class LoginCubit extends Cubit<LoginState> {
       required String lastName,
       required String email,
       required String phone,
+      required String date,
       required BuildContext context}) {
     emit(EditUserLoadingState());
     DioHelper.postData(
-            url: 'https://chehabeg-store.com/api/auth/my-account/edit-user',
+            url: 'my-account/edit',
             data: {
               'first_name': firstName,
               'last_name': lastName,
               'email': email,
-              'phone': phone
+              'phone': phone,
+              'date_of_birth': date,
             },
             token: token)
         .then((value) async {
@@ -507,10 +509,10 @@ class LoginCubit extends Cubit<LoginState> {
     required String color,
     required String rcExpiry,
     required File? rcImage,
-    required File? frontImage,
-    required File? backImage,
-    required File? rightImage,
-    required File? leftImage,
+     File? frontImage,
+     File? backImage,
+     File? rightImage,
+     File? leftImage,
     required BuildContext context,
   }) async {
     emit(AddDriverVehicleLoadingState());

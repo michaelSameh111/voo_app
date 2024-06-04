@@ -1,3 +1,5 @@
+
+
 class LoginDataModel {
   String? accessToken;
   int? expiresIn;
@@ -20,6 +22,8 @@ class LoginDataModel {
   DriverVehicle? driverVehicle;
   List<DriverLicense>? driverLicense;
   DriverInsurance? driverInsurance;
+  int? totalTrips;
+  String? totalEarnings;
 
   LoginDataModel(
       {this.accessToken,
@@ -42,7 +46,7 @@ class LoginDataModel {
         this.driverData,
         this.driverVehicle,
         this.driverLicense,
-        this.driverInsurance});
+        this.driverInsurance,this.totalEarnings,this.totalTrips});
 
   LoginDataModel.fromJson(Map<String, dynamic> json) {
     accessToken = json['access_token'];
@@ -62,6 +66,8 @@ class LoginDataModel {
     serviceRadiusLongitude = json['service_radius_longitude'];
     image = json['image'];
     status = json['status'];
+    totalTrips = json['total_trips'];
+    totalEarnings = json['total_earning'];
     driverData = json['driver_data'] != null
         ? new DriverData.fromJson(json['driver_data'])
         : null;

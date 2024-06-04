@@ -54,7 +54,7 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen> {
                   SizedBox(
                     height: 10.h,
                   ),
-                  Image.asset('assets/images/login_register_screen_image.png'),
+                  Image.asset('assets/images/login_register_screen_image.png',),
                   SizedBox(
                     height: 4.h,
                   ),

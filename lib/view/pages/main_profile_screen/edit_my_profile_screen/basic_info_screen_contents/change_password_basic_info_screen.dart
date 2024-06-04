@@ -1,50 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen/edit_my_profile_screen.dart';
-// import 'package:voo_app/view/pages/edit_my_profile_screen/edit_my_profile_screen.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
-
+//ignore_for_file: must_be_immutable
 class ChangePasswordBasicInfoScreen extends StatelessWidget {
-  const ChangePasswordBasicInfoScreen({super.key});
-
+   ChangePasswordBasicInfoScreen({super.key});
+  TextEditingController oldPasswordController = TextEditingController();
+  TextEditingController newPasswordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  GlobalKey<FormState> formKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 10.h,
-          leading: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 2.0.w),
-            child: InkWell(
-              onTap: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            const EditMyProfileScreen()));
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        toolbarHeight: 10.h,
+        leadingWidth: 0,
+        title: Row(
+          children: [
+            SizedBox(width: 1.w,),
+            InkWell(
+              onTap: () {
+                Navigator.pop(context);
               },
               child: Container(
+                height: 20.h,
+                  width: 10.w,
                   decoration: BoxDecoration(
-                    boxShadow: [BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 1,
-                      blurRadius: 1,
-                    )],
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius: 1,
+                      )
+                    ],
                     shape: BoxShape.circle,
-                    color: Colors.white,),
-                  child: const Icon(Icons.arrow_back)),
+                    color: Colors.white,
+                  ),
+                  child: const Icon(Icons.arrow_back,color: Colors.black,)),
             ),
-          ),
-          title: Text('Change Password',
-            style: TextStyle(
-                fontSize: 20.dp,
-                fontWeight: FontWeight.bold
-            ),)
-          ,
-        ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 3.w),
+            SizedBox(width: 4.w,),
+            Text('Change Password',
+              style: TextStyle(
+                  fontSize: 20.dp,
+                  fontWeight: FontWeight.bold,
+                color: Colors.black
+              ),),
+          ],
+        )
+        ,
+      ),
+      body: Form(
+        key: formKey,
+        child: Padding(
+          padding: EdgeInsets.all(2.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -68,23 +79,23 @@ class ChangePasswordBasicInfoScreen extends StatelessWidget {
                       hintText: 'Password'),
                 ),
               ),
-              TextButton(
-                  onPressed: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) =>
-                    //             ForgetPasswordScreen()));
-                  },
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Forgot Password ?',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ],
-                  )),
+              // TextButton(
+              //     onPressed: () {
+              //       // Navigator.push(
+              //       //     context,
+              //       //     MaterialPageRoute(
+              //       //         builder: (context) =>
+              //       //             ForgetPasswordScreen()));
+              //     },
+              //     child: const Row(
+              //       mainAxisAlignment: MainAxisAlignment.end,
+              //       children: [
+              //         Text(
+              //           'Forgot Password ?',
+              //           style: TextStyle(color: Colors.black),
+              //         ),
+              //       ],
+              //     )),
               SizedBox(
                 height: 2.h,
               ),
@@ -132,9 +143,10 @@ class ChangePasswordBasicInfoScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 25.h,),
-              MainElevatedButton(
-                  nextScreen: const ChangePasswordBasicInfoScreen(),
+              MainElevatedButtonTwo(
+                onPressed: (){},
                   text: 'Update',
+                  circularBorder: true,
                   backgroundColor: const Color(0xffFF6A03)),
             ],
           ),

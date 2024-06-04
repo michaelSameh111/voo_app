@@ -1,9 +1,13 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:scroll_date_picker/scroll_date_picker.dart';
+import 'package:voo_app/Controller/Constants.dart';
+import 'package:voo_app/Controller/Login/login_cubit.dart';
 import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen/basic_info_screen_contents/change_language_basic_info_screen.dart';
 import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen/basic_info_screen_contents/change_password_basic_info_screen.dart';
 import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen/basic_info_screen_contents/edit_location_basic_info_screen.dart';
@@ -42,7 +46,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
             leadingWidth: 0,
             backgroundColor: Colors.white,
             elevation: 0,
-            title: Text('Nader Nabil',style: GoogleFonts.roboto(fontSize: 30.dp,color: Colors.black,fontWeight: FontWeight.bold),),
+            title: Text('${loginData.firstName} ${loginData.lastName}',style: GoogleFonts.roboto(fontSize: 30.dp,color: Colors.black,fontWeight: FontWeight.bold),),
             bottom: TabBar(
              indicator: const UnderlineTabIndicator(
                borderSide: BorderSide(color: Color(0xffFF6A03),width: 2),
@@ -100,10 +104,49 @@ class BasicInfoScreen extends StatefulWidget {
 }
 class _BasicInfoScreenState extends State<BasicInfoScreen> {
   TextEditingController dateOfBirthController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
   final DateTime _selectedDate = DateTime.now();
 
+  Future<void> selectDate() async {
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1950),
+      lastDate: DateTime(2100),
+    );
+    if (picked != null) {
+      setState(() {
+        dateController.text = picked.toString().split(" ")[0];
+      });
+    }
+  }
+  @override
+  void initState() {
+    firstNameController.text = loginData.firstName!;
+    lastNameController.text = loginData.lastName!;
+    phoneController.text = loginData.phone!;
+    dateController.text = loginData.dateOfBirth!;
+    selectedValue = loginData.gender!;
+   emailController.text = loggedInEmail!;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+    return BlocConsumer<LoginCubit, LoginState>(
+  listener: (context, state) {
+    if(state is EditUserSuccessState){
+      loginData.firstName = firstNameController.text;
+      loginData.lastName = lastNameController.text;
+      loginData.phone = phoneController.text;
+      loginData.dateOfBirth = dateController.text;
+      loginData.gender = selectedValue;
+    }
+  },
+  builder: (context, state) {
     return SafeArea(
       child: Scaffold(
         body: Center(
@@ -124,11 +167,7 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                   child: CircleAvatar(
                     radius: 10.w,
                     backgroundColor: const Color(0xffA2A2A2),
-                    child: Icon(
-                      Icons.person,
-                      size: 15.w,
-                      color: Colors.white,
-                    ),
+                    child: Image.network('${loginData.image}',fit: BoxFit.cover,),
                   ),
                 ),
                 SizedBox(
@@ -149,14 +188,22 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                   ),
                 ),
                 IconAndTextField(
+                  controller: firstNameController,
                     icon: const Icon(Icons.person),
-                    hintText: 'Enter your name',
+                    hintText: 'Enter your First Name',
                     keyboardType: TextInputType.name),
                 IconAndTextField(
+                  controller: lastNameController,
+                    icon: const Icon(Icons.person),
+                    hintText: 'Enter your Last Name',
+                    keyboardType: TextInputType.name),
+                IconAndTextField(
+                  controller: emailController,
                     icon: const Icon(Icons.mail),
                     keyboardType: TextInputType.emailAddress,
                     hintText: 'Enter your email address'),
                 IconAndTextField(
+                  controller: phoneController,
                     icon: const Icon(Icons.phone_android),
                     keyboardType: TextInputType.phone,
                     hintText: 'Enter your phone number'),
@@ -171,18 +218,36 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                       borderRadius: BorderRadius.all(Radius.circular(6)),
                       color: Color(0xffF5F4F4),
                     ),
-                    child: TextField(
-                      readOnly: true,
-                      controller: dateOfBirthController,
-                      //keyboardType: keyboardType,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Date of Birth',
-                      ),
-                      onTap: (){
-                        acceptDeclineShowModalSheet(context);
-                        // print(dateOfBirthController.text);
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Date of birth is Empty';
+                        }
+                        return null;
                       },
+                      readOnly: true,
+
+                      decoration: InputDecoration(
+
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide:
+                              const BorderSide(color: Colors.transparent)),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide:
+                              const BorderSide(color: Colors.transparent)),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide:
+                              const BorderSide(color: Colors.transparent)),
+                          contentPadding: EdgeInsets.symmetric(vertical: 15),
+                          hintText: 'Choose your date of birth',
+                          ),
+                      onTap: () {
+                        selectDate();
+                      },
+                      controller: dateController,
                     ),
                   ),
                 ),
@@ -212,6 +277,7 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                               )
                             ],
                           ),
+
                           items: gender
                               .map((String item) => DropdownMenuItem<String>(
                             value: item,
@@ -225,12 +291,15 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                             ),
                           ))
                               .toList(),
+
                           value: selectedValue,
                           onChanged: (String? value) {
                             setState(() {
                               selectedValue = value;
                             });
-                          }),
+                          },
+                      dropdownStyleData: DropdownStyleData(maxHeight: 200,width: 80.w,),
+                      ),
                     )
                   ),
                 ),
@@ -245,7 +314,7 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                const ChangePasswordBasicInfoScreen()));
+                                 ChangePasswordBasicInfoScreen()));
                   },
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
@@ -352,10 +421,14 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                 const Divider(
                   color: Color(0xffF5F4F4),
                 ),
-                MainElevatedButton(
-                    nextScreen: const BasicInfoScreen(),
+                MainElevatedButtonTwo(
+                  condition: state is EditUserLoadingState,
+                    onPressed: (){
+                      LoginCubit.get(context).editUser(firstName: firstNameController.text, lastName: lastNameController.text, email: emailController.text, phone: phoneController.text,date: dateController.text, context: context);
+                    },
                     text: 'Update',
-                    backgroundColor: const Color(0xffFF6A03)),
+                    backgroundColor: const Color(0xffFF6A03),
+                circularBorder: true,),
                 SizedBox(height: 2.h,)
               ],
             ),
@@ -363,6 +436,8 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
         ),
       ),
     );
+  },
+);
   }
   void acceptDeclineShowModalSheet(BuildContext context) {
     showModalBottomSheet(

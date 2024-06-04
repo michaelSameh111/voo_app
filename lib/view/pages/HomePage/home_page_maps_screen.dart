@@ -34,7 +34,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool locationEnabled = false;
   bool drivingState = false;
-  bool incomingRequest = false;
   List<LatLng> polyLineCoordinates = [];
   double cameraZoom = 17;
   int time = 0;
@@ -113,10 +112,9 @@ class _HomePageState extends State<HomePage> {
       _markers.add(marker);
     });
   }
-  Future handle(BuildContext contextt) async {
+  Future handle(BuildContext context) async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print(coming);
-      // if(coming == true){}else{
+
       TripModel? newTrip;
         if(message.data['rider'] != null){
           try {
@@ -145,9 +143,13 @@ class _HomePageState extends State<HomePage> {
             final x = await getAddressFromLatLng(
                   double.parse(tripModel.pickupLatitude!),
                   double.parse(tripModel.pickupLongitude!));
-              final y = await getAddressFromLatLng(
-                  double.parse(tripModel.destinationLatitude!),
-                  double.parse(tripModel.destinationLongitude!));
+            final y ;
+            if(tripModel.destinationLatitude != null){   y = await getAddressFromLatLng(
+                double.parse(tripModel.destinationLatitude!),
+                double.parse(tripModel.destinationLongitude!));}else {
+               y = 'Not Specified' ;
+            }
+
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -159,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
               );
-              acceptDeclineShowModalSheet(contextt, x, y);
+              acceptDeclineShowModalSheet(context, x, y);
             });
           }
         }
@@ -608,13 +610,12 @@ class _HomePageState extends State<HomePage> {
     return null;
   }
 
-  // @override
-  // void dispose() {
-  //   _removeOverlay();
-  //   stopListeningToLocationChanges();
-  //
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    stopListeningToLocationChanges();
+
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -896,9 +897,8 @@ class _HomePageState extends State<HomePage> {
         return SafeArea(
           child: Stack(
             children: [
-
               GoogleMap(
-                buildingsEnabled: false,
+                buildingsEnabled: true,
                 scrollGesturesEnabled: true,
                 zoomGesturesEnabled: true,
                 trafficEnabled: true,
@@ -1043,32 +1043,115 @@ class _HomePageState extends State<HomePage> {
                             Spacer(),
                             Text('${loginData.firstName} ${loginData.lastName}',style: GoogleFonts.roboto(fontSize: 14.dp,color: Colors.black,fontWeight: FontWeight.bold),),
                             const Spacer(),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 3.w, vertical: 1.h),
-                              decoration: BoxDecoration(
-                                  color: const Color(0xffFF6A03),
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Row(
-                                children: [
-                                   Text(
-                                    driverData != null && driverVehicle != null && licenseData != null && insuranceData != null ?
-                                    'On' : 'Pending',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  SizedBox(
-                                    width: 1.5.w,
-                                  ),
-                                  CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    radius: 2.5.w,
-                                    child: CircleAvatar(
-                                      // backgroundColor: Colors.white,
-                                      backgroundColor: driverData != null && driverVehicle != null && licenseData != null && insuranceData != null ? Color(0xffFF6A03).withOpacity(0.5) : Colors.white,
-                                      radius: 1.8.w,
+                            InkWell(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => StatefulBuilder(
+                                      builder: (context, setState) {
+                                        return Theme(
+                                          data: ThemeData(
+                                              dialogBackgroundColor: Colors.white),
+                                          child: Dialog(
+                                            elevation: 0,
+                                            child: Stack(
+                                              clipBehavior: Clip.none,
+                                              alignment: Alignment.topCenter,
+                                              children: [
+                                                SizedBox(
+                                                  height: 28.h,
+                                                  width: double.infinity,
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                    children: [
+                                                      Text(
+                                                        'You\'re ${loginData.dateOfBirth}',
+                                                        style: TextStyle(
+                                                            fontWeight: FontWeight.bold,
+                                                            fontSize: 18.dp,
+                                                            color: const Color(0xff646363)),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 1.h,
+                                                      ),
+                                                      Text(
+                                                        'Go online to accept jobs.',
+                                                        style: TextStyle(
+                                                            fontSize: 15.dp,
+                                                            color: const Color(0xff646363)),
+                                                        textAlign: TextAlign.center,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 1.5.h,
+                                                      ),
+                                                      const Divider(),
+                                                      SizedBox(
+                                                        height: 1.5.h,
+                                                      ),
+                                                      Switch(
+                                                          trackOutlineColor:
+                                                          WidgetStateProperty.all(
+                                                              Colors.transparent),
+                                                          activeTrackColor:
+                                                          const Color(0xffFF6A03),
+                                                          inactiveTrackColor:
+                                                          const Color(0xffD1D1D6),
+                                                          inactiveThumbColor: Colors.white,
+                                                          value: light,
+                                                          onChanged: (bool value) {
+                                                            setState(() {
+                                                              light = value;
+                                                            });
+                                                          }),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Positioned(
+                                                  top: -50,
+                                                  child: CircleAvatar(
+                                                    backgroundColor: Colors.white,
+                                                    radius: 40,
+                                                    child: Image.asset(
+                                                      'assets/images/notification_offline.png',
+                                                      width: 12.w,
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ));
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 3.w, vertical: 1.h),
+                                decoration: BoxDecoration(
+                                    color: const Color(0xffFF6A03),
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Row(
+                                  children: [
+                                     Text(
+                                      driverData != null && driverVehicle != null && licenseData != null && insuranceData != null ?
+                                      'On' : 'Pending',
+                                      style: TextStyle(color: Colors.white),
                                     ),
-                                  )
-                                ],
+                                    SizedBox(
+                                      width: 1.5.w,
+                                    ),
+                                    CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      radius: 2.5.w,
+                                      child: CircleAvatar(
+                                        // backgroundColor: Colors.white,
+                                        backgroundColor: driverData != null && driverVehicle != null && licenseData != null && insuranceData != null ? Color(0xffFF6A03).withOpacity(0.5) : Colors.white,
+                                        radius: 1.8.w,
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             )
                           ],
@@ -1110,7 +1193,7 @@ class _HomePageState extends State<HomePage> {
                                     style: TextStyle(color: Color(0xff646363)),
                                   ),
                                   Text(
-                                    '\$250',
+                                    '${loginData.totalEarnings}',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15.dp),
@@ -1153,7 +1236,7 @@ class _HomePageState extends State<HomePage> {
                                     style: TextStyle(color: Color(0xff646363)),
                                   ),
                                   Text(
-                                    '10',
+                                    '${loginData.totalTrips}',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15.dp),
@@ -1169,90 +1252,6 @@ class _HomePageState extends State<HomePage> {
                       height: 5.h,
                     ),
                     const Spacer(),
-                    // ElevatedButton(
-                    //   child: const Text('Change location state (for UI)'),
-                    //   onPressed: () {
-                    //     showDialog(
-                    //         context: context,
-                    //         builder: (context) => StatefulBuilder(
-                    //           builder: (context, setState) {
-                    //             return Theme(
-                    //               data: ThemeData(
-                    //                   dialogBackgroundColor: Colors.white),
-                    //               child: Dialog(
-                    //                 elevation: 0,
-                    //                 child: Stack(
-                    //                   clipBehavior: Clip.none,
-                    //                   alignment: Alignment.topCenter,
-                    //                   children: [
-                    //                     SizedBox(
-                    //                       height: 28.h,
-                    //                       width: double.infinity,
-                    //                       child: Column(
-                    //                         mainAxisAlignment:
-                    //                         MainAxisAlignment.center,
-                    //                         children: [
-                    //                           Text(
-                    //                             'You\'re offline',
-                    //                             style: TextStyle(
-                    //                                 fontWeight: FontWeight.bold,
-                    //                                 fontSize: 18.dp,
-                    //                                 color: const Color(0xff646363)),
-                    //                           ),
-                    //                           SizedBox(
-                    //                             height: 1.h,
-                    //                           ),
-                    //                           Text(
-                    //                             'Go online to accept jobs.',
-                    //                             style: TextStyle(
-                    //                                 fontSize: 15.dp,
-                    //                                 color: const Color(0xff646363)),
-                    //                             textAlign: TextAlign.center,
-                    //                           ),
-                    //                           SizedBox(
-                    //                             height: 1.5.h,
-                    //                           ),
-                    //                           const Divider(),
-                    //                           SizedBox(
-                    //                             height: 1.5.h,
-                    //                           ),
-                    //                           Switch(
-                    //                               trackOutlineColor:
-                    //                               MaterialStateProperty.all(
-                    //                                   Colors.transparent),
-                    //                               activeTrackColor:
-                    //                               const Color(0xffFF6A03),
-                    //                               inactiveTrackColor:
-                    //                               const Color(0xffD1D1D6),
-                    //                               inactiveThumbColor: Colors.white,
-                    //                               value: light,
-                    //                               onChanged: (bool value) {
-                    //                                 setState(() {
-                    //                                   light = value;
-                    //                                 });
-                    //                               }),
-                    //                         ],
-                    //                       ),
-                    //                     ),
-                    //                     Positioned(
-                    //                       top: -50,
-                    //                       child: CircleAvatar(
-                    //                         backgroundColor: Colors.white,
-                    //                         radius: 40,
-                    //                         child: Image.asset(
-                    //                           'assets/images/notification_offline.png',
-                    //                           width: 12.w,
-                    //                         ),
-                    //                       ),
-                    //                     )
-                    //                   ],
-                    //                 ),
-                    //               ),
-                    //             );
-                    //           },
-                    //         ));
-                    //   },
-                    // ),
                     tripToPickup == true
                         ? SizedBox(
                             width: 40.w,

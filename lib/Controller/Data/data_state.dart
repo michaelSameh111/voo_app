@@ -45,3 +45,10 @@ class EndTripErrorState extends DataState {}
 class CancelTripLoadingState extends DataState {}
 class CancelTripSuccessState extends DataState {}
 class CancelTripErrorState extends DataState {}
+
+class ChangeDriverStatusLoadingState extends DataState {}
+class ChangeDriverStatusSuccessState extends DataState {}
+class ChangeDriverStatusErrorState extends DataState {
+  final String error;
+  ChangeDriverStatusErrorState(this.error);
+}

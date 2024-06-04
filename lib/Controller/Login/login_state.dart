@@ -91,12 +91,7 @@ class ChangePasswordErrorState extends LoginState {
 }
 
 
-class ChangeDriverStatusLoadingState extends LoginState {}
-class ChangeDriverStatusSuccessState extends LoginState {}
-class ChangeDriverStatusErrorState extends LoginState {
-  final String error;
-  ChangeDriverStatusErrorState(this.error);
-}
+
 
 
 

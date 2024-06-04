@@ -17,6 +17,7 @@ class LoginDataModel {
   dynamic serviceRadiusLatitude;
   dynamic serviceRadiusLongitude;
   String? image;
+  String? acceptingRides;
   dynamic status;
   DriverData? driverData;
   DriverVehicle? driverVehicle;
@@ -44,6 +45,7 @@ class LoginDataModel {
         this.image,
         this.status,
         this.driverData,
+        this.acceptingRides,
         this.driverVehicle,
         this.driverLicense,
         this.driverInsurance,this.totalEarnings,this.totalTrips});
@@ -57,6 +59,7 @@ class LoginDataModel {
     lastName = json['last_name'];
     phone = json['phone'];
     role = json['role'];
+    acceptingRides = json['accepting_rides'];
     gender = json['gender'];
     dateOfBirth = json['date_of_birth'];
     backgroundCheckStatus = json['background_check_status'];

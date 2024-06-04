@@ -588,29 +588,29 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
 
-  Future<void> changeDriverStatus(
-      {
-        required String status,
-        required String location,
-        required String lat,
-        required String lng,
-        required BuildContext context})async {
-    emit(ChangeDriverStatusLoadingState());
-    DioHelper.postData(
-        url:
-        'driver-status/update',
-        data: {
-          'accepting_rides': status,
-          'driver_location' : location,
-          'driver_latitude' : lat,
-          'driver_longitude' : lng,
-        },
-        token: token)
-        .then((value) async {
-      emit(ChangeDriverStatusSuccessState());
-    }).catchError((error) {
-      print(error);
-      emit(ChangeDriverStatusErrorState(error.toString()));
-    });
-  }
+  // Future<void> changeDriverStatus(
+  //     {
+  //       required String status,
+  //       required String location,
+  //       required String lat,
+  //       required String lng,
+  //       required BuildContext context})async {
+  //   emit(ChangeDriverStatusLoadingState());
+  //   DioHelper.postData(
+  //       url:
+  //       'driver-status/update',
+  //       data: {
+  //         'accepting_rides': status,
+  //         'driver_location' : location,
+  //         'driver_latitude' : lat,
+  //         'driver_longitude' : lng,
+  //       },
+  //       token: token)
+  //       .then((value) async {
+  //     emit(ChangeDriverStatusSuccessState());
+  //   }).catchError((error) {
+  //     print(error);
+  //     emit(ChangeDriverStatusErrorState(error.toString()));
+  //   });
+  // }
 }

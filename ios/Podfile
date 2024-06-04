@@ -31,6 +31,7 @@ target 'Runner' do
   use_frameworks!
   use_modular_headers!
   
+  pod 'Firebase/Messaging'
   pod 'FairmaticSDK', :git => 'https://github.com/fairmatic/fairmatic-cocoapods', :tag => '2.0.2'
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 

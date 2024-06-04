@@ -784,7 +784,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                                   const BorderSide(color: Colors.transparent)),
                               contentPadding: EdgeInsets.all(15),
                               hintText: 'Registration Number'),
-                          keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.text,
                           controller: rcController,
                         ),
                       ),

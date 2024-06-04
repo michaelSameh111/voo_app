@@ -16,52 +16,79 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 10.h,
-          leading: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 2.0.w),
-            child: InkWell(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 1,
-                        blurRadius: 1,
-                      )
-                    ],
-                    shape: BoxShape.circle,
-                    color: Colors.white,
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            toolbarHeight: 10.h,
+            leadingWidth: 0,
+            bottom: TabBar(
+              indicator: const UnderlineTabIndicator(
+                borderSide: BorderSide(color: Color(0xffFF6A03),width: 2),
+              ),
+              tabs: [
+                Padding(
+                  padding:  EdgeInsets.symmetric(vertical: 1.h),
+                  child: Text(
+                    'FAQ',
+                    style: TextStyle(
+                        color: const Color(0xffFF6A03),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14.8.dp),
                   ),
-                  child: const Icon(Icons.arrow_back)),
+                ),
+                Padding(
+                  padding:  EdgeInsets.symmetric(vertical: 1.h),
+                  child: Text(
+                    'Contact Us',
+                    style: TextStyle(
+                        color: const Color(0xffFF6A03),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14.8.dp),
+                  ),
+                ),
+              ],
+            ),
+            title: Row(
+              children: [
+                SizedBox(
+                  width: 1.w,
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                      height: 20.h,
+                      width: 10.w,
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 1,
+                            blurRadius: 1,
+                          )
+                        ],
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                      child: const Icon(
+                        Icons.arrow_back,
+                        color: Colors.black,
+                      )),
+                ),
+                SizedBox(
+                  width: 4.w,
+                ),
+                Text(
+                  'Bank Account',
+                  style: TextStyle(
+                      fontSize: 20.dp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+              ],
             ),
           ),
-          title: Text(
-            'Help Center',
-            style: TextStyle(fontSize: 20.dp, fontWeight: FontWeight.bold),
-          ),
-          bottom: TabBar(
-            tabs: [
-              Text(
-                'FAQ',
-                style: TextStyle(
-                    color: const Color(0xffFF6A03),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14.8.dp),
-              ),
-              Text(
-                'Contact Us',
-                style: TextStyle(
-                    color: const Color(0xffFF6A03),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14.8.dp),
-              ),
-            ],
-          ),
-        ),
         body: const TabBarView(
           children: [
             FAQScreenInHelpCenter(),
@@ -81,129 +108,131 @@ class FAQScreenInHelpCenter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 3.0.w, vertical: 4.h),
-      child: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(13.dp),
-                border: Border.all(color: const Color(0xffECECEC))
-            ),
-            child: ExpansionTile(
-              iconColor: const Color(0xffFF6A03),
-              title: Text(
-                'How to cancel trip?',
-                style: TextStyle(fontWeight: FontWeight.bold,
-                    fontSize: 15.dp),),
-              children: <Widget> [
-                ListTile(
-                  title: Text('Lorem ipsum dolor sit amet consectetur.'
-                      ' Magna bibendum rutrum feugiat non risus '
-                      ' hac ipsum.',
-                    style: TextStyle(color: const Color(0xff808080),
-                        fontSize: 15.dp),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(13.dp),
+                  border: Border.all(color: const Color(0xffECECEC))
+              ),
+              child: ExpansionTile(
+                iconColor: const Color(0xffFF6A03),
+                title: Text(
+                  'How to cancel trip?',
+                  style: TextStyle(fontWeight: FontWeight.bold,
+                      fontSize: 15.dp),),
+                children: <Widget> [
+                  ListTile(
+                    title: Text('Lorem ipsum dolor sit amet consectetur.'
+                        ' Magna bibendum rutrum feugiat non risus '
+                        ' hac ipsum.',
+                      style: TextStyle(color: const Color(0xff808080),
+                          fontSize: 15.dp),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          SizedBox(height: 2.h,),
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(13.dp),
-                border: Border.all(color: const Color(0xffECECEC))
-            ),
-            child: ExpansionTile(
-              iconColor: const Color(0xffFF6A03),
-              title: Text(
-                'How to cancel trip?',
-                style: TextStyle(fontWeight: FontWeight.bold,
-                    fontSize: 15.dp),),
-              children: <Widget> [
-                ListTile(
-                  title: Text('Lorem ipsum dolor sit amet consectetur.'
-                      ' Magna bibendum rutrum feugiat non risus '
-                      ' hac ipsum.',
-                    style: TextStyle(color: const Color(0xff808080),
-                        fontSize: 15.dp),
+            SizedBox(height: 2.h,),
+            Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(13.dp),
+                  border: Border.all(color: const Color(0xffECECEC))
+              ),
+              child: ExpansionTile(
+                iconColor: const Color(0xffFF6A03),
+                title: Text(
+                  'How to cancel trip?',
+                  style: TextStyle(fontWeight: FontWeight.bold,
+                      fontSize: 15.dp),),
+                children: <Widget> [
+                  ListTile(
+                    title: Text('Lorem ipsum dolor sit amet consectetur.'
+                        ' Magna bibendum rutrum feugiat non risus '
+                        ' hac ipsum.',
+                      style: TextStyle(color: const Color(0xff808080),
+                          fontSize: 15.dp),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          SizedBox(height: 2.h,),
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(13.dp),
-                border: Border.all(color: const Color(0xffECECEC))
-            ),
-            child: ExpansionTile(
-              iconColor: const Color(0xffFF6A03),
-              title: Text(
-                'How to cancel trip?',
-                style: TextStyle(fontWeight: FontWeight.bold,
-                    fontSize: 15.dp),),
-              children: <Widget> [
-                ListTile(
-                  title: Text('Lorem ipsum dolor sit amet consectetur.'
-                      ' Magna bibendum rutrum feugiat non risus '
-                      ' hac ipsum.',
-                    style: TextStyle(color: const Color(0xff808080),
-                        fontSize: 15.dp),
+            SizedBox(height: 2.h,),
+            Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(13.dp),
+                  border: Border.all(color: const Color(0xffECECEC))
+              ),
+              child: ExpansionTile(
+                iconColor: const Color(0xffFF6A03),
+                title: Text(
+                  'How to cancel trip?',
+                  style: TextStyle(fontWeight: FontWeight.bold,
+                      fontSize: 15.dp),),
+                children: <Widget> [
+                  ListTile(
+                    title: Text('Lorem ipsum dolor sit amet consectetur.'
+                        ' Magna bibendum rutrum feugiat non risus '
+                        ' hac ipsum.',
+                      style: TextStyle(color: const Color(0xff808080),
+                          fontSize: 15.dp),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          SizedBox(height: 2.h,),
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(13.dp),
-                border: Border.all(color: const Color(0xffECECEC))
-            ),
-            child: ExpansionTile(
-              iconColor: const Color(0xffFF6A03),
-              title: Text(
-                'How to cancel trip?',
-                style: TextStyle(fontWeight: FontWeight.bold,
-                    fontSize: 15.dp),),
-              children: <Widget> [
-                ListTile(
-                  title: Text('Lorem ipsum dolor sit amet consectetur.'
-                      ' Magna bibendum rutrum feugiat non risus '
-                      ' hac ipsum.',
-                    style: TextStyle(color: const Color(0xff808080),
-                        fontSize: 15.dp),
+            SizedBox(height: 2.h,),
+            Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(13.dp),
+                  border: Border.all(color: const Color(0xffECECEC))
+              ),
+              child: ExpansionTile(
+                iconColor: const Color(0xffFF6A03),
+                title: Text(
+                  'How to cancel trip?',
+                  style: TextStyle(fontWeight: FontWeight.bold,
+                      fontSize: 15.dp),),
+                children: <Widget> [
+                  ListTile(
+                    title: Text('Lorem ipsum dolor sit amet consectetur.'
+                        ' Magna bibendum rutrum feugiat non risus '
+                        ' hac ipsum.',
+                      style: TextStyle(color: const Color(0xff808080),
+                          fontSize: 15.dp),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          SizedBox(height: 2.h,),
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(13.dp),
-                border: Border.all(color: const Color(0xffECECEC))
-            ),
-            child: ExpansionTile(
-              iconColor: const Color(0xffFF6A03),
-              title: Text(
-                'How to cancel trip?',
-                style: TextStyle(fontWeight: FontWeight.bold,
-                    fontSize: 15.dp),),
-              children: <Widget> [
-                ListTile(
-                  title: Text('Lorem ipsum dolor sit amet consectetur.'
-                      ' Magna bibendum rutrum feugiat non risus '
-                      ' hac ipsum.',
-                    style: TextStyle(color: const Color(0xff808080),
-                        fontSize: 15.dp),
+            SizedBox(height: 2.h,),
+            Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(13.dp),
+                  border: Border.all(color: const Color(0xffECECEC))
+              ),
+              child: ExpansionTile(
+                iconColor: const Color(0xffFF6A03),
+                title: Text(
+                  'How to cancel trip?',
+                  style: TextStyle(fontWeight: FontWeight.bold,
+                      fontSize: 15.dp),),
+                children: <Widget> [
+                  ListTile(
+                    title: Text('Lorem ipsum dolor sit amet consectetur.'
+                        ' Magna bibendum rutrum feugiat non risus '
+                        ' hac ipsum.',
+                      style: TextStyle(color: const Color(0xff808080),
+                          fontSize: 15.dp),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-
-        ],
+        
+          ],
+        ),
       ),
     );
   }

@@ -1,6 +1,5 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
@@ -50,7 +49,6 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
              indicator: const UnderlineTabIndicator(
                borderSide: BorderSide(color: Color(0xffFF6A03),width: 2),
              ),
-
               tabs: [
                 Padding(
                   padding:  EdgeInsets.symmetric(vertical: 1.h),
@@ -148,289 +146,288 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
   builder: (context, state) {
     return SafeArea(
       child: Scaffold(
-        body: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 3.h,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 3.h,
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const EditYourPhotoBasicInfoScreen()));
+                },
+                child: CircleAvatar(
+                  radius: 10.w,
+                  backgroundColor: const Color(0xffA2A2A2),
+                  child: ClipRRect(borderRadius: BorderRadius.circular(100),child: Image.network('${loginData.image}',fit: BoxFit.fill,height: 300,width: 300,)),
                 ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const EditYourPhotoBasicInfoScreen()));
-                  },
-                  child: CircleAvatar(
-                    radius: 10.w,
-                    backgroundColor: const Color(0xffA2A2A2),
-                    child: ClipRRect(borderRadius: BorderRadius.circular(100),child: Image.network('${loginData.image}',fit: BoxFit.fill,height: 300,width: 300,)),
-                  ),
+              ),
+              SizedBox(
+                height: 1.h,
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const EditYourPhotoBasicInfoScreen()));
+                },
+                child: Text(
+                  'Edit your photo',
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                 ),
-                SizedBox(
-                  height: 1.h,
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const EditYourPhotoBasicInfoScreen()));
-                  },
-                  child: Text(
-                    'Edit your photo',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
-                  ),
-                ),
-                IconAndTextField(
-                  controller: firstNameController,
-                    icon: const Icon(Icons.person),
-                    hintText: 'Enter your First Name',
-                    keyboardType: TextInputType.name),
-                IconAndTextField(
-                  controller: lastNameController,
-                    icon: const Icon(Icons.person),
-                    hintText: 'Enter your Last Name',
-                    keyboardType: TextInputType.name),
-                IconAndTextField(
-                  controller: emailController,
-                    icon: const Icon(Icons.mail),
-                    keyboardType: TextInputType.emailAddress,
-                    hintText: 'Enter your email address'),
-                IconAndTextField(
-                  controller: phoneController,
-                    icon: const Icon(Icons.phone_android),
-                    keyboardType: TextInputType.phone,
-                    hintText: 'Enter your phone number'),
-                ListTile(
-                  leading: const Icon(Icons.calendar_today),
-                  iconColor: const Color(0xff808080),
-                  title: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 3.w,
-                    ),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(6)),
-                      color: Color(0xffF5F4F4),
-                    ),
-                    child: TextFormField(
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Date of birth is Empty';
-                        }
-                        return null;
-                      },
-                      readOnly: true,
-
-                      decoration: InputDecoration(
-
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                              const BorderSide(color: Colors.transparent)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                              const BorderSide(color: Colors.transparent)),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                              const BorderSide(color: Colors.transparent)),
-                          contentPadding: EdgeInsets.symmetric(vertical: 15),
-                          hintText: 'Choose your date of birth',
-                          ),
-                      onTap: () {
-                        selectDate();
-                      },
-                      controller: dateController,
-                    ),
-                  ),
-                ),
-
-                ListTile(
-                  leading: const Icon(Icons.transgender_outlined),
-                  iconColor: const Color(0xff808080),
-                  title: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 3.w,
-                    ),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(6)),
-                      color: Color(0xffF5F4F4),
-                    ),
-                    child:
-                    DropdownButtonHideUnderline(
-                      child: DropdownButton2<String>(
-                          isExpanded: true,
-                          hint: const Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  'Select Gender',
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              )
-                            ],
-                          ),
-
-                          items: gender
-                              .map((String item) => DropdownMenuItem<String>(
-                            value: item,
-                            child: Text(
-                              item,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ))
-                              .toList(),
-
-                          value: selectedValue,
-                          onChanged: (String? value) {
-                            setState(() {
-                              selectedValue = value;
-                            });
-                          },
-                      dropdownStyleData: DropdownStyleData(maxHeight: 200,width: 80.w,),
+              ),
+              // IconAndTextField(
+              //   controller: firstNameController,
+              //     icon: const Icon(Icons.person),
+              //     hintText: 'Enter your First Name',
+              //     keyboardType: TextInputType.name),
+              // IconAndTextField(
+              //   controller: lastNameController,
+              //     icon: const Icon(Icons.person),
+              //     hintText: 'Enter your Last Name',
+              //     keyboardType: TextInputType.name),
+              SizedBox(height: 2.h,),
+              IconAndTextField(
+                controller: emailController,
+                  icon: const Icon(Icons.mail),
+                  keyboardType: TextInputType.emailAddress,
+                  hintText: 'Enter your email address'),
+              IconAndTextField(
+                controller: phoneController,
+                  icon: const Icon(Icons.phone_android),
+                  keyboardType: TextInputType.phone,
+                  hintText: 'Enter your phone number'),
+              // ListTile(
+              //   leading: const Icon(Icons.calendar_today),
+              //   iconColor: const Color(0xff808080),
+              //   title: Container(
+              //     padding: EdgeInsets.symmetric(
+              //       horizontal: 3.w,
+              //     ),
+              //     decoration: const BoxDecoration(
+              //       borderRadius: BorderRadius.all(Radius.circular(6)),
+              //       color: Color(0xffF5F4F4),
+              //     ),
+              //     child: TextFormField(
+              //       validator: (value) {
+              //         if (value!.isEmpty) {
+              //           return 'Date of birth is Empty';
+              //         }
+              //         return null;
+              //       },
+              //       readOnly: true,
+              //
+              //       decoration: InputDecoration(
+              //
+              //           focusedBorder: OutlineInputBorder(
+              //               borderRadius: BorderRadius.circular(10),
+              //               borderSide:
+              //               const BorderSide(color: Colors.transparent)),
+              //           enabledBorder: OutlineInputBorder(
+              //               borderRadius: BorderRadius.circular(10),
+              //               borderSide:
+              //               const BorderSide(color: Colors.transparent)),
+              //           border: OutlineInputBorder(
+              //               borderRadius: BorderRadius.circular(10),
+              //               borderSide:
+              //               const BorderSide(color: Colors.transparent)),
+              //           contentPadding: EdgeInsets.symmetric(vertical: 15),
+              //           hintText: 'Choose your date of birth',
+              //           ),
+              //       onTap: () {
+              //         selectDate();
+              //       },
+              //       controller: dateController,
+              //     ),
+              //   ),
+              // ),
+              //
+              // ListTile(
+              //   leading: const Icon(Icons.transgender_outlined),
+              //   iconColor: const Color(0xff808080),
+              //   title: Container(
+              //     padding: EdgeInsets.symmetric(
+              //       horizontal: 3.w,
+              //     ),
+              //     decoration: const BoxDecoration(
+              //       borderRadius: BorderRadius.all(Radius.circular(6)),
+              //       color: Color(0xffF5F4F4),
+              //     ),
+              //     child:
+              //     DropdownButtonHideUnderline(
+              //       child: DropdownButton2<String>(
+              //           isExpanded: true,
+              //           hint: const Row(
+              //             children: [
+              //               Expanded(
+              //                 child: Text(
+              //                   'Select Gender',
+              //                   overflow: TextOverflow.ellipsis,
+              //                 ),
+              //               )
+              //             ],
+              //           ),
+              //
+              //           items: gender
+              //               .map((String item) => DropdownMenuItem<String>(
+              //             value: item,
+              //             child: Text(
+              //               item,
+              //               style: const TextStyle(
+              //                 fontSize: 18,
+              //                 color: Colors.black,
+              //               ),
+              //               overflow: TextOverflow.ellipsis,
+              //             ),
+              //           ))
+              //               .toList(),
+              //
+              //           value: selectedValue,
+              //           onChanged: (String? value) {
+              //             setState(() {
+              //               selectedValue = value;
+              //             });
+              //           },
+              //       dropdownStyleData: DropdownStyleData(maxHeight: 200,width: 80.w,),
+              //       ),
+              //     )
+              //   ),
+              // ),
+              SizedBox(height: 1.h,),
+              Divider(
+                thickness: 1.h,
+                color: const Color(0xffECECEC),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                               ChangePasswordBasicInfoScreen()));
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.lock,
+                        color: Color(0xff808080),
                       ),
-                    )
+                      SizedBox(
+                        width: 3.w,
+                      ),
+                      Expanded(
+                        child: Text(
+                          'Change Password',
+                          style: TextStyle(fontSize: 15.dp),
+                        ),
+                      ),
+                      const Spacer(),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        color: const Color(0xffA2A2A2),
+                        size: 17.dp,
+                      )
+                    ],
                   ),
                 ),
-                SizedBox(height: 1.h,),
-                Divider(
-                  thickness: 1.h,
-                  color: const Color(0xffECECEC),
+              ),
+              const Divider(
+                color: Color(0xffF5F4F4),
+              ),
+              // InkWell(
+              //   onTap: () {
+              //     Navigator.push(
+              //         context,
+              //         MaterialPageRoute(
+              //             builder: (context) =>
+              //                 const ChangeLanguageBasicInfoScreen()));
+              //   },
+              //   child: Padding(
+              //     padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+              //     child: Row(
+              //       children: [
+              //         const Icon(
+              //           Icons.language,
+              //           color: Color(0xff808080),
+              //         ),
+              //         SizedBox(
+              //           width: 3.w,
+              //         ),
+              //         Expanded(
+              //           child: Text(
+              //             'Change Language',
+              //             style: TextStyle(fontSize: 15.dp),
+              //           ),
+              //         ),
+              //         const Spacer(),
+              //         Icon(
+              //           Icons.arrow_forward_ios,
+              //           color: const Color(0xffA2A2A2),
+              //           size: 17.dp,
+              //         )
+              //       ],
+              //     ),
+              //   ),
+              // ),
+              // const Divider(
+              //   color: Color(0xffF5F4F4),
+              // ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>  EditLocationScreen()));
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.location_on,
+                        color: Color(0xff808080),
+                      ),
+                      SizedBox(
+                        width: 3.w,
+                      ),
+                      Expanded(
+                        child: Text(
+                          'Edit Location',
+                          style: TextStyle(fontSize: 15.dp),
+                        ),
+                      ),
+                      const Spacer(),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        color: const Color(0xffA2A2A2),
+                        size: 17.dp,
+                      )
+                    ],
+                  ),
                 ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                 ChangePasswordBasicInfoScreen()));
+              ),
+              const Divider(
+                color: Color(0xffF5F4F4),
+              ),
+              MainElevatedButtonTwo(
+                condition: state is EditUserLoadingState,
+                  onPressed: (){
+                    LoginCubit.get(context).editUser(firstName: loginData.firstName!, lastName: loginData.lastName!, email: emailController.text, phone: phoneController.text,date: loginData.dateOfBirth!, context: context);
                   },
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.lock,
-                          color: Color(0xff808080),
-                        ),
-                        SizedBox(
-                          width: 3.w,
-                        ),
-                        Expanded(
-                          child: Text(
-                            'Change Password',
-                            style: TextStyle(fontSize: 15.dp),
-                          ),
-                        ),
-                        const Spacer(),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          color: const Color(0xffA2A2A2),
-                          size: 17.dp,
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                const Divider(
-                  color: Color(0xffF5F4F4),
-                ),
-                // InkWell(
-                //   onTap: () {
-                //     Navigator.push(
-                //         context,
-                //         MaterialPageRoute(
-                //             builder: (context) =>
-                //                 const ChangeLanguageBasicInfoScreen()));
-                //   },
-                //   child: Padding(
-                //     padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                //     child: Row(
-                //       children: [
-                //         const Icon(
-                //           Icons.language,
-                //           color: Color(0xff808080),
-                //         ),
-                //         SizedBox(
-                //           width: 3.w,
-                //         ),
-                //         Expanded(
-                //           child: Text(
-                //             'Change Language',
-                //             style: TextStyle(fontSize: 15.dp),
-                //           ),
-                //         ),
-                //         const Spacer(),
-                //         Icon(
-                //           Icons.arrow_forward_ios,
-                //           color: const Color(0xffA2A2A2),
-                //           size: 17.dp,
-                //         )
-                //       ],
-                //     ),
-                //   ),
-                // ),
-                // const Divider(
-                //   color: Color(0xffF5F4F4),
-                // ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>  EditLocationScreen()));
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.location_on,
-                          color: Color(0xff808080),
-                        ),
-                        SizedBox(
-                          width: 3.w,
-                        ),
-                        Expanded(
-                          child: Text(
-                            'Edit Location',
-                            style: TextStyle(fontSize: 15.dp),
-                          ),
-                        ),
-                        const Spacer(),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          color: const Color(0xffA2A2A2),
-                          size: 17.dp,
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                const Divider(
-                  color: Color(0xffF5F4F4),
-                ),
-                MainElevatedButtonTwo(
-                  condition: state is EditUserLoadingState,
-                    onPressed: (){
-                      LoginCubit.get(context).editUser(firstName: firstNameController.text, lastName: lastNameController.text, email: emailController.text, phone: phoneController.text,date: dateController.text, context: context);
-                    },
-                    text: 'Update',
-                    backgroundColor: const Color(0xffFF6A03),
-                circularBorder: true,),
-                SizedBox(height: 2.h,)
-              ],
-            ),
+                  text: 'Update',
+                  backgroundColor: const Color(0xffFF6A03),
+              circularBorder: true,),
+              SizedBox(height: 2.h,)
+            ],
           ),
         ),
       ),

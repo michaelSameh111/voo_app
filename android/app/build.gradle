@@ -28,7 +28,7 @@ if (flutterVersionName == null) {
 android {
     namespace "com.example.voo_app"
     compileSdkVersion 34
-    ndkVersion flutter.ndkVersion
+    ndkVersion "25.1.8937393"
 
     lintOptions {
         // This is needed to avoid spurious lint errors from libthrift and log4j.

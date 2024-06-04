@@ -14,7 +14,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_places_autocomplete_text_field/model/prediction.dart';
 import 'package:voo_app/Controller/Data/data_cubit.dart';
-import 'package:voo_app/Controller/Login/login_cubit.dart';
 import 'package:voo_app/view/pages/DataCheck.dart';
 import 'package:voo_app/view/pages/collect_cash_screen.dart';
 import 'package:voo_app/view/widgets/CountDownDialog.dart';

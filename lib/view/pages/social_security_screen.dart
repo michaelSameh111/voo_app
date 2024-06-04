@@ -64,7 +64,7 @@ class SocialSecurityScreen extends StatelessWidget {
                         Expanded(
                           child: TextFormField(
                             controller: controllerOne,
-                            maxLength: 3, // Limit input to 4 digits
+                            maxLength: 3,
                             keyboardType: TextInputType.number, // Enforce numeric input
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -98,19 +98,19 @@ class SocialSecurityScreen extends StatelessWidget {
                         Expanded(
                           child: TextFormField(
                             controller: controllerTwo,
-                            maxLength: 3,
+                            maxLength: 2,
                             keyboardType: TextInputType.number,
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'This field cannot be empty';
-                              } else if (value.length < 3) {
+                              } else if (value.length < 2) {
                                 return 'Please enter 3 digits';
                               } else {
                                 return null;
                               }
                             },
                             onChanged: (value) {
-                              if (value.length == 3) {
+                              if (value.length == 2) {
                                 FocusScope.of(context).nextFocus();
                               }
                             },
@@ -132,13 +132,13 @@ class SocialSecurityScreen extends StatelessWidget {
                         Expanded(
                           child: TextFormField(
                             controller: controllerThree,
-                            maxLength: 3,
+                            maxLength: 4,
                             keyboardType: TextInputType.number,
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'This field cannot be empty';
-                              } else if (value.length < 3) {
-                                return 'Please enter 3 digits';
+                              } else if (value.length < 4) {
+                                return 'Please enter 4 digits';
                               } else {
                                 return null;
                               }

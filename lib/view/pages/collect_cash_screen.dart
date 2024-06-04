@@ -3,7 +3,6 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:voo_app/Controller/Constants.dart';
 import 'package:voo_app/view/pages/HomePage/Home.dart';
-import 'package:voo_app/view/pages/chat_screen.dart';
 //ignore_for_file: must_be_immutable
 class CollectCashScreen extends StatelessWidget {
 

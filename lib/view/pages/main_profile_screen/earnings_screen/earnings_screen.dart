@@ -77,31 +77,49 @@ class EarningsScreen extends StatelessWidget {
           text: 'View today earned',
           backgroundColor: const Color(0xffFF6A03)),
       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
         toolbarHeight: 10.h,
-        leading: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 2.0.w),
-          child: InkWell(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 1,
-                      blurRadius: 1,
-                    )
-                  ],
-                  shape: BoxShape.circle,
-                  color: Colors.white,
-                ),
-                child: const Icon(Icons.arrow_back)),
-          ),
-        ),
-        title: Text(
-          'Earnings',
-          style: TextStyle(fontSize: 20.dp, fontWeight: FontWeight.bold),
+        leadingWidth: 0,
+        title: Row(
+          children: [
+            SizedBox(
+              width: 1.w,
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                  height: 20.h,
+                  width: 10.w,
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius: 1,
+                      )
+                    ],
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                  ),
+                  child: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.black,
+                  )),
+            ),
+            SizedBox(
+              width: 4.w,
+            ),
+            Text(
+              'Earnings',
+              style: TextStyle(
+                  fontSize: 20.dp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
+            ),
+          ],
         ),
       ),
       body: Padding(

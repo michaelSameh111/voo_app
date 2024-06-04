@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:voo_app/Controller/Data/data_cubit.dart';
@@ -24,6 +23,7 @@ class LoginCubit extends Cubit<LoginState> {
   LoginCubit() : super(LoginInitial());
   static LoginCubit get(context) => BlocProvider.of(context);
   static File? registerImage;
+  static File? editAccountImage;
   static File? frontLicenseImage;
   static File? backLicenseImage;
   static File? insuranceLicense;
@@ -341,7 +341,7 @@ class LoginCubit extends Cubit<LoginState> {
         required BuildContext context})async {
     emit(EditDriverLicenseLoadingState());
     DioHelper.postData(
-        url: 'driver-license/add',
+        url: 'driver-license/edit',
         data: FormData.fromMap({
           'license_number' : driverLicense,
           'license_expiry' : expiryDate,
@@ -361,8 +361,6 @@ class LoginCubit extends Cubit<LoginState> {
         token: token)
         .then((value) async {
       emit(EditDriverLicenseSuccessState());
-      sourcePosition = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
     }).catchError((error,stacktrace) {
       print(error);
       print(stacktrace);
@@ -584,6 +582,45 @@ class LoginCubit extends Cubit<LoginState> {
         print('Unexpected error: $error');
       }
       emit(AddDriverVehicleErrorState(error.toString()));
+    }
+  }
+
+
+  Future<void> editImage({
+    required File? image,
+    required BuildContext context,
+  }) async {
+    emit(EditAccountImageLoadingState());
+
+    try {
+      final response = await DioHelper.postData(
+        url: 'my-account/edit-image',
+        data: FormData.fromMap({
+          if (LoginCubit.editAccountImage != null)
+            'image': await MultipartFile.fromFile(
+              LoginCubit.editAccountImage!.path,
+              filename: LoginCubit.editAccountImage!.path.split('/').last,
+              contentType: MediaType("image", "jpeg"),
+            ),
+        }),
+        token: token,
+      );
+      loginData.image = response.data['image'];
+      print('Response data: ${response.data['image']}');
+      emit(EditAccountImageSuccessState());
+    } catch (error) {
+      if (error is DioException) {
+        if (error.response != null) {
+          print('Error response data: ${error.response?.data}');
+          print('Error response status: ${error.response?.statusCode}');
+          print('Error response headers: ${error.response?.headers}');
+        } else {
+          print('Error message: ${error.message}');
+        }
+      } else {
+        print('Unexpected error: $error');
+      }
+      emit(EditAccountImageErrorState());
     }
   }
 

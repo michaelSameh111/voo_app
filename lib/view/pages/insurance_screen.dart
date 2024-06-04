@@ -13,9 +13,9 @@ class InsuranceScreen extends StatefulWidget {
 }
 
 class _InsuranceScreenState extends State<InsuranceScreen> {
-  TextEditingController expiryDateController = TextEditingController();
-  TextEditingController insuranceLicenseController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey();
+  TextEditingController insuranceLicenseController = TextEditingController();
+  TextEditingController expiryDateController = TextEditingController();
   Future<void> selectDate() async {
     DateTime? picked = await showDatePicker(
         context: context,

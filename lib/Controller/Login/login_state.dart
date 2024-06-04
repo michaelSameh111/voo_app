@@ -99,3 +99,7 @@ class EditAccountImagePickerState extends LoginState {}
 
 class ImagePickingState extends LoginState {}
 class ImagePickingSuccessState extends LoginState {}
+
+class EditAccountImageLoadingState extends LoginState {}
+class EditAccountImageSuccessState extends LoginState {}
+class EditAccountImageErrorState extends LoginState {}

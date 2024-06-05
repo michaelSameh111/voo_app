@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyC-TM9DLX_oaPbWMcmMKbn_s8NqBgWcfPw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>215510722920</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.vooApp.driver</string>
+	<key>PROJECT_ID</key>
+	<string>mm-solutions-df909</string>
+	<key>STORAGE_BUCKET</key>
+	<string>mm-solutions-df909.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:215510722920:ios:97b08ac9bd916e4f680edd</string>
+</dict>
+</plist>

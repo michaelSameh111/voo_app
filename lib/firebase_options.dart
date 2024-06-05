@@ -59,10 +59,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyC-TM9DLX_oaPbWMcmMKbn_s8NqBgWcfPw',
-    appId: '1:215510722920:ios:97a5d7c54fbfe8ac680edd',
+    appId: '1:215510722920:ios:97b08ac9bd916e4f680edd',
     messagingSenderId: '215510722920',
     projectId: 'mm-solutions-df909',
     storageBucket: 'mm-solutions-df909.appspot.com',
-    iosBundleId: 'com.example.vooApp',
+    iosBundleId: 'com.vooApp.driver',
   );
 }

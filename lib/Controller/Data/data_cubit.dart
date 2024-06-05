@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:voo_app/Model/EndTripModel.dart';
+import 'package:voo_app/Model/TripsHistoryModel.dart';
 import 'package:voo_app/Model/VehicleTypeModel.dart';
 
 import '../../Model/LoginDataModel.dart';
@@ -67,6 +68,16 @@ class DataCubit extends Cubit<DataState> {
     }).catchError((error) {
       print(error.toString());
       emit(GetDriverVehicleDataErrorState());
+    });
+  }
+  Future<void> getTripsHistoryData() {
+    return DioHelper.getData(url: 'trip/my-trips', token: token)
+        .then((value) {
+     tripsHisotryModel  = TripsHisotryModel.fromJson(value.data);
+      emit(GetTripsHistoryDataSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(GetTripsHistoryDataErrorState());
     });
   }
   Future<void> acceptTrip({
@@ -171,6 +182,7 @@ class DataCubit extends Cubit<DataState> {
         }),
         token: token)
         .then((value)  {
+          print(value.data);
           endTripModel = EndTripModel.fromJson(value.data);
          // if(endTripModel != null){
          //   print(endTripModel.total);

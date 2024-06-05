@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:voo_app/Model/LoginDataModel.dart';
 import 'package:voo_app/Model/TripModel.dart';
+import 'package:voo_app/Model/TripsHistoryModel.dart';
 import 'package:voo_app/Model/VehicleTypeModel.dart';
 
 import '../Model/EndTripModel.dart';
@@ -28,6 +29,7 @@ DriverData? driverData;
 DriverInsurance? insuranceData;
 DriverLicense? licenseData;
 DriverVehicle? driverVehicle;
+TripsHisotryModel? tripsHisotryModel;
 const String FAIRMATIC_CHANNEL = "fairmatic_channel";
 
 void showSimpleDialog(BuildContext context,String title,String desc) {

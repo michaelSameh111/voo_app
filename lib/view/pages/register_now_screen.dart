@@ -1,9 +1,12 @@
 import 'dart:io';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:voo_app/Controller/Terms&Conditions.dart';
 import 'package:voo_app/view/pages/login_screen.dart';
+import 'package:voo_app/view/widgets/TermsPdf.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 import '../../Controller/Login/login_cubit.dart';
@@ -26,6 +29,7 @@ class _RegisterNowScreenState extends State<RegisterNowScreen> {
   bool hasNumberBool = false;
   bool hasSpecialCharacterBool = false;
   bool characterNumber = false;
+  bool termsAndConditions = false;
   File? file;
   final List<String> gender = [
     'Choose gender',
@@ -499,13 +503,60 @@ class _RegisterNowScreenState extends State<RegisterNowScreen> {
                               hintText: 'Confirm Password'),
                         ),
                         SizedBox(
-                          height: 5.h,
+                          height: 1.h,
+                        ),
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: termsAndConditions,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  termsAndConditions = value!;
+                                });
+                              },
+                              activeColor: Color(0xffFF6A03),
+                              checkColor: Colors.white,
+                            ),
+                            Expanded(
+                              child: RichText(
+                                text: TextSpan(
+                                  text: 'You agree to our ',
+                                  style: GoogleFonts.roboto(fontSize: 14.dp,color: Colors.black),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: 'Terms & Conditions',
+                                      style: GoogleFonts.roboto(fontSize: 14.dp, color: Colors.blue),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                        showTermsAndConditionsDialog(context);
+                                        },
+                                    ),
+                                    TextSpan(
+                                      text: ' and ',
+                                      style: GoogleFonts.roboto(fontSize: 14.dp),
+                                    ),
+                                    TextSpan(
+                                      text: 'Privacy Policy',
+                                      style: GoogleFonts.roboto(fontSize: 14.dp, color: Colors.blue),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                        showPrivacyPolicyDialog(context);
+                                        },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 1.h,
                         ),
                         MainElevatedButtonTwo(
                             condition: state is RegisterLoadingState,
                             onPressed: () {
                               if (formKey.currentState!.validate()) {
-                                LoginCubit.get(context).registerUser(
+                                termsAndConditions ? LoginCubit.get(context).registerUser(
                                     firstName: firstNameController.text,
                                     lastName: lastNameController.text,
                                     email: emailController.text,
@@ -516,11 +567,12 @@ class _RegisterNowScreenState extends State<RegisterNowScreen> {
                                     context: context,
                                     birthDate: dateController.text,
                                     gender: selectedValue!,
-                                    file: LoginCubit.registerImage);
+                                    file: LoginCubit.registerImage) : print('Hello');
                               }
                             },
                             text: 'Register',
-                            backgroundColor: Color(0xffFF6A03)),
+                            circularBorder: true,
+                            backgroundColor: termsAndConditions ? Color(0xffFF6A03) : Colors.grey),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

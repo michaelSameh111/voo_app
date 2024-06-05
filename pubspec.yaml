@@ -59,6 +59,7 @@ dependencies:
   geocoding: ^3.0.0
   google_maps_flutter_android: ^2.8.1
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:voo_app/Controller/Constants.dart';
+import 'package:voo_app/Model/CompletedTripModel.dart';
+import 'package:voo_app/Model/TripsHistoryModel.dart';
+
+import '../../widgets/HistoryWidgets.dart';
 
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key});
@@ -331,187 +337,15 @@ class CompletedHistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 3.0.w, vertical: 3.h),
-      child: Container(
-        padding: EdgeInsets.all(10.dp),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12.dp),
-          border: Border.all(
-              color: Color(0xffC4C4C4))
-        ),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  backgroundColor: const Color(0xffA2A2A2),
-                  radius: 7.w,
-                  child: Icon(Icons.person,
-                    size: 32.dp,
-                    color: const Color(0xffFEFEFE),),
-                ),
-                SizedBox(width: 2.w,),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(name,
-                      style: TextStyle(
-                        fontSize: 15.dp,
-                        fontWeight: FontWeight.bold,
 
-                      ),),
-                    Row(
-                      children: [
-                        Text('Trip ID :',
-                          style: TextStyle(
-                              fontSize: 15.dp,
-                              color: const Color(0xff646363)
-                          ),),
-                        SizedBox(width: 1.w,),
-                        Text('$tripID',
-                          style: TextStyle(
-                              fontSize: 15.dp,
-                              color: const Color(0xff646363)
-                          ),)
-                      ],
-                    ),
-                    // const Divider(
-                    //   color: Color(0xffF5F4F4),
-                    // )
-                    const Row(
-                      children: [
-
-                      ],
-                    )
-                  ],
-                )
-              ],
-            ),
-            SizedBox(height: 2.h,),
-            const Divider(color: Color(0xffF5F4F4),),
-            SizedBox(height: 2.h,),
-            Row(
-              children: [
-                Icon(Icons.location_on_outlined,
-                  color: const Color(0xffFF6A03),
-                  size: 25.dp,
-                ),
-                SizedBox(width: 1.w,),
-                Text('4.5 Mile',
-                  style: TextStyle(fontSize: 15.dp),),
-                const Spacer(),
-                Icon(Icons.access_time,
-                  color: const Color(0xffFF6A03),
-                  size: 25.dp,
-                ),
-                SizedBox(width: 1.w,),
-                Text('4 mins',
-                  style: TextStyle(fontSize: 15.dp),),
-                const Spacer(),
-                Icon(Icons.attach_money,
-                  color: const Color(0xffFF6A03),
-                  size: 25.dp,
-                ),
-                SizedBox(width: 1.w,),
-                Text('\$1.25',
-                  style: TextStyle(fontSize: 15.dp),)
-              ],
-            ),
-            SizedBox(height: 2.h,),
-            Row(
-              children: [
-                Text('Date & Time',
-                  style: TextStyle(
-                      color: const Color(0xff808080),
-                      fontSize: 15.dp,
-                      fontWeight: FontWeight.w500
-                  ),),
-                const Spacer(),
-                Text('Oct 18,2024',
-                  style: TextStyle(
-                      fontSize: 15.dp
-                  ),), //date
-                SizedBox(width: 2.w,),
-                Container(
-                  height: 3.h,
-                  width: 0.2.w,
-                  color: Colors.black,),
-                SizedBox(width: 2.w,),
-                Text('08:00 AM',
-                  style: TextStyle(
-                      fontSize: 15.dp
-                  ),), //date
-              ],
-            ),
-            SizedBox(height: 2.h,),
-            const Divider(color: Color(0xffF5F4F4),),
-            SizedBox(height: 2.h,),
-
-            Row(
-              children: [
-                Image.asset(
-                  'assets/images/from_to_image.png',
-                ),
-                SizedBox(
-                  width: 2.w,
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '481 Eighth Avenue, Hell\'s Kitchen,\nNew York, '
-                            'NY 10001 , United States',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 13.dp),
-                      ),
-                      SizedBox(
-                        height: 1.h,
-                      ),
-                      SizedBox(
-                        height: 1.h,
-                      ),
-                      Text(
-                        'The New Yorker, A Wyndham Hotel',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 13.dp),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ), // same Row as in collect cash screen
-
-            SizedBox(height: 2.h,),
-            const Divider(color: Color(0xffF5F4F4),),
-            SizedBox(height: 2.h,),
-
-            Row(
-              children: [
-                Text('Booking car type',
-                  style: TextStyle(
-                      color: const Color(0xff808080),
-                      fontSize: 15.dp,
-                      fontWeight: FontWeight.w500
-                  ),),
-                const Spacer(),
-                Text('$carType',
-                  style: TextStyle(
-                      fontSize: 15.dp
-                  ),),  //car type
-              ],
-            ),
-
-          ],
-        ),
-      ),
-    );
+    return tripsHisotryModel == null || tripsHisotryModel!.driverCompletedTrips == null || tripsHisotryModel!.driverCompletedTrips!.isEmpty  ? Center(child: Padding(
+      padding:  EdgeInsets.symmetric(horizontal: 5.w),
+      child: Text('We\'re looking forward to seeing your first trip! Buckle up - the roads are waiting for you.',style: GoogleFonts.roboto(fontSize: 24.dp,fontWeight: FontWeight.bold,color: Color(0xffFF6A03)),),
+    )) : ListView.builder(itemBuilder: (context,index)=>CompletedHistoryWidgets(driverCompletedTrips: tripsHisotryModel!.driverCompletedTrips![index],),itemCount: tripsHisotryModel!.driverCompletedTrips!.length,physics: BouncingScrollPhysics(),);
   }
 }
+
+
 
 class CancelledHistoryScreen extends StatelessWidget {
   const CancelledHistoryScreen({super.key});

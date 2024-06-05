@@ -1161,7 +1161,7 @@ class _HomePageState extends State<HomePage> {
                                                                           onChanged:
                                                                               (bool value) {
                                                                             DataCubit.get(context).changeDriverStatus(
-                                                                                status: light == false ? 'On' : 'Off',
+                                                                                status: light == false ? 'on' : 'off',
                                                                                 context: context);
                                                                             setState(() {
                                                                               value == true ?

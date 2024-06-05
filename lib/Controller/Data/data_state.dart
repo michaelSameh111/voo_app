@@ -52,3 +52,7 @@ class ChangeDriverStatusErrorState extends DataState {
   final String error;
   ChangeDriverStatusErrorState(this.error);
 }
+
+class GetTripsHistoryDataLoadingState extends DataState {}
+class GetTripsHistoryDataSuccessState extends DataState {}
+class GetTripsHistoryDataErrorState extends DataState {}

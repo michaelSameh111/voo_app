@@ -103,3 +103,7 @@ class ImagePickingSuccessState extends LoginState {}
 class EditAccountImageLoadingState extends LoginState {}
 class EditAccountImageSuccessState extends LoginState {}
 class EditAccountImageErrorState extends LoginState {}
+
+class ForgetPasswordLoadingState extends LoginState {}
+class ForgetPasswordSuccessState extends LoginState {}
+class ForgetPasswordErrorState extends LoginState {}

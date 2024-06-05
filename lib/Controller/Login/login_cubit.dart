@@ -9,6 +9,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:voo_app/Controller/Data/data_cubit.dart';
 import 'package:voo_app/view/pages/LandingPage.dart';
+import 'package:voo_app/view/pages/forget_password_screen.dart';
 import 'package:voo_app/view/pages/login_screen.dart';
 import 'package:voo_app/view/pages/social_security_screen.dart';
 
@@ -64,6 +65,7 @@ class LoginCubit extends Cubit<LoginState> {
       emit(LoginSuccessState());
       if (state is LoginSuccessState) {
         DataCubit.get(context).getVehicleTypes();
+        DataCubit.get(context).getTripsHistoryData();
         if(loginData.driverData == null){
           Navigator.push(context, MaterialPageRoute(builder: (context)=>SocialSecurityScreen(login: true,)));
         } else {  Navigator.pushAndRemoveUntil(
@@ -182,35 +184,38 @@ class LoginCubit extends Cubit<LoginState> {
             var errors = error.response?.data['errors'];
             if (errors != null) {
               if (errors.containsKey('email') && errors.containsKey('phone') ) {
-                Fluttertoast.showToast(
-                  msg: 'Email & Phone are already taken',
-                  toastLength: Toast.LENGTH_LONG,
-                  gravity: ToastGravity.BOTTOM,
-                  backgroundColor: Colors.red,
-                  textColor: Colors.white,
-                  fontSize: 16.dp,
-
-                );
+                showEmailOrPhoneTakenDialog(context, 'Email & Phone are');
+                // Fluttertoast.showToast(
+                //   msg: 'Email & Phone are already taken',
+                //   toastLength: Toast.LENGTH_LONG,
+                //   gravity: ToastGravity.BOTTOM,
+                //   backgroundColor: Colors.red,
+                //   textColor: Colors.white,
+                //   fontSize: 16.dp,
+                //
+                // );
               }
               else if (errors.containsKey('email')) {
-                Fluttertoast.showToast(
-                  msg: 'Email is already taken',
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                  backgroundColor: Colors.red,
-                  textColor: Colors.white,
-                  fontSize: 16.dp,
-                );
+                showEmailOrPhoneTakenDialog(context, 'Email is');
+                // Fluttertoast.showToast(
+                //   msg: 'Email is already taken',
+                //   toastLength: Toast.LENGTH_SHORT,
+                //   gravity: ToastGravity.BOTTOM,
+                //   backgroundColor: Colors.red,
+                //   textColor: Colors.white,
+                //   fontSize: 16.dp,
+                // );
               }
               else if (errors.containsKey('phone')) {
-                Fluttertoast.showToast(
-                  msg: 'Phone is already taken',
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                  backgroundColor: Colors.red,
-                  textColor: Colors.white,
-                  fontSize: 16.dp,
-                );
+                showEmailOrPhoneTakenDialog(context, 'Phone is');
+                // Fluttertoast.showToast(
+                //   msg: 'Phone is already taken',
+                //   toastLength: Toast.LENGTH_SHORT,
+                //   gravity: ToastGravity.BOTTOM,
+                //   backgroundColor: Colors.red,
+                //   textColor: Colors.white,
+                //   fontSize: 16.dp,
+                // );
               }
             }
           } else {
@@ -625,29 +630,42 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
 
-  // Future<void> changeDriverStatus(
-  //     {
-  //       required String status,
-  //       required String location,
-  //       required String lat,
-  //       required String lng,
-  //       required BuildContext context})async {
-  //   emit(ChangeDriverStatusLoadingState());
-  //   DioHelper.postData(
-  //       url:
-  //       'driver-status/update',
-  //       data: {
-  //         'accepting_rides': status,
-  //         'driver_location' : location,
-  //         'driver_latitude' : lat,
-  //         'driver_longitude' : lng,
-  //       },
-  //       token: token)
-  //       .then((value) async {
-  //     emit(ChangeDriverStatusSuccessState());
-  //   }).catchError((error) {
-  //     print(error);
-  //     emit(ChangeDriverStatusErrorState(error.toString()));
-  //   });
-  // }
+  Future<void> resetPassword(
+      {
+        required String email,
+        required BuildContext context})async {
+    emit(ForgetPasswordLoadingState());
+    DioHelper.postData(
+        url:
+        'auth/forgot-password',
+        data: {
+          'email' : email
+        },
+        token: token)
+        .then((value) async {
+      emit(ForgetPasswordSuccessState());
+    }).catchError((error) {
+      print(error);
+      emit(ForgetPasswordErrorState());
+    });
+  }
+  Future<void> showEmailOrPhoneTakenDialog(BuildContext context,String message) async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title:  Text('${message} Already Taken'),
+        content:  Text('The provided ${message} already associated with an account. Do you want to reset your password?'),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(context), // Return false for cancel
+          ),
+          TextButton(
+            child: const Text('Reset Password'),
+            onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context)=>ForgetPasswordScreen())), // Return true for reset
+          ),
+        ],
+      ),
+    );
+  }
 }

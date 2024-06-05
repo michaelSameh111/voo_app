@@ -255,7 +255,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                         height: 2.h,
                       ),
                       Text(
-                        'Car Brand *',
+                          'Car Brand *',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 15.dp),
                       ),

@@ -54,7 +54,7 @@ class _BankAccountDetailsScreenState extends State<BankAccountDetailsScreen> {
                     height: 4.h,
                   ),
                   Text(
-                    'Bank account name',
+                    'Name on Bank Account',
                     style:
                     TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                   ),
@@ -70,7 +70,7 @@ class _BankAccountDetailsScreenState extends State<BankAccountDetailsScreen> {
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           contentPadding: EdgeInsets.all(15),
-                          hintText: 'Bank account name'),
+                          hintText: 'Name on Bank Account'),
                     ),
                   ),
                   SizedBox(
@@ -154,7 +154,7 @@ class _BankAccountDetailsScreenState extends State<BankAccountDetailsScreen> {
                     height: 5.h,
                   ),
                   Text(
-                    'Branch',
+                    'Routing Number',
                     style:
                     TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                   ),
@@ -177,7 +177,7 @@ class _BankAccountDetailsScreenState extends State<BankAccountDetailsScreen> {
                               children: [
                                 Expanded(
                                   child: Text(
-                                    'Select Branch',
+                                    'Routing Number',
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 )

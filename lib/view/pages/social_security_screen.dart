@@ -168,6 +168,7 @@ class SocialSecurityScreen extends StatelessWidget {
                           }
                         },
                         text: 'Next',
+                        circularBorder: true,
                         backgroundColor: const Color(0xffFF6A03)),
                     SizedBox(height: 3.h,),
                   ],

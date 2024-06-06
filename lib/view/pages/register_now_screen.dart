@@ -612,7 +612,7 @@ class _RegisterNowScreenState extends State<RegisterNowScreen> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(1950),
-      lastDate: DateTime(2100),
+      lastDate: DateTime.now(),
     );
     if (picked != null) {
       setState(() {

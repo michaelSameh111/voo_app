@@ -207,7 +207,7 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 5.0.w, vertical: 3.h),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Row(
                   children: [
@@ -245,7 +245,9 @@ class _HomePageState extends State<HomePage> {
                           width: 30.w,
                         ),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            makePhoneCall('0123456789');
+                          },
                           child: Container(
                             padding: EdgeInsets.all(5.dp),
                             decoration: BoxDecoration(
@@ -255,20 +257,20 @@ class _HomePageState extends State<HomePage> {
                                 color: Colors.red, size: 22.dp),
                           ),
                         ),
-                        SizedBox(
-                          width: 3.w,
-                        ),
-                        InkWell(
-                          onTap: () {},
-                          child: Container(
-                            padding: EdgeInsets.all(5.dp),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30.dp),
-                                color: const Color(0xffD9D9D9)),
-                            child: Icon(Icons.message,
-                                color: Colors.red, size: 22.dp),
-                          ),
-                        ),
+                        // SizedBox(
+                        //   width: 3.w,
+                        // ),
+                        // InkWell(
+                        //   onTap: () {},
+                        //   child: Container(
+                        //     padding: EdgeInsets.all(5.dp),
+                        //     decoration: BoxDecoration(
+                        //         borderRadius: BorderRadius.circular(30.dp),
+                        //         color: const Color(0xffD9D9D9)),
+                        //     child: Icon(Icons.message,
+                        //         color: Colors.red, size: 22.dp),
+                        //   ),
+                        // ),
                       ],
                     )
                   ],
@@ -624,7 +626,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     stopListeningToLocationChanges();
-
     super.dispose();
   }
 
@@ -959,32 +960,41 @@ class _HomePageState extends State<HomePage> {
                       insuranceData != null
                   ? SizedBox()
                   : Positioned(
-                      child: Container(
-                      color: Colors.red,
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Please Complete Your Data First',
-                            style: GoogleFonts.roboto(
-                              color: Colors.white,
-                              fontSize: 14.dp,
+                      child: InkWell(
+                        onTap: (){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      DataCheckScreen()));
+                        },
+                        child: Container(
+                        color: Colors.red,
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Please Complete Your Data First',
+                              style: GoogleFonts.roboto(
+                                color: Colors.white,
+                                fontSize: 14.dp,
+                              ),
                             ),
-                          ),
-                          InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            DataCheckScreen()));
-                              },
-                              child: Icon(Icons.arrow_forward,
-                                  color: Colors.white))
-                        ],
-                      ),
-                    )),
+                            InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              DataCheckScreen()));
+                                },
+                                child: Icon(Icons.arrow_forward,
+                                    color: Colors.white))
+                          ],
+                        ),
+                                            ),
+                      )),
               Positioned(
                   bottom: 10,
                   left: 10,
@@ -1075,133 +1085,142 @@ class _HomePageState extends State<HomePage> {
                             const Spacer(),
                             InkWell(
                               onTap: () {
-                                showDialog(
+                                if(driverData != null &&
+                                    driverVehicle != null &&
+                                    licenseData != null &&
+                                    insuranceData != null){  showDialog(
                                     context: context,
                                     builder:
                                         (context) =>
-                                            BlocConsumer<DataCubit, DataState>(
-                                              listener: (context, state) {},
-                                              builder: (context, state) {
-                                                return StatefulBuilder(
-                                                  builder: (context, setState) {
-                                                    return Theme(
-                                                      data: ThemeData(
-                                                          dialogBackgroundColor:
-                                                              Colors.white),
-                                                      child: Dialog(
-                                                        elevation: 0,
-                                                        child: Stack(
-                                                          clipBehavior:
-                                                              Clip.none,
-                                                          alignment: Alignment
-                                                              .topCenter,
-                                                          children: [
-                                                            SizedBox(
-                                                              height: 28.h,
-                                                              width: double
-                                                                  .infinity,
-                                                              child: Column(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  Text(
-                                                                    loginData.acceptingRides ==
-                                                                            null
-                                                                        ? 'You\'re Offline'
-                                                                        : 'You\'re ${loginData.acceptingRides}',
-                                                                    style: TextStyle(
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        fontSize: 18
-                                                                            .dp,
-                                                                        color: const Color(
-                                                                            0xff646363)),
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 1.h,
-                                                                  ),
-                                                                  Text(
-                                                                    loginData.acceptingRides ==
-                                                                            null
-                                                                        ? 'Go online to accept jobs.'
-                                                                        : 'You\'re Online ',
-                                                                    style: TextStyle(
-                                                                        fontSize: 15
-                                                                            .dp,
-                                                                        color: const Color(
-                                                                            0xff646363)),
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height:
-                                                                        1.5.h,
-                                                                  ),
-                                                                  const Divider(),
-                                                                  SizedBox(
-                                                                    height:
-                                                                        1.5.h,
-                                                                  ),
-                                                                  state is ChangeDriverStatusLoadingState
-                                                                      ? CircularProgressIndicator()
-                                                                      : Switch(
-                                                                          trackOutlineColor: WidgetStateProperty.all(Colors
-                                                                              .transparent),
-                                                                          activeTrackColor: const Color(
-                                                                              0xffFF6A03),
-                                                                          inactiveTrackColor: const Color(
-                                                                              0xffD1D1D6),
-                                                                          inactiveThumbColor: Colors
-                                                                              .white,
-                                                                          value:
-                                                                              light!,
-                                                                          onChanged:
-                                                                              (bool value) {
-                                                                            DataCubit.get(context).changeDriverStatus(
-                                                                                status: light == false ? 'on' : 'off',
-                                                                                context: context);
-                                                                            setState(() {
-                                                                              value == true ?
-                                                                              loginData.acceptingRides = 'on' : loginData.acceptingRides = null;
-                                                                              light = value;
-                                                                            });
-                                                                            state;
-                                                                          }),
-                                                                ],
+                                        BlocConsumer<DataCubit, DataState>(
+                                          listener: (context, state) {},
+                                          builder: (context, state) {
+                                            return StatefulBuilder(
+                                              builder: (context, setState) {
+                                                return Theme(
+                                                  data: ThemeData(
+                                                      dialogBackgroundColor:
+                                                      Colors.white),
+                                                  child: Dialog(
+                                                    elevation: 0,
+                                                    child: Stack(
+                                                      clipBehavior:
+                                                      Clip.none,
+                                                      alignment: Alignment
+                                                          .topCenter,
+                                                      children: [
+                                                        SizedBox(
+                                                          height: 28.h,
+                                                          width: double
+                                                              .infinity,
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                            children: [
+                                                              Text(
+                                                                loginData.acceptingRides ==
+                                                                    null
+                                                                    ? 'You\'re Offline'
+                                                                    : 'You\'re ${loginData.acceptingRides}',
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                    fontSize: 18
+                                                                        .dp,
+                                                                    color: const Color(
+                                                                        0xff646363)),
                                                               ),
-                                                            ),
-                                                            Positioned(
-                                                              top: -50,
-                                                              child:
-                                                                  CircleAvatar(
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .white,
-                                                                radius: 40,
-                                                                child:
-                                                                    Image.asset(
-                                                                  'assets/images/notification_offline.png',
-                                                                  width: 12.w,
-                                                                ),
+                                                              SizedBox(
+                                                                height: 1.h,
                                                               ),
-                                                            )
-                                                          ],
+                                                              Text(
+                                                                loginData.acceptingRides ==
+                                                                    null
+                                                                    ? 'Go online to accept jobs.'
+                                                                    : 'You\'re Online ',
+                                                                style: TextStyle(
+                                                                    fontSize: 15
+                                                                        .dp,
+                                                                    color: const Color(
+                                                                        0xff646363)),
+                                                                textAlign:
+                                                                TextAlign
+                                                                    .center,
+                                                              ),
+                                                              SizedBox(
+                                                                height:
+                                                                1.5.h,
+                                                              ),
+                                                              const Divider(),
+                                                              SizedBox(
+                                                                height:
+                                                                1.5.h,
+                                                              ),
+                                                              state is ChangeDriverStatusLoadingState
+                                                                  ? CircularProgressIndicator()
+                                                                  : Switch(
+                                                                  trackOutlineColor: WidgetStateProperty.all(Colors
+                                                                      .transparent),
+                                                                  activeTrackColor: const Color(
+                                                                      0xffFF6A03),
+                                                                  inactiveTrackColor: const Color(
+                                                                      0xffD1D1D6),
+                                                                  inactiveThumbColor: Colors
+                                                                      .white,
+                                                                  value:
+                                                                  light!,
+                                                                  onChanged:
+                                                                      (bool value) {
+                                                                    DataCubit.get(context).changeDriverStatus(
+                                                                        status: light == false ? 'on' : 'off',
+                                                                        context: context);
+                                                                    setState(() {
+                                                                      value == true ?
+                                                                      loginData.acceptingRides = 'on' : loginData.acceptingRides = null;
+                                                                      light = value;
+                                                                    });
+                                                                    state;
+                                                                  }),
+                                                            ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                    );
-                                                  },
+                                                        Positioned(
+                                                          top: -50,
+                                                          child:
+                                                          CircleAvatar(
+                                                            backgroundColor:
+                                                            Colors
+                                                                .white,
+                                                            radius: 40,
+                                                            child:
+                                                            Image.asset(
+                                                              'assets/images/notification_offline.png',
+                                                              width: 12.w,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
                                                 );
                                               },
-                                            ));
+                                            );
+                                          },
+                                        ));} else {
+                                  Fluttertoast.showToast(msg: 'You have to complete your data first',fontSize: 18.dp,gravity: ToastGravity.BOTTOM,toastLength: Toast.LENGTH_LONG,backgroundColor: Colors.red);
+                                }
+
                               },
                               child: Container(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 3.w, vertical: 1.h),
                                 decoration: BoxDecoration(
-                                    color: const Color(0xffFF6A03),
+                                    color: driverData != null &&
+                                        driverVehicle != null &&
+                                        licenseData != null &&
+                                        insuranceData != null ?  Color(0xffFF6A03) : Colors.grey,
                                     borderRadius: BorderRadius.circular(20)),
                                 child: Row(
                                   children: [

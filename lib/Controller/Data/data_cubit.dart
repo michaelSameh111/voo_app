@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:voo_app/Model/EndTripModel.dart';
+import 'package:voo_app/Model/InProgressTripModel.dart';
 import 'package:voo_app/Model/TripsHistoryModel.dart';
 import 'package:voo_app/Model/VehicleTypeModel.dart';
 
@@ -16,13 +17,24 @@ class DataCubit extends Cubit<DataState> {
   static DataCubit get(context) => BlocProvider.of(context);
   Future<void> getVehicleTypes() {
     emit(GetVehicleTypesLoadingState());
-    return DioHelper.getData(url: 'vehicle-types', token: token)
+    return DioHelper.getData(url: 'vehicles', token: token)
         .then((value) {
       vehicleTypesModel = VehicleTypesModel.fromJson(value.data);
       emit(GetVehicleTypesSuccessState());
     }).catchError((error) {
       print(error.toString());
       emit(GetVehicleTypesErrorState());
+    });
+  }
+  Future<void> getInProgressTripDetails() {
+    emit(GetInProgressTripDetailsLoadingState());
+    return DioHelper.getData(url: 'trip/in-progress-trip', token: token)
+        .then((value) {
+      inProgressTrip = InProgressTripModel.fromJson(value.data);
+      emit(GetInProgressTripDetailsSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(GetInProgressTripDetailsErrorState());
     });
   }
   Future<void> getDriverLicenseData() {

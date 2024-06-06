@@ -229,7 +229,7 @@ class _DriverLicenseScreenState extends State<DriverLicenseScreen> {
                               contentPadding: const EdgeInsets.all(15),
                               hintText: 'Driver License Number',
                           ),
-                          keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.text,
                         ),
                       ),
                       SizedBox(

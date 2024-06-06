@@ -175,42 +175,42 @@ class MainProfileScreen extends StatelessWidget {
             const Divider(
               color: Color(0xffF5F4F4),
             ),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            const VehicleInformationScreenEditProfileScreen()));
-              },
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.directions_car,
-                      color: Color(0xff808080),
-                    ),
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    Text(
-                      'Vehicle Information',
-                      style: TextStyle(fontSize: 15.dp),
-                    ),
-                    const Spacer(),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      color: const Color(0xffA2A2A2),
-                      size: 17.dp,
-                    )
-                  ],
-                ),
-              ),
-            ),
-            const Divider(
-              color: Color(0xffF5F4F4),
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //             builder: (context) =>
+            //                 const VehicleInformationScreenEditProfileScreen()));
+            //   },
+            //   child: Padding(
+            //     padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+            //     child: Row(
+            //       children: [
+            //         const Icon(
+            //           Icons.directions_car,
+            //           color: Color(0xff808080),
+            //         ),
+            //         SizedBox(
+            //           width: 3.w,
+            //         ),
+            //         Text(
+            //           'Vehicle Information',
+            //           style: TextStyle(fontSize: 15.dp),
+            //         ),
+            //         const Spacer(),
+            //         Icon(
+            //           Icons.arrow_forward_ios,
+            //           color: const Color(0xffA2A2A2),
+            //           size: 17.dp,
+            //         )
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            // const Divider(
+            //   color: Color(0xffF5F4F4),
+            // ),
             InkWell(
               onTap: () {
                 Navigator.push(
@@ -247,41 +247,41 @@ class MainProfileScreen extends StatelessWidget {
             const Divider(
               color: Color(0xffF5F4F4),
             ),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const EarningsScreen()));
-              },
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.money_outlined,
-                      color: Color(0xff808080),
-                    ),
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    Text(
-                      'Earnings',
-                      style: TextStyle(fontSize: 15.dp),
-                    ),
-                    const Spacer(),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      color: const Color(0xffA2A2A2),
-                      size: 17.dp,
-                    )
-                  ],
-                ),
-              ),
-            ),
-            const Divider(
-              color: Color(0xffF5F4F4),
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //             builder: (context) => const EarningsScreen()));
+            //   },
+            //   child: Padding(
+            //     padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+            //     child: Row(
+            //       children: [
+            //         const Icon(
+            //           Icons.money_outlined,
+            //           color: Color(0xff808080),
+            //         ),
+            //         SizedBox(
+            //           width: 3.w,
+            //         ),
+            //         Text(
+            //           'Earnings',
+            //           style: TextStyle(fontSize: 15.dp),
+            //         ),
+            //         const Spacer(),
+            //         Icon(
+            //           Icons.arrow_forward_ios,
+            //           color: const Color(0xffA2A2A2),
+            //           size: 17.dp,
+            //         )
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            // const Divider(
+            //   color: Color(0xffF5F4F4),
+            // ),
             InkWell(
               onTap: () {
                 Navigator.push(
@@ -317,39 +317,39 @@ class MainProfileScreen extends StatelessWidget {
             const Divider(
               color: Color(0xffF5F4F4),
             ),
-            InkWell(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => CashBackScreen()));
-              },
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.attach_money,
-                      color: Color(0xff808080),
-                    ),
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    Text(
-                      'Cash back',
-                      style: TextStyle(fontSize: 15.dp),
-                    ),
-                    const Spacer(),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      color: const Color(0xffA2A2A2),
-                      size: 17.dp,
-                    )
-                  ],
-                ),
-              ),
-            ),
-            const Divider(
-              color: Color(0xffF5F4F4),
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     Navigator.push(context,
+            //         MaterialPageRoute(builder: (context) => CashBackScreen()));
+            //   },
+            //   child: Padding(
+            //     padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+            //     child: Row(
+            //       children: [
+            //         const Icon(
+            //           Icons.attach_money,
+            //           color: Color(0xff808080),
+            //         ),
+            //         SizedBox(
+            //           width: 3.w,
+            //         ),
+            //         Text(
+            //           'Cash back',
+            //           style: TextStyle(fontSize: 15.dp),
+            //         ),
+            //         const Spacer(),
+            //         Icon(
+            //           Icons.arrow_forward_ios,
+            //           color: const Color(0xffA2A2A2),
+            //           size: 17.dp,
+            //         )
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            // const Divider(
+            //   color: Color(0xffF5F4F4),
+            // ),
             InkWell(
               onTap: () {
                 Navigator.push(context,

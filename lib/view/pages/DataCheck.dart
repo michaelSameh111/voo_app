@@ -59,7 +59,7 @@ class DataCheckScreen extends StatelessWidget {
               RaiseDocumentsContainerWidget(
                   uploadedPicture: driverData!= null ? true : false,
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>SocialSecurityScreen()));
+                    if(driverData != null){}else {  Navigator.push(context, MaterialPageRoute(builder: (context)=>SocialSecurityScreen()));}
                   },
                   text: 'Driver Data'),
               SizedBox(height: 2.h,),
@@ -67,21 +67,23 @@ class DataCheckScreen extends StatelessWidget {
                   uploadedPicture:insuranceData != null ? true : false,
                   text: 'Insurance Data',
                 onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>InsuranceScreen()));
+                    if(insuranceData != null){}else {  Navigator.push(context, MaterialPageRoute(builder: (context)=>InsuranceScreen()));}
+
                 },
               ),
               SizedBox(height: 2.h,),
               RaiseDocumentsContainerWidget(
                   uploadedPicture:licenseData != null ? true : false,
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>DriverLicenseScreen()));
+                    if(licenseData != null){}else{ Navigator.push(context, MaterialPageRoute(builder: (context)=>DriverLicenseScreen()));}
+
                   },
                   text: 'License Data'),
               SizedBox(height: 2.h,),
               RaiseDocumentsContainerWidget(
                   uploadedPicture:driverVehicle != null ? true : false,
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> SelectTransportScreen()));
+                    if(driverVehicle !=null){} else {      Navigator.push(context, MaterialPageRoute(builder: (context)=> SelectTransportScreen()));}
                   },
                   text: 'Vehicle Data'),
             ],

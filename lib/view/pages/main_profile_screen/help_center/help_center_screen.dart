@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HelpCenterScreen extends StatefulWidget {
   const HelpCenterScreen({super.key});
@@ -247,35 +248,35 @@ class ContactUsScreenInHelpCenter extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 3.0.w, vertical: 4.h),
       child: Column(
         children: [
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(13.dp),
-                border: Border.all(color: const Color(0xffECECEC))
-            ),
-            child: ExpansionTile(
-              iconColor: const Color(0xffFF6A03),
-              title: Row(
-                children: [
-                  const Icon(Icons.headset_mic,
-                  color: Color(0xffFF6A03),),
-                  SizedBox(width: 2.w,),
-                  Text(
-                    'Customer Service',
-                    style: TextStyle(fontWeight: FontWeight.bold,
-                        fontSize: 15.dp),),
-                ],
-              ),
-              children: <Widget> [
-                ListTile(
-                  title: Text('0123546879',
-                    style: TextStyle(color: const Color(0xff808080),
-                        fontSize: 15.dp),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 2.h,),
+          // Container(
+          //   decoration: BoxDecoration(
+          //       borderRadius: BorderRadius.circular(13.dp),
+          //       border: Border.all(color: const Color(0xffECECEC))
+          //   ),
+          //   child: ExpansionTile(
+          //     iconColor: const Color(0xffFF6A03),
+          //     title: Row(
+          //       children: [
+          //         const Icon(Icons.headset_mic,
+          //         color: Color(0xffFF6A03),),
+          //         SizedBox(width: 2.w,),
+          //         Text(
+          //           'Customer Service',
+          //           style: TextStyle(fontWeight: FontWeight.bold,
+          //               fontSize: 15.dp),),
+          //       ],
+          //     ),
+          //     children: <Widget> [
+          //       ListTile(
+          //         title: Text('0123546879',
+          //           style: TextStyle(color: const Color(0xff808080),
+          //               fontSize: 15.dp),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          // SizedBox(height: 2.h,),
           Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(13.dp),
@@ -289,14 +290,14 @@ class ContactUsScreenInHelpCenter extends StatelessWidget {
                     color: Color(0xffFF6A03),),
                   SizedBox(width: 2.w,),
                   Text(
-                    'WhatsApp',
+                    'Email',
                     style: TextStyle(fontWeight: FontWeight.bold,
                         fontSize: 15.dp),),
                 ],
               ),
               children: <Widget> [
                 ListTile(
-                  title: Text('(490) 595-0165',
+                  title: Text('support@voorideshare.com',
                     style: TextStyle(color: const Color(0xff808080),
                         fontSize: 15.dp),
                   ),
@@ -325,9 +326,23 @@ class ContactUsScreenInHelpCenter extends StatelessWidget {
               ),
               children: <Widget> [
                 ListTile(
-                  title: Text('www.voo.com',
-                    style: TextStyle(color: const Color(0xff808080),
-                        fontSize: 15.dp),
+                  title: TextButton(
+                    onPressed: () async {
+                      final url = Uri.parse('https://www.voorideshare.com/');
+                      if (await canLaunchUrl(url)) {
+                        await launchUrl(url, mode: LaunchMode.externalApplication);
+                      }
+                    },
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text('https://www.voorideshare.com/',
+                            style: TextStyle(color:  Colors.blue,
+                                fontSize: 15.dp),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

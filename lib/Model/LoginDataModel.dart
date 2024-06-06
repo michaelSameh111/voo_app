@@ -192,7 +192,7 @@ class DriverData {
 class DriverVehicle {
   int? id;
   int? driver;
-  int? vehicleType;
+  String? vehicleType;
   String? plateInfo;
   String? make;
   String? model;
@@ -208,6 +208,7 @@ class DriverVehicle {
   String? primaryCar;
   String? createdAt;
   String? updatedAt;
+  String? rcImagePath;
 
   DriverVehicle(
       {this.id,
@@ -227,6 +228,7 @@ class DriverVehicle {
         this.rcExpiry,
         this.primaryCar,
         this.createdAt,
+        this.rcImagePath,
         this.updatedAt});
 
   DriverVehicle.fromJson(Map<String, dynamic> json) {
@@ -248,6 +250,7 @@ class DriverVehicle {
     primaryCar = json['primary_car'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    rcImagePath = json['rc_image_path'];
   }
 
   Map<String, dynamic> toJson() {

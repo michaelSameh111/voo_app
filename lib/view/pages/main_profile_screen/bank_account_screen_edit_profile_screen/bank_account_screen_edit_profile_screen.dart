@@ -92,7 +92,7 @@ class _BankAccountScreenEditProfileScreenState extends State<BankAccountScreenEd
                 children: [
                   Expanded(
                     child: Text(
-                      'Bank account name',
+                      'Name on Bank Account',
                       style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                     ),
@@ -111,7 +111,7 @@ class _BankAccountScreenEditProfileScreenState extends State<BankAccountScreenEd
                   decoration: InputDecoration(
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.all(15),
-                      hintText: 'Bank account name'),
+                      hintText: 'Name on Bank Account'),
                 ),
               ),
               SizedBox(
@@ -205,7 +205,7 @@ class _BankAccountScreenEditProfileScreenState extends State<BankAccountScreenEd
                 children: [
                   Expanded(
                     child: Text(
-                      'Branch',
+                      'Routing Number',
                       style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
                     ),
@@ -237,13 +237,14 @@ class _BankAccountScreenEditProfileScreenState extends State<BankAccountScreenEd
                       borderSide:
                       const BorderSide(color: Colors.transparent)),
                   contentPadding: EdgeInsets.all(15),
-                  hintText: 'Select Branch',
+                  hintText: 'Routing Number',
                 ),
               ),
               SizedBox(height: 10.h,),
-              MainElevatedButton(
-                  nextScreen:
-                  const MainProfileScreen(),
+              MainElevatedButtonTwo(
+                onPressed: (){
+                  Navigator.pop(context);
+                },
                   text: 'Update',
                   circularBorder: true,
                   backgroundColor: const Color(0xffFF6A03)),

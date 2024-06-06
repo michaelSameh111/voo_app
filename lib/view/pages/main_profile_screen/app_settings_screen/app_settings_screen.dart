@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:voo_app/Controller/Terms&Conditions.dart';
 
 class AppSettingsScreen extends StatelessWidget {
   const AppSettingsScreen({super.key});
@@ -60,11 +61,7 @@ class AppSettingsScreen extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) =>
-                //             AppSettingsScreen()));
+               showTermsAndConditionsDialog(context,buttons: true);
               },
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
@@ -89,11 +86,7 @@ class AppSettingsScreen extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) =>
-                //             AppSettingsScreen()));
+              showPrivacyPolicyDialog(context,buttons: true);
               },
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
@@ -116,27 +109,27 @@ class AppSettingsScreen extends StatelessWidget {
             const Divider(
               color: Color(0xffF5F4F4),
             ),
-            InkWell(
-              onTap: () {
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) =>
-                //             AppSettingsScreen()));
-              },
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                child: Row(
-                  children: [
-                    Text(
-                      'Delete Account ',
-                      style: TextStyle(fontSize: 15.dp,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     // Navigator.push(
+            //     //     context,
+            //     //     MaterialPageRoute(
+            //     //         builder: (context) =>
+            //     //             AppSettingsScreen()));
+            //   },
+            //   child: Padding(
+            //     padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+            //     child: Row(
+            //       children: [
+            //         Text(
+            //           'Delete Account ',
+            //           style: TextStyle(fontSize: 15.dp,
+            //               fontWeight: FontWeight.bold),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

@@ -14,7 +14,7 @@ class SubmitAComplaintScreen extends StatefulWidget {
 class _SubmitAComplaintScreenState extends State<SubmitAComplaintScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(resizeToAvoidBottomInset: true,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -78,7 +78,7 @@ class _SubmitAComplaintScreenState extends State<SubmitAComplaintScreen> {
               ],
             ),
             SizedBox(
-              height: 2.h,
+              height: 1.h,
             ),
             Container(
               decoration: BoxDecoration(
@@ -93,7 +93,7 @@ class _SubmitAComplaintScreenState extends State<SubmitAComplaintScreen> {
               ),
             ),
             SizedBox(
-              height: 5.h,
+              height: 2.h,
             ),
             Row(
               children: [
@@ -107,7 +107,7 @@ class _SubmitAComplaintScreenState extends State<SubmitAComplaintScreen> {
               ],
             ),
             SizedBox(
-              height: 2.h,
+              height: 1.h,
             ),
             Container(
               decoration: BoxDecoration(
@@ -124,35 +124,35 @@ class _SubmitAComplaintScreenState extends State<SubmitAComplaintScreen> {
             SizedBox(
               height: 5.h,
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'Car Images *',
-                    style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 2.h,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                  color: const Color(0xffF5F4F4),
-                  borderRadius: BorderRadius.circular(8.dp)),
-              child: TextField(
-                decoration: InputDecoration(
-                  suffixIcon: Icon(Icons.arrow_forward_ios,
-                    color: Colors.black,
-                  size: 15.dp,),
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.all(13.dp),
-                    hintText: 'Add car image'),
-
-              ),
-            ),
+            // Row(
+            //   children: [
+            //     Expanded(
+            //       child: Text(
+            //         'Car Images *',
+            //         style:
+            //         TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            // SizedBox(
+            //   height: 2.h,
+            // ),
+            // Container(
+            //   decoration: BoxDecoration(
+            //       color: const Color(0xffF5F4F4),
+            //       borderRadius: BorderRadius.circular(8.dp)),
+            //   child: TextField(
+            //     decoration: InputDecoration(
+            //       suffixIcon: Icon(Icons.arrow_forward_ios,
+            //         color: Colors.black,
+            //       size: 15.dp,),
+            //         border: InputBorder.none,
+            //         contentPadding: EdgeInsets.all(13.dp),
+            //         hintText: 'Add car image'),
+            //
+            //   ),
+            // ),
             const Spacer(),
             MainElevatedButtonTwo(
                 onPressed: (){},

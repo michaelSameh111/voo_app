@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Future<void> showTermsAndConditionsDialog(BuildContext context) async {
+Future<void> showTermsAndConditionsDialog(BuildContext context,{bool? buttons}) async {
   return showDialog<void>(
     context: context,
     builder: (BuildContext context) {
@@ -614,7 +614,7 @@ Survivability section of the Arbitration Agreement of this agreement''',
           ),
         ),
 
-        actions: <Widget>[
+        actions: buttons == true ? [] : <Widget>[
           TextButton(
             child: const Text('Cancel'),
             onPressed: () => Navigator.pop(context),
@@ -630,7 +630,7 @@ Survivability section of the Arbitration Agreement of this agreement''',
 
 }
 
-Future<void> showPrivacyPolicyDialog(BuildContext context) async {
+Future<void> showPrivacyPolicyDialog(BuildContext context,{bool? buttons}) async {
   return showDialog<void>(
     context: context,
     builder: (BuildContext context) {
@@ -1108,7 +1108,7 @@ If you have questions or comments about this Privacy Policy, please contact us.'
             style: const TextStyle(fontSize: 14),
           ),
         ),
-        actions: <Widget>[
+        actions: buttons == true ? [] : <Widget>[
           TextButton(
             child: const Text('Cancel'),
             onPressed: () => Navigator.pop(context),

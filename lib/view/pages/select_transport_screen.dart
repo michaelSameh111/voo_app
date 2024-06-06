@@ -5,6 +5,7 @@ import 'package:voo_app/Controller/Constants.dart';
 import 'package:voo_app/Controller/Login/login_cubit.dart';
 import 'package:voo_app/Model/VehicleTypeModel.dart';
 import 'package:voo_app/view/pages/main_profile_screen/vehicle_information_screen_edit_profile_screen/car_documents_screen.dart';
+import 'package:voo_app/view/widgets/MakeDropDown.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 import '../../Controller/Data/data_cubit.dart';
@@ -21,6 +22,9 @@ List<String> rideSettings = ['Ride', 'Packages / Bulk packages'];
 List<String> selectCarType = ['VX', 'Vcomfy'];
 List<String> wheelChairAccess = ['Yes', 'No'];
 List<String> childCarSeat = ['Yes', 'No'];
+String? selectedMake;
+List<Model> selectedModels = [];
+int? selectedModel;
 
 class _SelectTransportScreenState extends State<SelectTransportScreen> {
   TextEditingController yearController = TextEditingController();
@@ -28,8 +32,8 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
   TextEditingController rcController = TextEditingController();
   TextEditingController colorController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  int vehicleTypeDropDown = 0;
-  void onTypeChanged(int? value) {
+  String vehicleTypeDropDown = '';
+  void onTypeChanged(String? value) {
     setState(() {
       vehicleTypeDropDown = value!;
     });
@@ -254,92 +258,177 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                       SizedBox(
                         height: 2.h,
                       ),
-                      Text(
-                          'Car Brand *',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15.dp),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Color(0xffF5F4F4),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'This Field be empty';
-                            }
-                            return null;
-                          },
-                          controller: brandController,
-                          decoration: InputDecoration(
-                              filled: true,
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                  const BorderSide(color: Colors.transparent)),
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                  const BorderSide(color: Colors.transparent)),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                  const BorderSide(color: Colors.transparent)),
-                              contentPadding: EdgeInsets.all(15),
-                              hintText: 'Ex. Toyota'),
-                          keyboardType: TextInputType.text,
-                        ),
-                      ),
+                      // Text(
+                      //     'Car Brand *',
+                      //   style: TextStyle(
+                      //       fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      // ),
+                      // Container(
+                      //   decoration: BoxDecoration(
+                      //       color: Color(0xffF5F4F4),
+                      //       borderRadius: BorderRadius.circular(10)),
+                      //   child: TextFormField(
+                      //     validator: (value) {
+                      //       if (value!.isEmpty) {
+                      //         return 'This Field be empty';
+                      //       }
+                      //       return null;
+                      //     },
+                      //     controller: brandController,
+                      //     decoration: InputDecoration(
+                      //         filled: true,
+                      //         focusedBorder: OutlineInputBorder(
+                      //             borderRadius: BorderRadius.circular(10),
+                      //             borderSide:
+                      //             const BorderSide(color: Colors.transparent)),
+                      //         enabledBorder: OutlineInputBorder(
+                      //             borderRadius: BorderRadius.circular(10),
+                      //             borderSide:
+                      //             const BorderSide(color: Colors.transparent)),
+                      //         border: OutlineInputBorder(
+                      //             borderRadius: BorderRadius.circular(10),
+                      //             borderSide:
+                      //             const BorderSide(color: Colors.transparent)),
+                      //         contentPadding: EdgeInsets.all(15),
+                      //         hintText: 'Ex. Toyota'),
+                      //     keyboardType: TextInputType.text,
+                      //   ),
+                      // ),
+                      // SizedBox(
+                      //   height: 2.h,
+                      // ),
+                      // Text(
+                      //   'Car Model *',
+                      //   style: TextStyle(
+                      //       fontWeight: FontWeight.bold, fontSize: 15.dp),
+                      // ),
+                      // Container(
+                      //   decoration: BoxDecoration(
+                      //       color: Color(0xffF5F4F4),
+                      //       borderRadius: BorderRadius.circular(10)),
+                      //   child: TextFormField(
+                      //     controller: modelController,
+                      //     validator: (value) {
+                      //       if (value!.isEmpty) {
+                      //         return 'This Field be empty';
+                      //       }
+                      //       return null;
+                      //     },
+                      //     decoration: InputDecoration(
+                      //         filled: true,
+                      //         focusedBorder: OutlineInputBorder(
+                      //             borderRadius: BorderRadius.circular(10),
+                      //             borderSide:
+                      //             const BorderSide(color: Colors.transparent)),
+                      //         enabledBorder: OutlineInputBorder(
+                      //             borderRadius: BorderRadius.circular(10),
+                      //             borderSide:
+                      //             const BorderSide(color: Colors.transparent)),
+                      //         border: OutlineInputBorder(
+                      //             borderRadius: BorderRadius.circular(10),
+                      //             borderSide:
+                      //             const BorderSide(color: Colors.transparent)),
+                      //         contentPadding: EdgeInsets.all(15),
+                      //         hintText: 'Ex. 316'),
+                      //     keyboardType: TextInputType.text,
+                      //   ),
+                      // ),
                       SizedBox(
                         height: 2.h,
                       ),
                       Text(
-                        'Car Model *',
+                        'Car Make',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 15.dp),
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Color(0xffF5F4F4),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: TextFormField(
-                          controller: modelController,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'This Field be empty';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
+                      // VehicleTypesDropDown(
+                      //     vehicleDropDown: vehicleTypeDropDown,
+                      //     onTypeChanged: onTypeChanged),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          DropdownButtonFormField<String>(
+                            validator: (value){
+                              if(value == null || value.isEmpty){
+                                return 'Please Choose Make';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
                               filled: true,
+                              fillColor: Color(0xffF5F4F4),
                               focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                  const BorderSide(color: Colors.transparent)),
+                                  borderSide: const BorderSide(color: Colors.transparent)),
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                  const BorderSide(color: Colors.transparent)),
+                                  borderSide: const BorderSide(color: Colors.transparent)),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                  const BorderSide(color: Colors.transparent)),
-                              contentPadding: EdgeInsets.all(15),
-                              hintText: 'Ex. 316'),
-                          keyboardType: TextInputType.text,
-                        ),
+                                  borderSide: const BorderSide(color: Colors.transparent)),
+                            ),
+                            hint: Text('Select Make'),
+                            value: selectedMake,
+                            items: vehicleTypesModel.vehicles?.map((vehicle) {
+                              return DropdownMenuItem<String>(
+                                value: vehicle.make,
+                                child: Text(vehicle.make!),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                selectedMake = value;
+                                print(selectedMake);
+                                selectedModels = vehicleTypesModel.vehicles!
+                                    .firstWhere((vehicle) => vehicle.make== value).model!;
+                                selectedModel = null; // Reset model selection
+                              });
+                            },
+                          ),
+                          SizedBox(height: 2.h),
+                          Text(
+                            'Car Model',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 15.dp),
+                          ),
+                          SizedBox(height: 1.h,),
+                          DropdownButtonFormField<int>(
+                            validator: (value){
+                              if(value == null ){
+                                return 'Please Choose Model';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Color(0xffF5F4F4),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(color: Colors.transparent)),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(color: Colors.transparent)),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(color: Colors.transparent)),
+                            ),
+                            hint: Text('Select Model'),
+                            value: selectedModel,
+                            items: selectedModels.map((model) {
+                              return DropdownMenuItem<int>(
+                                value: model.id,
+                                child: Text(model.model!),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                selectedModel = value;
+                                print(selectedModel);
+                              });
+                            },
+                          ),
+                        ],
                       ),
-                      SizedBox(
-                        height: 2.h,
-                      ),
-                      Text(
-                        'Type',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15.dp),
-                      ),
-                      VehicleTypesDropDown(
-                          vehicleDropDown: vehicleTypeDropDown,
-                          onTypeChanged: onTypeChanged),
                       SizedBox(
                         height: 2.h,
                       ),
@@ -406,13 +495,12 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                                 return AlertDialog(
                                   title: Text("Select Year"),
                                   content: Container(
-                                    // Need to use container to add size constraint.
                                     width: 300,
                                     height: 300,
                                     child: YearPicker(
                                       firstDate: DateTime(1980),
                                       lastDate: DateTime(
-                                          DateTime.now().year + 100, 1),
+                                          DateTime.now().year),
                                       selectedDate: _selectedDate,
                                       onChanged: (DateTime dateTime) {
                                         _selectedDate = dateTime;
@@ -912,7 +1000,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 if (LoginCubit.vehicleRCImage != null) {
-                                  LoginCubit.get(context).addVehicle(type: vehicleTypeDropDown, plateInfo: plateInfoController.text, brand: brandController.text, model: modelController.text, year: yearController.text, seats: seatsController.text, doors: doorsController.text, wheelChair: currentWheelChairAccess, kidsSeat: currentChildCarSeat, color: colorController.text,rc: rcController.text, rcExpiry:expiryDateController.text , rcImage: LoginCubit.vehicleRCImage, context: context);
+                                  LoginCubit.get(context).addVehicle( plateInfo: plateInfoController.text, make: selectedMake!, model: selectedModel!, year: yearController.text, seats: seatsController.text, doors: doorsController.text, wheelChair: currentWheelChairAccess, kidsSeat: currentChildCarSeat, color: colorController.text,rc: rcController.text, rcExpiry:expiryDateController.text , rcImage: LoginCubit.vehicleRCImage, context: context);
                                 } else {
                                   showCheckImagesDialog(context);
                                 }
@@ -938,37 +1026,37 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
 
 //ignore_for_file: must_be_immutable
 class VehicleTypesDropDown extends StatelessWidget {
-  int? vehicleDropDown;
-  final ValueChanged<int?> onTypeChanged;
+  String? vehicleDropDown;
+  final ValueChanged<String?> onTypeChanged;
   VehicleTypesDropDown(
       {super.key, required this.vehicleDropDown, required this.onTypeChanged});
 
   @override
   Widget build(BuildContext context) {
-    List<VehicleTypes> vehicleTypes = vehicleTypesModel
-        .vehicleTypes!; // Assuming 'allCities' is the list of cities
+    List<Vehicles> vehicleTypes = vehicleTypesModel
+        .vehicles!; // Assuming 'allCities' is the list of cities
 
-    List<DropdownMenuItem<int>> dropdownItems = [
+    List<DropdownMenuItem<String>> dropdownItems = [
       DropdownMenuItem(
-        value: 0,
+        value: '',
         child: Text(
           'Select Car',
         ),
       )
     ];
 
-    for (VehicleTypes vehicleTypes in vehicleTypes) {
-      DropdownMenuItem<int> dropdownItem = DropdownMenuItem<int>(
-        value: vehicleTypes.id,
+    for (Vehicles vehicleTypes in vehicleTypes) {
+      DropdownMenuItem<String> dropdownItem = DropdownMenuItem<String>(
+        value: vehicleTypes.make,
         child: SizedBox(
           child: Text(
-            '${vehicleTypes.title}',
+            '${vehicleTypes.make}',
           ),
         ),
       );
       dropdownItems.add(dropdownItem);
     }
-    return DropdownButtonFormField<int>(
+    return DropdownButtonFormField<String>(
       decoration: InputDecoration(
         filled: true,
         fillColor: Color(0xffF5F4F4),

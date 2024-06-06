@@ -146,98 +146,103 @@ class NotificationsScreen extends StatelessWidget {
             SizedBox(
               width: 4.w,
             ),
-            Text(
-              'Change Password',
-              style: TextStyle(
-                  fontSize: 20.dp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
+            Expanded(
+              child: Text(
+                'Notifications',
+                style: TextStyle(
+                    fontSize: 24.dp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+              ),
             ),
           ],
         ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 2.5.h),
-            child: Container(
-              padding: EdgeInsets.all(10.dp),
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(13.dp),
-              ),
-              child: Center(
-                child: const Text(
-                  '   2 NEW   ',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-          )
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: EdgeInsets.symmetric(horizontal: 4.w,vertical: 2.5.h),
+        //     child: Container(
+        //       padding: EdgeInsets.all(10.dp),
+        //       decoration: BoxDecoration(
+        //         color: Colors.black,
+        //         borderRadius: BorderRadius.circular(13.dp),
+        //       ),
+        //       child: Center(
+        //         child: const Text(
+        //           '   2 NEW   ',
+        //           style: TextStyle(
+        //               color: Colors.white, fontWeight: FontWeight.bold),
+        //         ),
+        //       ),
+        //     ),
+        //   )
+        // ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 3.w),
-              child: Row(
-                children: [
-                  Text(
-                    'TODAY',
-                    style: TextStyle(
-                        color: const Color(0xff808080),
-                        fontSize: 15.dp,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const Spacer(),
-                  TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Mark all as read',
-                        style: TextStyle(color: Colors.black, fontSize: 16.dp),
-                      ))
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 100.h,
-              child: ListView.builder(
-                itemBuilder: (context, index) => buildNotificationItem(),
-                itemCount: 2,
-                shrinkWrap: true,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 3.w),
-              child: Row(
-                children: [
-                  Text(
-                    'YESTERDAY',
-                    style: TextStyle(
-                        color: const Color(0xff808080),
-                        fontSize: 15.dp,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const Spacer(),
-                  TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Mark all as read',
-                        style: TextStyle(color: Colors.black, fontSize: 16.dp),
-                      ))
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 100.h,
-              child: ListView.builder(
-                itemBuilder: (context, index) => buildNotificationItem(),
-                itemCount: 1,
-                shrinkWrap: true,
-              ),
-            ),
-          ],
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding:  EdgeInsets.only(bottom: 10.h),
+            child: Center(child: Text('No Notifications Yet!',style: TextStyle(fontSize: 24.dp),),),
+          )
+          // Padding(
+          //   padding: EdgeInsets.symmetric(horizontal: 3.w),
+          //   child: Row(
+          //     children: [
+          //       Text(
+          //         'TODAY',
+          //         style: TextStyle(
+          //             color: const Color(0xff808080),
+          //             fontSize: 15.dp,
+          //             fontWeight: FontWeight.bold),
+          //       ),
+          //       const Spacer(),
+          //       TextButton(
+          //           onPressed: () {},
+          //           child: Text(
+          //             'Mark all as read',
+          //             style: TextStyle(color: Colors.black, fontSize: 16.dp),
+          //           ))
+          //     ],
+          //   ),
+          // ),
+          // SizedBox(
+          //   height: 100.h,
+          //   child: ListView.builder(
+          //     itemBuilder: (context, index) => buildNotificationItem(),
+          //     itemCount: 2,
+          //     shrinkWrap: true,
+          //   ),
+          // ),
+          // Padding(
+          //   padding: EdgeInsets.symmetric(horizontal: 3.w),
+          //   child: Row(
+          //     children: [
+          //       Text(
+          //         'YESTERDAY',
+          //         style: TextStyle(
+          //             color: const Color(0xff808080),
+          //             fontSize: 15.dp,
+          //             fontWeight: FontWeight.bold),
+          //       ),
+          //       const Spacer(),
+          //       TextButton(
+          //           onPressed: () {},
+          //           child: Text(
+          //             'Mark all as read',
+          //             style: TextStyle(color: Colors.black, fontSize: 16.dp),
+          //           ))
+          //     ],
+          //   ),
+          // ),
+          // SizedBox(
+          //   height: 100.h,
+          //   child: ListView.builder(
+          //     itemBuilder: (context, index) => buildNotificationItem(),
+          //     itemCount: 1,
+          //     shrinkWrap: true,
+          //   ),
+          // ),
+        ],
       ),
     );
   }

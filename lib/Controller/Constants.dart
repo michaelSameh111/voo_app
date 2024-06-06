@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:voo_app/Model/InProgressTripModel.dart';
 import 'package:voo_app/Model/LoginDataModel.dart';
 import 'package:voo_app/Model/TripModel.dart';
 import 'package:voo_app/Model/TripsHistoryModel.dart';
@@ -14,7 +16,8 @@ bool rememberMe = false;
 TextEditingController loginEmailController = TextEditingController();
 TextEditingController loginPasswordController = TextEditingController();
 LoginDataModel loginData = LoginDataModel();
-  VehicleTypesModel  vehicleTypesModel = VehicleTypesModel();
+VehicleTypesModel  vehicleTypesModel = VehicleTypesModel();
+InProgressTripModel  inProgressTrip = InProgressTripModel();
 String? socialSecurity ;
 String? securityCode ;
 String? language ;
@@ -48,5 +51,19 @@ void showSimpleDialog(BuildContext context,String title,String desc) {
       );
     },
   );
+}
+Future<void> launchWhatsAppChat(String phoneNumber) async {
+  if (!await canLaunchUrl(Uri.parse('whatsapp://send?phone=$phoneNumber'))) {
+    throw 'Could not launch WhatsApp';
+  }
+  await launchUrl(Uri.parse('whatsapp://send?phone=$phoneNumber'));
+}
+void makePhoneCall(String phoneNumber) async {
+  final url = 'tel:$phoneNumber';
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
 }
 

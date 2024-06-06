@@ -8,6 +8,10 @@ class GetVehicleTypesLoadingState extends DataState {}
 class GetVehicleTypesSuccessState extends DataState {}
 class GetVehicleTypesErrorState extends DataState {}
 
+class GetInProgressTripDetailsLoadingState extends DataState {}
+class GetInProgressTripDetailsSuccessState extends DataState {}
+class GetInProgressTripDetailsErrorState extends DataState {}
+
 
 class GetLicenseDataLoadingState extends DataState {}
 class GetLicenseDataSuccessState extends DataState {}

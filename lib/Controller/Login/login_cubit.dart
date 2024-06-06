@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:voo_app/Controller/Data/data_cubit.dart';
+import 'package:voo_app/Model/InProgressTripModel.dart';
 import 'package:voo_app/view/pages/LandingPage.dart';
 import 'package:voo_app/view/pages/forget_password_screen.dart';
 import 'package:voo_app/view/pages/login_screen.dart';
@@ -64,8 +65,10 @@ class LoginCubit extends Cubit<LoginState> {
       print('User  $token');
       emit(LoginSuccessState());
       if (state is LoginSuccessState) {
+        inProgressTrip = InProgressTripModel();
         DataCubit.get(context).getVehicleTypes();
         DataCubit.get(context).getTripsHistoryData();
+        DataCubit.get(context).getInProgressTripDetails();
         if(loginData.driverData == null){
           Navigator.push(context, MaterialPageRoute(builder: (context)=>SocialSecurityScreen(login: true,)));
         } else {  Navigator.pushAndRemoveUntil(
@@ -499,10 +502,9 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<void> addVehicle({
-    required int type,
     required String plateInfo,
-    required String brand,
-    required String model,
+    required String make,
+    required int model,
     required String year,
     required String seats,
     required String doors,
@@ -524,9 +526,8 @@ class LoginCubit extends Cubit<LoginState> {
       final response = await DioHelper.postData(
         url: 'https://innovationscope.com/demos/voo/public/api/driver-vehicles/add',
         data: FormData.fromMap({
-          'vehicle_type': type,
           'plate_info': plateInfo,
-          'make': brand,
+          'make': make,
           'model': model,
           'year': year,
           'seats': seats,

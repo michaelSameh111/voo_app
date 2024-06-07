@@ -81,7 +81,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                   width: 4.w,
                 ),
                 Text(
-                  'Bank Account',
+                  'Help Center',
                   style: TextStyle(
                       fontSize: 20.dp,
                       fontWeight: FontWeight.bold,

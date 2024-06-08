@@ -2,12 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-      <string>http</string>
-      <string>https</string>
-      <string>tel</string>
-    </array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>The Voo Driver requires access to the photo library.</string>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.vooApp.driver</string>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>http</string>
+		<string>https</string>
+		<string>tel</string>
+	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -33,7 +39,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>We need 'Always Allow' location permission to provide you with
+	<string>We need &apos;Always Allow&apos; location permission to provide you with
             driving analytics and emergency support in case of collisions.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>We need background location permission to provide you with

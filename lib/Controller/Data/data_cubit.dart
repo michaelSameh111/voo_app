@@ -26,6 +26,14 @@ class DataCubit extends Cubit<DataState> {
       emit(GetVehicleTypesErrorState());
     });
   }
+  void checkStatus (String status){
+    emit(CheckStatusState());
+    if (status == 'Accepted'){
+      emit(AcceptTripCompleteSuccessState());
+    } else if (status == 'Arrived pickup'){
+      emit(ArrivedAtLocationCompleteSuccessState());
+    } else if (status == 'In progress'){emit(StartTripCompleteSuccessState());}
+  }
   Future<void> getInProgressTripDetails() {
     emit(GetInProgressTripDetailsLoadingState());
     return DioHelper.getData(url: 'trip/in-progress-trip', token: token)
@@ -214,9 +222,11 @@ class DataCubit extends Cubit<DataState> {
         required BuildContext context})async {
     emit(CancelTripLoadingState());
     DioHelper.postData(
-        url: 'trip/rider-cancel',
+        url: 'trip/driver-cancel',
         data: FormData.fromMap({
           'tripId' : tripId,
+          'action' : 'driver cancelled',
+          'reason' : 'Too Far',
         }),
         token: token)
         .then((value) async {
@@ -224,6 +234,13 @@ class DataCubit extends Cubit<DataState> {
     }).catchError((error,stacktrace) {
       print(error);
       print(stacktrace);
+      if (error is DioException) {
+        if (error.response != null) {
+          print('Error response data: ${error.response?.data}');
+        } else {
+          print('Error response: No response data');
+        }
+      }
       emit(CancelTripErrorState());
     });
   }

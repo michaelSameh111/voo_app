@@ -227,7 +227,7 @@ class CollectCashScreen extends StatelessWidget {
                                   builder: (context) => const HomePageMapsScreen()));
                         },
                         child: const Text(
-                          'Cash collected',
+                          'Back To Home',
                           style: TextStyle(color: Colors.white),
                         )),
                   ),

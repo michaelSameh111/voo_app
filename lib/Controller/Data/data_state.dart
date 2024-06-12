@@ -32,14 +32,17 @@ class GetDriverVehicleDataErrorState extends DataState {}
 
 class AcceptTripLoadingState extends DataState {}
 class AcceptTripSuccessState extends DataState {}
+class AcceptTripCompleteSuccessState extends DataState {}
 class AcceptTripErrorState extends DataState {}
 
 class ArrivedAtLocationLoadingState extends DataState {}
 class ArrivedAtLocationSuccessState extends DataState {}
+class ArrivedAtLocationCompleteSuccessState extends DataState {}
 class ArrivedAtLocationErrorState extends DataState {}
 
 class StartTripLoadingState extends DataState {}
 class StartTripSuccessState extends DataState {}
+class StartTripCompleteSuccessState extends DataState {}
 class StartTripErrorState extends DataState {}
 
 class EndTripLoadingState extends DataState {}
@@ -60,3 +63,6 @@ class ChangeDriverStatusErrorState extends DataState {
 class GetTripsHistoryDataLoadingState extends DataState {}
 class GetTripsHistoryDataSuccessState extends DataState {}
 class GetTripsHistoryDataErrorState extends DataState {}
+
+
+class CheckStatusState extends DataState {}

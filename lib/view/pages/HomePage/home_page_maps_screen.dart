@@ -631,6 +631,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    if(inProgressTrip.driverInProgressTrip != null && inProgressTrip.driverInProgressTrip!.status != null && inProgressTrip.driverInProgressTrip!.status!.isNotEmpty){
+      DataCubit.get(context).checkStatus(inProgressTrip.driverInProgressTrip!.status!);
+
+    }
     checkLocationEnabled().whenComplete(() async {
       controller = await googleMapController.future;
       addCustomMarker();
@@ -756,7 +760,6 @@ class _HomePageState extends State<HomePage> {
 
     super.initState();
   }
-
   Future<void> checkLocationEnabled() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (serviceEnabled != true) {
@@ -829,6 +832,28 @@ class _HomePageState extends State<HomePage> {
           startTrip(tripModel.tripId);
           startListeningToLocationChanges();
         }
+        if (state is StartTripCompleteSuccessState) {
+          locationStream = Geolocator.getPositionStream(
+              locationSettings: const LocationSettings(
+            accuracy: LocationAccuracy.high,
+          ));
+          setState(() {
+            drivingState = true;
+            tripToPickup = false;
+            tripToDestination = true;
+            setState(() {
+              loadingState = false;
+              _markers.add(Marker(
+                  markerId: const MarkerId('destination'),
+                  icon: BitmapDescriptor.defaultMarker,
+                  position: LatLng(double.parse(inProgressTrip.driverInProgressTrip!.destinationLatitude!),
+                      double.parse(inProgressTrip.driverInProgressTrip!.destinationLongitude!))));
+              getPolyPoint(double.parse(inProgressTrip.driverInProgressTrip!.destinationLatitude!),
+                  double.parse(inProgressTrip.driverInProgressTrip!.destinationLongitude!));
+            });
+          });
+          startListeningToLocationChanges();
+        }
         if (state is ArrivedAtLocationSuccessState) {
           Fluttertoast.showToast(
               msg: 'Rider Notified That You\'ve arrived',
@@ -841,6 +866,24 @@ class _HomePageState extends State<HomePage> {
                   driverLng: sourcePosition!.longitude,
                   riderLat: double.parse(tripModel.pickupLatitude!),
                   riderLng: double.parse(tripModel.pickupLongitude!),
+                  apiKey: googleMapApiKey)
+              .then((value) async {
+            time = value!;
+          });
+          arrivedToPickupShowModalSheet(context);
+        }
+        if (state is ArrivedAtLocationCompleteSuccessState) {
+          Fluttertoast.showToast(
+              msg: 'Rider Notified That You\'ve arrived',
+              fontSize: 16.dp,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              gravity: ToastGravity.TOP);
+          getEstimatedTime(
+                  driverLat: sourcePosition!.latitude,
+                  driverLng: sourcePosition!.longitude,
+                  riderLat: double.parse(inProgressTrip.driverInProgressTrip!.pickupLatitude!),
+                  riderLng: double.parse(inProgressTrip.driverInProgressTrip!.pickupLongitude!),
                   apiKey: googleMapApiKey)
               .then((value) async {
             time = value!;
@@ -899,6 +942,27 @@ class _HomePageState extends State<HomePage> {
                       double.parse(tripModel.pickupLongitude!))));
               getPolyPoint(double.parse(tripModel.pickupLatitude!),
                   double.parse(tripModel.pickupLongitude!));
+            });
+          });
+          startListeningToLocationChanges();
+        }
+        if (state is AcceptTripCompleteSuccessState) {
+          locationStream = Geolocator.getPositionStream(
+              locationSettings: const LocationSettings(
+            accuracy: LocationAccuracy.high,
+          ));
+          setState(() {
+            drivingState = true;
+            tripToPickup = true;
+            setState(() {
+              loadingState = false;
+              _markers.add(Marker(
+                  markerId: const MarkerId('destination'),
+                  icon: BitmapDescriptor.defaultMarker,
+                  position: LatLng(double.parse(inProgressTrip.driverInProgressTrip!.pickupLatitude!),
+                      double.parse(inProgressTrip.driverInProgressTrip!.pickupLongitude!))));
+              getPolyPoint(double.parse(inProgressTrip.driverInProgressTrip!.pickupLatitude!),
+                  double.parse(inProgressTrip.driverInProgressTrip!.pickupLongitude!));
             });
           });
           startListeningToLocationChanges();

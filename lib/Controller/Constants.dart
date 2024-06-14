@@ -58,6 +58,18 @@ Future<void> launchWhatsAppChat(String phoneNumber) async {
   }
   await launchUrl(Uri.parse('whatsapp://send?phone=$phoneNumber'));
 }
+Future<void> launchRouting(String lat , String lng) async {
+  if (!await canLaunchUrl(Uri.parse('google.navigation:q=${lat}, ${lng}&key=${googleMapApiKey}'))) {
+    throw 'Could not launch WhatsApp';
+  }
+  await launchUrl(Uri.parse('google.navigation:q=${lat}, ${lng}&key=${googleMapApiKey}'));
+}
+// Future<void> launchRoutings(String lat , String lng) async {
+//   if (!await canLaunchUrl(Uri.parse('https://www.google.com/maps/dir/?api=1&travelmode=driving&dir_action=navigate&origin=${sourcePosition!.latitude},${sourcePosition!.longitude}&destination=34.0522,-118.2437'))) {
+//     throw 'Could not launch WhatsApp';
+//   }
+//   await launchUrl(Uri.parse('https://www.google.com/maps/dir/?api=1&travelmode=driving&dir_action=navigate&origin=${sourcePosition!.latitude},${sourcePosition!.longitude}&destination=34.0522,-118.2437'));
+// }
 void makePhoneCall(String phoneNumber) async {
   final url = 'tel:$phoneNumber';
   if (await canLaunchUrl(Uri.parse(url))) {

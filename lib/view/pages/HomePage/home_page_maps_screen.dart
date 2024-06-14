@@ -614,6 +614,8 @@ class _HomePageState extends State<HomePage> {
         final Placemark firstPlacemark = placemarks[0];
         final address =
             '${firstPlacemark.street}, ${firstPlacemark.locality}, ${firstPlacemark.administrativeArea}';
+        if(firstPlacemark.administrativeArea != null){   DataCubit.destinationState = firstPlacemark.administrativeArea!;}
+        print(DataCubit.destinationState);
         return address;
       }
     } catch (e) {
@@ -631,12 +633,13 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    if(inProgressTrip.driverInProgressTrip != null && inProgressTrip.driverInProgressTrip!.status != null && inProgressTrip.driverInProgressTrip!.status!.isNotEmpty){
-      DataCubit.get(context).checkStatus(inProgressTrip.driverInProgressTrip!.status!);
-
-    }
     checkLocationEnabled().whenComplete(() async {
       controller = await googleMapController.future;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if(inProgressTrip.driverInProgressTrip != null && inProgressTrip.driverInProgressTrip!.status != null && inProgressTrip.driverInProgressTrip!.status!.isNotEmpty){
+          DataCubit.get(context).checkStatus(inProgressTrip.driverInProgressTrip!.status!);
+        }
+      });
       addCustomMarker();
       Timer(
         Duration(seconds: 1),
@@ -795,17 +798,21 @@ class _HomePageState extends State<HomePage> {
     loginData.acceptingRides == null ? light = false : light = true;
     bool showDialogBool = false;
     return BlocConsumer<DataCubit, DataState>(
-      listener: (context, state) {
+      listener: (context, state) async{
         if (state is EndTripSuccessState) {
+          await DataCubit.get(context).getInProgressTripDetails();
+          inProgressTrip.driverInProgressTrip!.status = null;
+          setState(() {
+            tripToDestination = false;
+          });
+          polyLineCoordinates.clear();
+          endTrip();
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => CollectCashScreen(
-                        destinationLocation: destinationLocation,
-                      )));
-          tripToDestination = false;
-          polyLineCoordinates.clear();
-          endTrip();
+                    destinationLocation: destinationLocation,
+                  )));
           print(endTripModel.total);
         }
         if (state is StartTripSuccessState) {
@@ -833,6 +840,7 @@ class _HomePageState extends State<HomePage> {
           startListeningToLocationChanges();
         }
         if (state is StartTripCompleteSuccessState) {
+          print('loooooooool');
           locationStream = Geolocator.getPositionStream(
               locationSettings: const LocationSettings(
             accuracy: LocationAccuracy.high,
@@ -947,10 +955,12 @@ class _HomePageState extends State<HomePage> {
           startListeningToLocationChanges();
         }
         if (state is AcceptTripCompleteSuccessState) {
-          locationStream = Geolocator.getPositionStream(
+          locationStream = await Geolocator.getPositionStream(
               locationSettings: const LocationSettings(
             accuracy: LocationAccuracy.high,
           ));
+          getPolyPoint(double.parse(inProgressTrip.driverInProgressTrip!.pickupLatitude!),
+              double.parse(inProgressTrip.driverInProgressTrip!.pickupLongitude!));
           setState(() {
             drivingState = true;
             tripToPickup = true;
@@ -961,8 +971,7 @@ class _HomePageState extends State<HomePage> {
                   icon: BitmapDescriptor.defaultMarker,
                   position: LatLng(double.parse(inProgressTrip.driverInProgressTrip!.pickupLatitude!),
                       double.parse(inProgressTrip.driverInProgressTrip!.pickupLongitude!))));
-              getPolyPoint(double.parse(inProgressTrip.driverInProgressTrip!.pickupLatitude!),
-                  double.parse(inProgressTrip.driverInProgressTrip!.pickupLongitude!));
+
             });
           });
           startListeningToLocationChanges();
@@ -976,7 +985,7 @@ class _HomePageState extends State<HomePage> {
                 buildingsEnabled: true,
                 scrollGesturesEnabled: true,
                 zoomGesturesEnabled: true,
-                trafficEnabled: true,
+                trafficEnabled: false,
                 onCameraMove: (CameraPosition position) {
                   cameraZoom = position.zoom;
                 },
@@ -996,7 +1005,7 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.blue,
                       visible: true,
                       points: polyLineCoordinates,
-                      width: 5)
+                      width: 20)
                 },
                 markers: _markers,
                 // markers:sourcePosition == null ? {
@@ -1330,46 +1339,53 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Row(
                       children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 5.w, vertical: 1.5.h),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: const Color(0xffFF6A03),
-                                radius: 6.w,
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  radius: 3.5.w,
-                                  child: Icon(
-                                    Icons.attach_money,
-                                    color: const Color(0xffFF6A03),
-                                    size: 19.dp,
+                        InkWell(
+                          onTap: (){
+                            polyLineCoordinates.clear();
+                            getPolyPoint(double.parse(inProgressTrip.driverInProgressTrip!.destinationLatitude!),
+                                double.parse(inProgressTrip.driverInProgressTrip!.destinationLatitude!  ));
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 5.w, vertical: 1.5.h),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: const Color(0xffFF6A03),
+                                  radius: 6.w,
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    radius: 3.5.w,
+                                    child: Icon(
+                                      Icons.attach_money,
+                                      color: const Color(0xffFF6A03),
+                                      size: 19.dp,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(
-                                width: 5.w,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'Earnings',
-                                    style: TextStyle(color: Color(0xff646363)),
-                                  ),
-                                  Text(
-                                    '${loginData.totalEarnings}',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15.dp),
-                                  )
-                                ],
-                              )
-                            ],
+                                SizedBox(
+                                  width: 5.w,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Earnings',
+                                      style: TextStyle(color: Color(0xff646363)),
+                                    ),
+                                    Text(
+                                      '${loginData.totalEarnings}',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15.dp),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
                         const Spacer(),
@@ -1573,6 +1589,7 @@ class _HomePageState extends State<HomePage> {
                                         DataCubit.get(context).endTrip(
                                           destinationTitle: destinationLocation,
                                           tripId: int.parse(tripModel.tripId!),
+                                          state : DataCubit.destinationState,
                                           context: context,
                                         );
                                       } else {

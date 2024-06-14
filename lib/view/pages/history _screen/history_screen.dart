@@ -4,9 +4,6 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:voo_app/Controller/Constants.dart';
 import 'package:voo_app/Controller/Data/data_cubit.dart';
-import 'package:voo_app/Model/CompletedTripModel.dart';
-import 'package:voo_app/Model/TripsHistoryModel.dart';
-
 import '../../widgets/HistoryWidgets.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -20,6 +17,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   void initState() {
     DataCubit.get(context).getTripsHistoryData();
+    DataCubit.get(context).getInProgressTripDetails();
     super.initState();
   }
   @override

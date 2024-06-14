@@ -15,6 +15,7 @@ part 'data_state.dart';
 class DataCubit extends Cubit<DataState> {
   DataCubit() : super(DataInitial());
   static DataCubit get(context) => BlocProvider.of(context);
+  static String destinationState = '';
   Future<void> getVehicleTypes() {
     emit(GetVehicleTypesLoadingState());
     return DioHelper.getData(url: 'vehicles', token: token)
@@ -40,6 +41,19 @@ class DataCubit extends Cubit<DataState> {
         .then((value) {
       inProgressTrip = InProgressTripModel.fromJson(value.data);
       emit(GetInProgressTripDetailsSuccessState());
+      if(state is GetInProgressTripDetailsSuccessState && inProgressTrip.driverInProgressTrip != null){
+        tripModel.pickup = inProgressTrip.driverInProgressTrip!.pickup;
+        tripModel.rider = inProgressTrip.driverInProgressTrip!.rider.toString();
+        tripModel.destination = inProgressTrip.driverInProgressTrip!.destination;
+        tripModel.destinationLatitude = inProgressTrip.driverInProgressTrip!.destinationLatitude;
+        tripModel.destinationLongitude = inProgressTrip.driverInProgressTrip!.destinationLongitude;
+        tripModel.tripId = inProgressTrip.driverInProgressTrip!.id.toString();
+        tripModel.pickupLatitude = inProgressTrip.driverInProgressTrip!.pickupLatitude;
+        tripModel.pickupLongitude = inProgressTrip.driverInProgressTrip!.pickupLongitude;
+        tripModel.paymentMethod = inProgressTrip.driverInProgressTrip!.paymentMethod;
+        tripModel.preferredVehicleType = inProgressTrip.driverInProgressTrip!.preferredVehicleType.toString();
+      }
+      print(tripModel.tripId);
     }).catchError((error) {
       print(error.toString());
       emit(GetInProgressTripDetailsErrorState());
@@ -191,6 +205,7 @@ class DataCubit extends Cubit<DataState> {
   Future<void> endTrip(
       {required int tripId,
         String? destinationTitle,
+        String? state,
         required BuildContext context,
       })async {
     emit(EndTripLoadingState());
@@ -199,6 +214,7 @@ class DataCubit extends Cubit<DataState> {
         data: FormData.fromMap({
           'tripId' : tripId,
           'destination_title' : destinationTitle,
+          'state' : state,
         }),
         token: token)
         .then((value)  {

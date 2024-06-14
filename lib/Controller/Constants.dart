@@ -6,7 +6,6 @@ import 'package:voo_app/Model/LoginDataModel.dart';
 import 'package:voo_app/Model/TripModel.dart';
 import 'package:voo_app/Model/TripsHistoryModel.dart';
 import 'package:voo_app/Model/VehicleTypeModel.dart';
-
 import '../Model/EndTripModel.dart';
 String? token = '';
 String? fcmToken = '';
@@ -33,6 +32,7 @@ DriverInsurance? insuranceData;
 DriverLicense? licenseData;
 DriverVehicle? driverVehicle;
 TripsHisotryModel? tripsHisotryModel;
+
 const String FAIRMATIC_CHANNEL = "fairmatic_channel";
 
 void showSimpleDialog(BuildContext context,String title,String desc) {
@@ -60,8 +60,8 @@ Future<void> launchWhatsAppChat(String phoneNumber) async {
 }
 void makePhoneCall(String phoneNumber) async {
   final url = 'tel:$phoneNumber';
-  if (await canLaunch(url)) {
-    await launch(url);
+  if (await canLaunchUrl(Uri.parse(url))) {
+    await launchUrl(Uri.parse(url));
   } else {
     throw 'Could not launch $url';
   }

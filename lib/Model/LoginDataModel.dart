@@ -9,6 +9,7 @@ class LoginDataModel {
   String? lastName;
   String? phone;
   String? role;
+  String? tripStatus;
   String? gender;
   String? dateOfBirth;
   dynamic backgroundCheckStatus;
@@ -36,6 +37,7 @@ class LoginDataModel {
         this.phone,
         this.role,
         this.gender,
+        this.tripStatus,
         this.dateOfBirth,
         this.backgroundCheckStatus,
         this.serviceRadius,
@@ -59,6 +61,7 @@ class LoginDataModel {
     lastName = json['last_name'];
     phone = json['phone'];
     role = json['role'];
+    tripStatus = json['trip_status'];
     acceptingRides = json['accepting_rides'];
     gender = json['gender'];
     dateOfBirth = json['date_of_birth'];

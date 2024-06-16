@@ -5,7 +5,6 @@ import 'package:voo_app/Model/EndTripModel.dart';
 import 'package:voo_app/Model/InProgressTripModel.dart';
 import 'package:voo_app/Model/TripsHistoryModel.dart';
 import 'package:voo_app/Model/VehicleTypeModel.dart';
-
 import '../../Model/LoginDataModel.dart';
 import '../Constants.dart';
 import '../dio-helper.dart';
@@ -27,6 +26,8 @@ class DataCubit extends Cubit<DataState> {
       emit(GetVehicleTypesErrorState());
     });
   }
+
+
   void checkStatus (String status){
     emit(CheckStatusState());
     if (status == 'Accepted'){
@@ -153,6 +154,50 @@ class DataCubit extends Cubit<DataState> {
       }
 
       emit(AcceptTripErrorState());
+    }
+  }
+
+  Future<void> acceptLessPriceTrip({
+    required String rider,
+    required String fees,
+    required String driverLocation,
+    required String driverLocationLat,
+    required String driverLocationLng,
+    required BuildContext context,
+  }) async {
+    emit(AcceptLessPriceTripLoadingState());
+
+    try {
+      final response = await DioHelper.postData(
+        url: 'trip/low-price-trip-to-drivers',
+        data: FormData.fromMap({
+          'rider': rider,
+          'fees': fees,
+          'driver_location': driverLocation,
+          'driver_location_latitude': driverLocationLat,
+          'driver_location_longitude': driverLocationLng,
+        }),
+        token: token,
+      );
+
+      // Log the response data
+      print('Response data: ${response.data}');
+      emit(AcceptLessPriceTripSuccessState());
+    } catch (error, stacktrace) {
+      // Log the error and stack trace
+      print('Error: $error');
+      print('Stacktrace: $stacktrace');
+
+      // If the error has a response, log the response data as well
+      if (error is DioException) {
+        if (error.response != null) {
+          print('Error response data: ${error.response?.data}');
+        } else {
+          print('Error response: No response data');
+        }
+      }
+
+      emit(AcceptLessPriceTripErrorState());
     }
   }
 

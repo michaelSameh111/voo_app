@@ -8,6 +8,8 @@ class GetVehicleTypesLoadingState extends DataState {}
 class GetVehicleTypesSuccessState extends DataState {}
 class GetVehicleTypesErrorState extends DataState {}
 
+
+
 class GetInProgressTripDetailsLoadingState extends DataState {}
 class GetInProgressTripDetailsSuccessState extends DataState {}
 class GetInProgressTripDetailsErrorState extends DataState {}
@@ -34,6 +36,12 @@ class AcceptTripLoadingState extends DataState {}
 class AcceptTripSuccessState extends DataState {}
 class AcceptTripCompleteSuccessState extends DataState {}
 class AcceptTripErrorState extends DataState {}
+
+
+class AcceptLessPriceTripLoadingState extends DataState {}
+class AcceptLessPriceTripSuccessState extends DataState {}
+class AcceptLessPriceTripCompleteSuccessState extends DataState {}
+class AcceptLessPriceTripErrorState extends DataState {}
 
 class ArrivedAtLocationLoadingState extends DataState {}
 class ArrivedAtLocationSuccessState extends DataState {}

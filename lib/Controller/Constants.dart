@@ -16,6 +16,7 @@ TextEditingController loginEmailController = TextEditingController();
 TextEditingController loginPasswordController = TextEditingController();
 LoginDataModel loginData = LoginDataModel();
 VehicleTypesModel  vehicleTypesModel = VehicleTypesModel();
+
 InProgressTripModel  inProgressTrip = InProgressTripModel();
 String? socialSecurity ;
 String? securityCode ;

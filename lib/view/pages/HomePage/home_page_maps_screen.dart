@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
   int time = 0;
   String? destinationLocation = '';
   bool loadingState = false;
-  bool coming = false;
+
 
   final sdkChannel = MethodChannel(FAIRMATIC_CHANNEL);
 
@@ -140,7 +140,7 @@ class _HomePageState extends State<HomePage> {
                   riderLng: double.parse(tripModel.pickupLongitude!),
                   apiKey: googleMapApiKey)
               .then((value) async {
-            // time = value!;
+            time = value!;
             final x = await getAddressFromLatLng(
                 double.parse(tripModel.pickupLatitude!),
                 double.parse(tripModel.pickupLongitude!));
@@ -801,7 +801,6 @@ class _HomePageState extends State<HomePage> {
       listener: (context, state) async{
         if (state is EndTripSuccessState) {
           await DataCubit.get(context).getInProgressTripDetails();
-          inProgressTrip.driverInProgressTrip!.status = null;
           setState(() {
             tripToDestination = false;
           });
@@ -984,6 +983,7 @@ class _HomePageState extends State<HomePage> {
               GoogleMap(
                 buildingsEnabled: true,
                 scrollGesturesEnabled: true,
+                mapToolbarEnabled: true,
                 zoomGesturesEnabled: true,
                 trafficEnabled: false,
                 onCameraMove: (CameraPosition position) {
@@ -1087,6 +1087,33 @@ class _HomePageState extends State<HomePage> {
                     elevation: 0,
                     backgroundColor: Colors.white,
                   )),
+            tripToPickup == true && tripModel.pickupLatitude != null  ?   Positioned(
+                  bottom: 80,
+                  left: 10,
+                  child: FloatingActionButton(
+                    onPressed: () {
+                     launchRouting(tripModel.pickupLatitude!, tripModel.pickupLongitude!);
+                    },
+                    child: Icon(
+                      Icons.directions_car,
+                      color: Colors.black,
+                    ),
+                    elevation: 0,
+                    backgroundColor: Colors.white,
+                  )) : tripToDestination == true && tripModel.destinationLatitude != null ? Positioned(
+                bottom: 80,
+                left: 10,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    launchRouting(tripModel.destinationLatitude!, tripModel.destinationLongitude!);
+                  },
+                  child: Icon(
+                    Icons.directions_car,
+                    color: Colors.black,
+                  ),
+                  elevation: 0,
+                  backgroundColor: Colors.white,
+                )) : SizedBox(),
               // GooglePlacesAutoCompleteTextFormField(
               //     textEditingController: textEditingController,
               //     googleAPIKey:   googleMapApiKey,

@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:math' as math;
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +22,37 @@ import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 import '../../../Controller/Constants.dart';
 import '../../../Model/TripModel.dart';
+final double rangeInFeet = 150;
+double _degreeToRadian(double degree) {
+  return degree * math.pi / 180;
+}
+double _calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+  const double R = 6371000; // Earth radius in meters
+  final double dLat = _degreeToRadian(lat2 - lat1);
+  final double dLon = _degreeToRadian(lon2 - lon1);
+  final double a = math.sin(dLat / 2) * math.sin(dLat / 2) +
+      math.cos(_degreeToRadian(lat1)) * math.cos(_degreeToRadian(lat2)) *
+          math.sin(dLon / 2) * math.sin(dLon / 2);
+  final double c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
+  final double distance = R * c; // Distance in meters
+  return distance * 3.28084; // Convert to feet
+}
+void _checkProximity(BuildContext context) async{
+  if(inProgressTrip.driverInProgressTrip == null){await DataCubit.get(context).getInProgressTripDetails();}
+  double distance = _calculateDistance(
+    sourcePosition!.latitude,
+    sourcePosition!.longitude,
+    double.parse(inProgressTrip.driverInProgressTrip!.pickupLatitude!),
+    double.parse(inProgressTrip.driverInProgressTrip!.pickupLongitude!),
+  );
+  if (distance <= rangeInFeet) {
+    DataCubit.inRange = true;
+    print('Within range');
 
+  } else {
+    DataCubit.inRange = false;
+  }
+}
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -33,7 +63,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool locationEnabled = false;
   bool drivingState = false;
-  List<LatLng> polyLineCoordinates = [];
+
   double cameraZoom = 17;
   int time = 0;
   String? destinationLocation = '';
@@ -124,7 +154,25 @@ class _HomePageState extends State<HomePage> {
       if (message.data['message'] == 'Send Request Trip less Price') {
         tripRequest = TripRequest.fromJson(message.data);
         acceptDeclineLessPriceShowModalSheet(context, tripRequest);
-      } else if (message.data['message'] == 'Rider Accept Offer') {
+      }
+    else  if (message.data['message'] == 'Send Rider Cancel Trip') {
+        Fluttertoast.showToast(
+            msg: 'Rider Canceled Trip',
+            fontSize: 16.dp,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            gravity: ToastGravity.TOP);
+        polyLineCoordinates.clear();
+        setState(() {
+          tripToPickup = false;
+          _markers
+              .removeWhere((marker) => marker.markerId == MarkerId('destination'));
+        });
+        cancelRequest();
+        stopListeningToLocationChanges();
+      }
+
+      else if (message.data['message'] == 'Rider Accept Offer') {
         tripModel = TripModel.fromJson(message.data);
         locationStream = Geolocator.getPositionStream(
             locationSettings: const LocationSettings(
@@ -257,8 +305,8 @@ class _HomePageState extends State<HomePage> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              '${tripModel.rider}',
+                            Text(inProgressTrip.riderName == null && tripModel.rider != null ? tripModel.rider! :
+                              '${inProgressTrip.riderName}',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 15.dp),
                             ),
@@ -792,8 +840,8 @@ class _HomePageState extends State<HomePage> {
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: const Color(0xffFF6A03)),
-                                onPressed: () {
-                                  DataCubit.get(context).acceptLessPriceTrip(
+                                onPressed: () async{
+                                 await DataCubit.get(context).acceptLessPriceTrip(
                                       fees: groupValue!,
                                       rider: tripRequest.riderId,
                                       driverLocation:
@@ -803,6 +851,7 @@ class _HomePageState extends State<HomePage> {
                                       driverLocationLng:
                                           sourcePosition!.longitude.toString(),
                                       context: context);
+                                 Navigator.pop(context);
                                 },
                                 child: state is AcceptLessPriceTripLoadingState
                                     ? Center(
@@ -872,6 +921,7 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           }
+          _checkProximity(context);
         });
       } else {
         _previousPosition = position;
@@ -982,20 +1032,7 @@ class _HomePageState extends State<HomePage> {
     }
     sourcePosition = await Geolocator.getCurrentPosition();
   }
-  // Future<void> toggleLocation() async {
-  //   bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  //   if (serviceEnabled) {
-  //     await Geolocator.openLocationSettings();
-  //   } else {
-  //     PermissionStatus permissionStatus = await Permission.location.request();
-  //     if (permissionStatus == PermissionStatus.granted) {
-  //       await Geolocator.openLocationSettings();
-  //     }
-  //   }
-  //   setState(() {
-  //     locationEnabled = !locationEnabled;
-  //   });
-  // }
+
 
   @override
   Widget build(BuildContext context) {
@@ -1016,6 +1053,7 @@ class _HomePageState extends State<HomePage> {
               MaterialPageRoute(
                   builder: (context) => CollectCashScreen(
                         destinationLocation: destinationLocation,
+                    riderName: endTripModel.riderName,
                       )));
           print(endTripModel.total);
         }
@@ -1072,6 +1110,7 @@ class _HomePageState extends State<HomePage> {
           startListeningToLocationChanges();
         }
         if (state is ArrivedAtLocationSuccessState) {
+          await DataCubit.get(context).getInProgressTripDetails();
           Fluttertoast.showToast(
               msg: 'Rider Notified That You\'ve arrived',
               fontSize: 16.dp,
@@ -1117,6 +1156,10 @@ class _HomePageState extends State<HomePage> {
               textColor: Colors.white,
               gravity: ToastGravity.TOP);
           polyLineCoordinates.clear();
+          setState(() {
+            _markers
+                .removeWhere((marker) => marker.markerId == MarkerId('destination'));
+          });
           cancelRequest();
           stopListeningToLocationChanges();
         }
@@ -1193,7 +1236,6 @@ class _HomePageState extends State<HomePage> {
           startListeningToLocationChanges();
         }
         if (state is AcceptLessPriceTripSuccessState) {
-          Navigator.pop(context);
           showSimpleDialog(context, 'Important Note',
               'Your offer has been successfully sent to the rider. Please wait for their acceptance. If they do not accept, we will send a new trip request.');
         }
@@ -1227,7 +1269,7 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.blue,
                       visible: true,
                       points: polyLineCoordinates,
-                      width: 20)
+                      )
                 },
                 markers: _markers,
                 // markers:sourcePosition == null ? {
@@ -1249,8 +1291,7 @@ class _HomePageState extends State<HomePage> {
                 //       position: destinationPosition!),
                 // },
               ),
-              driverData != null &&
-                      driverVehicle != null &&
+              driverData != null && driverVehicle != null &&
                       licenseData != null &&
                       insuranceData != null
                   ? SizedBox()
@@ -1595,59 +1636,47 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Row(
                       children: [
-                        InkWell(
-                          onTap: () {
-                            polyLineCoordinates.clear();
-                            getPolyPoint(
-                                double.parse(inProgressTrip
-                                    .driverInProgressTrip!
-                                    .destinationLatitude!),
-                                double.parse(inProgressTrip
-                                    .driverInProgressTrip!
-                                    .destinationLatitude!));
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 5.w, vertical: 1.5.h),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Row(
-                              children: [
-                                CircleAvatar(
-                                  backgroundColor: const Color(0xffFF6A03),
-                                  radius: 6.w,
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    radius: 3.5.w,
-                                    child: Icon(
-                                      Icons.attach_money,
-                                      color: const Color(0xffFF6A03),
-                                      size: 19.dp,
-                                    ),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 5.w, vertical: 1.5.h),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: const Color(0xffFF6A03),
+                                radius: 6.w,
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  radius: 3.5.w,
+                                  child: Icon(
+                                    Icons.attach_money,
+                                    color: const Color(0xffFF6A03),
+                                    size: 19.dp,
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 5.w,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      'Earnings',
-                                      style:
-                                          TextStyle(color: Color(0xff646363)),
-                                    ),
-                                    Text(
-                                      '${loginData.totalEarnings}',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15.dp),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
+                              ),
+                              SizedBox(
+                                width: 5.w,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Earnings',
+                                    style:
+                                        TextStyle(color: Color(0xff646363)),
+                                  ),
+                                  Text(
+                                    '${loginData.totalEarnings}',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15.dp),
+                                  )
+                                ],
+                              )
+                            ],
                           ),
                         ),
                         const Spacer(),
@@ -1699,7 +1728,7 @@ class _HomePageState extends State<HomePage> {
                       height: 5.h,
                     ),
                     const Spacer(),
-                    tripToPickup == true
+                    tripToPickup == true && DataCubit.inRange == true
                         ? SizedBox(
                             width: 40.w,
                             child: ElevatedButton(

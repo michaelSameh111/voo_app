@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:voo_app/Model/InProgressTripModel.dart';
 import 'package:voo_app/Model/LoginDataModel.dart';
@@ -16,7 +17,6 @@ TextEditingController loginEmailController = TextEditingController();
 TextEditingController loginPasswordController = TextEditingController();
 LoginDataModel loginData = LoginDataModel();
 VehicleTypesModel  vehicleTypesModel = VehicleTypesModel();
-
 InProgressTripModel  inProgressTrip = InProgressTripModel();
 String? socialSecurity ;
 String? securityCode ;
@@ -26,6 +26,7 @@ Position? sourcePosition;
 TripModel tripModel = TripModel();
 TripModel? trip ;
 bool tripToPickup = false;
+
 bool tripToDestination = false;
 EndTripModel endTripModel  = EndTripModel();
 DriverData? driverData;
@@ -33,6 +34,61 @@ DriverInsurance? insuranceData;
 DriverLicense? licenseData;
 DriverVehicle? driverVehicle;
 TripsHisotryModel? tripsHisotryModel;
+List<LatLng> polyLineCoordinates = [];
+List<String> states = [
+  "Please Select State"
+  "Alabama",
+  "Alaska",
+  "Arizona",
+  "Arkansas",
+  "California",
+  "Colorado",
+  "Connecticut",
+  "Delaware",
+  "District of Columbia",
+  "Florida",
+  "Georgia",
+  "Hawaii",
+  "Idaho",
+  "Illinois",
+  "Indiana",
+  "Iowa",
+  "Kansas",
+  "Kentucky",
+  "Louisiana",
+  "Maine",
+  "Montana",
+  "Nebraska",
+  "Nevada",
+  "New Hampshire",
+  "New Jersey",
+  "New Mexico",
+  "New York",
+  "North Carolina",
+  "North Dakota",
+  "Ohio",
+  "Oklahoma",
+  "Oregon",
+  "Maryland",
+  "Massachusetts",
+  "Michigan",
+  "Minnesota",
+  "Mississippi",
+  "Missouri",
+  "Pennsylvania",
+  "Rhode Island",
+  "South Carolina",
+  "South Dakota",
+  "Tennessee",
+  "Texas",
+  "Utah",
+  "Vermont",
+  "Virginia",
+  "Washington",
+  "West Virginia",
+  "Wisconsin",
+  "Wyoming",
+];
 
 const String FAIRMATIC_CHANNEL = "fairmatic_channel";
 
@@ -41,8 +97,8 @@ void showSimpleDialog(BuildContext context,String title,String desc) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Please Add Insurance Image'),
-        content: Text('An insurance image is required to proceed.'),
+        title: Text(title == 'title' ? 'Please Add Insurance Image' : title),
+        content: Text(desc == 'desc' ? 'An insurance image is required to proceed.' : desc),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),

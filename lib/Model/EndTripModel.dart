@@ -7,6 +7,7 @@ class EndTripModel {
   double? driverTotal;
   int? tripDuration;
   String? pickup;
+  String? riderName;
   String? destination;
 
   EndTripModel(
@@ -18,11 +19,13 @@ class EndTripModel {
         this.driverTotal,
         this.tripDuration,
         this.pickup,
+        this.riderName,
         this.destination});
 
   EndTripModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
+    riderName = json['rider_name'];
     tripEndTime = json['trip_end_time'];
     total = json['total'];
     grandTotal = json['grand_total'];

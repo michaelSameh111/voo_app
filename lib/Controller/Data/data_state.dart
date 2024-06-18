@@ -73,4 +73,5 @@ class GetTripsHistoryDataSuccessState extends DataState {}
 class GetTripsHistoryDataErrorState extends DataState {}
 
 
+
 class CheckStatusState extends DataState {}

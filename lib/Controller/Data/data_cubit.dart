@@ -26,7 +26,7 @@ class DataCubit extends Cubit<DataState> {
       emit(GetVehicleTypesErrorState());
     });
   }
-
+  static bool inRange = false;
 
   void checkStatus (String status){
     emit(CheckStatusState());
@@ -41,6 +41,7 @@ class DataCubit extends Cubit<DataState> {
     return DioHelper.getData(url: 'trip/in-progress-trip', token: token)
         .then((value) {
       inProgressTrip = InProgressTripModel.fromJson(value.data);
+      print('${inProgressTrip.riderName}');
       emit(GetInProgressTripDetailsSuccessState());
       if(state is GetInProgressTripDetailsSuccessState && inProgressTrip.driverInProgressTrip != null){
         tripModel.pickup = inProgressTrip.driverInProgressTrip!.pickup;
@@ -308,9 +309,6 @@ class DataCubit extends Cubit<DataState> {
   Future<void> changeDriverStatus(
       {
         required String status,
-        // required String location,
-        // required String lat,
-        // required String lng,
         required BuildContext context})async {
     emit(ChangeDriverStatusLoadingState());
     DioHelper.postData(
@@ -330,4 +328,7 @@ class DataCubit extends Cubit<DataState> {
       emit(ChangeDriverStatusErrorState(error.toString()));
     });
   }
+
+
+
 }

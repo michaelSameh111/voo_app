@@ -392,14 +392,14 @@ class CanceledHistoryWidget extends StatelessWidget {
                 )
               ],
             ),
-            SizedBox(
-              height: 2.h,
-            ),
-            Row(children: [
-              Text('Status : ',style: TextStyle(color: const Color(0xff808080),fontSize: 24.dp,fontWeight: FontWeight.bold),),
-              SizedBox(width: 1.w,),
-              Text('${driverCancelledTrips.status}',style: TextStyle(color: Colors.red,fontSize: 24.dp,fontWeight: FontWeight.bold),),
-            ],),
+            // SizedBox(
+            //   height: 2.h,
+            // ),
+            // Row(children: [
+            //   Text('Status : ',style: TextStyle(color: const Color(0xff808080),fontSize: 24.dp,fontWeight: FontWeight.bold),),
+            //   SizedBox(width: 1.w,),
+            //   Text('${driverCancelledTrips.status}',style: TextStyle(color: Colors.red,fontSize: 24.dp,fontWeight: FontWeight.bold),),
+            // ],),
             Visibility(
               visible: driverCancelledTrips.canceledBy != null && driverCancelledTrips.canceledBy!.isNotEmpty,
               child: Row(children: [
@@ -644,14 +644,14 @@ class CompletedHistoryWidgets extends StatelessWidget {
             border: Border.all(color: Color(0xffC4C4C4))),
         child: Column(
           children: [
-            Row(
-              children: [
-                Text('Status :',style: TextStyle(color: const Color(0xff808080),fontSize: 24.dp,fontWeight: FontWeight.bold),),
-                SizedBox(width: 1.w,),
-                Text('Completed',style: TextStyle(color:Colors.green,fontSize: 24.dp,fontWeight: FontWeight.bold),),
-              ],
-            ),
-            SizedBox(height: 1.h,),
+            // Row(
+            //   children: [
+            //     Text('Status :',style: TextStyle(color: const Color(0xff808080),fontSize: 24.dp,fontWeight: FontWeight.bold),),
+            //     SizedBox(width: 1.w,),
+            //     Text('Completed',style: TextStyle(color:Colors.green,fontSize: 24.dp,fontWeight: FontWeight.bold),),
+            //   ],
+            // ),
+            // SizedBox(height: 1.h,),
             Row(
               children: [
                 Text(
@@ -663,7 +663,7 @@ class CompletedHistoryWidgets extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  '${driverCompletedTrips.total}',
+                  '\$${driverCompletedTrips.grandTotal}',
                   style: TextStyle(fontSize: 15.dp),
                 )
               ],
@@ -817,14 +817,6 @@ class CanceledHistoryWidgets extends StatelessWidget {
             border: Border.all(color: Color(0xffC4C4C4))),
         child: Column(
           children: [
-            Row(
-              children: [
-                Text('Status :',style: TextStyle(color: const Color(0xff808080),fontSize: 24.dp,fontWeight: FontWeight.bold),),
-                SizedBox(width: 1.w,),
-                Text('Canceled',style: TextStyle(color:Colors.red,fontSize: 24.dp,fontWeight: FontWeight.bold),),
-              ],
-            ),
-            SizedBox(height: 1.h,),
             Row(
               children: [
                 Text(

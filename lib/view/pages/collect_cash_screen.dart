@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:voo_app/Controller/Constants.dart';
+import 'package:voo_app/Controller/Data/data_cubit.dart';
 import 'package:voo_app/view/pages/HomePage/Home.dart';
 //ignore_for_file: must_be_immutable
-class CollectCashScreen extends StatelessWidget {
-
+class CollectCashScreen extends StatefulWidget {
+  String? riderName;
   String? destinationLocation;
-   CollectCashScreen({super.key,this.destinationLocation});
+   CollectCashScreen({super.key,this.destinationLocation,this.riderName});
 
   @override
+  State<CollectCashScreen> createState() => _CollectCashScreenState();
+}
+
+class _CollectCashScreenState extends State<CollectCashScreen> {
+  @override
   Widget build(BuildContext context) {
+    return BlocConsumer<DataCubit, DataState>(
+  listener: (context, state) {},
+  builder: (context, state) {
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -117,7 +127,7 @@ class CollectCashScreen extends StatelessWidget {
                           //   color: Color(0xffE2E2E2),
                           // ),
                           Text(
-                            '${destinationLocation}',
+                            '${widget.destinationLocation}',
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -154,12 +164,12 @@ class CollectCashScreen extends StatelessWidget {
                         Column(crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${tripModel.rider}',
+                              '${widget.riderName}',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 15.dp),
                             ),
                             Text(
-                              '${tripModel.paymentMethod}',
+                              'Credit Card',
                               style: TextStyle(
                                   color: const Color(0xff808080), fontSize: 13.dp),
                             )
@@ -180,7 +190,7 @@ class CollectCashScreen extends StatelessWidget {
                             style: TextStyle(color: Colors.white,
                                 fontSize: 16.dp),),
                           const Spacer(),
-                          Text('\$${endTripModel.total}',
+                          Text('\$${endTripModel.grandTotal}',
                             style: TextStyle(color: Colors.white,
                                 fontSize: 16.dp),),
                         ],
@@ -238,5 +248,7 @@ class CollectCashScreen extends StatelessWidget {
         ),
       ),
     );
+  },
+);
   }
 }

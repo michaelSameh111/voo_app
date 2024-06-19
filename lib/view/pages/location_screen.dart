@@ -259,10 +259,14 @@ class LocationScreen extends StatelessWidget {
                                     validator: (value) {
                                       if (value!.isEmpty) {
                                         return 'This field cannot be empty';
-                                      } else
-                                        return null;
+                                      } else if (value.length != 5 || !RegExp(r'^[0-9]').hasMatch(value)) {
+                                        return 'Please enter a valid 5-digit postal code';
+                                      } else {
+                                        return null; // Valid input
+                                      }
                                     },
                                     controller: postalCodeController,
+                                    keyboardType: TextInputType.number,
                                     decoration: InputDecoration(
                                       filled: true,
                                       focusedBorder: OutlineInputBorder(

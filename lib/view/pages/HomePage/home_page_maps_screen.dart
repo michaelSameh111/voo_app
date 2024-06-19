@@ -22,7 +22,7 @@ import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 import '../../../Controller/Constants.dart';
 import '../../../Model/TripModel.dart';
-final double rangeInFeet = 150;
+final double rangeInFeet = 50;
 double _degreeToRadian(double degree) {
   return degree * math.pi / 180;
 }
@@ -165,6 +165,7 @@ class _HomePageState extends State<HomePage> {
         polyLineCoordinates.clear();
         setState(() {
           tripToPickup = false;
+          tripToDestination = false;
           _markers
               .removeWhere((marker) => marker.markerId == MarkerId('destination'));
         });

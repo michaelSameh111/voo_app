@@ -162,7 +162,7 @@ class SocialSecurityScreen extends StatelessWidget {
                     MainElevatedButtonTwo(
                         onPressed: (){
                           if(formKey.currentState!.validate()){
-                            socialSecurity = '${controllerOne.text} ${controllerTwo.text} ${controllerThree.text}';
+                            socialSecurity ='${controllerOne.text}-${controllerTwo.text}-${controllerThree.text}';
                             Navigator.push(context, MaterialPageRoute(builder: (context)=>LocationScreen(login: login,))).whenComplete((){
                             });
                           }

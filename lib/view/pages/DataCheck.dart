@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:voo_app/Controller/Constants.dart';
 import 'package:voo_app/Controller/Data/data_cubit.dart';
 import 'package:voo_app/view/pages/driver_license.dart';
@@ -86,11 +87,23 @@ class DataCheckScreen extends StatelessWidget {
                     if(driverVehicle !=null){} else {      Navigator.push(context, MaterialPageRoute(builder: (context)=> SelectTransportScreen()));}
                   },
                   text: 'Vehicle Data'),
+              SizedBox(height: 2.h,),
+              RaiseDocumentsContainerWidget(
+                  uploadedPicture:false,
+                  onTap: (){
+                    _launchUrl('https://api.checkr.com/v1/candidates/0c4c997c6261748aecb045eb');
+                  },
+                  text: 'Background Check'),
             ],
           ),
         )
     );
   },
 );
+  }
+  Future<void> _launchUrl(url) async {
+    if (!await launchUrl(Uri.parse(url),mode: LaunchMode.inAppWebView)) {
+      throw Exception('Could not launch ');
+    }
   }
 }

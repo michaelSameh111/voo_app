@@ -11,6 +11,7 @@ import 'package:voo_app/Controller/Data/data_cubit.dart';
 import 'package:voo_app/Model/InProgressTripModel.dart';
 import 'package:voo_app/view/pages/LandingPage.dart';
 import 'package:voo_app/view/pages/forget_password_screen.dart';
+import 'package:voo_app/view/pages/login_register_screen.dart';
 import 'package:voo_app/view/pages/login_screen.dart';
 import 'package:voo_app/view/pages/social_security_screen.dart';
 
@@ -109,7 +110,7 @@ class LoginCubit extends Cubit<LoginState> {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => Landingpage()));
+                  builder: (context) => LoginRegisterScreen()));
         }
       }
     });

@@ -1292,7 +1292,7 @@ class _HomePageState extends State<HomePage> {
                 //       position: destinationPosition!),
                 // },
               ),
-              driverData != null && driverVehicle != null &&
+              driverData != null && driverVehicle == null &&
                       licenseData != null &&
                       insuranceData != null
                   ? SizedBox()

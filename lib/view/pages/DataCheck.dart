@@ -12,6 +12,48 @@ import 'package:voo_app/view/widgets/raise_documents_container_widget.dart';
 
 class DataCheckScreen extends StatelessWidget {
   const DataCheckScreen({super.key});
+  void showVerificationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Document Verification'),
+          content: Text(
+              'Thank you for your interest in joining our team. We\'re currently verifying your documents and we will reach out soon.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+             Navigator.pop(context);
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void showVerificationPendingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Document Verification'),
+          content: Text(
+              'You have to wait until background check approve before getting a request from riders'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
 
 
@@ -84,14 +126,22 @@ class DataCheckScreen extends StatelessWidget {
               RaiseDocumentsContainerWidget(
                   uploadedPicture:driverVehicle != null ? true : false,
                   onTap: (){
-                    if(driverVehicle !=null){} else {      Navigator.push(context, MaterialPageRoute(builder: (context)=> SelectTransportScreen()));}
+                    if(driverVehicle !=null){} else {Navigator.push(context, MaterialPageRoute(builder: (context)=> SelectTransportScreen()));}
                   },
                   text: 'Vehicle Data'),
               SizedBox(height: 2.h,),
               RaiseDocumentsContainerWidget(
-                  uploadedPicture:false,
+                  uploadedPicture:availableToCheck == 'true' ? true : false,
                   onTap: (){
-                    _launchUrl('https://api.checkr.com/v1/candidates/0c4c997c6261748aecb045eb');
+                    if(loginData.invitaionUrl == null){
+                      if(loginData.backgroundCheckStatus == 'Pending'){
+                        showVerificationPendingDialog(context);
+                      } else {
+                        showVerificationDialog(context);
+                      }
+                    } else { _launchUrl('${loginData.invitaionUrl}');
+
+                    }
                   },
                   text: 'Background Check'),
             ],

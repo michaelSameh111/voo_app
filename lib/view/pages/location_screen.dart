@@ -2,6 +2,7 @@ import 'package:country_state_city/utils/city_utils.dart';
 import 'package:country_state_city/utils/state_utils.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:voo_app/Controller/Constants.dart';
@@ -762,30 +763,32 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
                                     validator: (value) {
                                       if (value!.isEmpty) {
                                         return 'This field cannot be empty';
-                                      } else
+                                      } else if (value.length != 5) {
+                                        return 'Postal code must be 5 digits';
+                                      } else {
                                         return null;
+                                      }
                                     },
                                     controller: postalCodeController,
                                     decoration: InputDecoration(
                                       filled: true,
                                       focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          borderSide: const BorderSide(
-                                              color: Colors.transparent)),
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: const BorderSide(color: Colors.transparent)),
                                       enabledBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          borderSide: const BorderSide(
-                                              color: Colors.transparent)),
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: const BorderSide(color: Colors.transparent)),
                                       border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          borderSide: const BorderSide(
-                                              color: Colors.transparent)),
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: const BorderSide(color: Colors.transparent)),
                                       contentPadding: EdgeInsets.all(15),
                                       hintText: 'Enter your postal code',
                                     ),
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly,
+                                      LengthLimitingTextInputFormatter(5),
+                                    ],
+                                    keyboardType: TextInputType.number,
                                   ),
                                 ),
                                 SizedBox(

@@ -26,7 +26,6 @@ Position? sourcePosition;
 TripModel tripModel = TripModel();
 TripModel? trip ;
 bool tripToPickup = false;
-
 bool tripToDestination = false;
 EndTripModel endTripModel  = EndTripModel();
 DriverData? driverData;
@@ -89,6 +88,7 @@ List<String> states = [
   "Wisconsin",
   "Wyoming",
 ];
+String? availableToCheck;
 
 const String FAIRMATIC_CHANNEL = "fairmatic_channel";
 

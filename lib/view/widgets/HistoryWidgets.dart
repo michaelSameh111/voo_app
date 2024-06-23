@@ -89,56 +89,19 @@ class CompletedHistoryWidget extends StatelessWidget {
             SizedBox(
               height: 2.h,
             ),
-            Row(
-              children: [
-                Visibility(
-                  visible: driverCompletedTrips.total != null,
-                  child:
-                  Row(children: [
-                    Text('Total'),
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    Text(
-                      '\$${driverCompletedTrips.total}',
-                      style: TextStyle(fontSize: 15.dp),
-                    ),
-                  ],),
+            Visibility(
+              visible: driverCompletedTrips.driverTotal != null,
+              child:
+              Row(children: [
+                Text('Driver Total'),
+                SizedBox(
+                  width: 3.w,
                 ),
-                Visibility(visible: driverCompletedTrips.total != null,child: const Spacer()),
-
-                Visibility(
-                  visible: driverCompletedTrips.grandTotal != null,
-                  child:
-                  Row(children: [
-                    Text('Grand Total'),
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    Text(
-                      '\$${driverCompletedTrips.grandTotal}',
-                      style: TextStyle(fontSize: 15.dp),
-                    ),
-                  ],),
+                Text(
+                  '\$${driverCompletedTrips.driverTotal}',
+                  style: TextStyle(fontSize: 15.dp),
                 ),
-                Visibility(visible: driverCompletedTrips.grandTotal != null,child: const Spacer()),
-                Visibility(
-                  visible: driverCompletedTrips.driverTotal != null,
-                  child:
-                  Row(children: [
-                    Text('Driver Total'),
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    Text(
-                      '\$${driverCompletedTrips.driverTotal}',
-                      style: TextStyle(fontSize: 15.dp),
-                    ),
-                  ],),
-                ),
-
-
-              ],
+              ],),
             ),
             SizedBox(
               height: 2.h,
@@ -418,56 +381,19 @@ class CanceledHistoryWidget extends StatelessWidget {
               ],),
             ),
             Visibility( visible: driverCancelledTrips.canceledBy != null && driverCancelledTrips.canceledBy!.isNotEmpty,child: SizedBox(height: 2.h,)),
-            Row(
-              children: [
-                Visibility(
-                  visible: driverCancelledTrips.total != null,
-                  child:
-                  Row(children: [
-                    Text('Total'),
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    Text(
-                      '\$${driverCancelledTrips.total}',
-                      style: TextStyle(fontSize: 15.dp),
-                    ),
-                  ],),
+            Visibility(
+              visible: driverCancelledTrips.driverTotal != null,
+              child:
+              Row(children: [
+                Text('Driver Total'),
+                SizedBox(
+                  width: 3.w,
                 ),
-                Visibility(visible: driverCancelledTrips.total != null,child: const Spacer()),
-
-                Visibility(
-                  visible: driverCancelledTrips.grandTotal != null,
-                  child:
-                  Row(children: [
-                    Text('Grand Total'),
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    Text(
-                      '\$${driverCancelledTrips.grandTotal}',
-                      style: TextStyle(fontSize: 15.dp),
-                    ),
-                  ],),
+                Text(
+                  '\$${driverCancelledTrips.driverTotal}',
+                  style: TextStyle(fontSize: 15.dp),
                 ),
-                Visibility(visible: driverCancelledTrips.grandTotal != null,child: const Spacer()),
-                Visibility(
-                  visible: driverCancelledTrips.driverTotal != null,
-                  child:
-                  Row(children: [
-                    Text('Driver Total'),
-                    SizedBox(
-                      width: 3.w,
-                    ),
-                    Text(
-                      '\$${driverCancelledTrips.driverTotal}',
-                      style: TextStyle(fontSize: 15.dp),
-                    ),
-                  ],),
-                ),
-
-
-              ],
+              ],),
             ),
             Visibility(
               visible: driverCancelledTrips.cancellationReason != null && driverCancelledTrips.cancellationReason!.isNotEmpty,
@@ -663,7 +589,7 @@ class CompletedHistoryWidgets extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  '\$${driverCompletedTrips.grandTotal}',
+                  '\$${driverCompletedTrips.driverTotal}',
                   style: TextStyle(fontSize: 15.dp),
                 )
               ],

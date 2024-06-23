@@ -190,7 +190,7 @@ class _CollectCashScreenState extends State<CollectCashScreen> {
                             style: TextStyle(color: Colors.white,
                                 fontSize: 16.dp),),
                           const Spacer(),
-                          Text('\$${endTripModel.grandTotal}',
+                          Text('\$${endTripModel.driverTotal}',
                             style: TextStyle(color: Colors.white,
                                 fontSize: 16.dp),),
                         ],

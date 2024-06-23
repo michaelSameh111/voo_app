@@ -26,6 +26,8 @@ class LoginDataModel {
   DriverInsurance? driverInsurance;
   int? totalTrips;
   String? totalEarnings;
+  String? availableToCheck;
+  String? invitaionUrl;
 
   LoginDataModel(
       {this.accessToken,
@@ -50,7 +52,7 @@ class LoginDataModel {
         this.acceptingRides,
         this.driverVehicle,
         this.driverLicense,
-        this.driverInsurance,this.totalEarnings,this.totalTrips});
+        this.driverInsurance,this.totalEarnings,this.totalTrips,this.availableToCheck,this.invitaionUrl});
 
   LoginDataModel.fromJson(Map<String, dynamic> json) {
     accessToken = json['access_token'];
@@ -74,6 +76,8 @@ class LoginDataModel {
     status = json['status'];
     totalTrips = json['total_trips'];
     totalEarnings = json['total_earning'];
+    availableToCheck = json['available_to_check'];
+    invitaionUrl = json['invitation_url'];
     driverData = json['driver_data'] != null
         ? new DriverData.fromJson(json['driver_data'])
         : null;

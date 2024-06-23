@@ -4,13 +4,10 @@ import 'package:voo_app/Controller/Constants.dart';
 import 'package:voo_app/view/pages/LandingPage.dart';
 import 'package:voo_app/view/pages/main_profile_screen/app_settings_screen/app_settings_screen.dart';
 import 'package:voo_app/view/pages/main_profile_screen/bank_account_screen_edit_profile_screen/bank_account_screen_edit_profile_screen.dart';
-import 'package:voo_app/view/pages/main_profile_screen/cash_back_screen/cash_back_screen.dart';
 import 'package:voo_app/view/pages/main_profile_screen/claim_screen/claim_screen.dart';
-import 'package:voo_app/view/pages/main_profile_screen/earnings_screen/earnings_screen.dart';
 import 'package:voo_app/view/pages/main_profile_screen/edit_my_profile_screen/edit_my_profile_screen.dart';
 import 'package:voo_app/view/pages/main_profile_screen/help_center/help_center_screen.dart';
 import 'package:voo_app/view/pages/main_profile_screen/notifications_screen/notifications_screen.dart';
-import 'package:voo_app/view/pages/main_profile_screen/vehicle_information_screen_edit_profile_screen/vehicle_information_screen_edit_profile_screen.dart';
 
 import '../../../Controller/shared-prefrences.dart';
 import '../login_screen.dart';
@@ -287,7 +284,7 @@ class MainProfileScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const ClaimScreen()));
+                        builder: (context) =>  const ClaimScreen()));
               },
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),

@@ -22,6 +22,7 @@ void main() async{
   if (mapsImplementation is GoogleMapsFlutterAndroid) {
     mapsImplementation.useAndroidViewSurface = true;
   }
+
   WidgetsFlutterBinding.ensureInitialized();
   DioHelper.init();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

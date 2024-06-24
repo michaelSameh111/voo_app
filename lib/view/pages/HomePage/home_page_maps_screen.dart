@@ -964,49 +964,100 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    checkLocationEnabled().whenComplete(() async {
-      controller = await googleMapController.future;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (inProgressTrip.driverInProgressTrip != null &&
-            inProgressTrip.driverInProgressTrip!.status != null &&
-            inProgressTrip.driverInProgressTrip!.status!.isNotEmpty) {
-          DataCubit.get(context)
-              .checkStatus(inProgressTrip.driverInProgressTrip!.status!);
-        }
-      });
-      addCustomMarker();
-      Timer(
-        Duration(seconds: 1),
-        () {
-          setState(() {
-            _markers.add(Marker(
-                markerId: const MarkerId('source'),
-                icon: markerIcon,
-                position: LatLng(
-                    sourcePosition!.latitude, sourcePosition!.longitude)));
+    Timer(
+      Duration(seconds: 1),()async{
+      final locationPermission = await Geolocator.checkPermission();
+        if( locationPermission == LocationPermission.always || locationPermission == LocationPermission.whileInUse){ checkLocationEnabled().whenComplete(() async {
+          controller = await googleMapController.future;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (inProgressTrip.driverInProgressTrip != null &&
+                inProgressTrip.driverInProgressTrip!.status != null &&
+                inProgressTrip.driverInProgressTrip!.status!.isNotEmpty) {
+              DataCubit.get(context)
+                  .checkStatus(inProgressTrip.driverInProgressTrip!.status!);
+            }
           });
-        },
-      );
-      if (controller != null && sourcePosition != null) {
-        controller!.animateCamera(
-          CameraUpdate.newCameraPosition(
-            CameraPosition(
-              target:
+          addCustomMarker();
+          Timer(
+            Duration(seconds: 1),
+                () {
+              setState(() {
+                _markers.add(Marker(
+                    markerId: const MarkerId('source'),
+                    icon: markerIcon,
+                    position: LatLng(
+                        sourcePosition!.latitude, sourcePosition!.longitude)));
+              });
+            },
+          );
+          if (controller != null && sourcePosition != null) {
+            controller!.animateCamera(
+              CameraUpdate.newCameraPosition(
+                CameraPosition(
+                  target:
                   LatLng(sourcePosition!.latitude, sourcePosition!.longitude),
-              zoom: 20,
-            ),
-          ),
-        );
-      }
-      if (!locationEnabled) {
-      } else {
-        locationStream = Geolocator.getPositionStream(
-            locationSettings: LocationSettings(
-                accuracy: LocationAccuracy.high,
-                distanceFilter: drivingState == true ? 50 : 0));
-        startListeningToLocationChanges();
-      }
-    });
+                  zoom: 20,
+                ),
+              ),
+            );
+          }
+          if (!locationEnabled) {
+          } else {
+            locationStream = Geolocator.getPositionStream(
+                locationSettings: LocationSettings(
+                    accuracy: LocationAccuracy.high,
+                    distanceFilter: drivingState == true ? 50 : 0));
+            startListeningToLocationChanges();
+          }
+        });}
+        else {
+         showDisclosureDialog();
+        }
+    }
+    );
+    // checkLocationEnabled().whenComplete(() async {
+    //   controller = await googleMapController.future;
+    //   WidgetsBinding.instance.addPostFrameCallback((_) {
+    //     if (inProgressTrip.driverInProgressTrip != null &&
+    //         inProgressTrip.driverInProgressTrip!.status != null &&
+    //         inProgressTrip.driverInProgressTrip!.status!.isNotEmpty) {
+    //       DataCubit.get(context)
+    //           .checkStatus(inProgressTrip.driverInProgressTrip!.status!);
+    //     }
+    //   });
+    //   addCustomMarker();
+    //   Timer(
+    //     Duration(seconds: 1),
+    //     () {
+    //       setState(() {
+    //         _markers.add(Marker(
+    //             markerId: const MarkerId('source'),
+    //             icon: markerIcon,
+    //             position: LatLng(
+    //                 sourcePosition!.latitude, sourcePosition!.longitude)));
+    //       });
+    //     },
+    //   );
+    //   if (controller != null && sourcePosition != null) {
+    //     controller!.animateCamera(
+    //       CameraUpdate.newCameraPosition(
+    //         CameraPosition(
+    //           target:
+    //               LatLng(sourcePosition!.latitude, sourcePosition!.longitude),
+    //           zoom: 20,
+    //         ),
+    //       ),
+    //     );
+    //   }
+    //   if (!locationEnabled) {
+    //   } else {
+    //     locationStream = Geolocator.getPositionStream(
+    //         locationSettings: LocationSettings(
+    //             accuracy: LocationAccuracy.high,
+    //             distanceFilter: drivingState == true ? 50 : 0));
+    //     startListeningToLocationChanges();
+    //   }
+    // });
     handle(context);
     // addCustomMarker();
     //
@@ -1018,7 +1069,70 @@ class _HomePageState extends State<HomePage> {
 
     super.initState();
   }
-
+  void showDisclosureDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Location Permission Needed'),
+          content: Text(
+              'This app needs access to your location while using the app to provide its core functionality. Please grant the location permission.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                checkLocationEnabled().whenComplete(() async {
+                  controller = await googleMapController.future;
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (inProgressTrip.driverInProgressTrip != null &&
+                        inProgressTrip.driverInProgressTrip!.status != null &&
+                        inProgressTrip.driverInProgressTrip!.status!.isNotEmpty) {
+                      DataCubit.get(context)
+                          .checkStatus(inProgressTrip.driverInProgressTrip!.status!);
+                    }
+                  });
+                  addCustomMarker();
+                  Timer(
+                    Duration(seconds: 1),
+                        () {
+                      setState(() {
+                        _markers.add(Marker(
+                            markerId: const MarkerId('source'),
+                            icon: markerIcon,
+                            position: LatLng(
+                                sourcePosition!.latitude, sourcePosition!.longitude)));
+                      });
+                    },
+                  );
+                  if (controller != null && sourcePosition != null) {
+                    controller!.animateCamera(
+                      CameraUpdate.newCameraPosition(
+                        CameraPosition(
+                          target:
+                          LatLng(sourcePosition!.latitude, sourcePosition!.longitude),
+                          zoom: 20,
+                        ),
+                      ),
+                    );
+                  }
+                  if (!locationEnabled) {
+                  } else {
+                    locationStream = Geolocator.getPositionStream(
+                        locationSettings: LocationSettings(
+                            accuracy: LocationAccuracy.high,
+                            distanceFilter: drivingState == true ? 50 : 0));
+                    startListeningToLocationChanges();
+                  }
+                });
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
   Future<void> checkLocationEnabled() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (serviceEnabled != true) {

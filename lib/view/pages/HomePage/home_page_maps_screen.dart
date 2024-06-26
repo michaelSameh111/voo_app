@@ -1567,7 +1567,9 @@ class _HomePageState extends State<HomePage> {
                                 if (driverData != null &&
                                     driverVehicle != null &&
                                     licenseData != null &&
-                                    insuranceData != null && loginData.availableToCheck != null) {
+                                    insuranceData != null
+                                    // && loginData.availableToCheck != null
+                                ) {
                                   showDialog(
                                       context: context,
                                       builder:

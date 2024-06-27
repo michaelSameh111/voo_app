@@ -22,7 +22,7 @@ import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 import '../../../Controller/Constants.dart';
 import '../../../Model/TripModel.dart';
-final double rangeInFeet = 50;
+final double rangeInFeet = 150;
 double _degreeToRadian(double degree) {
   return degree * math.pi / 180;
 }
@@ -65,7 +65,6 @@ class _HomePageState extends State<HomePage> {
   bool drivingState = false;
 
   double cameraZoom = 17;
-  int time = 0;
   String? destinationLocation = '';
   bool loadingState = false;
   String? groupValue;
@@ -85,7 +84,7 @@ class _HomePageState extends State<HomePage> {
     const url = 'https://maps.googleapis.com/maps/api/directions/json';
 
     final dio = Dio();
-
+    DataCubit.time = 0;
     try {
       final response = await dio.get(url, queryParameters: {
         'origin': origin,
@@ -95,17 +94,27 @@ class _HomePageState extends State<HomePage> {
 
       if (response.statusCode == 200) {
         final jsonResponse = response.data;
-        if (jsonResponse['status'] == 'OK') {
-          final legs = jsonResponse['routes'][0]['legs'];
-          if (legs.isNotEmpty) {
-            final duration = legs[0]['duration']['value'];
-            return Duration(seconds: duration).inMinutes;
+        if (jsonResponse != null && jsonResponse['status'] == 'OK') {
+          final routes = jsonResponse['routes'];
+          if (routes != null && routes.isNotEmpty) {
+            final legs = routes[0]['legs'];
+            if (legs != null && legs.isNotEmpty) {
+              final duration = legs[0]['duration']['value'];
+              if(duration != null){
+                DataCubit.get(context).timeChange(Duration(seconds: duration).inMinutes);
+              }
+              return Duration(seconds: duration).inMinutes;
+            } else {
+              print('Error: No legs found in the route');
+            }
+          } else {
+            print('Error: No routes found');
           }
         } else {
           print('Error: ${jsonResponse['status']}');
         }
       } else {
-        print('Failed to load directions');
+        print('Failed to load directions with status code: ${response.statusCode}');
       }
     } catch (e) {
       print('Error: $e');
@@ -123,7 +132,7 @@ class _HomePageState extends State<HomePage> {
 
   BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
   void addCustomMarker() {
-    BitmapDescriptor.asset(
+    BitmapDescriptor.fromAssetImage(
             ImageConfiguration(size: Size(1, 1)), 'assets/images/car.png')
         .then((icon) {
       setState(() {
@@ -153,6 +162,14 @@ class _HomePageState extends State<HomePage> {
       TripRequest? tripRequest;
       if (message.data['message'] == 'Send Request Trip less Price') {
         tripRequest = TripRequest.fromJson(message.data);
+        print(sourcePosition!.latitude);
+        print(sourcePosition!.longitude);
+        print(tripRequest.pickupLatitude);
+        print(tripRequest.pickupLongitude);
+        getEstimatedTime(driverLat: sourcePosition!.latitude, driverLng: sourcePosition!.longitude, riderLat: double.parse(tripRequest.pickupLatitude), riderLng: double.parse(tripRequest.pickupLongitude), apiKey: googleMapApiKey).then((value){
+          DataCubit.time = value!;
+          print(value);
+        });
         acceptDeclineLessPriceShowModalSheet(context, tripRequest);
       }
     else  if (message.data['message'] == 'Send Rider Cancel Trip') {
@@ -218,7 +235,8 @@ class _HomePageState extends State<HomePage> {
                   riderLng: double.parse(tripModel.pickupLongitude!),
                   apiKey: googleMapApiKey)
               .then((value) async {
-            // if(value != null){ time = value;}
+            if(value != null){ DataCubit.time = value;}
+            print(DataCubit.time);
             final x = await getAddressFromLatLng(
                 double.parse(tripModel.pickupLatitude!),
                 double.parse(tripModel.pickupLongitude!));
@@ -275,7 +293,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const Spacer(),
                 Text(
-                  '${time} mins away',
+                  '${DataCubit.time} mins away',
                   style: TextStyle(color: Color(0xff808080)),
                 )
               ],
@@ -445,7 +463,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const Spacer(),
                 Text(
-                  '$time mins away',
+                  '${DataCubit.time} mins away',
                   style: TextStyle(color: Color(0xff808080)),
                 )
               ],
@@ -642,235 +660,239 @@ class _HomePageState extends State<HomePage> {
         listener: (context, state) {},
         builder: (context, state) {
           return StatefulBuilder(builder: (context, state) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 2.h),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Ride Request',
-                        style: TextStyle(
-                          fontSize: 18.dp,
+            return SizedBox(
+              height: 60.h,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 2.h),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Ride Request',
+                          style: TextStyle(
+                            fontSize: 18.dp,
+                          ),
                         ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        '$time mins away',
-                        style: TextStyle(color: Color(0xff808080)),
-                      )
-                    ],
+                        const Spacer(),
+                        Text(
+                          DataCubit.time == 0 ? '' :
+                          '${DataCubit.time} mins away',
+                          style: TextStyle(color: Color(0xff808080)),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                const Divider(),
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 5.0.w, vertical: 3.h),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 7.0.w,
-                            backgroundColor: const Color(0xffECECEC),
-                            child: Icon(
-                              Icons.person,
-                              size: 11.w,
-                              color: const Color(0xffA2A2A2),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 2.w,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${tripRequest.rider}',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15.dp),
+                  const Divider(),
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 5.0.w, vertical: 3.h),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 7.0.w,
+                              backgroundColor: const Color(0xffECECEC),
+                              child: Icon(
+                                Icons.person,
+                                size: 11.w,
+                                color: const Color(0xffA2A2A2),
                               ),
-                              Text(
-                                'Credit Card',
-                                style: TextStyle(
-                                    color: const Color(0xff808080),
-                                    fontSize: 13.dp),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 4.h,
-                      ),
-                      Row(
-                        children: [
-                          Image.asset(
-                            'assets/images/from_to_image.png',
-                          ),
-                          SizedBox(
-                            width: 2.w,
-                          ),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                            ),
+                            SizedBox(
+                              width: 2.w,
+                            ),
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${tripRequest.pickup}',
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
+                                  '${tripRequest.rider}',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 13.dp),
-                                ),
-                                SizedBox(
-                                  height: 1.h,
-                                ),
-                                Stack(
-                                  children: [
-                                    Positioned(
-                                        right: -50,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(10.dp),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    color: Colors.grey
-                                                        .withOpacity(0.4),
-                                                    spreadRadius: 10,
-                                                    blurRadius: 10,
-                                                    offset: const Offset(0, 7))
-                                              ]),
-                                          child: Padding(
-                                            padding: EdgeInsets.all(6.dp),
-                                            child: Text(
-                                              time != 0
-                                                  ? '${time} mins trip'
-                                                  : '',
-                                              style: TextStyle(
-                                                  color: Color(0xff808080)),
-                                            ),
-                                          ),
-                                        )),
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      padding: EdgeInsets.only(left: 50.w),
-                                      width: 80.w,
-                                      height: 0.2.h,
-                                      decoration: const BoxDecoration(
-                                          color: Colors.black
-                                          //0xffE2E2E2
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 1.h,
+                                      fontSize: 15.dp),
                                 ),
                                 Text(
-                                  '${tripRequest.destination}',
+                                  'Credit Card',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                                      color: const Color(0xff808080),
                                       fontSize: 13.dp),
                                 )
                               ],
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 4.h,
+                        ),
+                        Row(
+                          children: [
+                            Image.asset(
+                              'assets/images/from_to_image.png',
                             ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 2.h,
-                      ),
-                      RadioListTile(
+                            SizedBox(
+                              width: 2.w,
+                            ),
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '${tripRequest.pickup}',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 13.dp),
+                                  ),
+                                  SizedBox(
+                                    height: 1.h,
+                                  ),
+                                  Stack(
+                                    children: [
+                                      Positioned(
+                                          right: -50,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(10.dp),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Colors.grey
+                                                          .withOpacity(0.4),
+                                                      spreadRadius: 10,
+                                                      blurRadius: 10,
+                                                      offset: const Offset(0, 7))
+                                                ]),
+                                            child: Padding(
+                                              padding: EdgeInsets.all(6.dp),
+                                              child: Text(
+                                                DataCubit.time != 0
+                                                    ? '${DataCubit.time} mins trip'
+                                                    : '',
+                                                style: TextStyle(
+                                                    color: Color(0xff808080)),
+                                              ),
+                                            ),
+                                          )),
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        padding: EdgeInsets.only(left: 50.w),
+                                        width: 80.w,
+                                        height: 0.2.h,
+                                        decoration: const BoxDecoration(
+                                            color: Colors.black
+                                            //0xffE2E2E2
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 1.h,
+                                  ),
+                                  Text(
+                                    '${tripRequest.destination}',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 13.dp),
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 2.h,
+                        ),
+                        RadioListTile(
+                            dense: true,
+                            contentPadding: EdgeInsets.zero,
+                            title: Text('${tripRequest.fees1}'),
+                            activeColor: Color(0xffFF6A03),
+                            value: tripRequest.fees1,
+                            groupValue: groupValue,
+                            onChanged: (value) {
+                              groupValue = value!;
+                              state(() {});
+                            }),
+                        RadioListTile(
                           dense: true,
                           contentPadding: EdgeInsets.zero,
-                          title: Text('${tripRequest.fees1}'),
+                          title: Text('${tripRequest.fees2}'),
                           activeColor: Color(0xffFF6A03),
-                          value: tripRequest.fees1,
+                          value: tripRequest.fees2,
                           groupValue: groupValue,
                           onChanged: (value) {
                             groupValue = value!;
                             state(() {});
-                          }),
-                      RadioListTile(
-                        dense: true,
-                        contentPadding: EdgeInsets.zero,
-                        title: Text('${tripRequest.fees2}'),
-                        activeColor: Color(0xffFF6A03),
-                        value: tripRequest.fees2,
-                        groupValue: groupValue,
-                        onChanged: (value) {
-                          groupValue = value!;
-                          state(() {});
-                        },
-                      ),
-                      SizedBox(
-                        height: 2.h,
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 40.w,
-                            height: 5.5.h,
-                            child: OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                    side: const BorderSide(
-                                        color: Color(0xffFF6A03))),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  setState(() {
-                                    tripToPickup = false;
-                                  });
-                                },
-                                child: const Text(
-                                  'Decline',
-                                  style: TextStyle(color: Color(0xffFF6A03)),
-                                )),
-                          ),
-                          SizedBox(
-                            width: 7.w,
-                          ),
-                          SizedBox(
-                            width: 40.w,
-                            height: 5.5.h,
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xffFF6A03)),
-                                onPressed: () async{
-                                 await DataCubit.get(context).acceptLessPriceTrip(
-                                      fees: groupValue!,
-                                      rider: tripRequest.riderId,
-                                      driverLocation:
-                                          'https://maps.google.com/?q=${sourcePosition!.latitude},${sourcePosition!.longitude}',
-                                      driverLocationLat:
-                                          sourcePosition!.latitude.toString(),
-                                      driverLocationLng:
-                                          sourcePosition!.longitude.toString(),
-                                      context: context);
-                                 Navigator.pop(context);
-                                },
-                                child: state is AcceptLessPriceTripLoadingState
-                                    ? Center(
-                                        child: CircularProgressIndicator(
-                                          color: Colors.white,
-                                        ),
-                                      )
-                                    : const Text(
-                                        'Accept',
-                                        style: TextStyle(color: Colors.white),
-                                      )),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                )
-              ],
+                          },
+                        ),
+                        SizedBox(
+                          height: 2.h,
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 40.w,
+                              height: 5.5.h,
+                              child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                      side: const BorderSide(
+                                          color: Color(0xffFF6A03))),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    setState(() {
+                                      tripToPickup = false;
+                                    });
+                                  },
+                                  child: const Text(
+                                    'Decline',
+                                    style: TextStyle(color: Color(0xffFF6A03)),
+                                  )),
+                            ),
+                            SizedBox(
+                              width: 7.w,
+                            ),
+                            SizedBox(
+                              width: 40.w,
+                              height: 5.5.h,
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xffFF6A03)),
+                                  onPressed: () async{
+                                   await DataCubit.get(context).acceptLessPriceTrip(
+                                        fees: groupValue!,
+                                        rider: tripRequest.riderId,
+                                        driverLocation:
+                                            'https://maps.google.com/?q=${sourcePosition!.latitude},${sourcePosition!.longitude}',
+                                        driverLocationLat:
+                                            sourcePosition!.latitude.toString(),
+                                        driverLocationLng:
+                                            sourcePosition!.longitude.toString(),
+                                        context: context);
+                                   Navigator.pop(context);
+                                  },
+                                  child: state is AcceptLessPriceTripLoadingState
+                                      ? Center(
+                                          child: CircularProgressIndicator(
+                                            color: Colors.white,
+                                          ),
+                                        )
+                                      : const Text(
+                                          'Accept',
+                                          style: TextStyle(color: Colors.white),
+                                        )),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
             );
           });
         },
@@ -1238,7 +1260,7 @@ class _HomePageState extends State<HomePage> {
                   riderLng: double.parse(tripModel.pickupLongitude!),
                   apiKey: googleMapApiKey)
               .then((value) async {
-            time = value!;
+            DataCubit.get(context).timeChange(value!);
           });
           arrivedToPickupShowModalSheet(context);
         }
@@ -1258,7 +1280,7 @@ class _HomePageState extends State<HomePage> {
                       inProgressTrip.driverInProgressTrip!.pickupLongitude!),
                   apiKey: googleMapApiKey)
               .then((value) async {
-            time = value!;
+            DataCubit.time = value!;
           });
           arrivedToPickupShowModalSheet(context);
         }
@@ -1563,7 +1585,7 @@ class _HomePageState extends State<HomePage> {
                                     driverVehicle != null &&
                                     licenseData != null &&
                                     insuranceData != null
-                                    && loginData.availableToCheck != null
+                                    // && loginData.availableToCheck != null
                                 ) {
                                   showDialog(
                                       context: context,
@@ -1856,7 +1878,7 @@ class _HomePageState extends State<HomePage> {
                                                 .destinationLongitude!),
                                             apiKey: googleMapApiKey)
                                         .then((value) async {
-                                      time = value!;
+                                      DataCubit.time = value!;
                                     });
                                   } else {
                                     showDialog(

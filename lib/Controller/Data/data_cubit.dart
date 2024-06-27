@@ -15,6 +15,11 @@ class DataCubit extends Cubit<DataState> {
   DataCubit() : super(DataInitial());
   static DataCubit get(context) => BlocProvider.of(context);
   static String destinationState = '';
+  static   int time = 0;
+  Future<void> timeChange (int time)async{
+    DataCubit.time = time;
+    emit(TimeChangeState());
+  }
   Future<void> getVehicleTypes() {
     emit(GetVehicleTypesLoadingState());
     return DioHelper.getData(url: 'vehicles', token: token)

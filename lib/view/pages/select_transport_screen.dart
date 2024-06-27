@@ -5,7 +5,6 @@ import 'package:voo_app/Controller/Constants.dart';
 import 'package:voo_app/Controller/Login/login_cubit.dart';
 import 'package:voo_app/Model/VehicleTypeModel.dart';
 import 'package:voo_app/view/pages/main_profile_screen/vehicle_information_screen_edit_profile_screen/car_documents_screen.dart';
-import 'package:voo_app/view/widgets/MakeDropDown.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 import '../../Controller/Data/data_cubit.dart';
@@ -71,9 +70,9 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
   Future<void> selectDate() async {
     DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
+        initialDate: DateTime.now().add(Duration(days: 15)),
 
-        firstDate: DateTime(1950),
+        firstDate: DateTime.now().add(Duration(days: 15)),
         lastDate: DateTime(2100));
     if (picked != null) {
       setState(() {
@@ -449,6 +448,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                             }
                             return null;
                           },
+                          inputFormatters: [LettersAndDigitsInputFormatter()],
                           decoration: InputDecoration(
                               filled: true,
                               focusedBorder: OutlineInputBorder(
@@ -856,6 +856,7 @@ class _SelectTransportScreenState extends State<SelectTransportScreen> {
                             }
                             return null;
                           },
+                          inputFormatters: [LettersAndDigitsInputFormatter()],
                           decoration: InputDecoration(
                               filled: true,
                               focusedBorder: OutlineInputBorder(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -91,7 +92,32 @@ List<String> states = [
 String? availableToCheck;
 
 const String FAIRMATIC_CHANNEL = "fairmatic_channel";
+class NoSpacesOrDotsInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
 
+    String newText = newValue.text.replaceAll(RegExp(r'[ .]'), '');
+
+    return TextEditingValue(
+      text: newText,
+      selection: newValue.selection,
+    );
+  }}
+class LettersAndDigitsInputFormatter extends TextInputFormatter {
+@override
+TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  // Allow only letters and digits
+  String newText = newValue.text.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '');
+
+  return TextEditingValue(
+    text: newText,
+    selection: newValue.selection.copyWith(
+      baseOffset: newText.length,
+      extentOffset: newText.length,
+    ),
+  );
+}
+}
 void showSimpleDialog(BuildContext context,String title,String desc) {
   showDialog(
     context: context,

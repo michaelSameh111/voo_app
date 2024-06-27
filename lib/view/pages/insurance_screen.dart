@@ -19,8 +19,8 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
   Future<void> selectDate() async {
     DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(1950),
+        initialDate: DateTime.now().add(Duration(days: 15)),
+        firstDate: DateTime.now().add(Duration(days: 15)),
         lastDate: DateTime(2100));
     if (picked != null) {
       setState(() {
@@ -81,7 +81,7 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
                                         await LoginCubit.get(context)
                                             .pickImage(
                                             image: LoginCubit
-                                                .insuranceLicense)
+                                                .insuranceLicense,frontCamera: false)
                                             .then((value) {
                                           setState(() {
                                             LoginCubit.insuranceLicense =
@@ -190,6 +190,7 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
                                   hintText:
                                   'Enter your Policy number'),
                               keyboardType: TextInputType.text,
+                              inputFormatters: [LettersAndDigitsInputFormatter()],
                             ),
                           ),
                           Text(
@@ -242,14 +243,13 @@ class _InsuranceScreenState extends State<InsuranceScreen> {
                                         context,
                                         'Please Add Insurance Image',
                                         'An insurance image is required to proceed.');
-                                  }
-                                  LoginCubit.get(context).addInsuranceLicense(
+                                  } else {     LoginCubit.get(context).addInsuranceLicense(
                                       insuranceLicense:
                                       insuranceLicenseController.text,
                                       insuranceExpiry:
                                       expiryDateController.text,
                                       frontImage: LoginCubit.insuranceLicense,
-                                      context: context);
+                                      context: context);}
                                 }
                               },
                               text: 'Next',

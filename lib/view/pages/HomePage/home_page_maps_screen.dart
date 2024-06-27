@@ -123,7 +123,7 @@ class _HomePageState extends State<HomePage> {
 
   BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
   void addCustomMarker() {
-    BitmapDescriptor.fromAssetImage(
+    BitmapDescriptor.asset(
             ImageConfiguration(size: Size(1, 1)), 'assets/images/car.png')
         .then((icon) {
       setState(() {
@@ -882,10 +882,9 @@ class _HomePageState extends State<HomePage> {
     polyLineCoordinates.clear();
     PolylinePoints polylinePoints = PolylinePoints();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-        googleMapApiKey,
-        PointLatLng(sourcePosition!.latitude, sourcePosition!.longitude),
-        PointLatLng(lat, lng));
-    print(result.points);
+      googleApiKey:googleMapApiKey,
+        request:PolylineRequest(origin: PointLatLng(sourcePosition!.latitude, sourcePosition!.longitude), destination: PointLatLng(lat, lng), mode: TravelMode.driving),);
+        print(result.points);
     if (result.points.isNotEmpty) {
       result.points.forEach((PointLatLng point) =>
           polyLineCoordinates.add(LatLng(point.latitude, point.longitude)));
@@ -922,7 +921,7 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           }
-          _checkProximity(context);
+          if(tripToPickup == true || tripToDestination == true){_checkProximity(context);}
         });
       } else {
         _previousPosition = position;
@@ -1359,12 +1358,14 @@ class _HomePageState extends State<HomePage> {
         return SafeArea(
           child: Stack(
             children: [
+
               GoogleMap(
                 buildingsEnabled: true,
                 scrollGesturesEnabled: true,
-                mapToolbarEnabled: true,
+                // mapToolbarEnabled: true,
                 zoomGesturesEnabled: true,
                 trafficEnabled: false,
+                // compassEnabled: true,
                 onCameraMove: (CameraPosition position) {
                   cameraZoom = position.zoom;
                 },
@@ -1466,35 +1467,29 @@ class _HomePageState extends State<HomePage> {
                   )),
               tripToPickup == true && tripModel.pickupLatitude != null
                   ? Positioned(
-                      bottom: 80,
-                      left: 10,
+                      bottom: 120,
+                      right: 10,
                       child: FloatingActionButton(
                         onPressed: () {
                           launchRouting(tripModel.pickupLatitude!,
                               tripModel.pickupLongitude!);
                         },
-                        child: Icon(
-                          Icons.directions_car,
-                          color: Colors.black,
-                        ),
-                        elevation: 0,
+                        child: ClipRRect(borderRadius: BorderRadius.circular(100),child: Image.asset('assets/images/direction.png',height: 10.h,fit: BoxFit.cover,)),
+                        elevation: 10,
                         backgroundColor: Colors.white,
                       ))
                   : tripToDestination == true &&
                           tripModel.destinationLatitude != null
                       ? Positioned(
-                          bottom: 80,
-                          left: 10,
+                          bottom: 120,
+                          right: 10,
                           child: FloatingActionButton(
                             onPressed: () {
                               launchRouting(tripModel.destinationLatitude!,
                                   tripModel.destinationLongitude!);
                             },
-                            child: Icon(
-                              Icons.directions_car,
-                              color: Colors.black,
-                            ),
-                            elevation: 0,
+                            child: ClipRRect(borderRadius: BorderRadius.circular(100),child: Image.asset('assets/images/direction.png',height: 10.h,fit: BoxFit.cover,)),
+                            elevation: 10,
                             backgroundColor: Colors.white,
                           ))
                       : SizedBox(),
@@ -1568,7 +1563,7 @@ class _HomePageState extends State<HomePage> {
                                     driverVehicle != null &&
                                     licenseData != null &&
                                     insuranceData != null
-                                    // && loginData.availableToCheck != null
+                                    && loginData.availableToCheck != null
                                 ) {
                                   showDialog(
                                       context: context,

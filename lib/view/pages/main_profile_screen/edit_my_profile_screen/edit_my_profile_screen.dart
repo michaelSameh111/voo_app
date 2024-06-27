@@ -1,5 +1,4 @@
 import 'package:dotted_border/dotted_border.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
@@ -508,8 +507,8 @@ class _DriverLicenseScreenInEditMyProfileState
   Future<void> selectDate() async {
     DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(1950),
+        initialDate: DateTime.now().add(Duration(days: 15)),
+        firstDate: DateTime.now().add(Duration(days: 15)),
         lastDate: DateTime(2100));
     if (picked != null) {
       setState(() {
@@ -890,8 +889,8 @@ class _InsuranceScreenInEditMyProfileState
   Future<void> selectDate() async {
     DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(1950),
+        initialDate: DateTime.now().add(Duration(days: 15)),
+        firstDate: DateTime.now().add(Duration(days: 15)),
         lastDate: DateTime(2100));
     if (picked != null) {
       setState(() {
@@ -1018,82 +1017,87 @@ class _InsuranceScreenInEditMyProfileState
                     SizedBox(
                       height: 3.h,
                     ),
-                    Center(
-                      child: DottedBorder(
-                        dashPattern: const [1, 1],
-                        padding: EdgeInsets.all(30),
-                        color: const Color(0xff808080),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: Color(0xffF5F4F4),
-                          ),
-                          child: LoginCubit.insuranceLicense != null
-                              ? Image.file(
-                                  LoginCubit.insuranceLicense!,
-                                  width: 300,
-                                  height: 300,
-                                  fit: BoxFit.fill,
-                                )
-                              : loginData.driverInsurance != null &&
-                                      loginData.driverInsurance!
-                                              .insuranceFrontImage !=
-                                          null
-                                  ? Image.network(
-                                      '${loginData.driverInsurance!.insuranceFrontImage!}',
-                                      height: 300,
-                                      width: 300,
-                                      fit: BoxFit.fill, errorBuilder:
-                                          (context, error, stackTrace) {
-                                      return Container(
-                                        color: Colors.grey[
-                                            200], // Adjust background color as needed
-                                        child: const Center(
-                                          child: Icon(
-                                            Icons.error,
-                                            color: Colors.red,
-                                            size: 50, // Adjust size as needed
+                    GestureDetector(
+                      onTap: (){
+                        print(loginData.driverInsurance!.insuranceFrontImage);
+                      },
+                      child: Center(
+                        child: DottedBorder(
+                          dashPattern: const [1, 1],
+                          padding: EdgeInsets.all(30),
+                          color: const Color(0xff808080),
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              color: Color(0xffF5F4F4),
+                            ),
+                            child: LoginCubit.insuranceLicense != null
+                                ? Image.file(
+                                    LoginCubit.insuranceLicense!,
+                                    width: 300,
+                                    height: 300,
+                                    fit: BoxFit.fill,
+                                  )
+                                : loginData.driverInsurance != null &&
+                                        loginData.driverInsurance!
+                                                .insuranceFrontImage !=
+                                            null
+                                    ? Image.network(
+                                        '${loginData.driverInsurance!.insuranceFrontImage!}',
+                                        height: 300,
+                                        width: 300,
+                                        fit: BoxFit.fill, errorBuilder:
+                                            (context, error, stackTrace) {
+                                        return Container(
+                                          color: Colors.grey[
+                                              200], // Adjust background color as needed
+                                          child: const Center(
+                                            child: Icon(
+                                              Icons.error,
+                                              color: Colors.red,
+                                              size: 50, // Adjust size as needed
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    })
-                                  : Column(
-                                      children: [
-                                        Icon(
-                                          Icons.camera_alt_rounded,
-                                          size: 45.dp,
-                                        ),
-                                        TextButton(
-                                          onPressed: () {},
-                                          child: const Text(
-                                            'Click here to upload a clear pictue of\n              front of driver\'s Insurance',
-                                            style:
-                                                TextStyle(color: Colors.black),
+                                        );
+                                      })
+                                    : Column(
+                                        children: [
+                                          Icon(
+                                            Icons.camera_alt_rounded,
+                                            size: 45.dp,
                                           ),
-                                        ),
-                                        SizedBox(
-                                          height: 2.h,
-                                        ),
-                                        MainElevatedButtonTwo(
-                                            onPressed: () async {
-                                              LoginCubit.get(context)
-                                                  .pickImage(
-                                                      image: LoginCubit
-                                                          .insuranceLicense)
-                                                  .then((value) {
-                                                setState(() {
-                                                  LoginCubit.insuranceLicense =
-                                                      value;
+                                          TextButton(
+                                            onPressed: () {},
+                                            child: const Text(
+                                              'Click here to upload a clear pictue of\n              front of driver\'s Insurance',
+                                              style:
+                                                  TextStyle(color: Colors.black),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 2.h,
+                                          ),
+                                          MainElevatedButtonTwo(
+                                              onPressed: () async {
+                                                LoginCubit.get(context)
+                                                    .pickImage(
+                                                        image: LoginCubit
+                                                            .insuranceLicense)
+                                                    .then((value) {
+                                                  setState(() {
+                                                    LoginCubit.insuranceLicense =
+                                                        value;
+                                                  });
                                                 });
-                                              });
-                                            },
-                                            text: 'Upload',
-                                            circularBorder: true,
-                                            condition: state
-                                                is EditInsuranceLicenseLoadingState,
-                                            backgroundColor:
-                                                const Color(0xffFF6A03)),
-                                      ],
-                                    ),
+                                              },
+                                              text: 'Upload',
+                                              circularBorder: true,
+                                              condition: state
+                                                  is EditInsuranceLicenseLoadingState,
+                                              backgroundColor:
+                                                  const Color(0xffFF6A03)),
+                                        ],
+                                      ),
+                          ),
                         ),
                       ),
                     ),

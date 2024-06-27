@@ -116,9 +116,9 @@ class LoginCubit extends Cubit<LoginState> {
     });
   }
 
-  Future pickImage({required File? image}) async {
+  Future pickImage({required File? image,bool? frontCamera}) async {
     emit(ImagePickingState());
-    final myFile = await ImagePicker().pickImage(source: ImageSource.camera);
+    final myFile = await ImagePicker().pickImage(source: ImageSource.camera,preferredCameraDevice: frontCamera == true ? CameraDevice.front : CameraDevice.rear );
     if (myFile != null) {
       image = File(myFile.path);
       updateCarHint();

@@ -47,10 +47,13 @@ class _LocationScreenState extends State<LocationScreen> {
       stateCodes = fetchedStates.map((state) => state.isoCode).toList();
     });
   }
-  Future<void> fetchCities(String stateCode) async {
+  Future<void> fetchCities(String stateCode,String stateName) async {
     final fetchedCities = await getStateCities('US', stateCode);
     setState(() {
       cities = fetchedCities.map((city) => city.name).toList();
+      if(cities.isEmpty){
+        cities = [stateName];
+      }
     });
   }
   @override
@@ -189,7 +192,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                       selectedCity = null;
                                       int stateIndex = states.indexOf(newState!);
                                       String stateCode = stateCodes[stateIndex];
-                                      fetchCities(stateCode); // Fetch cities for the selected state
+                                      fetchCities(stateCode,selectedState!);
                                     });
                                   },
                                   popupProps: PopupProps.menu(
@@ -423,6 +426,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                       }
                                     },
                                     controller: postalCodeController,
+                                    maxLength: 5,
                                     keyboardType: TextInputType.number,
                                     decoration: InputDecoration(
                                       filled: true,
@@ -770,6 +774,7 @@ class _EditLocationScreenState extends State<EditLocationScreen> {
                                       }
                                     },
                                     controller: postalCodeController,
+                                    maxLength: 5,
                                     decoration: InputDecoration(
                                       filled: true,
                                       focusedBorder: OutlineInputBorder(

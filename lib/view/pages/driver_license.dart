@@ -6,6 +6,7 @@ import 'package:voo_app/Controller/Login/login_cubit.dart';
 import 'package:voo_app/view/widgets/circled_next_button.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
+import '../../Controller/Constants.dart';
 import 'DataCheck.dart';
 
 class DriverLicenseScreen extends StatefulWidget {
@@ -17,9 +18,8 @@ class _DriverLicenseScreenState extends State<DriverLicenseScreen> {
   Future<void> selectDate() async {
     DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
-
-        firstDate: DateTime(1950),
+        initialDate: DateTime.now().add(Duration(days: 15)),
+        firstDate: DateTime.now().add(Duration(days: 15)),
         lastDate: DateTime(2100));
     if (picked != null) {
       setState(() {
@@ -212,6 +212,7 @@ class _DriverLicenseScreenState extends State<DriverLicenseScreen> {
                             } else
                               return null;
                           },
+                          inputFormatters: [LettersAndDigitsInputFormatter()],
                           decoration: InputDecoration(
                               filled: true,
                               focusedBorder: OutlineInputBorder(
@@ -280,13 +281,19 @@ class _DriverLicenseScreenState extends State<DriverLicenseScreen> {
                         condition: state is AddDriverLicenseLoadingState,
                         onTap: () {
                           if (formKey.currentState!.validate()) {
-                            LoginCubit.get(context).addDriverLicense(
+                            if(LoginCubit.frontLicenseImage == null || LoginCubit.backLicenseImage == null){
+                              showSimpleDialog(
+                                  context,
+                                  'Please Add License Image',
+                                  'License image is required to proceed.');
+                            }else {  LoginCubit.get(context).addDriverLicense(
                               driverLicense: driverLicenseController.text,
                               expiryDate: expiryDateController.text,
                               frontImage: LoginCubit.frontLicenseImage,
                               backImage: LoginCubit.backLicenseImage,
                               context: context,
-                            );
+                            );}
+
 
                           }
                         },

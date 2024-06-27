@@ -6,7 +6,6 @@ import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:voo_app/Controller/Terms&Conditions.dart';
 import 'package:voo_app/view/pages/login_screen.dart';
-import 'package:voo_app/view/widgets/TermsPdf.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 import '../../Controller/Login/login_cubit.dart';
@@ -79,8 +78,9 @@ class _RegisterNowScreenState extends State<RegisterNowScreen> {
                           height: 5.h,
                         ),
                         InkWell(
-                          onTap: () async {
-                             LoginCubit.get(context).pickImage(image: LoginCubit.registerImage).then((value){
+                          onTap: ()  async{
+
+                           await  LoginCubit.get(context).pickImage(image: LoginCubit.registerImage,frontCamera: true).then((value){
                                setState(() {
                                  LoginCubit.registerImage = value;
                                });
@@ -109,8 +109,8 @@ class _RegisterNowScreenState extends State<RegisterNowScreen> {
                           ),
                         ),
                         TextButton(
-                            onPressed: () async {
-                              await LoginCubit.get(context).pickImage(image: LoginCubit.registerImage);
+                            onPressed: ()  {
+                               LoginCubit.get(context).pickImage(image: LoginCubit.registerImage,frontCamera: true);
                               setState(() {});
                             },
                             child: Text(
@@ -225,7 +225,10 @@ class _RegisterNowScreenState extends State<RegisterNowScreen> {
                           },
                           controller: phoneNumberController,
                           keyboardType: TextInputType.number,
+                          maxLength: 10,
                           decoration: InputDecoration(
+                            prefixIcon: Center(child: Text('+1',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16.dp),)),
+                              prefixIconConstraints: BoxConstraints(maxWidth: 10.w),
                               filled: true,
                               focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -553,14 +556,14 @@ class _RegisterNowScreenState extends State<RegisterNowScreen> {
                           height: 1.h,
                         ),
                         MainElevatedButtonTwo(
-                            condition: state is RegisterLoadingState,
+                            condition: state is RegisterLoadingState || state is LoginLoadingState,
                             onPressed: () {
                               if (formKey.currentState!.validate()) {
                                 termsAndConditions ? LoginCubit.get(context).registerUser(
                                     firstName: firstNameController.text,
                                     lastName: lastNameController.text,
                                     email: emailController.text,
-                                    phone: phoneNumberController.text,
+                                    phone: '+1${phoneNumberController.text}',
                                     password: passwordController.text,
                                     passwordConfirmation:
                                     confirmPasswordController.text,

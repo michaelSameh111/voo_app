@@ -277,6 +277,13 @@ class DataCubit extends Cubit<DataState> {
 
       emit(EndTripSuccessState());
     }).catchError((error,stacktrace) {
+      if (error is DioException) {
+        if (error.response != null) {
+          print('Error response data: ${error.response?.data}');
+        } else {
+          print('Error response: No response data');
+        }
+      }
       print(error);
       print(stacktrace);
       emit(EndTripErrorState());
@@ -309,6 +316,37 @@ class DataCubit extends Cubit<DataState> {
         }
       }
       emit(CancelTripErrorState());
+    });
+  }
+
+  Future<void> locationUpdate(
+      {required int tripId,
+        required double latitude,
+        required double longitude,
+        required double heading,
+        required BuildContext context})async {
+    DioHelper.postData(
+        url: 'driver-location/add',
+        data: FormData.fromMap({
+          'latitude' : latitude,
+          'longitude' :longitude,
+          'heading' :heading,
+        }),
+        token: token,
+    id: tripId)
+        .then((value) async {
+      emit(LocationChangeState());
+    }).catchError((error,stacktrace) {
+      print(error);
+      print(stacktrace);
+      if (error is DioException) {
+        if (error.response != null) {
+          print('Error response data: ${error.response?.data}');
+        } else {
+          print('Error response: No response data');
+        }
+      }
+      emit(LocationChangeErrorState());
     });
   }
   Future<void> changeDriverStatus(

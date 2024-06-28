@@ -32,6 +32,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             elevation: 0,
             backgroundColor: Colors.transparent,
             toolbarHeight: 10.h,
+            leadingWidth: 0,
             // leading: Padding(
             //   padding: EdgeInsets.symmetric(horizontal: 2.0.w),
             //   child: InkWell(
@@ -53,12 +54,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
             //         child: const Icon(Icons.arrow_back,color: Colors.black,)),
             //   ),
             // ),
-            title: Text(
-              'History',
-              style: TextStyle(
-                  fontSize: 20.dp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
+            title: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'History',
+                  style: TextStyle(
+                      fontSize: 20.dp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+                Divider(color: Colors.black,)
+              ],
             ),
             bottom: TabBar(
               indicator: const UnderlineTabIndicator(

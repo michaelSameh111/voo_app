@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:voo_app/Model/InProgressTripModel.dart';
-import 'package:voo_app/view/widgets/main_elevated_button.dart';
-
 import '../../Model/TripsHistoryModel.dart';
 
 class CompletedHistoryWidget extends StatelessWidget {
@@ -12,7 +9,47 @@ class CompletedHistoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+       leadingWidth: 0,
+        toolbarHeight: 10.h,
+        // leading: Padding(
+        //   padding: EdgeInsets.symmetric(horizontal: 2.0.w),
+        //   child: InkWell(
+        //     onTap: () {
+        //       Navigator.pop(context);
+        //     },
+        //     child: Container(
+        //         decoration: BoxDecoration(
+        //           boxShadow: [
+        //             BoxShadow(
+        //               color: Colors.grey.withOpacity(0.5),
+        //               spreadRadius: 1,
+        //               blurRadius: 1,
+        //             )
+        //           ],
+        //           shape: BoxShape.circle,
+        //           color: Colors.white,
+        //         ),
+        //         child: const Icon(Icons.arrow_back,color: Colors.black,)),
+        //   ),
+        // ),
+
+        title: Column(crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'History',
+              style: TextStyle(
+                  fontSize: 20.dp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
+            ),
+            Divider(color: Colors.black,)
+          ],
+        ),
+
+      ),
       backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.symmetric(
@@ -253,22 +290,22 @@ class CompletedHistoryWidget extends StatelessWidget {
                 ],
               ),
             ),
-            Spacer(),
-            MainElevatedButtonTwo(
-              onPressed: () async {
-                final url = Uri.parse(
-                      driverCompletedTrips.invoice!);
-                if (await canLaunchUrl(url)) {
-                  await launchUrl(url, mode: LaunchMode.externalApplication);
-                }
-              },
-              text: 'Invoice',
-              backgroundColor: Color(0xffFF6A03),
-              circularBorder: true,
-            ),
-            SizedBox(
-              height: 5.h,
-            )
+            // Spacer(),
+            // MainElevatedButtonTwo(
+            //   onPressed: () async {
+            //     final url = Uri.parse(
+            //           driverCompletedTrips.invoice!);
+            //     if (await canLaunchUrl(url)) {
+            //       await launchUrl(url, mode: LaunchMode.externalApplication);
+            //     }
+            //   },
+            //   text: 'Invoice',
+            //   backgroundColor: Color(0xffFF6A03),
+            //   circularBorder: true,
+            // ),
+            // SizedBox(
+            //   height: 5.h,
+            // )
           ],
         ),
       ),
@@ -281,7 +318,47 @@ class CanceledHistoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leadingWidth: 0,
+        toolbarHeight: 10.h,
+        // leading: Padding(
+        //   padding: EdgeInsets.symmetric(horizontal: 2.0.w),
+        //   child: InkWell(
+        //     onTap: () {
+        //       Navigator.pop(context);
+        //     },
+        //     child: Container(
+        //         decoration: BoxDecoration(
+        //           boxShadow: [
+        //             BoxShadow(
+        //               color: Colors.grey.withOpacity(0.5),
+        //               spreadRadius: 1,
+        //               blurRadius: 1,
+        //             )
+        //           ],
+        //           shape: BoxShape.circle,
+        //           color: Colors.white,
+        //         ),
+        //         child: const Icon(Icons.arrow_back,color: Colors.black,)),
+        //   ),
+        // ),
+
+        title: Column(crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'History',
+              style: TextStyle(
+                  fontSize: 20.dp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
+            ),
+            Divider(color: Colors.black,)
+          ],
+        ),
+
+      ),
       backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.symmetric(
@@ -655,14 +732,6 @@ class InProgressWidget extends StatelessWidget {
             border: Border.all(color: Color(0xffC4C4C4))),
         child: Column(
           children: [
-            Row(
-              children: [
-                Text('Status :',style: TextStyle(color: const Color(0xff808080),fontSize: 24.dp,fontWeight: FontWeight.bold),),
-                SizedBox(width: 1.w,),
-                Text('In Progress',style: TextStyle(color:Color(0xffFF6A03),fontSize: 24.dp,fontWeight: FontWeight.bold),),
-              ],
-            ),
-            SizedBox(height: 1.h,),
             Row(
               children: [
                 Text(

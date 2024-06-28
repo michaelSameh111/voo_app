@@ -130,7 +130,9 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
   void initState() {
     firstNameController.text = loginData.firstName!;
     lastNameController.text = loginData.lastName!;
-    phoneController.text = loginData.phone!;
+    if(loginData.phone!.startsWith('+1')){
+      phoneController.text = loginData.phone!.substring(2);
+    } else {   phoneController.text = loginData.phone!;}
     dateController.text = loginData.dateOfBirth!;
     selectedValue = loginData.gender!;
     emailController.text = loggedInEmail!;
@@ -214,7 +216,7 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                       icon: const Icon(Icons.mail),
                       keyboardType: TextInputType.emailAddress,
                       hintText: 'Enter your email address'),
-                  IconAndTextField(
+                  IconAndTextFieldNumber(
                       controller: phoneController,
                       icon: const Icon(Icons.phone_android),
                       keyboardType: TextInputType.phone,
@@ -444,7 +446,7 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                           firstName: loginData.firstName!,
                           lastName: loginData.lastName!,
                           email: emailController.text,
-                          phone: phoneController.text,
+                          phone: '+1${phoneController.text}',
                           date: loginData.dateOfBirth!,
                           context: context);
                     },

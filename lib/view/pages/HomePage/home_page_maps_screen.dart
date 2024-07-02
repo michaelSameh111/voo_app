@@ -22,7 +22,7 @@ import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 import '../../../Controller/Constants.dart';
 import '../../../Model/TripModel.dart';
-final double rangeInFeet = 150;
+final double rangeInFeet = 999999999999999;
 double _degreeToRadian(double degree) {
   return degree * math.pi / 180;
 }
@@ -298,11 +298,11 @@ class _HomePageState extends State<HomePage> {
                     fontSize: 18.dp,
                   ),
                 ),
-                const Spacer(),
-                Text(
-                  '${DataCubit.time} mins away',
-                  style: TextStyle(color: Color(0xff808080)),
-                )
+                // const Spacer(),
+                // Text(
+                //   '${DataCubit.time} mins away',
+                //   style: TextStyle(color: Color(0xff808080)),
+                // )
               ],
             ),
           ),

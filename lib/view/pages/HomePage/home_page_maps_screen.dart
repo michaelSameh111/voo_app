@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math' as math;
+import 'package:audioplayers/audioplayers.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -158,6 +159,7 @@ class _HomePageState extends State<HomePage> {
 
   Future handle(BuildContext context) async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async{
+      await player.play(AssetSource('sounds/mixkit-bell-notification-933.mp3'));
       print(message.data);
       TripModel? newTrip;
       TripRequest? tripRequest;
@@ -1197,7 +1199,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    bool? light;
+
     loginData.acceptingRides == null ? light = false : light = true;
     bool showDialogBool = false;
     return BlocConsumer<DataCubit, DataState>(
@@ -1695,10 +1697,7 @@ class _HomePageState extends State<HomePage> {
                                                                             value: light!,
                                                                             onChanged: (bool value) {
                                                                               DataCubit.get(context).changeDriverStatus(status: light == false ? 'on' : 'off', context: context);
-                                                                              setState(() {
-                                                                                value == true ? loginData.acceptingRides = 'on' : loginData.acceptingRides = null;
-                                                                                light = value;
-                                                                              });
+                                                                              setState((){});
                                                                               state;
                                                                             }),
                                                                   ],

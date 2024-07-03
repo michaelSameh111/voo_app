@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+
+import '../../Controller/Constants.dart';
 
 class CountdownDialog extends StatefulWidget {
   final VoidCallback onTimerFinish;
@@ -19,9 +22,10 @@ class _CountdownDialogState extends State<CountdownDialog> {
   void initState() {
     super.initState();
     // Start the countdown timer
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer)async {
       if (_seconds > 0) {
         setState(() {
+           player.play(AssetSource('sounds/timer.mp3'));
           _seconds--;
         });
       } else {

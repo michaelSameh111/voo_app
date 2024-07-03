@@ -367,6 +367,20 @@ class DataCubit extends Cubit<DataState> {
         },
         token: token)
         .then((value) async {
+          print(value.data);
+          if(value.data['message'] == 'You are now in your break time'){
+            light = false;
+            showRichTextDialog(context, 'Break Time', '${value.data['remaning_time']}');
+            loginData.acceptingRides = null;
+          } else
+          if(value.data['message'] == 'You are now online'){
+            light = true;
+            loginData.acceptingRides = 'on';
+          } else
+          if(value.data['message'] == 'You are now offline'){
+            light = false;
+            loginData.acceptingRides = null;
+          }
       emit(ChangeDriverStatusSuccessState());
     }).catchError((error) {
       print(error);

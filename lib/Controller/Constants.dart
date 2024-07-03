@@ -1,6 +1,9 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:voo_app/Model/InProgressTripModel.dart';
@@ -27,6 +30,7 @@ Position? sourcePosition;
 TripModel tripModel = TripModel();
 TripModel? trip ;
 bool tripToPickup = false;
+bool? light;
 bool tripToDestination = false;
 EndTripModel endTripModel  = EndTripModel();
 DriverData? driverData;
@@ -34,6 +38,7 @@ DriverInsurance? insuranceData;
 DriverLicense? licenseData;
 DriverVehicle? driverVehicle;
 TripsHisotryModel? tripsHisotryModel;
+final player = AudioPlayer();
 List<LatLng> polyLineCoordinates = [];
 List<String> states = [
   "Please Select State"
@@ -125,6 +130,40 @@ void showSimpleDialog(BuildContext context,String title,String desc) {
       return AlertDialog(
         title: Text(title == 'title' ? 'Please Add Insurance Image' : title),
         content: Text(desc == 'desc' ? 'An insurance image is required to proceed.' : desc),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
+}
+void showRichTextDialog(BuildContext context,String title,String desc) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(title == 'title' ? 'Please Add Insurance Image' : title),
+        content: RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text:'You have completed your 12-hour shift, so please take a mandatory 6-hour break \nyou have ',
+                style: GoogleFonts.roboto(color: Colors.black,fontSize: 16.dp)
+              ),
+              TextSpan(
+                text:'$desc',
+                style: GoogleFonts.roboto(fontSize: 16.dp,color: Color(0xffFF6A03),fontWeight: FontWeight.bold)
+              ),
+              TextSpan(
+                text:' left in your break',
+                  style: GoogleFonts.roboto(color: Colors.black,fontSize: 16.dp)
+              ),
+            ]
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),

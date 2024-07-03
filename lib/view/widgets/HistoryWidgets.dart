@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:voo_app/Model/InProgressTripModel.dart';
 import '../../Model/TripsHistoryModel.dart';
+import 'main_elevated_button.dart';
 
 class CompletedHistoryWidget extends StatelessWidget {
  final DriverCompletedTrips driverCompletedTrips ;
@@ -136,6 +138,34 @@ class CompletedHistoryWidget extends StatelessWidget {
                 ),
                 Text(
                   '\$${driverCompletedTrips.driverTotal}',
+                  style: TextStyle(fontSize: 15.dp),
+                ),
+              ],),
+            ),
+            Visibility(
+              visible: driverCompletedTrips.tolls != null,
+              child:
+              Row(children: [
+                Text('Tolls'),
+                SizedBox(
+                  width: 3.w,
+                ),
+                Text(
+                  '\$${driverCompletedTrips.tolls}',
+                  style: TextStyle(fontSize: 15.dp),
+                ),
+              ],),
+            ),
+            Visibility(
+              visible: driverCompletedTrips.tips != null,
+              child:
+              Row(children: [
+                Text('Tips'),
+                SizedBox(
+                  width: 3.w,
+                ),
+                Text(
+                  '\$${driverCompletedTrips.tips}',
                   style: TextStyle(fontSize: 15.dp),
                 ),
               ],),
@@ -286,10 +316,26 @@ class CompletedHistoryWidget extends StatelessWidget {
                   Text(
                     '${driverCompletedTrips.carType}',
                     style: TextStyle(fontSize: 15.dp),
-                  ), //car type
+                  ),
+                 //car type
                 ],
+
               ),
             ),
+            Spacer(),
+            MainElevatedButtonTwo(
+              onPressed: () async {
+                final url = Uri.parse(
+                    driverCompletedTrips.invoice!);
+                if (await canLaunchUrl(url)) {
+                  await launchUrl(url, mode: LaunchMode.inAppBrowserView);
+                }
+              },
+              text: 'Invoice',
+              backgroundColor: Color(0xffFF6A03),
+              circularBorder: true,
+            ),
+            SizedBox(height: 5.h,)
             // Spacer(),
             // MainElevatedButtonTwo(
             //   onPressed: () async {

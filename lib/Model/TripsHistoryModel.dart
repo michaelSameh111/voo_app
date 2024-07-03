@@ -45,7 +45,7 @@ class DriverCompletedTrips {
   String? from;
   String? to;
   String? total;
-  dynamic carType;
+  String? carType;
   String? status;
   String? pickup;
   dynamic dropoff;
@@ -53,6 +53,8 @@ class DriverCompletedTrips {
   dynamic distance;
   String? grandTotal;
   String? driverTotal;
+  String? tolls;
+  String? tips;
   String? invoice;
   String? driverName;
   String? driverPhoto;
@@ -75,6 +77,8 @@ class DriverCompletedTrips {
         this.distance,
         this.grandTotal,
         this.driverTotal,
+        this.tolls,
+        this.tips,
         this.invoice,
         this.driverName,
         this.driverPhoto,
@@ -97,6 +101,8 @@ class DriverCompletedTrips {
     distance = json['distance'];
     grandTotal = json['grand_total'];
     driverTotal = json['driver_total'];
+    tolls = json['tolls'];
+    tips = json['tips'];
     invoice = json['invoice'];
     driverName = json['driver_name'];
     driverPhoto = json['driver_photo'];
@@ -121,6 +127,8 @@ class DriverCompletedTrips {
     data['distance'] = this.distance;
     data['grand_total'] = this.grandTotal;
     data['driver_total'] = this.driverTotal;
+    data['tolls'] = this.tolls;
+    data['tips'] = this.tips;
     data['invoice'] = this.invoice;
     data['driver_name'] = this.driverName;
     data['driver_photo'] = this.driverPhoto;
@@ -137,15 +145,17 @@ class DriverCancelledTrips {
   String? acceptedAt;
   String? from;
   String? to;
-  dynamic total;
-  dynamic carType;
+  String? total;
+  String? carType;
   String? status;
   String? pickup;
   dynamic dropoff;
-  dynamic duration;
+  String? duration;
   dynamic distance;
-  dynamic grandTotal;
-  dynamic driverTotal;
+  String? grandTotal;
+  String? driverTotal;
+  String? tolls;
+  String? tips;
   String? invoice;
   String? driverName;
   String? driverPhoto;
@@ -170,6 +180,8 @@ class DriverCancelledTrips {
         this.distance,
         this.grandTotal,
         this.driverTotal,
+        this.tolls,
+        this.tips,
         this.invoice,
         this.driverName,
         this.driverPhoto,
@@ -194,6 +206,8 @@ class DriverCancelledTrips {
     distance = json['distance'];
     grandTotal = json['grand_total'];
     driverTotal = json['driver_total'];
+    tolls = json['tolls'];
+    tips = json['tips'];
     invoice = json['invoice'];
     driverName = json['driver_name'];
     driverPhoto = json['driver_photo'];
@@ -220,6 +234,8 @@ class DriverCancelledTrips {
     data['distance'] = this.distance;
     data['grand_total'] = this.grandTotal;
     data['driver_total'] = this.driverTotal;
+    data['tolls'] = this.tolls;
+    data['tips'] = this.tips;
     data['invoice'] = this.invoice;
     data['driver_name'] = this.driverName;
     data['driver_photo'] = this.driverPhoto;

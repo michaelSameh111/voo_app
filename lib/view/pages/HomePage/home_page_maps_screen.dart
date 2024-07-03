@@ -68,6 +68,7 @@ class _HomePageState extends State<HomePage> {
   String? destinationLocation = '';
   bool loadingState = false;
   String? groupValue;
+  String? feesNumber = 'fees1';
 
   final sdkChannel = MethodChannel(FAIRMATIC_CHANNEL);
   late Timer timer;
@@ -827,7 +828,9 @@ class _HomePageState extends State<HomePage> {
                               groupValue: groupValue,
                               onChanged: (value) {
                                 groupValue = value!;
-                                states(() {});
+                                states(() {
+                                  feesNumber = 'fees1';
+                                });
                               }),
                           RadioListTile(
                             dense: true,
@@ -838,7 +841,9 @@ class _HomePageState extends State<HomePage> {
                             groupValue: groupValue,
                             onChanged: (value) {
                               groupValue = value!;
-                              states(() {});
+                              states(() {
+                                feesNumber = 'fees2';
+                              });
                             },
                           ),
                           SizedBox(
@@ -876,6 +881,7 @@ class _HomePageState extends State<HomePage> {
                                     onPressed: () async{
                                       await DataCubit.get(context).acceptLessPriceTrip(
                                           fees: groupValue!,
+                                          feesNumber: feesNumber!,
                                           rider: tripRequest.riderId,
                                           driverLocation:
                                           'https://maps.google.com/?q=${sourcePosition!.latitude},${sourcePosition!.longitude}',
@@ -1113,7 +1119,11 @@ class _HomePageState extends State<HomePage> {
         return AlertDialog(
           title: Text('Location Permission Needed'),
           content: Text(
-              'This app requires access to your location to provide essential functionality. Please grant location permission to enable us to track your position while you are online in the app. This allows us to display your real-time location within the app and share it with riders for accurate real-time updates.'),
+              'This app requires access to your location to provide essential functionality. '
+                  'Please grant location permission to enable us to track your position while you are online in the app '
+                  'and in the background (when the app is closed or not in use). This allows us to display your real-time '
+                  'location within the app, share it with riders for accurate real-time updates, and improve overall service quality. '
+                  'Location data is also used to support ads.'),
           actions: <Widget>[
             TextButton(
               onPressed: () {

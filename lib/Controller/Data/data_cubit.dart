@@ -166,6 +166,7 @@ class DataCubit extends Cubit<DataState> {
   Future<void> acceptLessPriceTrip({
     required String rider,
     required String fees,
+    required String feesNumber,
     required String driverLocation,
     required String driverLocationLat,
     required String driverLocationLng,
@@ -179,6 +180,7 @@ class DataCubit extends Cubit<DataState> {
         data: FormData.fromMap({
           'rider': rider,
           'fees': fees,
+          'feesNumber' : feesNumber,
           'driver_location': driverLocation,
           'driver_location_latitude': driverLocationLat,
           'driver_location_longitude': driverLocationLng,

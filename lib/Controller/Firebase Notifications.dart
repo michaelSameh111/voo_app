@@ -16,6 +16,7 @@ class FirebaseNotifications {
     print(fcmToken);
   }
   void handleMessage (RemoteMessage? message){
+    print(message!.notification!.title);
     if(message == null) return; else{
       print(message.data);
     }

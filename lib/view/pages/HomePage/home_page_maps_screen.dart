@@ -23,7 +23,7 @@ import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 import '../../../Controller/Constants.dart';
 import '../../../Model/TripModel.dart';
-final double rangeInFeet = 999999999999999;
+final double rangeInFeet = 150;
 double _degreeToRadian(double degree) {
   return degree * math.pi / 180;
 }
@@ -159,11 +159,12 @@ class _HomePageState extends State<HomePage> {
 
   Future handle(BuildContext context) async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async{
-      await player.play(AssetSource('sounds/mixkit-bell-notification-933.mp3'));
+
       print(message.data);
       TripModel? newTrip;
       TripRequest? tripRequest;
       if (message.data['message'] == 'Send Request Trip less Price') {
+        await player.play(AssetSource('sounds/mixkit-bell-notification-933.mp3'));
         tripRequest = TripRequest.fromJson(message.data);
         print(sourcePosition!.latitude);
         print(sourcePosition!.longitude);
@@ -176,6 +177,7 @@ class _HomePageState extends State<HomePage> {
         acceptDeclineLessPriceShowModalSheet(context, tripRequest);
       }
     else  if (message.data['message'] == 'Send Rider Cancel Trip') {
+        await player.play(AssetSource('sounds/mixkit-bell-notification-933.mp3'));
         Fluttertoast.showToast(
             msg: 'Rider Canceled Trip',
             fontSize: 16.dp,
@@ -194,6 +196,7 @@ class _HomePageState extends State<HomePage> {
       }
 
       else if (message.data['message'] == 'Rider Accept Offer') {
+        await player.play(AssetSource('sounds/mixkit-bell-notification-933.mp3'));
         tripModel = TripModel.fromJson(message.data);
         await DataCubit.get(context).getInProgressTripDetails();
         startListeningToLocationChanges();
@@ -219,6 +222,8 @@ class _HomePageState extends State<HomePage> {
         });
 
       } else if (message.data['message'] == 'Send Request Trip') {
+        await player.play(AssetSource('sounds/mixkit-bell-notification-933.mp3'));
+        if(declineBottomSheet == true){Navigator.pop(context);}
         try {
           newTrip = TripModel.fromJson(message.data);
         } catch (error) {
@@ -661,6 +666,10 @@ class _HomePageState extends State<HomePage> {
 
   void acceptDeclineLessPriceShowModalSheet(
       BuildContext context, TripRequest tripRequest) {
+    setState(() {
+      declineBottomSheet = true;
+      print(declineBottomSheet);
+    });
     showModalBottomSheet(
       isDismissible: false,
       barrierColor: Colors.transparent,
@@ -917,7 +926,12 @@ class _HomePageState extends State<HomePage> {
           );
         }
       ),
-    );
+    ).whenComplete((){
+      setState(() {
+        declineBottomSheet = false;
+        print(declineBottomSheet);
+      });
+    });
   }
 
   void getPolyPoint(double lat, double lng) async {
@@ -1906,115 +1920,9 @@ class _HomePageState extends State<HomePage> {
                                         .then((value) async {
                                       DataCubit.time = value!;
                                     });
-                                  } else {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) => StatefulBuilder(
-                                        builder: (context, setState) {
-                                          return Theme(
-                                            data: ThemeData(
-                                                dialogBackgroundColor:
-                                                    Colors.white),
-                                            child: Dialog(
-                                              elevation: 0,
-                                              child: Stack(
-                                                clipBehavior: Clip.none,
-                                                alignment: Alignment.topCenter,
-                                                children: [
-                                                  SizedBox(
-                                                    height: 28.h,
-                                                    width: double.infinity,
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(
-                                                          'You\'re offline',
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 18.dp,
-                                                              color: const Color(
-                                                                  0xff646363)),
-                                                        ),
-                                                        SizedBox(
-                                                          height: 1.h,
-                                                        ),
-                                                        Text(
-                                                          'Go online to accept jobs.',
-                                                          style: TextStyle(
-                                                              fontSize: 15.dp,
-                                                              color: const Color(
-                                                                  0xff646363)),
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                        ),
-                                                        SizedBox(
-                                                          height: 1.5.h,
-                                                        ),
-                                                        const Divider(),
-                                                        SizedBox(
-                                                          height: 1.5.h,
-                                                        ),
-                                                        Switch(
-                                                            trackOutlineColor:
-                                                                WidgetStateProperty
-                                                                    .all(Colors
-                                                                        .transparent),
-                                                            activeTrackColor:
-                                                                const Color(
-                                                                    0xffFF6A03),
-                                                            inactiveTrackColor:
-                                                                const Color(
-                                                                    0xffD1D1D6),
-                                                            inactiveThumbColor:
-                                                                Colors.white,
-                                                            value: light!,
-                                                            onChanged:
-                                                                (bool value) {
-                                                              setState(() {
-                                                                light = value;
-                                                                showDialogBool =
-                                                                    value;
-
-                                                                if (showDialogBool ==
-                                                                    true) {
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                }
-
-                                                                // acceptDeclineShowModalSheet(
-                                                                //     context);
-                                                              });
-                                                            }),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Positioned(
-                                                    top: -50,
-                                                    child: CircleAvatar(
-                                                      backgroundColor:
-                                                          Colors.white,
-                                                      radius: 40,
-                                                      child: Image.asset(
-                                                        'assets/images/notification_offline.png',
-                                                        width: 12.w,
-                                                      ),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    );
                                   }
                                 },
-                                child: const Text(
+                                child: state is ArrivedAtLocationLoadingState || state is GetInProgressTripDetailsLoadingState ? Center(child: CircularProgressIndicator(color: Colors.white,)) : const Text(
                                   'Notify Rider',
                                   style: TextStyle(color: Colors.white),
                                 )),
@@ -2038,121 +1946,9 @@ class _HomePageState extends State<HomePage> {
                                           state: DataCubit.destinationState,
                                           context: context,
                                         );
-                                      } else {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) => StatefulBuilder(
-                                            builder: (context, setState) {
-                                              return Theme(
-                                                data: ThemeData(
-                                                    dialogBackgroundColor:
-                                                        Colors.white),
-                                                child: Dialog(
-                                                  elevation: 0,
-                                                  child: Stack(
-                                                    clipBehavior: Clip.none,
-                                                    alignment:
-                                                        Alignment.topCenter,
-                                                    children: [
-                                                      SizedBox(
-                                                        height: 28.h,
-                                                        width: double.infinity,
-                                                        child: Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Text(
-                                                              'You\'re offline',
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize:
-                                                                      18.dp,
-                                                                  color: const Color(
-                                                                      0xff646363)),
-                                                            ),
-                                                            SizedBox(
-                                                              height: 1.h,
-                                                            ),
-                                                            Text(
-                                                              'Go online to accept jobs.',
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      15.dp,
-                                                                  color: const Color(
-                                                                      0xff646363)),
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                            ),
-                                                            SizedBox(
-                                                              height: 1.5.h,
-                                                            ),
-                                                            const Divider(),
-                                                            SizedBox(
-                                                              height: 1.5.h,
-                                                            ),
-                                                            Switch(
-                                                                trackOutlineColor:
-                                                                    WidgetStateProperty
-                                                                        .all(Colors
-                                                                            .transparent),
-                                                                activeTrackColor:
-                                                                    const Color(
-                                                                        0xffFF6A03),
-                                                                inactiveTrackColor:
-                                                                    const Color(
-                                                                        0xffD1D1D6),
-                                                                inactiveThumbColor:
-                                                                    Colors
-                                                                        .white,
-                                                                value: light!,
-                                                                onChanged: (bool
-                                                                    value) {
-                                                                  setState(() {
-                                                                    light =
-                                                                        value;
-                                                                    showDialogBool =
-                                                                        value;
-
-                                                                    if (showDialogBool ==
-                                                                        true) {
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .pop();
-                                                                    }
-
-                                                                    // acceptDeclineShowModalSheet(
-                                                                    //     context);
-                                                                  });
-                                                                }),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Positioned(
-                                                        top: -50,
-                                                        child: CircleAvatar(
-                                                          backgroundColor:
-                                                              Colors.white,
-                                                          radius: 40,
-                                                          child: Image.asset(
-                                                            'assets/images/notification_offline.png',
-                                                            width: 12.w,
-                                                          ),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        );
                                       }
                                     },
-                                    child: state is EndTripLoadingState ? Center(child: CircularProgressIndicator(color: Colors.white,),) : const Text(
+                                    child: state is EndTripLoadingState || state is GetInProgressTripDetailsLoadingState ? Center(child: CircularProgressIndicator(color: Colors.white,),) : const Text(
                                       'End Trip',
                                       style: TextStyle(color: Colors.white),
                                     )),

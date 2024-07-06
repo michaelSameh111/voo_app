@@ -30,6 +30,7 @@ Position? sourcePosition;
 TripModel tripModel = TripModel();
 TripModel? trip ;
 bool tripToPickup = false;
+bool declineBottomSheet = false;
 bool? light;
 bool tripToDestination = false;
 EndTripModel endTripModel  = EndTripModel();

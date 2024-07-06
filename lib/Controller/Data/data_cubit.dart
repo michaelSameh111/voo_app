@@ -46,7 +46,6 @@ class DataCubit extends Cubit<DataState> {
     return DioHelper.getData(url: 'trip/in-progress-trip', token: token)
         .then((value) {
       inProgressTrip = InProgressTripModel.fromJson(value.data);
-      print('${inProgressTrip.riderName}');
       emit(GetInProgressTripDetailsSuccessState());
       if(state is GetInProgressTripDetailsSuccessState && inProgressTrip.driverInProgressTrip != null){
         tripModel.pickup = inProgressTrip.driverInProgressTrip!.pickup;
@@ -273,6 +272,11 @@ class DataCubit extends Cubit<DataState> {
         .then((value)  {
           print(value.data);
           endTripModel = EndTripModel.fromJson(value.data);
+          print(endTripModel.driverFees.runtimeType);
+          print(endTripModel.driverTotalTrips.runtimeType);
+          if(endTripModel.driverTotalTrips != null){ loginData.totalTrips = endTripModel.driverTotalTrips;}
+          if(endTripModel.driverFees != null){ loginData.totalEarnings = endTripModel.driverFees;}
+
          // if(endTripModel != null){
          //   print(endTripModel.total);
          // }

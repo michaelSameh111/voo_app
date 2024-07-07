@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +12,10 @@ import 'Data/data_cubit.dart';
 import 'Functions.dart';
 
 class FirebaseNotifications {
-
   final _firebaseMessaging = FirebaseMessaging.instance;
   bool _isNotificationClickHandled = false;
+  StreamSubscription<RemoteMessage>? _onMessageOpenedAppSubscription;
+  StreamSubscription<RemoteMessage>? _onBackgroundMessageSubscription;
 
   Future<void> initNotifications() async {
     await _firebaseMessaging.requestPermission();
@@ -24,6 +27,8 @@ class FirebaseNotifications {
       sound: true,
     );
     print(fcmToken);
+
+    handleBackgroundNotifications();
   }
 
   void handleMessage(RemoteMessage? message) {
@@ -43,6 +48,7 @@ class FirebaseNotifications {
 
     print('Handling a notification click: ${message.messageId}');
     if (message.data['message'] == 'Send Request Trip') {
+      if (declineBottomSheet == true) { Navigator.pop(navigatorKey.currentContext!); }
       try {
         newTripNotification = TripModel.fromJson(message.data);
       } catch (error) {
@@ -96,21 +102,26 @@ class FirebaseNotifications {
               },
             );
             acceptDeclineShowModalSheet(currentContext, x, y);
-
           }
         });
       }
-    } else
-    if (message.data['message'] == 'Send Request Trip less Price') {
+    } else if (message.data['message'] == 'Send Request Trip less Price') {
       TripRequest tripRequest;
       tripRequest = TripRequest.fromJson(message.data);
-      getEstimatedTime(driverLat: sourcePosition!.latitude, driverLng: sourcePosition!.longitude, riderLat: double.parse(tripRequest.pickupLatitude), riderLng: double.parse(tripRequest.pickupLongitude), apiKey: googleMapApiKey).then((value){
+      getEstimatedTime(
+        driverLat: sourcePosition!.latitude,
+        driverLng: sourcePosition!.longitude,
+        riderLat: double.parse(tripRequest.pickupLatitude),
+        riderLng: double.parse(tripRequest.pickupLongitude),
+        apiKey: googleMapApiKey,
+      ).then((value) {
         DataCubit.time = value!;
         print(value);
       });
       final currentContext = navigatorKey.currentContext;
-      if(currentContext != null){acceptDeclineLessPriceShowModalSheet(currentContext, tripRequest);}
-
+      if (currentContext != null) {
+        acceptDeclineLessPriceShowModalSheet(currentContext, tripRequest);
+      }
     }
 
     _isNotificationClickHandled = false;
@@ -122,13 +133,23 @@ class FirebaseNotifications {
         handleNotificationClick(message);
       }
     });
-    FirebaseMessaging.onMessageOpenedApp.listen(handleNotificationClick);
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+     FirebaseMessaging.onMessageOpenedApp.listen(handleNotificationClick);
+     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   }
 
   static Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     await Firebase.initializeApp();
     print("Handling a background message: ${message.messageId}");
     // Handle background message logic here if needed
+  }
+
+  Future<void> stopNotifications() async {
+    // Cancel subscriptions to stop receiving notifications
+    await _onMessageOpenedAppSubscription?.cancel();
+    await _onBackgroundMessageSubscription?.cancel();
+
+    // Optionally, you can also revoke the FCM token
+    await _firebaseMessaging.deleteToken();
+    print("Stopped receiving notifications");
   }
 }

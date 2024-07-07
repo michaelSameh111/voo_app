@@ -415,6 +415,22 @@ class DataCubit extends Cubit<DataState> {
       emit(ChangeDriverStatusErrorState(error.toString()));
     });
   }
+  Future<void> changeDriversStatus(
+      {
+        required String status,
+        required BuildContext context})async {
+    emit(ChangeDriverStatusLoadingState());
+    DioHelper.postData(
+        url:
+        'driver-status/update',
+        data: {
+          'accepting_rides': status,
+        },
+        token: token).catchError((error) {
+      print(error);
+      emit(ChangeDriverStatusErrorState(error.toString()));
+    });
+  }
 
   Future<void> complainSubmit(
       {

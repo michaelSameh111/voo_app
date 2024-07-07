@@ -331,55 +331,55 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       width: 2.w,
                     ),
-                    Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(inProgressTrip.riderName == null && tripModel.rider != null ? tripModel.rider! :
-                              '${inProgressTrip.riderName}',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 15.dp),
-                            ),
-                            Text(
-                              '${tripModel.paymentMethod}',
-                              style: TextStyle(
-                                  color: const Color(0xff808080),
-                                  fontSize: 13.dp),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          width: 30.w,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            makePhoneCall('0123456789');
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(5.dp),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30.dp),
-                                color: const Color(0xffD9D9D9)),
-                            child: Icon(Icons.phone,
-                                color: Colors.red, size: 22.dp),
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(inProgressTrip.riderName == null && tripModel.rider != null ? tripModel.rider! :
+                                '${inProgressTrip.riderName}',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 15.dp),
+                              ),
+                              Text(
+                                '${tripModel.paymentMethod}',
+                                style: TextStyle(
+                                    color: const Color(0xff808080),
+                                    fontSize: 13.dp),
+                              )
+                            ],
                           ),
-                        ),
-                        // SizedBox(
-                        //   width: 3.w,
-                        // ),
-                        // InkWell(
-                        //   onTap: () {},
-                        //   child: Container(
-                        //     padding: EdgeInsets.all(5.dp),
-                        //     decoration: BoxDecoration(
-                        //         borderRadius: BorderRadius.circular(30.dp),
-                        //         color: const Color(0xffD9D9D9)),
-                        //     child: Icon(Icons.message,
-                        //         color: Colors.red, size: 22.dp),
-                        //   ),
-                        // ),
-                      ],
+                          Spacer(),
+                          InkWell(
+                            onTap: () {
+                              makePhoneCall('0123456789');
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(5.dp),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30.dp),
+                                  color: const Color(0xffD9D9D9)),
+                              child: Icon(Icons.phone,
+                                  color: Colors.red, size: 22.dp),
+                            ),
+                          ),
+                          // SizedBox(
+                          //   width: 3.w,
+                          // ),
+                          // InkWell(
+                          //   onTap: () {},
+                          //   child: Container(
+                          //     padding: EdgeInsets.all(5.dp),
+                          //     decoration: BoxDecoration(
+                          //         borderRadius: BorderRadius.circular(30.dp),
+                          //         color: const Color(0xffD9D9D9)),
+                          //     child: Icon(Icons.message,
+                          //         color: Colors.red, size: 22.dp),
+                          //   ),
+                          // ),
+                        ],
+                      ),
                     )
                   ],
                 ),
@@ -387,7 +387,7 @@ class _HomePageState extends State<HomePage> {
                   height: 4.h,
                 ),
                 MainElevatedButtonTwo(
-                  condition:state is StartTripLoadingState ,
+                  condition:state is StartTripLoadingState || state is GetInProgressTripDetailsLoadingState ,
                     onPressed: () async {
                       String? pickupLocation = await getAddressFromLatLng(
                           sourcePosition!.latitude, sourcePosition!.longitude);
@@ -672,244 +672,242 @@ class _HomePageState extends State<HomePage> {
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(23), topRight: Radius.circular((23))),
       ),
+      isScrollControlled: true,
       context: context,
       builder: (context) => BlocConsumer<DataCubit, DataState>(
         listener: (context, state) {},
         builder: (context, state) {
-          return SizedBox(
-            height: 60.h,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 2.h),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Ride Request',
-                        style: TextStyle(
-                          fontSize: 18.dp,
-                        ),
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 2.h),
+                child: Row(
+                  children: [
+                    Text(
+                      'Ride Request',
+                      style: TextStyle(
+                        fontSize: 18.dp,
                       ),
-                      const Spacer(),
-                      Text(
-                        DataCubit.time == 0 ? '' :
-                        '${DataCubit.time} mins away',
-                        style: TextStyle(color: Color(0xff808080)),
-                      )
-                    ],
-                  ),
+                    ),
+                    const Spacer(),
+                    Text(
+                      DataCubit.time == 0 ? '' :
+                      '${DataCubit.time} mins away',
+                      style: TextStyle(color: Color(0xff808080)),
+                    )
+                  ],
                 ),
-                const Divider(),
-                Padding(
-                  padding:
-                  EdgeInsets.symmetric(horizontal: 5.0.w, vertical: 3.h),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 7.0.w,
-                            backgroundColor: const Color(0xffECECEC),
-                            child: Icon(
-                              Icons.person,
-                              size: 11.w,
-                              color: const Color(0xffA2A2A2),
+              ),
+              const Divider(),
+              Padding(
+                padding:
+                EdgeInsets.symmetric(horizontal: 5.0.w, vertical: 3.h),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 7.0.w,
+                          backgroundColor: const Color(0xffECECEC),
+                          child: Icon(
+                            Icons.person,
+                            size: 11.w,
+                            color: const Color(0xffA2A2A2),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 2.w,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${tripRequest.rider}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15.dp),
                             ),
-                          ),
-                          SizedBox(
-                            width: 2.w,
-                          ),
-                          Column(
+                            Text(
+                              'Credit Card',
+                              style: TextStyle(
+                                  color: const Color(0xff808080),
+                                  fontSize: 13.dp),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 4.h,
+                    ),
+                    Row(
+                      children: [
+                        Image.asset(
+                          'assets/images/from_to_image.png',
+                        ),
+                        SizedBox(
+                          width: 2.w,
+                        ),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '${tripRequest.rider}',
+                                '${tripRequest.pickup}',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 15.dp),
+                                    fontSize: 13.dp),
+                              ),
+                              SizedBox(
+                                height: 1.h,
+                              ),
+                              Stack(
+                                children: [
+                                  Positioned(
+                                      right: -50,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                            BorderRadius.circular(10.dp),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.4),
+                                                  spreadRadius: 10,
+                                                  blurRadius: 10,
+                                                  offset: const Offset(0, 7))
+                                            ]),
+                                        child: Padding(
+                                          padding: EdgeInsets.all(6.dp),
+                                          child: Text(
+                                            DataCubit.time != 0
+                                                ? '${DataCubit.time} mins trip'
+                                                : '',
+                                            style: TextStyle(
+                                                color: Color(0xff808080)),
+                                          ),
+                                        ),
+                                      )),
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    padding: EdgeInsets.only(left: 50.w),
+                                    width: 80.w,
+                                    height: 0.2.h,
+                                    decoration: const BoxDecoration(
+                                        color: Colors.black
+                                      //0xffE2E2E2
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 1.h,
                               ),
                               Text(
-                                'Credit Card',
+                                '${tripRequest.destination}',
                                 style: TextStyle(
-                                    color: const Color(0xff808080),
+                                    fontWeight: FontWeight.bold,
                                     fontSize: 13.dp),
                               )
                             ],
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 4.h,
-                      ),
-                      Row(
-                        children: [
-                          Image.asset(
-                            'assets/images/from_to_image.png',
                           ),
-                          SizedBox(
-                            width: 2.w,
-                          ),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${tripRequest.pickup}',
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 13.dp),
-                                ),
-                                SizedBox(
-                                  height: 1.h,
-                                ),
-                                Stack(
-                                  children: [
-                                    Positioned(
-                                        right: -50,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                              BorderRadius.circular(10.dp),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    color: Colors.grey
-                                                        .withOpacity(0.4),
-                                                    spreadRadius: 10,
-                                                    blurRadius: 10,
-                                                    offset: const Offset(0, 7))
-                                              ]),
-                                          child: Padding(
-                                            padding: EdgeInsets.all(6.dp),
-                                            child: Text(
-                                              DataCubit.time != 0
-                                                  ? '${DataCubit.time} mins trip'
-                                                  : '',
-                                              style: TextStyle(
-                                                  color: Color(0xff808080)),
-                                            ),
-                                          ),
-                                        )),
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      padding: EdgeInsets.only(left: 50.w),
-                                      width: 80.w,
-                                      height: 0.2.h,
-                                      decoration: const BoxDecoration(
-                                          color: Colors.black
-                                        //0xffE2E2E2
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 1.h,
-                                ),
-                                Text(
-                                  '${tripRequest.destination}',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 13.dp),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 2.h,
-                      ),
-                      RadioListTile(
-                          dense: true,
-                          contentPadding: EdgeInsets.zero,
-                          title: Text('${tripRequest.fees1}'),
-                          activeColor: Color(0xffFF6A03),
-                          value: tripRequest.fees1,
-                          groupValue: DataCubit.groupValue,
-                          onChanged: (value) {
-                            DataCubit.get(context).changeGroupValueNumberr(value!);
-                            DataCubit.get(context).changeFeesNumber('fees1');
-                          }),
-                      RadioListTile(
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 2.h,
+                    ),
+                    RadioListTile(
                         dense: true,
                         contentPadding: EdgeInsets.zero,
-                        title: Text('${tripRequest.fees2}'),
+                        title: Text('${tripRequest.fees1}'),
                         activeColor: Color(0xffFF6A03),
-                        value: tripRequest.fees2,
+                        value: tripRequest.fees1,
                         groupValue: DataCubit.groupValue,
                         onChanged: (value) {
                           DataCubit.get(context).changeGroupValueNumberr(value!);
-                          DataCubit.get(context).changeFeesNumber('fees2');
-                        },
-                      ),
-                      SizedBox(
-                        height: 2.h,
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 40.w,
-                            height: 5.5.h,
-                            child: OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                    side: const BorderSide(
-                                        color: Color(0xffFF6A03))),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  setState(() {
-                                    DataCubit.tripToPickup = false;
-                                  });
-                                },
-                                child: const Text(
-                                  'Decline',
-                                  style: TextStyle(color: Color(0xffFF6A03)),
-                                )),
-                          ),
-                          SizedBox(
-                            width: 7.w,
-                          ),
-                          SizedBox(
-                            width: 40.w,
-                            height: 5.5.h,
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xffFF6A03)),
-                                onPressed: () async{
-                                  await DataCubit.get(context).acceptLessPriceTrip(
-                                      fees: DataCubit.groupValue!,
-                                      feesNumber: DataCubit.feesNumber!,
-                                      rider: tripRequest.riderId,
-                                      driverLocation:
-                                      'https://maps.google.com/?q=${sourcePosition!.latitude},${sourcePosition!.longitude}',
-                                      driverLocationLat:
-                                      sourcePosition!.latitude.toString(),
-                                      driverLocationLng:
-                                      sourcePosition!.longitude.toString(),
-                                      context: context);
-                                  Navigator.pop(context);
-                                },
-                                child: state is AcceptLessPriceTripLoadingState
-                                    ? Center(
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                  ),
-                                )
-                                    : const Text(
-                                  'Accept',
-                                  style: TextStyle(color: Colors.white),
-                                )),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
+                          DataCubit.get(context).changeFeesNumber('fees1');
+                        }),
+                    RadioListTile(
+                      dense: true,
+                      contentPadding: EdgeInsets.zero,
+                      title: Text('${tripRequest.fees2}'),
+                      activeColor: Color(0xffFF6A03),
+                      value: tripRequest.fees2,
+                      groupValue: DataCubit.groupValue,
+                      onChanged: (value) {
+                        DataCubit.get(context).changeGroupValueNumberr(value!);
+                        DataCubit.get(context).changeFeesNumber('fees2');
+                      },
+                    ),
+                    SizedBox(
+                      height: 2.h,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 40.w,
+                          height: 5.5.h,
+                          child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                  side: const BorderSide(
+                                      color: Color(0xffFF6A03))),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                setState(() {
+                                  DataCubit.tripToPickup = false;
+                                });
+                              },
+                              child: const Text(
+                                'Decline',
+                                style: TextStyle(color: Color(0xffFF6A03)),
+                              )),
+                        ),
+                        SizedBox(
+                          width: 7.w,
+                        ),
+                        SizedBox(
+                          width: 40.w,
+                          height: 5.5.h,
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xffFF6A03)),
+                              onPressed: () async{
+                                await DataCubit.get(context).acceptLessPriceTrip(
+                                    fees: DataCubit.groupValue!,
+                                    feesNumber: DataCubit.feesNumber!,
+                                    rider: tripRequest.riderId,
+                                    driverLocation:
+                                    'https://maps.google.com/?q=${sourcePosition!.latitude},${sourcePosition!.longitude}',
+                                    driverLocationLat:
+                                    sourcePosition!.latitude.toString(),
+                                    driverLocationLng:
+                                    sourcePosition!.longitude.toString(),
+                                    context: context);
+                                Navigator.pop(context);
+                              },
+                              child: state is AcceptLessPriceTripLoadingState
+                                  ? Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              )
+                                  : const Text(
+                                'Accept',
+                                style: TextStyle(color: Colors.white),
+                              )),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
           );
         },
       ),
@@ -1576,116 +1574,124 @@ class _HomePageState extends State<HomePage> {
                                     insuranceData != null
                                     // && loginData.availableToCheck != null
                                 ) {
-                                  showDialog(
+                                  if(drivingState == true){
+                                    Fluttertoast.showToast(
+                                        msg:
+                                        'You are already in trip',
+                                        fontSize: 18.dp,
+                                        gravity: ToastGravity.BOTTOM,
+                                        toastLength: Toast.LENGTH_LONG,
+                                        backgroundColor: Colors.red);
+                                  } else { showDialog(
                                       context: context,
                                       builder:
                                           (context) => BlocConsumer<DataCubit,
-                                                  DataState>(
-                                                listener: (context, state) {},
-                                                builder: (context, state) {
-                                                  return StatefulBuilder(
-                                                    builder:
-                                                        (context, setState) {
-                                                      return Theme(
-                                                        data: ThemeData(
-                                                            dialogBackgroundColor:
-                                                                Colors.white),
-                                                        child: Dialog(
-                                                          elevation: 0,
-                                                          child: Stack(
-                                                            clipBehavior:
-                                                                Clip.none,
-                                                            alignment: Alignment
-                                                                .topCenter,
-                                                            children: [
-                                                              SizedBox(
-                                                                height: 28.h,
-                                                                width: double
-                                                                    .infinity,
-                                                                child: Column(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    Text(
-                                                                      loginData.acceptingRides ==
-                                                                              null
-                                                                          ? 'You\'re Offline'
-                                                                          : 'You\'re ${loginData.acceptingRides}',
-                                                                      style: TextStyle(
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          fontSize: 18
-                                                                              .dp,
-                                                                          color:
-                                                                              const Color(0xff646363)),
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height:
-                                                                          1.h,
-                                                                    ),
-                                                                    Text(
-                                                                      loginData.acceptingRides ==
-                                                                              null
-                                                                          ? 'Go online to accept jobs.'
-                                                                          : 'You\'re Online ',
-                                                                      style: TextStyle(
-                                                                          fontSize: 15
-                                                                              .dp,
-                                                                          color:
-                                                                              const Color(0xff646363)),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .center,
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height:
-                                                                          1.5.h,
-                                                                    ),
-                                                                    const Divider(),
-                                                                    SizedBox(
-                                                                      height:
-                                                                          1.5.h,
-                                                                    ),
-                                                                    state is ChangeDriverStatusLoadingState
-                                                                        ? CircularProgressIndicator()
-                                                                        : Switch(
-                                                                            trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
-                                                                            activeTrackColor: const Color(0xffFF6A03),
-                                                                            inactiveTrackColor: const Color(0xffD1D1D6),
-                                                                            inactiveThumbColor: Colors.white,
-                                                                            value: light!,
-                                                                            onChanged: (bool value) {
-                                                                              DataCubit.get(context).changeDriverStatus(status: light == false ? 'on' : 'off', context: context);
-                                                                              setState((){});
-                                                                              state;
-                                                                            }),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                              Positioned(
-                                                                top: -50,
-                                                                child:
-                                                                    CircleAvatar(
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .white,
-                                                                  radius: 40,
-                                                                  child: Image
-                                                                      .asset(
-                                                                    'assets/images/notification_offline.png',
-                                                                    width: 12.w,
-                                                                  ),
-                                                                ),
-                                                              )
-                                                            ],
+                                          DataState>(
+                                        listener: (context, state) {},
+                                        builder: (context, state) {
+                                          return StatefulBuilder(
+                                            builder:
+                                                (context, setState) {
+                                              return Theme(
+                                                data: ThemeData(
+                                                    dialogBackgroundColor:
+                                                    Colors.white),
+                                                child: Dialog(
+                                                  elevation: 0,
+                                                  child: Stack(
+                                                    clipBehavior:
+                                                    Clip.none,
+                                                    alignment: Alignment
+                                                        .topCenter,
+                                                    children: [
+                                                      SizedBox(
+                                                        height: 28.h,
+                                                        width: double
+                                                            .infinity,
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                          children: [
+                                                            Text(
+                                                              loginData.acceptingRides ==
+                                                                  null
+                                                                  ? 'You\'re Offline'
+                                                                  : 'You\'re ${loginData.acceptingRides}',
+                                                              style: TextStyle(
+                                                                  fontWeight: FontWeight
+                                                                      .bold,
+                                                                  fontSize: 18
+                                                                      .dp,
+                                                                  color:
+                                                                  const Color(0xff646363)),
+                                                            ),
+                                                            SizedBox(
+                                                              height:
+                                                              1.h,
+                                                            ),
+                                                            Text(
+                                                              loginData.acceptingRides ==
+                                                                  null
+                                                                  ? 'Go online to accept jobs.'
+                                                                  : 'You\'re Online ',
+                                                              style: TextStyle(
+                                                                  fontSize: 15
+                                                                      .dp,
+                                                                  color:
+                                                                  const Color(0xff646363)),
+                                                              textAlign:
+                                                              TextAlign
+                                                                  .center,
+                                                            ),
+                                                            SizedBox(
+                                                              height:
+                                                              1.5.h,
+                                                            ),
+                                                            const Divider(),
+                                                            SizedBox(
+                                                              height:
+                                                              1.5.h,
+                                                            ),
+                                                            state is ChangeDriverStatusLoadingState
+                                                                ? CircularProgressIndicator()
+                                                                : Switch(
+                                                                trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
+                                                                activeTrackColor: const Color(0xffFF6A03),
+                                                                inactiveTrackColor: const Color(0xffD1D1D6),
+                                                                inactiveThumbColor: Colors.white,
+                                                                value: light!,
+                                                                onChanged: (bool value) {
+                                                                  DataCubit.get(context).changeDriverStatus(status: light == false ? 'on' : 'off', context: context);
+                                                                  setState((){});
+                                                                  state;
+                                                                }),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Positioned(
+                                                        top: -50,
+                                                        child:
+                                                        CircleAvatar(
+                                                          backgroundColor:
+                                                          Colors
+                                                              .white,
+                                                          radius: 40,
+                                                          child: Image
+                                                              .asset(
+                                                            'assets/images/notification_offline.png',
+                                                            width: 12.w,
                                                           ),
                                                         ),
-                                                      );
-                                                    },
-                                                  );
-                                                },
-                                              ));
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        },
+                                      ));}
                                 } else {
                                   Fluttertoast.showToast(
                                       msg:
@@ -1775,21 +1781,25 @@ class _HomePageState extends State<HomePage> {
                               SizedBox(
                                 width: 5.w,
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'Earnings',
-                                    style:
-                                        TextStyle(color: Color(0xff646363)),
-                                  ),
-                                  Text(
-                                    '${loginData.totalEarnings}',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15.dp),
-                                  )
-                                ],
+                              InkWell(onTap: (){
+                               acceptDeclineLessPriceShowModalSheet(context, TripRequest(pickupLongitude: '1222', destinationLatitude: '1222', shift: 'night', destination: 'destination', fees1: '12', pickup: 'pickup', fees2: '14', destinationLongitude: '12321', message: 'message', rider: 'rider', preferredVehicleType: 'preferredVehicleType', pickupLatitude: 'pickupLatitude', destinationSpecified: 'destinationSpecified', riderId: 'riderId'));
+                              },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Earnings',
+                                      style:
+                                          TextStyle(color: Color(0xff646363)),
+                                    ),
+                                    Text(
+                                      '${loginData.totalEarnings}',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15.dp),
+                                    )
+                                  ],
+                                ),
                               )
                             ],
                           ),

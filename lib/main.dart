@@ -39,43 +39,68 @@ void main() async{
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark));
   Bloc.observer =MyBlocObserver();
-  runApp(const MyApp());
+  runApp(MultiBlocProvider(providers: [
+    BlocProvider(create: (context)=> LoginCubit()),
+    BlocProvider(create: (context)=> DataCubit()),
+  ],child: const MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState() ;
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  FirebaseNotifications firebaseNotifications = FirebaseNotifications();
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.detached) {
+      onAppClose();
+    }
+  }
+
+  void onAppClose() async{
+   firebaseNotifications.stopNotifications();
+  }
+  @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context)=> LoginCubit()),
-        BlocProvider(create: (context)=> DataCubit()),
-      ],
-      child: FlutterSizer(
-        builder: (buildContext, orientation, screenType) {
-          return MaterialApp(
-            navigatorKey: navigatorKey,
-            home: const SplashScreen(),
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              appBarTheme: AppBarTheme(color: Colors.transparent,elevation: 0),
-              useMaterial3: false,primaryColor: Color(0xffFF6A03),
-              colorScheme: ColorScheme.light(
-                primary: Color(0xffFF6A03),
-                onPrimary: Colors.white,
-                surface: Colors.white,
-                onSurface: Colors.black,
-              ),
-              datePickerTheme: DatePickerThemeData(
-                  headerBackgroundColor: Color(0xffFF6A03),
-                  headerForegroundColor: Colors.white,
-                  dividerColor: Colors.transparent
-              ),
+    return FlutterSizer(
+      builder: (buildContext, orientation, screenType) {
+        return MaterialApp(
+          navigatorKey: navigatorKey,
+          home: const SplashScreen(),
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            appBarTheme: AppBarTheme(color: Colors.transparent,elevation: 0),
+            useMaterial3: false,primaryColor: Color(0xffFF6A03),
+            colorScheme: ColorScheme.light(
+              primary: Color(0xffFF6A03),
+              onPrimary: Colors.white,
+              surface: Colors.white,
+              onSurface: Colors.black,
             ),
-          );
-        },
-      ),
+            datePickerTheme: DatePickerThemeData(
+                headerBackgroundColor: Color(0xffFF6A03),
+                headerForegroundColor: Colors.white,
+                dividerColor: Colors.transparent
+            ),
+          ),
+        );
+      },
     );
   }
 }

@@ -119,11 +119,16 @@ class ActiveHistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return inProgressTrip.driverInProgressTrip != null ? ListView(
+    return  BlocConsumer<DataCubit, DataState>(
+  listener: (context, state) {
+  },
+  builder: (context, state) {
+    return state is GetInProgressTripDetailsLoadingState || state is GetTripsHistoryDataLoadingState ? Center(child: CircularProgressIndicator()) : inProgressTrip.driverInProgressTrip != null ? ListView(
       children: [InProgressWidget(
         driverInProgressTrip:inProgressTrip.driverInProgressTrip!,
       ),],
-    ) : Center(child: Text("No In Progress Trip Now ",style: TextStyle(color: Color(0xffFF6A03),fontSize: 24.dp,fontWeight: FontWeight.bold),),
+    ) : Center(child: Text("No In Progress Trip Now ",style: TextStyle(color: Color(0xffFF6A03),fontSize: 24.dp,fontWeight: FontWeight.bold),));
+  },
     );
   }
 }
@@ -133,9 +138,13 @@ class CompletedHistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return  BlocConsumer<DataCubit, DataState>(
+  listener: (context, state) {
+  },
+  builder: (context, state) {
     return tripsHisotryModel == null ||
-            tripsHisotryModel!.driverCompletedTrips == null ||
-            tripsHisotryModel!.driverCompletedTrips!.isEmpty
+        tripsHisotryModel!.driverCompletedTrips == null ||
+        tripsHisotryModel!.driverCompletedTrips!.isEmpty
         ? Center(
             child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 5.w),
@@ -146,25 +155,26 @@ class CompletedHistoryScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   color: Color(0xffFF6A03)),
             ),
-          ))
-        : ListView.builder(
-            itemBuilder: (context, index) => InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => CompletedHistoryWidget(
-                                driverCompletedTrips: tripsHisotryModel!
-                                    .driverCompletedTrips![index],
-                              )));
-                },
-                child: CompletedHistoryWidgets(
-                  driverCompletedTrips:
-                      tripsHisotryModel!.driverCompletedTrips![index],
-                )),
-            itemCount: tripsHisotryModel!.driverCompletedTrips!.length,
-            physics: BouncingScrollPhysics(),
-          );
+          )) : ListView.builder(
+      itemBuilder: (context, index) => InkWell(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CompletedHistoryWidget(
+                      driverCompletedTrips: tripsHisotryModel!
+                          .driverCompletedTrips![index],
+                    )));
+          },
+          child: CompletedHistoryWidgets(
+            driverCompletedTrips:
+            tripsHisotryModel!.driverCompletedTrips![index],
+          )),
+      itemCount: tripsHisotryModel!.driverCompletedTrips!.length,
+      physics: BouncingScrollPhysics(),
+    );
+  },
+);
   }
 }
 
@@ -173,9 +183,13 @@ class CancelledHistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return  BlocConsumer<DataCubit, DataState>(
+  listener: (context, state) {
+  },
+  builder: (context, state) {
     return tripsHisotryModel == null ||
-            tripsHisotryModel!.driverCancelledTrips == null ||
-            tripsHisotryModel!.driverCancelledTrips!.isEmpty
+        tripsHisotryModel!.driverCancelledTrips == null ||
+        tripsHisotryModel!.driverCancelledTrips!.isEmpty
         ? Center(
             child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 5.w),
@@ -186,24 +200,25 @@ class CancelledHistoryScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   color: Color(0xffFF6A03)),
             ),
-          ))
-        : ListView.builder(
-            itemBuilder: (context, index) => InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => CanceledHistoryWidget(
-                            driverCancelledTrips: tripsHisotryModel!
-                                .driverCancelledTrips![index],
-                          )));
-                },
-                child: CanceledHistoryWidgets(
-              driverCancelledTrips:
-                  tripsHisotryModel!.driverCancelledTrips![index],
-            )),
-            itemCount: tripsHisotryModel!.driverCancelledTrips!.length,
-            physics: BouncingScrollPhysics(),
-          );
+          ))  : ListView.builder(
+      itemBuilder: (context, index) => InkWell(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CanceledHistoryWidget(
+                      driverCancelledTrips: tripsHisotryModel!
+                          .driverCancelledTrips![index],
+                    )));
+          },
+          child: CanceledHistoryWidgets(
+            driverCancelledTrips:
+            tripsHisotryModel!.driverCancelledTrips![index],
+          )),
+      itemCount: tripsHisotryModel!.driverCancelledTrips!.length,
+      physics: BouncingScrollPhysics(),
+    );
+  },
+);
   }
 }

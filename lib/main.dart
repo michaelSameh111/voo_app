@@ -15,7 +15,7 @@ import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platf
 
 
 
-
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async{
   final GoogleMapsFlutterPlatform mapsImplementation =
       GoogleMapsFlutterPlatform.instance;
@@ -55,6 +55,7 @@ class MyApp extends StatelessWidget {
       child: FlutterSizer(
         builder: (buildContext, orientation, screenType) {
           return MaterialApp(
+            navigatorKey: navigatorKey,
             home: const SplashScreen(),
             debugShowCheckedModeBanner: false,
             theme: ThemeData(

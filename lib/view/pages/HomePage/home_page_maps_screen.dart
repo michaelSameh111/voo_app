@@ -67,9 +67,8 @@ class _HomePageState extends State<HomePage> {
 
   double cameraZoom = 17;
   String? destinationLocation = '';
-  bool loadingState = false;
-  String? groupValue;
-  String? feesNumber = 'fees1';
+
+
 
   final sdkChannel = MethodChannel(FAIRMATIC_CHANNEL);
   late Timer timer;
@@ -137,9 +136,9 @@ class _HomePageState extends State<HomePage> {
     BitmapDescriptor.fromAssetImage(
             ImageConfiguration(size: Size(1, 1)), 'assets/images/car.png')
         .then((icon) {
-      setState(() {
-        markerIcon = icon;
-      });
+          if(mounted){ setState(() {
+            markerIcon = icon;
+          });}
     });
   }
 
@@ -152,9 +151,9 @@ class _HomePageState extends State<HomePage> {
         title: prediction.description,
       ),
     );
-    setState(() {
+    if(mounted){   setState(() {
       _markers.add(marker);
-    });
+    });}
   }
 
   Future handle(BuildContext context) async {
@@ -166,10 +165,6 @@ class _HomePageState extends State<HomePage> {
       if (message.data['message'] == 'Send Request Trip less Price') {
         await player.play(AssetSource('sounds/mixkit-bell-notification-933.mp3'));
         tripRequest = TripRequest.fromJson(message.data);
-        print(sourcePosition!.latitude);
-        print(sourcePosition!.longitude);
-        print(tripRequest.pickupLatitude);
-        print(tripRequest.pickupLongitude);
         getEstimatedTime(driverLat: sourcePosition!.latitude, driverLng: sourcePosition!.longitude, riderLat: double.parse(tripRequest.pickupLatitude), riderLng: double.parse(tripRequest.pickupLongitude), apiKey: googleMapApiKey).then((value){
           DataCubit.time = value!;
           print(value);
@@ -185,13 +180,16 @@ class _HomePageState extends State<HomePage> {
             textColor: Colors.white,
             gravity: ToastGravity.TOP);
         polyLineCoordinates.clear();
-        setState(() {
-          tripToPickup = false;
+        if(mounted){      setState(() {
+          DataCubit.tripToPickup = false;
           tripToDestination = false;
           _markers
               .removeWhere((marker) => marker.markerId == MarkerId('destination'));
-        });
+        });}
         cancelRequest();
+        tripModel = TripModel();
+        newTripNotification = null;
+        newTrip = null;
         startListeningToLocationChanges();
       }
 
@@ -208,9 +206,9 @@ class _HomePageState extends State<HomePage> {
         acceptRequest(tripModel.tripId);
         setState(() {
           drivingState = true;
-          tripToPickup = true;
+          DataCubit.tripToPickup = true;
           setState(() {
-            loadingState = false;
+            DataCubit.loadingState = false;
             _markers.add(Marker(
                 markerId: const MarkerId('destination'),
                 icon: BitmapDescriptor.defaultMarker,
@@ -221,7 +219,8 @@ class _HomePageState extends State<HomePage> {
           });
         });
 
-      } else if (message.data['message'] == 'Send Request Trip') {
+      }
+      else if (message.data['message'] == 'Send Request Trip') {
         await player.play(AssetSource('sounds/mixkit-bell-notification-933.mp3'));
         if(declineBottomSheet == true){Navigator.pop(context);}
         try {
@@ -240,11 +239,11 @@ class _HomePageState extends State<HomePage> {
             tripModel.pickupLatitude == null) {
         } else {
           getEstimatedTime(
-                  driverLat: sourcePosition!.latitude,
-                  driverLng: sourcePosition!.longitude,
-                  riderLat: double.parse(tripModel.pickupLatitude!),
-                  riderLng: double.parse(tripModel.pickupLongitude!),
-                  apiKey: googleMapApiKey)
+              driverLat: sourcePosition!.latitude,
+              driverLng: sourcePosition!.longitude,
+              riderLat: double.parse(tripModel.pickupLatitude!),
+              riderLng: double.parse(tripModel.pickupLongitude!),
+              apiKey: googleMapApiKey)
               .then((value) async {
             if(value != null){ DataCubit.time = value;}
             print(DataCubit.time);
@@ -275,8 +274,6 @@ class _HomePageState extends State<HomePage> {
           });
         }
       }
-      // coming = true;
-      // }
     });
   }
 
@@ -428,7 +425,7 @@ class _HomePageState extends State<HomePage> {
                                       context: context);
                                   Navigator.pop(context);
                                   setState(() {
-                                    tripToPickup = false;
+                                    DataCubit.tripToPickup = false;
                                   });
                                 }, // Yes button action
                                 child: Text(
@@ -614,9 +611,7 @@ class _HomePageState extends State<HomePage> {
                           onPressed: () {
                             Navigator.pop(context);
                             Navigator.pop(context);
-                            setState(() {
-                              tripToPickup = false;
-                            });
+                          DataCubit.get(context).changeTripState(false);
                           },
                           child: const Text(
                             'Decline',
@@ -643,7 +638,7 @@ class _HomePageState extends State<HomePage> {
                                     sourcePosition!.longitude.toString(),
                                 context: context);
                           },
-                          child: loadingState == true
+                          child: DataCubit.loadingState == true
                               ? Center(
                                   child: CircularProgressIndicator(
                                     color: Colors.white,
@@ -678,253 +673,245 @@ class _HomePageState extends State<HomePage> {
             topLeft: Radius.circular(23), topRight: Radius.circular((23))),
       ),
       context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context,states) {
-          return BlocConsumer<DataCubit, DataState>(
-            listener: (context, state) {},
-            builder: (context, state) {
-              return SizedBox(
-                height: 60.h,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 2.h),
-                      child: Row(
+      builder: (context) => BlocConsumer<DataCubit, DataState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          return SizedBox(
+            height: 60.h,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 2.h),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Ride Request',
+                        style: TextStyle(
+                          fontSize: 18.dp,
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        DataCubit.time == 0 ? '' :
+                        '${DataCubit.time} mins away',
+                        style: TextStyle(color: Color(0xff808080)),
+                      )
+                    ],
+                  ),
+                ),
+                const Divider(),
+                Padding(
+                  padding:
+                  EdgeInsets.symmetric(horizontal: 5.0.w, vertical: 3.h),
+                  child: Column(
+                    children: [
+                      Row(
                         children: [
-                          Text(
-                            'Ride Request',
-                            style: TextStyle(
-                              fontSize: 18.dp,
+                          CircleAvatar(
+                            radius: 7.0.w,
+                            backgroundColor: const Color(0xffECECEC),
+                            child: Icon(
+                              Icons.person,
+                              size: 11.w,
+                              color: const Color(0xffA2A2A2),
                             ),
                           ),
-                          const Spacer(),
-                          Text(
-                            DataCubit.time == 0 ? '' :
-                            '${DataCubit.time} mins away',
-                            style: TextStyle(color: Color(0xff808080)),
+                          SizedBox(
+                            width: 2.w,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${tripRequest.rider}',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15.dp),
+                              ),
+                              Text(
+                                'Credit Card',
+                                style: TextStyle(
+                                    color: const Color(0xff808080),
+                                    fontSize: 13.dp),
+                              )
+                            ],
                           )
                         ],
                       ),
-                    ),
-                    const Divider(),
-                    Padding(
-                      padding:
-                      EdgeInsets.symmetric(horizontal: 5.0.w, vertical: 3.h),
-                      child: Column(
+                      SizedBox(
+                        height: 4.h,
+                      ),
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 7.0.w,
-                                backgroundColor: const Color(0xffECECEC),
-                                child: Icon(
-                                  Icons.person,
-                                  size: 11.w,
-                                  color: const Color(0xffA2A2A2),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 2.w,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '${tripRequest.rider}',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15.dp),
-                                  ),
-                                  Text(
-                                    'Credit Card',
-                                    style: TextStyle(
-                                        color: const Color(0xff808080),
-                                        fontSize: 13.dp),
-                                  )
-                                ],
-                              )
-                            ],
+                          Image.asset(
+                            'assets/images/from_to_image.png',
                           ),
                           SizedBox(
-                            height: 4.h,
+                            width: 2.w,
                           ),
-                          Row(
-                            children: [
-                              Image.asset(
-                                'assets/images/from_to_image.png',
-                              ),
-                              SizedBox(
-                                width: 2.w,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${tripRequest.pickup}',
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13.dp),
+                                ),
+                                SizedBox(
+                                  height: 1.h,
+                                ),
+                                Stack(
                                   children: [
-                                    Text(
-                                      '${tripRequest.pickup}',
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 13.dp),
-                                    ),
-                                    SizedBox(
-                                      height: 1.h,
-                                    ),
-                                    Stack(
-                                      children: [
-                                        Positioned(
-                                            right: -50,
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                  BorderRadius.circular(10.dp),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                        color: Colors.grey
-                                                            .withOpacity(0.4),
-                                                        spreadRadius: 10,
-                                                        blurRadius: 10,
-                                                        offset: const Offset(0, 7))
-                                                  ]),
-                                              child: Padding(
-                                                padding: EdgeInsets.all(6.dp),
-                                                child: Text(
-                                                  DataCubit.time != 0
-                                                      ? '${DataCubit.time} mins trip'
-                                                      : '',
-                                                  style: TextStyle(
-                                                      color: Color(0xff808080)),
-                                                ),
-                                              ),
-                                            )),
-                                        Container(
-                                          alignment: Alignment.centerLeft,
-                                          padding: EdgeInsets.only(left: 50.w),
-                                          width: 80.w,
-                                          height: 0.2.h,
-                                          decoration: const BoxDecoration(
-                                              color: Colors.black
-                                            //0xffE2E2E2
+                                    Positioned(
+                                        right: -50,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                              BorderRadius.circular(10.dp),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.4),
+                                                    spreadRadius: 10,
+                                                    blurRadius: 10,
+                                                    offset: const Offset(0, 7))
+                                              ]),
+                                          child: Padding(
+                                            padding: EdgeInsets.all(6.dp),
+                                            child: Text(
+                                              DataCubit.time != 0
+                                                  ? '${DataCubit.time} mins trip'
+                                                  : '',
+                                              style: TextStyle(
+                                                  color: Color(0xff808080)),
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        )),
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      padding: EdgeInsets.only(left: 50.w),
+                                      width: 80.w,
+                                      height: 0.2.h,
+                                      decoration: const BoxDecoration(
+                                          color: Colors.black
+                                        //0xffE2E2E2
+                                      ),
                                     ),
-                                    SizedBox(
-                                      height: 1.h,
-                                    ),
-                                    Text(
-                                      '${tripRequest.destination}',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 13.dp),
-                                    )
                                   ],
                                 ),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 2.h,
-                          ),
-                          RadioListTile(
-                              dense: true,
-                              contentPadding: EdgeInsets.zero,
-                              title: Text('${tripRequest.fees1}'),
-                              activeColor: Color(0xffFF6A03),
-                              value: tripRequest.fees1,
-                              groupValue: groupValue,
-                              onChanged: (value) {
-                                groupValue = value!;
-                                states(() {
-                                  feesNumber = 'fees1';
-                                });
-                              }),
-                          RadioListTile(
-                            dense: true,
-                            contentPadding: EdgeInsets.zero,
-                            title: Text('${tripRequest.fees2}'),
-                            activeColor: Color(0xffFF6A03),
-                            value: tripRequest.fees2,
-                            groupValue: groupValue,
-                            onChanged: (value) {
-                              groupValue = value!;
-                              states(() {
-                                feesNumber = 'fees2';
-                              });
-                            },
-                          ),
-                          SizedBox(
-                            height: 2.h,
-                          ),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 40.w,
-                                height: 5.5.h,
-                                child: OutlinedButton(
-                                    style: OutlinedButton.styleFrom(
-                                        side: const BorderSide(
-                                            color: Color(0xffFF6A03))),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                      setState(() {
-                                        tripToPickup = false;
-                                      });
-                                    },
-                                    child: const Text(
-                                      'Decline',
-                                      style: TextStyle(color: Color(0xffFF6A03)),
-                                    )),
-                              ),
-                              SizedBox(
-                                width: 7.w,
-                              ),
-                              SizedBox(
-                                width: 40.w,
-                                height: 5.5.h,
-                                child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(0xffFF6A03)),
-                                    onPressed: () async{
-                                      await DataCubit.get(context).acceptLessPriceTrip(
-                                          fees: groupValue!,
-                                          feesNumber: feesNumber!,
-                                          rider: tripRequest.riderId,
-                                          driverLocation:
-                                          'https://maps.google.com/?q=${sourcePosition!.latitude},${sourcePosition!.longitude}',
-                                          driverLocationLat:
-                                          sourcePosition!.latitude.toString(),
-                                          driverLocationLng:
-                                          sourcePosition!.longitude.toString(),
-                                          context: context);
-                                      Navigator.pop(context);
-                                    },
-                                    child: state is AcceptLessPriceTripLoadingState
-                                        ? Center(
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                        : const Text(
-                                      'Accept',
-                                      style: TextStyle(color: Colors.white),
-                                    )),
-                              )
-                            ],
+                                SizedBox(
+                                  height: 1.h,
+                                ),
+                                Text(
+                                  '${tripRequest.destination}',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13.dp),
+                                )
+                              ],
+                            ),
                           )
                         ],
                       ),
-                    )
-                  ],
-                ),
-              );
-            },
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      RadioListTile(
+                          dense: true,
+                          contentPadding: EdgeInsets.zero,
+                          title: Text('${tripRequest.fees1}'),
+                          activeColor: Color(0xffFF6A03),
+                          value: tripRequest.fees1,
+                          groupValue: DataCubit.groupValue,
+                          onChanged: (value) {
+                            DataCubit.get(context).changeGroupValueNumberr(value!);
+                            DataCubit.get(context).changeFeesNumber('fees1');
+                          }),
+                      RadioListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        title: Text('${tripRequest.fees2}'),
+                        activeColor: Color(0xffFF6A03),
+                        value: tripRequest.fees2,
+                        groupValue: DataCubit.groupValue,
+                        onChanged: (value) {
+                          DataCubit.get(context).changeGroupValueNumberr(value!);
+                          DataCubit.get(context).changeFeesNumber('fees2');
+                        },
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 40.w,
+                            height: 5.5.h,
+                            child: OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                    side: const BorderSide(
+                                        color: Color(0xffFF6A03))),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  setState(() {
+                                    DataCubit.tripToPickup = false;
+                                  });
+                                },
+                                child: const Text(
+                                  'Decline',
+                                  style: TextStyle(color: Color(0xffFF6A03)),
+                                )),
+                          ),
+                          SizedBox(
+                            width: 7.w,
+                          ),
+                          SizedBox(
+                            width: 40.w,
+                            height: 5.5.h,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xffFF6A03)),
+                                onPressed: () async{
+                                  await DataCubit.get(context).acceptLessPriceTrip(
+                                      fees: DataCubit.groupValue!,
+                                      feesNumber: DataCubit.feesNumber!,
+                                      rider: tripRequest.riderId,
+                                      driverLocation:
+                                      'https://maps.google.com/?q=${sourcePosition!.latitude},${sourcePosition!.longitude}',
+                                      driverLocationLat:
+                                      sourcePosition!.latitude.toString(),
+                                      driverLocationLng:
+                                      sourcePosition!.longitude.toString(),
+                                      context: context);
+                                  Navigator.pop(context);
+                                },
+                                child: state is AcceptLessPriceTripLoadingState
+                                    ? Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ),
+                                )
+                                    : const Text(
+                                  'Accept',
+                                  style: TextStyle(color: Colors.white),
+                                )),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
           );
-        }
+        },
       ),
     ).whenComplete((){
       setState(() {
@@ -978,7 +965,7 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           }
-          if(tripToPickup == true || tripToDestination == true){_checkProximity(context);}
+          if(DataCubit.tripToPickup == true || tripToDestination == true){_checkProximity(context);}
         });
       } else {
         _previousPosition = position;
@@ -1021,6 +1008,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    // FirebaseNotifications().handleBackgroundNotifications();
     DataCubit.get(context).getInProgressTripDetails();
     Timer(
       Duration(seconds: 1),()async{
@@ -1039,13 +1027,13 @@ class _HomePageState extends State<HomePage> {
           Timer(
             Duration(seconds: 1),
                 () {
-              setState(() {
+              if(mounted){ setState(() {
                 _markers.add(Marker(
                     markerId: const MarkerId('source'),
                     icon: markerIcon,
                     position: LatLng(
                         sourcePosition!.latitude, sourcePosition!.longitude)));
-              });
+              });}
             },
           );
           if (controller != null && sourcePosition != null) {
@@ -1073,49 +1061,7 @@ class _HomePageState extends State<HomePage> {
         }
     }
     );
-    // checkLocationEnabled().whenComplete(() async {
-    //   controller = await googleMapController.future;
-    //   WidgetsBinding.instance.addPostFrameCallback((_) {
-    //     if (inProgressTrip.driverInProgressTrip != null &&
-    //         inProgressTrip.driverInProgressTrip!.status != null &&
-    //         inProgressTrip.driverInProgressTrip!.status!.isNotEmpty) {
-    //       DataCubit.get(context)
-    //           .checkStatus(inProgressTrip.driverInProgressTrip!.status!);
-    //     }
-    //   });
-    //   addCustomMarker();
-    //   Timer(
-    //     Duration(seconds: 1),
-    //     () {
-    //       setState(() {
-    //         _markers.add(Marker(
-    //             markerId: const MarkerId('source'),
-    //             icon: markerIcon,
-    //             position: LatLng(
-    //                 sourcePosition!.latitude, sourcePosition!.longitude)));
-    //       });
-    //     },
-    //   );
-    //   if (controller != null && sourcePosition != null) {
-    //     controller!.animateCamera(
-    //       CameraUpdate.newCameraPosition(
-    //         CameraPosition(
-    //           target:
-    //               LatLng(sourcePosition!.latitude, sourcePosition!.longitude),
-    //           zoom: 20,
-    //         ),
-    //       ),
-    //     );
-    //   }
-    //   if (!locationEnabled) {
-    //   } else {
-    //     locationStream = Geolocator.getPositionStream(
-    //         locationSettings: LocationSettings(
-    //             accuracy: LocationAccuracy.high,
-    //             distanceFilter: drivingState == true ? 50 : 0));
-    //     startListeningToLocationChanges();
-    //   }
-    // });
+
     handle(context);
     // addCustomMarker();
     //
@@ -1200,9 +1146,9 @@ class _HomePageState extends State<HomePage> {
     if (serviceEnabled != true) {
       await Geolocator.requestPermission();
     }
-    setState(() {
+    if(mounted){    setState(() {
       locationEnabled = serviceEnabled;
-    });
+    });}
     final locationPermission = await Geolocator.checkPermission();
     if (locationPermission == LocationPermission.denied) {
       await Geolocator.requestPermission();
@@ -1243,10 +1189,10 @@ class _HomePageState extends State<HomePage> {
           ));
           setState(() {
             drivingState = true;
-            tripToPickup = false;
+            DataCubit.tripToPickup = false;
             tripToDestination = true;
             setState(() {
-              loadingState = false;
+              DataCubit.loadingState = false;
               _markers.add(Marker(
                   markerId: const MarkerId('destination'),
                   icon: BitmapDescriptor.defaultMarker,
@@ -1266,10 +1212,10 @@ class _HomePageState extends State<HomePage> {
           ));
           setState(() {
             drivingState = true;
-            tripToPickup = false;
+            DataCubit.tripToPickup = false;
             tripToDestination = true;
             setState(() {
-              loadingState = false;
+              DataCubit.loadingState = false;
               _markers.add(Marker(
                   markerId: const MarkerId('destination'),
                   icon: BitmapDescriptor.defaultMarker,
@@ -1373,9 +1319,9 @@ class _HomePageState extends State<HomePage> {
           acceptRequest(tripModel.tripId);
           setState(() {
             drivingState = true;
-            tripToPickup = true;
+            DataCubit.tripToPickup = true;
             setState(() {
-              loadingState = false;
+              DataCubit.loadingState = false;
               _markers.add(Marker(
                   markerId: const MarkerId('destination'),
                   icon: BitmapDescriptor.defaultMarker,
@@ -1399,9 +1345,9 @@ class _HomePageState extends State<HomePage> {
                   inProgressTrip.driverInProgressTrip!.pickupLongitude!));
           setState(() {
             drivingState = true;
-            tripToPickup = true;
+            DataCubit.tripToPickup = true;
             setState(() {
-              loadingState = false;
+              DataCubit.loadingState = false;
               _markers.add(Marker(
                   markerId: const MarkerId('destination'),
                   icon: BitmapDescriptor.defaultMarker,
@@ -1530,7 +1476,7 @@ class _HomePageState extends State<HomePage> {
                     elevation: 0,
                     backgroundColor: Colors.white,
                   )),
-              tripToPickup == true && tripModel.pickupLatitude != null
+              DataCubit.tripToPickup == true && tripModel.pickupLatitude != null
                   ? Positioned(
                       bottom: 120,
                       right: 10,
@@ -1897,7 +1843,7 @@ class _HomePageState extends State<HomePage> {
                       height: 5.h,
                     ),
                     const Spacer(),
-                    tripToPickup == true && DataCubit.inRange == true
+                    DataCubit.tripToPickup == true && DataCubit.inRange == true
                         ? SizedBox(
                             width: 40.w,
                             child: ElevatedButton(
@@ -1927,7 +1873,7 @@ class _HomePageState extends State<HomePage> {
                                   style: TextStyle(color: Colors.white),
                                 )),
                           )
-                        : tripToPickup == false && tripToDestination == true
+                        : DataCubit.tripToPickup == false && tripToDestination == true
                             ? SizedBox(
                                 width: 40.w,
                                 child: ElevatedButton(
@@ -1954,7 +1900,7 @@ class _HomePageState extends State<HomePage> {
                                     )),
                               )
                             : SizedBox(),
-                    tripToPickup == true
+                    DataCubit.tripToPickup == true
                         ? SizedBox(
                             width: 40.w,
                             child: ElevatedButton(
@@ -1983,7 +1929,7 @@ class _HomePageState extends State<HomePage> {
                                                   context: context);
                                               Navigator.pop(context);
                                               setState(() {
-                                                tripToPickup = false;
+                                                DataCubit.tripToPickup = false;
                                                 polyLineCoordinates.clear();
                                               });
                                             }, // Yes button action

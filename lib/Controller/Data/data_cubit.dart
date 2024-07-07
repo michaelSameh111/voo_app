@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:voo_app/Model/EndTripModel.dart';
 import 'package:voo_app/Model/InProgressTripModel.dart';
 import 'package:voo_app/Model/TripsHistoryModel.dart';
@@ -15,7 +18,28 @@ class DataCubit extends Cubit<DataState> {
   DataCubit() : super(DataInitial());
   static DataCubit get(context) => BlocProvider.of(context);
   static String destinationState = '';
+  static bool tripToPickup = false;
+  static bool loadingState = false;
   static   int time = 0;
+ static String? groupValue;
+ static String? feesNumber = 'fees1';
+
+ void changeFeesNumber (String fees){
+   feesNumber = fees;
+   emit(FeesNumberChangeState());
+ }
+ void changeGroupValueNumberr (String group){
+   groupValue = group;
+   emit(GroupValueChangeState());
+ }
+  void changeTripState (bool trip ){
+    tripToPickup = trip;
+    emit(TripChangeState());
+  }
+  void changeTripLoadingState (){
+    loadingState = true;
+    emit(TripChangeState());
+  }
   Future<void> timeChange (int time)async{
     DataCubit.time = time;
     emit(TimeChangeState());
@@ -389,6 +413,30 @@ class DataCubit extends Cubit<DataState> {
     }).catchError((error) {
       print(error);
       emit(ChangeDriverStatusErrorState(error.toString()));
+    });
+  }
+
+  Future<void> complainSubmit(
+      {
+        required String description,
+        required String type,
+        required BuildContext context})async {
+    emit(SubmitClaimLoadingState());
+    DioHelper.postData(
+        url:
+        'claims/add',
+        data: {
+          'claim_type': type,
+          'description': description,
+        },
+        token: token)
+        .then((value) async {
+          print(value.data);
+          Fluttertoast.showToast(msg: '${value.data['message']}',backgroundColor: Colors.green,fontSize: 14.dp,);
+      emit(SubmitClaimSuccessState());
+    }).catchError((error) {
+      print(error);
+      emit(SubmitClaimErrorState(error.toString()));
     });
   }
 

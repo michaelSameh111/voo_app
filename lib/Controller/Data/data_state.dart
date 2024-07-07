@@ -68,6 +68,17 @@ class ChangeDriverStatusErrorState extends DataState {
   ChangeDriverStatusErrorState(this.error);
 }
 
+class SubmitClaimLoadingState extends DataState {}
+class SubmitClaimSuccessState extends DataState {}
+class SubmitClaimErrorState extends DataState {
+  final String error;
+  SubmitClaimErrorState(this.error);
+}
+
+class TripChangeState extends DataState {}
+class GroupValueChangeState extends DataState {}
+class FeesNumberChangeState extends DataState {}
+
 class GetTripsHistoryDataLoadingState extends DataState {}
 class GetTripsHistoryDataSuccessState extends DataState {}
 class GetTripsHistoryDataErrorState extends DataState {}

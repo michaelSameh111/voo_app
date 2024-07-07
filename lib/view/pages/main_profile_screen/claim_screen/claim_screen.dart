@@ -7,7 +7,7 @@ class ClaimScreen extends StatelessWidget {
   const ClaimScreen({super.key});
 
 
-  //// this screen appears if there are no complaints ////
+
 
   @override
   Widget build(BuildContext context) {

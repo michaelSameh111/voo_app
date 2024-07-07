@@ -25,11 +25,13 @@ InProgressTripModel  inProgressTrip = InProgressTripModel();
 String? socialSecurity ;
 String? securityCode ;
 String? language ;
+bool? notificationRequestTrip = false;
+bool? notificationRequestLessPriceTrip = false;
+TripModel? newTripNotification;
 const String googleMapApiKey = 'AIzaSyC0vwuoMC2YaegAD6xJEomD0VjNRVXYh60';
 Position? sourcePosition;
 TripModel tripModel = TripModel();
 TripModel? trip ;
-bool tripToPickup = false;
 bool declineBottomSheet = false;
 bool? light;
 bool tripToDestination = false;
@@ -195,4 +197,5 @@ void makePhoneCall(String phoneNumber) async {
     throw 'Could not launch $url';
   }
 }
+
 

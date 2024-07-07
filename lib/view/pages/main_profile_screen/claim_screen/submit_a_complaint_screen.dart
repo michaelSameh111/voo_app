@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
+import 'package:voo_app/Controller/Data/data_cubit.dart';
+import 'package:voo_app/view/pages/HomePage/Home.dart';
 import 'package:voo_app/view/widgets/main_elevated_button.dart';
 
 class SubmitAComplaintScreen extends StatefulWidget {
@@ -12,6 +15,9 @@ class SubmitAComplaintScreen extends StatefulWidget {
 
 
 class _SubmitAComplaintScreenState extends State<SubmitAComplaintScreen> {
+  String? selectedValue = 'Lost Item';
+  GlobalKey <FormState> formKey = GlobalKey();
+  TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(resizeToAvoidBottomInset: true,
@@ -62,107 +68,154 @@ class _SubmitAComplaintScreenState extends State<SubmitAComplaintScreen> {
         ),
       ),
 
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 3.0.w),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'Title *',
-                    style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+      body: BlocConsumer<DataCubit, DataState>(
+  listener: (context, state) {
+    if(state is SubmitClaimSuccessState){
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>HomePageMapsScreen()), (route)=>false);
+    }
+  },
+  builder: (context, state) {
+    return Form(
+        key: formKey,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 3.0.w),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Title *',
+                      style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 1.h,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                  color: const Color(0xffF5F4F4),
-                  borderRadius: BorderRadius.circular(8.dp)),
-              child: TextField(
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.all(13.dp),
-                    hintText: 'Title'),
+                ],
               ),
-            ),
-            SizedBox(
-              height: 2.h,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'Description *',
-                    style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+              SizedBox(
+                height: 1.h,
+              ),
+              DropdownButtonFormField<String>(
+                padding: EdgeInsets.all(8),
+                decoration: InputDecoration(
+                  filled: true,
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide:
+                      const BorderSide(color: Colors.transparent)),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide:
+                      const BorderSide(color: Colors.transparent)),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide:
+                      const BorderSide(color: Colors.transparent)),
+                ),
+                validator: (value) {
+                  if (value == 'Claim Type') {
+                    return 'Please choose Claim Type';
+                  }
+                  return null;
+                },
+                items: [
+                  DropdownMenuItem(child: Text('Lost Item',),value: 'Lost Item',),
+                  DropdownMenuItem(child: Text('Complain',),value: 'Complain',),
+                ],
+                value: selectedValue,
+
+                onChanged: (String? value) {
+                  setState(() {
+                    selectedValue = value;
+                  });
+                },
+              ),
+              SizedBox(
+                height: 2.h,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Description *',
+                      style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 1.h,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                  color: const Color(0xffF5F4F4),
-                  borderRadius: BorderRadius.circular(8.dp)),
-              child: TextField(
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.all(13.dp),
-                    hintText: 'Description'),
+                ],
               ),
-            ),
-            SizedBox(
-              height: 5.h,
-            ),
-            // Row(
-            //   children: [
-            //     Expanded(
-            //       child: Text(
-            //         'Car Images *',
-            //         style:
-            //         TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            // SizedBox(
-            //   height: 2.h,
-            // ),
-            // Container(
-            //   decoration: BoxDecoration(
-            //       color: const Color(0xffF5F4F4),
-            //       borderRadius: BorderRadius.circular(8.dp)),
-            //   child: TextField(
-            //     decoration: InputDecoration(
-            //       suffixIcon: Icon(Icons.arrow_forward_ios,
-            //         color: Colors.black,
-            //       size: 15.dp,),
-            //         border: InputBorder.none,
-            //         contentPadding: EdgeInsets.all(13.dp),
-            //         hintText: 'Add car image'),
-            //
-            //   ),
-            // ),
-            const Spacer(),
-            MainElevatedButtonTwo(
-                onPressed: (){},
-                circularBorder: true,
-                text: 'Submit',
-                backgroundColor: const Color(0xffFF6A03)),
-            SizedBox(height: 3.h,),
-          ],
+              SizedBox(
+                height: 1.h,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  validator: (value){
+                    if(value!.isEmpty){
+                      return 'Please add full description';
+                    } else return null;
+                  },
+                  maxLines: null,
+                  controller: controller,
+                  decoration: InputDecoration(
+                    hintText: 'Description',
+                      border: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color(0xffC4C4C4),
+                          ),
+                          borderRadius: BorderRadius.circular(8.dp))),
+                ),
+              ),
+              SizedBox(
+                height: 5.h,
+              ),
+              // Row(
+              //   children: [
+              //     Expanded(
+              //       child: Text(
+              //         'Car Images *',
+              //         style:
+              //         TextStyle(fontWeight: FontWeight.bold, fontSize: 15.dp),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // SizedBox(
+              //   height: 2.h,
+              // ),
+              // Container(
+              //   decoration: BoxDecoration(
+              //       color: const Color(0xffF5F4F4),
+              //       borderRadius: BorderRadius.circular(8.dp)),
+              //   child: TextField(
+              //     decoration: InputDecoration(
+              //       suffixIcon: Icon(Icons.arrow_forward_ios,
+              //         color: Colors.black,
+              //       size: 15.dp,),
+              //         border: InputBorder.none,
+              //         contentPadding: EdgeInsets.all(13.dp),
+              //         hintText: 'Add car image'),
+              //
+              //   ),
+              // ),
+              const Spacer(),
+              MainElevatedButtonTwo(
+                  onPressed: (){
+                    if(formKey.currentState!.validate()){
+                      DataCubit.get(context).complainSubmit(description: controller.text, type: selectedValue!, context: context);
+                    }
+                  },
+                  circularBorder: true,
+                  condition: state is SubmitClaimLoadingState,
+                  text: 'Submit',
+                  backgroundColor: const Color(0xffFF6A03)),
+              SizedBox(height: 3.h,),
+            ],
+          ),
         ),
-      ),
+      );
+  },
+),
 
     );
   }

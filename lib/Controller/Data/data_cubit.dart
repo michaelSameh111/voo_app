@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:voo_app/Model/EndTripModel.dart';
 import 'package:voo_app/Model/InProgressTripModel.dart';
 import 'package:voo_app/Model/TripsHistoryModel.dart';
@@ -23,6 +26,45 @@ class DataCubit extends Cubit<DataState> {
   static   int time = 0;
  static String? groupValue;
  static String? feesNumber = 'fees1';
+  List<XFile> imageXFileList = [];
+  static List imagesFileList = [];
+  static List imagesFilesList = [];
+  static List<MultipartFile> multiPart = [];
+  final ImagePicker imagePicker = ImagePicker();
+  static File? claimImage;
+  Future<void> selectImages(BuildContext context) async {
+    imageXFileList.clear();
+    imagesFileList.clear();
+    multiPart.clear();
+    final List<XFile> selectedImages =
+    await imagePicker.pickMultiImage(imageQuality: 50);
+    if (selectedImages.isNotEmpty) {
+      imageXFileList.addAll(selectedImages);
+      for (var i = 0; i < imageXFileList.length; i++) {
+        imagesFilesList.add(File(imageXFileList[i].path));
+        imagesFileList.add(File(imageXFileList[i].path).path);
+        multiPart.add(await MultipartFile.fromFile(imagesFileList[i],
+            filename: '${imagesFileList[i]}'));
+      }
+      emit(ImagePickerState());
+    }
+  }
+  Future pickImage(ImageSource imageSource) async {
+    imageXFileList.clear();
+    imagesFileList.clear();
+    imagesFilesList.clear();
+    multiPart.clear();
+    final myFiles = await ImagePicker().pickImage(
+        source: imageSource,
+        maxHeight: double.maxFinite,
+        maxWidth: double.maxFinite);
+    if (myFiles != null) {
+      claimImage = File(myFiles.path);
+      imagesFilesList.add(claimImage);
+      imagesFileList.add(claimImage);
+      emit(ImagePickerState());
+    }
+  }
 
  void changeFeesNumber (String fees){
    feesNumber = fees;
@@ -436,6 +478,7 @@ class DataCubit extends Cubit<DataState> {
       {
         required String description,
         required String type,
+        int? tripId,
         required BuildContext context})async {
     emit(SubmitClaimLoadingState());
     DioHelper.postData(
@@ -444,8 +487,13 @@ class DataCubit extends Cubit<DataState> {
         data: {
           'claim_type': type,
           'description': description,
+          'images[]': multiPart.isNotEmpty
+              ? multiPart
+              : claimImage != null
+              ? await MultipartFile.fromFile(claimImage!.path, filename: '1')
+              : [],
         },
-        token: token)
+        token: token,tripId: tripId)
         .then((value) async {
           print(value.data);
           Fluttertoast.showToast(msg: '${value.data['message']}',backgroundColor: Colors.green,fontSize: 14.dp,);

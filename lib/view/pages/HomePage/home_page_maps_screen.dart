@@ -61,14 +61,12 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver  {
   bool locationEnabled = false;
   bool drivingState = false;
 
   double cameraZoom = 17;
   String? destinationLocation = '';
-
-
 
   final sdkChannel = MethodChannel(FAIRMATIC_CHANNEL);
   late Timer timer;
@@ -158,7 +156,6 @@ class _HomePageState extends State<HomePage> {
 
   Future handle(BuildContext context) async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async{
-
       print(message.data);
       TripModel? newTrip;
       TripRequest? tripRequest;
@@ -276,7 +273,7 @@ class _HomePageState extends State<HomePage> {
       }
     });
   }
-
+  void onResume(){}
   void arrivedToPickupShowModalSheet(BuildContext context) {
     showModalBottomSheet(
       isDismissible: false,
@@ -478,7 +475,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const Spacer(),
                 Text(
-                  '${DataCubit.time} mins away',
+                  'Pickup : ${DataCubit.time} mins away',
                   style: TextStyle(color: Color(0xff808080)),
                 )
               ],
@@ -693,7 +690,7 @@ class _HomePageState extends State<HomePage> {
                     const Spacer(),
                     Text(
                       DataCubit.time == 0 ? '' :
-                      '${DataCubit.time} mins away',
+                      'Pickup : ${DataCubit.time} mins away',
                       style: TextStyle(color: Color(0xff808080)),
                     )
                   ],
@@ -786,7 +783,7 @@ class _HomePageState extends State<HomePage> {
                                           padding: EdgeInsets.all(6.dp),
                                           child: Text(
                                             DataCubit.time != 0
-                                                ? '${DataCubit.time} mins trip'
+                                                ? 'Pickup : ${DataCubit.time} mins trip'
                                                 : '',
                                             style: TextStyle(
                                                 color: Color(0xff808080)),
@@ -998,15 +995,17 @@ class _HomePageState extends State<HomePage> {
     return null;
   }
 
-  @override
-  void dispose() {
-    stopListeningToLocationChanges();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   WidgetsBinding.instance.removeObserver(this);
+  //   stopListeningToLocationChanges();
+  //   super.dispose();
+  // }
 
   @override
   void initState() {
     // FirebaseNotifications().handleBackgroundNotifications();
+    WidgetsBinding.instance.addObserver(this);
     DataCubit.get(context).getInProgressTripDetails();
     Timer(
       Duration(seconds: 1),()async{
@@ -1071,6 +1070,15 @@ class _HomePageState extends State<HomePage> {
 
     super.initState();
   }
+  @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   if (state == AppLifecycleState.resumed) {
+  //     startListeningToLocationChanges();
+  //   } else if (state == AppLifecycleState.paused) {
+  //     stopListeningToLocationChanges();
+  //   }
+  // }
+
   void showDisclosureDialog() {
     showDialog(
       context: context,
@@ -1239,15 +1247,17 @@ class _HomePageState extends State<HomePage> {
               backgroundColor: Colors.green,
               textColor: Colors.white,
               gravity: ToastGravity.TOP);
-          getEstimatedTime(
-                  driverLat: sourcePosition!.latitude,
-                  driverLng: sourcePosition!.longitude,
-                  riderLat: double.parse(tripModel.pickupLatitude!),
-                  riderLng: double.parse(tripModel.pickupLongitude!),
-                  apiKey: googleMapApiKey)
-              .then((value) async {
-            DataCubit.get(context).timeChange(value!);
-          });
+          if(inProgressTrip.driverInProgressTrip != null && inProgressTrip.driverInProgressTrip!.destinationLongitude != null){
+            getEstimatedTime(
+                driverLat: sourcePosition!.latitude,
+                driverLng: sourcePosition!.longitude,
+                riderLat: double.parse(inProgressTrip.driverInProgressTrip!.destinationLatitude!),
+                riderLng: double.parse(inProgressTrip.driverInProgressTrip!.destinationLongitude!),
+                apiKey: googleMapApiKey)
+                .then((value) async {
+              DataCubit.get(context).timeChange(value!);
+            });
+          }
           arrivedToPickupShowModalSheet(context);
         }
         if (state is ArrivedAtLocationCompleteSuccessState) {
@@ -1257,17 +1267,17 @@ class _HomePageState extends State<HomePage> {
               backgroundColor: Colors.green,
               textColor: Colors.white,
               gravity: ToastGravity.TOP);
-          getEstimatedTime(
-                  driverLat: sourcePosition!.latitude,
-                  driverLng: sourcePosition!.longitude,
-                  riderLat: double.parse(
-                      inProgressTrip.driverInProgressTrip!.pickupLatitude!),
-                  riderLng: double.parse(
-                      inProgressTrip.driverInProgressTrip!.pickupLongitude!),
-                  apiKey: googleMapApiKey)
-              .then((value) async {
-            DataCubit.time = value!;
-          });
+          if(inProgressTrip.driverInProgressTrip != null && inProgressTrip.driverInProgressTrip!.destinationLongitude != null){
+            getEstimatedTime(
+                driverLat: sourcePosition!.latitude,
+                driverLng: sourcePosition!.longitude,
+                riderLat: double.parse(inProgressTrip.driverInProgressTrip!.destinationLatitude!),
+                riderLng: double.parse(inProgressTrip.driverInProgressTrip!.destinationLongitude!),
+                apiKey: googleMapApiKey)
+                .then((value) async {
+              DataCubit.get(context).timeChange(value!);
+            });
+          }
           arrivedToPickupShowModalSheet(context);
         }
         if (state is CancelTripSuccessState) {
@@ -1781,25 +1791,21 @@ class _HomePageState extends State<HomePage> {
                               SizedBox(
                                 width: 5.w,
                               ),
-                              InkWell(onTap: (){
-                               acceptDeclineLessPriceShowModalSheet(context, TripRequest(pickupLongitude: '1222', destinationLatitude: '1222', shift: 'night', destination: 'destination', fees1: '12', pickup: 'pickup', fees2: '14', destinationLongitude: '12321', message: 'message', rider: 'rider', preferredVehicleType: 'preferredVehicleType', pickupLatitude: 'pickupLatitude', destinationSpecified: 'destinationSpecified', riderId: 'riderId'));
-                              },
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      'Earnings',
-                                      style:
-                                          TextStyle(color: Color(0xff646363)),
-                                    ),
-                                    Text(
-                                      '${loginData.totalEarnings}',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15.dp),
-                                    )
-                                  ],
-                                ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Earnings',
+                                    style:
+                                        TextStyle(color: Color(0xff646363)),
+                                  ),
+                                  Text(
+                                    '${loginData.totalEarnings}',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15.dp),
+                                  )
+                                ],
                               )
                             ],
                           ),

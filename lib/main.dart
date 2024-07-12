@@ -54,28 +54,28 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   FirebaseNotifications firebaseNotifications = FirebaseNotifications();
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.detached) {
-      onAppClose();
-    }
-  }
-
-  void onAppClose() async{
-   firebaseNotifications.stopNotifications();
-  }
+  // void initState() {
+  //   super.initState();
+  //
+  //   WidgetsBinding.instance.addObserver(this);
+  // }
+  //
+  // @override
+  // void dispose() {
+  //   WidgetsBinding.instance.removeObserver(this);
+  //   super.dispose();
+  // }
+  //
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   if (state == AppLifecycleState.detached) {
+  //     onAppClose();
+  //   }
+  // }
+  //
+  // void onAppClose() async{
+  //  firebaseNotifications.stopNotifications();
+  // }
   @override
   Widget build(BuildContext context) {
     return FlutterSizer(

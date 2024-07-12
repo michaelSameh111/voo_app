@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_sizer/flutter_sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:voo_app/Model/InProgressTripModel.dart';
+import 'package:voo_app/view/pages/main_profile_screen/claim_screen/submit_a_complaint_screen.dart';
 import '../../Model/TripsHistoryModel.dart';
 import 'main_elevated_button.dart';
 
@@ -323,17 +324,34 @@ class CompletedHistoryWidget extends StatelessWidget {
               ),
             ),
             Spacer(),
-            MainElevatedButtonTwo(
-              onPressed: () async {
-                final url = Uri.parse(
-                    driverCompletedTrips.invoice!);
-                if (await canLaunchUrl(url)) {
-                  await launchUrl(url, mode: LaunchMode.inAppBrowserView);
-                }
-              },
-              text: 'Invoice',
-              backgroundColor: Color(0xffFF6A03),
-              circularBorder: true,
+            Row(
+              children: [
+                Expanded(
+                  child: MainElevatedButtonTwo(
+                    onPressed: () async {
+                      final url = Uri.parse(
+                          driverCompletedTrips.invoice!);
+                      if (await canLaunchUrl(url)) {
+                        await launchUrl(url, mode: LaunchMode.inAppBrowserView);
+                      }
+                    },
+                    text: 'Invoice',
+                    backgroundColor: Color(0xffFF6A03),
+                    circularBorder: true,
+                  ),
+                ),
+                SizedBox(width: 5.w,),
+                Expanded(
+                  child: MainElevatedButtonTwo(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SubmitAComplaintScreen(tripId: driverCompletedTrips.id,)));
+                    },
+                    text: 'Claim',
+                    backgroundColor: Colors.red,
+                    circularBorder: true,
+                  ),
+                ),
+              ],
             ),
             SizedBox(height: 5.h,)
             // Spacer(),

@@ -34,9 +34,10 @@ class DioHelper {
     String? token,
     int? id,
     int? productId,
-    int? update
+    int? update,
+    int? tripId,
   }) async {
-    dio.options.headers = {'auth-token': token ?? '' , 'trip' : id,'product_id' : productId,'update' : update};
+    dio.options.headers = {'auth-token': token ?? '' , 'trip' : id,'tripId' : tripId,'update' : update};
     return await dio.post(
       url,
       queryParameters: query,

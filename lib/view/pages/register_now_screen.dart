@@ -611,11 +611,12 @@ class _RegisterNowScreenState extends State<RegisterNowScreen> {
   }
 
   Future<void> selectDate() async {
+    DateTime now = DateTime.now();
     DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: DateTime(now.year - 23, now.month, now.day),
       firstDate: DateTime(1950),
-      lastDate: DateTime.now(),
+      lastDate: DateTime(now.year - 23, now.month, now.day),
     );
     if (picked != null) {
       setState(() {

@@ -144,11 +144,8 @@ class FirebaseNotifications {
   }
 
   Future<void> stopNotifications() async {
-    // Cancel subscriptions to stop receiving notifications
     await _onMessageOpenedAppSubscription?.cancel();
     await _onBackgroundMessageSubscription?.cancel();
-
-    // Optionally, you can also revoke the FCM token
     await _firebaseMessaging.deleteToken();
     print("Stopped receiving notifications");
   }

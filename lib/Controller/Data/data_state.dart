@@ -74,6 +74,7 @@ class SubmitClaimErrorState extends DataState {
   final String error;
   SubmitClaimErrorState(this.error);
 }
+class ImagePickerState extends DataState{}
 
 class TripChangeState extends DataState {}
 class GroupValueChangeState extends DataState {}

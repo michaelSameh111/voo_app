@@ -61,7 +61,7 @@ class MainElevatedButtonTwo extends StatelessWidget {
     this.circularBorder,
     required this.onPressed,
     required this.text,
-    required this.backgroundColor,
+    this.backgroundColor = const Color(0xffFF6A03),
     this.condition
   });
 
@@ -76,7 +76,7 @@ class MainElevatedButtonTwo extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15)
               ) : null,
               backgroundColor: backgroundColor),
-          onPressed: onPressed,
+          onPressed: condition == true ? (){} : onPressed,
           child: Container(
             child:condition == true ? const Center(child: CircularProgressIndicator(color: Colors.white,)) : Text(
               text,

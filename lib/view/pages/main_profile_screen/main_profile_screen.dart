@@ -298,7 +298,7 @@ class MainProfileScreen extends StatelessWidget {
                       width: 3.w,
                     ),
                     Text(
-                      'Claim',
+                      'General Claim',
                       style: TextStyle(fontSize: 15.dp),
                     ),
                     const Spacer(),

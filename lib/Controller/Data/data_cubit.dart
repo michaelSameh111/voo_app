@@ -36,8 +36,9 @@ class DataCubit extends Cubit<DataState> {
     imageXFileList.clear();
     imagesFileList.clear();
     multiPart.clear();
-    final List<XFile> selectedImages =
-    await imagePicker.pickMultiImage(imageQuality: 50);
+    claimImage = null;
+    final List<XFile> selectedImages = await imagePicker.pickMultiImage(imageQuality: 50);
+
     if (selectedImages.isNotEmpty) {
       imageXFileList.addAll(selectedImages);
       for (var i = 0; i < imageXFileList.length; i++) {
@@ -46,6 +47,7 @@ class DataCubit extends Cubit<DataState> {
         multiPart.add(await MultipartFile.fromFile(imagesFileList[i],
             filename: '${imagesFileList[i]}'));
       }
+
       emit(ImagePickerState());
     }
   }
@@ -484,15 +486,13 @@ class DataCubit extends Cubit<DataState> {
     DioHelper.postData(
         url:
         'claims/add',
-        data: {
-          'claim_type': type,
+        data: FormData.fromMap({     'claim_type': type,
           'description': description,
           'images[]': multiPart.isNotEmpty
               ? multiPart
               : claimImage != null
-              ? await MultipartFile.fromFile(claimImage!.path, filename: '1')
-              : [],
-        },
+              ? await MultipartFile.fromFile(claimImage!.path, filename: '${claimImage!.path}')
+              : []}),
         token: token,tripId: tripId)
         .then((value) async {
           print(value.data);

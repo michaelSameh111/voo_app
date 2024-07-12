@@ -17,7 +17,7 @@ class SubmitAComplaintScreen extends StatefulWidget {
 
 
 class _SubmitAComplaintScreenState extends State<SubmitAComplaintScreen> {
-  String? selectedValue = 'Lost Item';
+  String? selectedValue = 'Accident';
   GlobalKey <FormState> formKey = GlobalKey();
   late BuildContext dialogContext;
   TextEditingController controller = TextEditingController();
@@ -52,7 +52,7 @@ class _SubmitAComplaintScreenState extends State<SubmitAComplaintScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(resizeToAvoidBottomInset: true,
+    return Scaffold(resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -151,7 +151,7 @@ class _SubmitAComplaintScreenState extends State<SubmitAComplaintScreen> {
                       return null;
                     },
                     items: [
-                      DropdownMenuItem(child: Text('Lost Item',),value: 'Accident',),
+                      DropdownMenuItem(child: Text('Accident',),value: 'Accident',),
                       DropdownMenuItem(child: Text('Complain',),value: 'Complain',),
                     ],
                     value: selectedValue,

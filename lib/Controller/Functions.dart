@@ -504,6 +504,7 @@ declineBottomSheet = true;
                                       backgroundColor: const Color(0xffFF6A03)),
                                   onPressed: () async{
                                     await DataCubit.get(context).acceptLessPriceTrip(
+                                      tax: tripRequest.tax!,
                                         fees: DataCubit.groupValue!,
                                         feesNumber: DataCubit.feesNumber!,
                                         rider: tripRequest.riderId,

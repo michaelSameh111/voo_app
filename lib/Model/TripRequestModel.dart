@@ -4,6 +4,7 @@ class TripRequest {
   final String shift;
   final String destination;
   final String fees1;
+  String? tax ;
   final String pickup;
   final String fees2;
   final String destinationLongitude;
@@ -29,6 +30,7 @@ class TripRequest {
     required this.pickupLatitude,
     required this.destinationSpecified,
     required this.riderId,
+    this.tax
   });
 
   factory TripRequest.fromJson(Map<String, dynamic> json) {
@@ -41,6 +43,7 @@ class TripRequest {
       fees1: json['fees1'],
       pickup: json['pickup'],
       fees2: json['fees2'],
+      tax: json['tax'],
       destinationLongitude: json['destination_longitude'],
       message: json['message'],
       rider: json['rider'],

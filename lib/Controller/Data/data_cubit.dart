@@ -237,6 +237,7 @@ class DataCubit extends Cubit<DataState> {
     required String driverLocation,
     required String driverLocationLat,
     required String driverLocationLng,
+    required String tax,
     required BuildContext context,
   }) async {
     emit(AcceptLessPriceTripLoadingState());
@@ -251,6 +252,7 @@ class DataCubit extends Cubit<DataState> {
           'driver_location': driverLocation,
           'driver_location_latitude': driverLocationLat,
           'driver_location_longitude': driverLocationLng,
+          'tax' : tax
         }),
         token: token,
       );

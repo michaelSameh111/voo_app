@@ -328,6 +328,8 @@ class DataCubit extends Cubit<DataState> {
       {required int tripId,
         String? destinationTitle,
         String? state,
+        String? dropOffLat,
+        String? dropOffLng,
         required BuildContext context,
       })async {
     emit(EndTripLoadingState());
@@ -337,6 +339,8 @@ class DataCubit extends Cubit<DataState> {
           'tripId' : tripId,
           'destination_title' : destinationTitle,
           'state' : state,
+          'actual_drop_off_latitude' : dropOffLat,
+          'actual_drop_off_longitude' : dropOffLng,
         }),
         token: token)
         .then((value)  {

@@ -2,10 +2,10 @@ class TripRequest {
   final String pickupLongitude;
   final String destinationLatitude;
   final String shift;
-  final String destination;
+  final String? destination;
   final String fees1;
   String? tax ;
-  final String pickup;
+  final String? pickup;
   final String fees2;
   final String destinationLongitude;
   final String message;

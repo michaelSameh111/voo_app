@@ -49,12 +49,13 @@ class LoginCubit extends Cubit<LoginState> {
       required String password,
       required BuildContext context}) {
     emit(LoginLoadingState());
-    DioHelper.postData(url: 'https://innovationscope.com/demos/voo/public/api/auth/login', data: {
+    DioHelper.postData(url: 'https://voorideshare.com/api/auth/login', data: {
       'email': email,
       'password': password,
       'fcm_token': fcmToken
     }).then((value) async {
       print(value.data);
+
       loginData = LoginDataModel.fromJson(value.data);
       token = loginData.accessToken;
       loggedInEmail = email;
@@ -64,6 +65,7 @@ class LoginCubit extends Cubit<LoginState> {
       if(loginData.driverInsurance != null){ insuranceData = loginData.driverInsurance!;}
       if(loginData.driverLicense != null && loginData.driverLicense!.isNotEmpty){ licenseData = loginData.driverLicense![0];}
       print('User  $token');
+      print(fcmToken);
       emit(LoginSuccessState());
       if (state is LoginSuccessState) {
         inProgressTrip = InProgressTripModel();
@@ -447,7 +449,7 @@ class LoginCubit extends Cubit<LoginState> {
         required BuildContext context})async {
     emit(AddDriverDataLoadingState());
     DioHelper.postData(
-        url: 'https://innovationscope.com/demos/voo/public/api/driver-data/add',
+        url: 'https://voorideshare.com/api/driver-data/add',
         data: FormData.fromMap({
           'security_code' : socialSecurity,
           'social_security_number' : socialSecurity,
@@ -481,7 +483,7 @@ class LoginCubit extends Cubit<LoginState> {
         required BuildContext context})async {
     emit(EditDriverDataLoadingState());
     DioHelper.postData(
-        url: 'https://innovationscope.com/demos/voo/public/api/driver-data/edit',
+        url: 'https://voorideshare.com/api/driver-data/edit',
         data: FormData.fromMap({
           'security_code' : socialSecurity,
           'social_security_number' : socialSecurity,
@@ -525,7 +527,7 @@ class LoginCubit extends Cubit<LoginState> {
 
     try {
       final response = await DioHelper.postData(
-        url: 'https://innovationscope.com/demos/voo/public/api/driver-vehicles/add',
+        url: 'https://voorideshare.com/api/driver-vehicles/add',
         data: FormData.fromMap({
           'plate_info': plateInfo,
           'make': make,

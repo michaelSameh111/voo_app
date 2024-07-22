@@ -875,6 +875,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver  {
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xffFF6A03)),
                               onPressed: () async{
+                                print(tripRequest.tax);
+                                print(DataCubit.groupValue);
+                                print(DataCubit.feesNumber);
+                                print(tripRequest.riderId);
+                                print('https://maps.google.com/?q=${sourcePosition!.latitude},${sourcePosition!.longitude}');
+                                print(sourcePosition!.latitude.toString());
+                                print(sourcePosition!.longitude.toString());
                                 await DataCubit.get(context).acceptLessPriceTrip(
                                   tax: tripRequest.tax!,
                                     fees: DataCubit.groupValue!,
@@ -1792,21 +1799,26 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver  {
                               SizedBox(
                                 width: 5.w,
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'Earnings',
-                                    style:
-                                        TextStyle(color: Color(0xff646363)),
-                                  ),
-                                  Text(
-                                    '${loginData.totalEarnings}',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15.dp),
-                                  )
-                                ],
+                              InkWell(
+                                onTap: (){
+                                  print(fcmToken);
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Earnings',
+                                      style:
+                                          TextStyle(color: Color(0xff646363)),
+                                    ),
+                                    Text(
+                                      '${loginData.totalEarnings}',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15.dp),
+                                    )
+                                  ],
+                                ),
                               )
                             ],
                           ),
@@ -1908,6 +1920,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver  {
                                           tripId: int.parse(tripModel.tripId!),
                                           state: DataCubit.destinationState,
                                           context: context,
+                                          dropOffLat: sourcePosition!.latitude.toString(),
+                                          dropOffLng: sourcePosition!.longitude!.toString()
                                         );
                                       }
                                     },

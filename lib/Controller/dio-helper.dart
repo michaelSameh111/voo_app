@@ -7,7 +7,7 @@ class DioHelper {
   static String? token;
   static init() {
     dio = Dio(BaseOptions(
-        baseUrl: 'https://innovationscope.com/demos/voo/public/api/',
+        baseUrl: 'https://voorideshare.com/api/',
       receiveDataWhenStatusError: true,
       headers: {
         'auth-token' : token

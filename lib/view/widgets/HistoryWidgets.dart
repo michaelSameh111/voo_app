@@ -191,8 +191,9 @@ class CompletedHistoryWidget extends StatelessWidget {
                       '${driverCompletedTrips.distance} Mile',
                       style: TextStyle(fontSize: 15.dp),
                     ),
-                    const Spacer(),                  ],),
+                ],),
                 ),
+                Visibility(visible: driverCompletedTrips.duration != null,child: const Spacer()),
                 Visibility(
                   visible: driverCompletedTrips.duration != null,
                   child: Row(children: [
@@ -211,7 +212,7 @@ class CompletedHistoryWidget extends StatelessWidget {
 
                   ],),
                 ),
-                Visibility(visible: driverCompletedTrips.duration != null,child: const Spacer()),
+                // Visibility(visible: driverCompletedTrips.duration != null,child: const Spacer()),
 
 
               ],

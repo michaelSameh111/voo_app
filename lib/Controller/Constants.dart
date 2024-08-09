@@ -28,7 +28,7 @@ String? language ;
 bool? notificationRequestTrip = false;
 bool? notificationRequestLessPriceTrip = false;
 TripModel? newTripNotification;
-const String googleMapApiKey = 'AIzaSyC0vwuoMC2YaegAD6xJEomD0VjNRVXYh60';
+const String googleMapApiKey = 'AIzaSyAzKPQ5DP8N_tIG3rdlwEqfGwASXBnEfTE';
 Position? sourcePosition;
 TripModel tripModel = TripModel();
 TripModel? trip ;
